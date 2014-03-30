@@ -95,7 +95,6 @@ __Returns__
 
 __Examples__
 
-
 ```js
 var BaseBall = Class.extend(Ball, {
 

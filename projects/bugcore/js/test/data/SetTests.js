@@ -137,7 +137,7 @@ var setDeepCloneTest = {
     }
 };
 bugmeta.annotate(setDeepCloneTest).with(
-    test().name("Set deep clone test")
+    test().name("Set - deep clone test")
 );
 
 /**

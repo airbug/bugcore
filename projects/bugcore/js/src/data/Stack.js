@@ -6,6 +6,7 @@
 
 //@Require('Class')
 //@Require('Collection')
+//@Require('Exception')
 //@Require('Obj')
 
 
@@ -13,22 +14,27 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var Class =         bugpack.require('Class');
-var Collection =    bugpack.require('Collection');
-var Obj =           bugpack.require('Obj');
+var Class           = bugpack.require('Class');
+var Collection      = bugpack.require('Collection');
+var Exception       = bugpack.require('Exception');
+var Obj             = bugpack.require('Obj');
 
 
 //-------------------------------------------------------------------------------
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Collection}
+ */
 var Stack = Class.extend(Collection, {
 
     //-------------------------------------------------------------------------------
@@ -36,6 +42,7 @@ var Stack = Class.extend(Collection, {
     //-------------------------------------------------------------------------------
 
     /**
+     * @constructs
      * @param {(Collection.<*> | Array.<*>)} items
      */
     _constructor: function(items) {
@@ -77,11 +84,11 @@ var Stack = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Object Implementation
+    // Object Methods
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {Queue}
+     * @return {Stack}
      */
     clone: function() {
         var cloneStack = new Stack();
@@ -91,7 +98,7 @@ var Stack = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Extended Collection Methods
+    // Collection Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -113,7 +120,7 @@ var Stack = Class.extend(Collection, {
     },
 
     /**
-     * Removes the FIRST occurrence of value from the queue
+     * Removes the FIRST occurrence of value from the stack
      * @param {*} value
      * @return {boolean}
      */
@@ -128,7 +135,7 @@ var Stack = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Class Methods
+    // Public Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -139,7 +146,7 @@ var Stack = Class.extend(Collection, {
         if (lastIndex > -1) {
             return this.removeAt(lastIndex);
         } else {
-            throw new Error("No elements left to pop");
+            throw new Exception("StackEmpty", {}, "No elements left to pop");
         }
     },
 
@@ -152,7 +159,7 @@ var Stack = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Private Class Methods
+    // Private Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -164,7 +171,7 @@ var Stack = Class.extend(Collection, {
         if (index < this.getCount()) {
             return this.valueArray[index];
         } else {
-            throw new Error("Index out of bounds");
+            throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
         }
     },
 
@@ -189,9 +196,8 @@ var Stack = Class.extend(Collection, {
      */
     removeAt: function(index) {
         var value = this.getAt(index);
-        var result = this.hashStore.removeValue(value);
+        var result = this.getHashStore().removeValue(value);
         if (result) {
-            this.count--;
             this.valueArray.splice(index, 1);
         }
         return value;
