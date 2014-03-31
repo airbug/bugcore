@@ -48,8 +48,23 @@ buildProperties({
         packageJson: {
             name: "bugcore",
             version: version,
+            description: "bugcore is a JavaScript library that provides a foundational architecture for object oriented JS",
             main: "./scripts/bugcore-node-module.js",
-            dependencies: dependencies
+            dependencies: dependencies,
+            author: "Brian Neisler <brian@airbug.com>",
+            repository: {
+                type: "git",
+                url: "https://github.com/airbug/bugcore.git"
+            },
+            bugs: {
+                url: "https://github.com/airbug/bugcore/issues"
+            },
+            licenses: [
+                {
+                    type : "MIT",
+                    url : "https://raw.githubusercontent.com/airbug/bugcore/master/LICENSE"
+                }
+            ]
         },
         sourcePaths: [
             "./projects/bugcore/js/src",
