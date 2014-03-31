@@ -88,11 +88,18 @@ var Stack = Class.extend(Collection, {
     //-------------------------------------------------------------------------------
 
     /**
+     * @param {boolean} deep
      * @return {Stack}
      */
-    clone: function() {
+    clone: function(deep) {
         var cloneStack = new Stack();
-        cloneStack.addAll(this);
+        if (deep) {
+            this.forEach(function(item){
+                cloneStack.add(Obj.clone(item, true));
+            });
+        } else {
+            cloneStack.addAll(this);
+        }
         return cloneStack;
     },
 
@@ -103,10 +110,12 @@ var Stack = Class.extend(Collection, {
 
     /**
      * @param {*} value
+     * @return {boolean}
      */
     add: function(value) {
         this._super(value);
         this.valueArray.push(value);
+        return true;
     },
 
     /**
