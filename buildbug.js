@@ -35,7 +35,7 @@ var nodejs              = enableModule('nodejs');
 
 var version             = "0.1.0";
 var dependencies        = {
-    bugpack: "https://s3.amazonaws.com/airbug/bugpack-0.0.5.tgz"
+    bugpack: "https://s3.amazonaws.com/deploy-airbug/bugpack-0.1.0.tgz"
 };
 
 
@@ -67,8 +67,7 @@ buildProperties({
             ]
         },
         sourcePaths: [
-            "./projects/bugcore/js/src",
-            "./projects/bugcore-node/js/src"
+            "./projects/bugcore/js/src"
         ],
         scriptPaths: [
             "./projects/bugcore-node/js/scripts"
@@ -78,7 +77,10 @@ buildProperties({
                 name: "bugcore-test",
                 version: version,
                 main: "./scripts/bugcore-node-module.js",
-                dependencies: dependencies
+                dependencies: dependencies,
+                scripts: {
+                    test: "./scripts/bugunit-run.js"
+                }
             },
             sourcePaths: [
                 "../bugunit/projects/bugunit/js/src"
@@ -142,7 +144,7 @@ buildTarget('local').buildFlow(
                     packageVersion: "{{node.packageJson.version}}"
                 }
             }),
-            targetTask('startNodeModuleTests', {
+            /*targetTask('startNodeModuleTests', {
                 init: function(task, buildProject, properties) {
                     var packedNodePackage = nodejs.findPackedNodePackage(
                         buildProject.getProperty("node.packageJson.name"),
@@ -153,7 +155,7 @@ buildTarget('local').buildFlow(
                         //checkCoverage: true
                     });
                 }
-            }),
+            }),*/
             targetTask("s3PutFile", {
                 init: function(task, buildProject, properties) {
                     var packedNodePackage = nodejs.findPackedNodePackage(buildProject.getProperty("node.packageJson.name"),
@@ -214,7 +216,7 @@ buildTarget('prod').buildFlow(
                         packageName: "{{node.unitTest.packageJson.name}}",
                         packageVersion: "{{node.unitTest.packageJson.version}}"
                     }
-                }),
+                })/*,
                 targetTask('startNodeModuleTests', {
                     init: function(task, buildProject, properties) {
                         var packedNodePackage = nodejs.findPackedNodePackage(
@@ -226,7 +228,7 @@ buildTarget('prod').buildFlow(
                             checkCoverage: true
                         });
                     }
-                })
+                })*/
             ]),
 
             // Create production node bugcore package
@@ -270,6 +272,18 @@ buildTarget('prod').buildFlow(
                     },
                     properties: {
                         bucket: "{{prod-deploy-bucket}}"
+                    }
+                }),
+                targetTask('npmConfigSet', {
+                    properties: {
+                        config: buildProject.getProperty("npmConfig")
+                    }
+                }),
+                targetTask('npmAddUser'),
+                targetTask('publishNodePackage', {
+                    properties: {
+                        packageName: "{{node.packageJson.name}}",
+                        packageVersion: "{{node.packageJson.version}}"
                     }
                 })
             ])
