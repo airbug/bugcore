@@ -72,6 +72,7 @@ buildProperties({
         scriptPaths: [
             "./projects/bugcore-node/js/scripts"
         ],
+        readmePath: "./README.md",
         unitTest: {
             packageJson: {
                 name: "bugcore-test",
@@ -118,6 +119,7 @@ buildTarget('local').buildFlow(
             targetTask('createNodePackage', {
                 properties: {
                     packageJson: buildProject.getProperty("node.packageJson"),
+                    readmePath: buildProject.getProperty("node.readmePath"),
                     sourcePaths: buildProject.getProperty("node.sourcePaths").concat(
                         buildProject.getProperty("node.unitTest.sourcePaths")
                     ),
@@ -237,6 +239,7 @@ buildTarget('prod').buildFlow(
                 targetTask('createNodePackage', {
                     properties: {
                         packageJson: buildProject.getProperty("node.packageJson"),
+                        readmePath: buildProject.getProperty("node.readmePath"),
                         sourcePaths: buildProject.getProperty("node.sourcePaths"),
                         scriptPaths: buildProject.getProperty("node.scriptPaths")
                     }
