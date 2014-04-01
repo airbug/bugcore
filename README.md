@@ -248,7 +248,7 @@ __Static Method Summary__
 
 <a name="Obj__constructor" />
 
-### Obj#_constructor
+### Obj#_constructor()
 
 __Method__
 
@@ -272,7 +272,7 @@ var myObj = new Obj();
 
 <a name="Obj_getInternalId" />
 
-### Obj#getInternalId
+### Obj#getInternalId()
 
 __Method__
 
