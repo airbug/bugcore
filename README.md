@@ -14,87 +14,87 @@ object oriented patterns.
 
 Creation of a new class
 ```javascript
-    var SomeClass = Class.extend(Obj, {});
+var SomeClass = Class.extend(Obj, {});
 ```
 
 Creation of a new class with a constructor
 ```javascript
-    var SomeClass = Class.extend(Obj, {
-        _constructor: function() {
-            this._super(); // Call super constructor
-        }
-    });
+var SomeClass = Class.extend(Obj, {
+    _constructor: function() {
+        this._super(); // Call super constructor
+    }
+});
 ```
 
 Creation of a new class with overridden equals and hashCode methods
 ```javascript
-    var SomeClass = Class.extend(Obj, {
+var SomeClass = Class.extend(Obj, {
 
-        _constructor: function(a, b) {
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.a = a;
-
-            /**
-             * @private
-             * @type {string}
-             */
-            this.b = b
-        },
+    _constructor: function(a, b) {
 
         /**
-         * @override
-         * @param {*} value
-         * @return {boolean}
+         * @private
+         * @type {number}
          */
-        equals: function(value) {
-            if (Class.doesExtend(value, SomeClass)) {
-                return (Obj.equals(value.a, this.a) && Obj.equals(value.b, this.b));
-            }
-            return false;
-        },
+        this.a = a;
 
         /**
-         * @override
-         * @return {number}
+         * @private
+         * @type {string}
          */
-        hashCode: function() {
-            if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[SomeClass]" +
-                    Obj.hashCode(this.a) + Obj.hashCode(this.b));
-            }
-            return this._hashCode;
-        },
-    });
+        this.b = b
+    },
+
+    /**
+     * @override
+     * @param {*} value
+     * @return {boolean}
+     */
+    equals: function(value) {
+        if (Class.doesExtend(value, SomeClass)) {
+            return (Obj.equals(value.a, this.a) && Obj.equals(value.b, this.b));
+        }
+        return false;
+    },
+
+    /**
+     * @override
+     * @return {number}
+     */
+    hashCode: function() {
+        if (!this._hashCode) {
+            this._hashCode = Obj.hashCode("[SomeClass]" +
+                Obj.hashCode(this.a) + Obj.hashCode(this.b));
+        }
+        return this._hashCode;
+    },
+});
 ```
 
 Use of a Map
 ```javascript
-    var myMap = new bugcore.Map();
-    myMap.put("key1", "value1")'
-    myMap.put("key2", "value2")'
-    myMap.get("key1");      // "value1"
-    myMap.get("key2");      // "value2"
+var myMap = new bugcore.Map();
+myMap.put("key1", "value1");
+myMap.put("key2", "value2");
+myMap.get("key1");      // "value1"
+myMap.get("key2");      // "value2"
 ```
 
 Use of a Map with instances as keys
 ```javascript
-    var myMap       = new bugcore.Map();
+var myMap       = new bugcore.Map();
 
-    // SomeClass is from the above example that uses overridden equals and hashCode methods
-    var instance1   = new SomeClass(123, "abc");
-    var instance2   = new SomeClass(123, "abc");
-    myMap.put(instance1, "value");
-    myMap.put(instance2, "value2");
+// SomeClass is from the above example that uses overridden equals and hashCode methods
+var instance1   = new SomeClass(123, "abc");
+var instance2   = new SomeClass(123, "abc");
+myMap.put(instance1, "value");
+myMap.put(instance2, "value2");
 
-    //hash codes and equality checks are equal therefore the two instances are considered the same key even though
-    //they are separate instances in memory
-    myMap.getCount();       // 1
-    myMap.get(instance1)    // "value2"
-    myMap.get(instance2)    // "value2"
+//hash codes and equality checks are equal therefore the two instances are considered the same key even though
+//they are separate instances in memory
+myMap.getCount();       // 1
+myMap.get(instance1)    // "value2"
+myMap.get(instance2)    // "value2"
 ```
 
 The library is extremely robust and makes up the foundation of our architecture
@@ -160,13 +160,13 @@ Core static class used to build other classes.
 __Method__
 
 ```javascript
-    /**
-     * @static
-     * @param {function(new:Base)} _class
-     * @param {Object} declaration
-     * @return {function(new:Base)}
-     */
-    Class.extend = function(_class, declaration) {
+/**
+ * @static
+ * @param {function(new:Base)} _class
+ * @param {Object} declaration
+ * @return {function(new:Base)}
+ */
+Class.extend = function(_class, declaration) {
 ```
 
 __Parameters__
@@ -183,16 +183,16 @@ __Returns__
 __Examples__
 
 ```js
-    var BaseBall = Class.extend(Ball, {
+var BaseBall = Class.extend(Ball, {
 
-        _constructor: function(diameter) {
-            this.diameter = diameter;
-        }
+    _constructor: function(diameter) {
+        this.diameter = diameter;
+    }
 
-        throwBall: function() {
+    throwBall: function() {
 
-        }
-    });
+    }
+});
 ```
 
 
@@ -206,13 +206,13 @@ equality checks and clone support.
 __Class__
 
 ```javascript
-    /**
-     * @class
-     * @implements {IClone}
-     * @implements {IEquals}
-     * @implements {IHashCode}
-     */
-    var Obj = Class.declare({
+/**
+ * @class
+ * @implements {IClone}
+ * @implements {IEquals}
+ * @implements {IHashCode}
+ */
+var Obj = Class.declare({
 ```
 
 __Interfaces__
@@ -253,10 +253,10 @@ __Static Method Summary__
 __Method__
 
 ```javascript
-    /**
-     * @constructs
-     */
-    _constructor: function() {
+/**
+ * @constructs
+ */
+_constructor: function() {
 ```
 
 __Parameters__
@@ -267,7 +267,7 @@ __Parameters__
 __Examples__
 
 ```js
-    var myObj = new Obj();
+var myObj = new Obj();
 ```
 
 <a name="Obj_getInternalId" />
@@ -277,10 +277,10 @@ __Examples__
 __Method__
 
 ```javascript
-    /**
-     * @return {number}
-     */
-    getInternalId: function() {
+/**
+ * @return {number}
+ */
+getInternalId: function() {
 ```
 
 __Parameters__
@@ -296,6 +296,6 @@ __Returns__
 __Examples__
 
 ```js
-    var myObj       = new Obj();
-    var internalId  = myObj.getInternalId();
+var myObj       = new Obj();
+var internalId  = myObj.getInternalId();
 ```
