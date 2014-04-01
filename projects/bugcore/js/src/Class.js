@@ -32,6 +32,9 @@ var TypeUtil = bugpack.require('TypeUtil');
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @type {Object}
+ */
 var Class = {};
 
 var Base = function() {};
