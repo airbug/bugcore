@@ -14,7 +14,7 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
@@ -31,6 +31,10 @@ var Obj             =  bugpack.require('Obj');
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Collection}
+ */
 var Queue = Class.extend(Collection, {
 
     //-------------------------------------------------------------------------------
@@ -38,6 +42,7 @@ var Queue = Class.extend(Collection, {
     //-------------------------------------------------------------------------------
 
     /**
+     * @constructs
      * @param {(Collection.<*> | Array.<*>)} items
      */
     _constructor: function(items) {
@@ -79,7 +84,7 @@ var Queue = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Object Implementation
+    // Obj Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -93,7 +98,7 @@ var Queue = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Extended Collection Methods
+    // Collection Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -139,7 +144,7 @@ var Queue = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Class Methods
+    // Public Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -149,7 +154,7 @@ var Queue = Class.extend(Collection, {
         if (this.getCount() > 0) {
             return this.removeAt(0);
         } else {
-            throw new Exception("Empty", {}, "Queue is empty");
+            throw new Exception("QueueEmpty", {}, "Queue is empty");
         }
     },
 
@@ -162,7 +167,7 @@ var Queue = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Private Class Methods
+    // Private Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -174,7 +179,7 @@ var Queue = Class.extend(Collection, {
         if (index < this.getCount()) {
             return this.valueArray[index];
         } else {
-            throw new Error("Index out of bounds");
+            throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
         }
     },
 
@@ -199,7 +204,7 @@ var Queue = Class.extend(Collection, {
      */
     removeAt: function(index) {
         var value = this.getAt(index);
-        var result = this.hashStore.removeValue(value);
+        var result = this.getHashStore().removeValue(value);
         if (result) {
             this.valueArray.splice(index, 1);
         }

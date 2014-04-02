@@ -5,9 +5,9 @@
 //@Export('List')
 
 //@Require('ArgumentBug')
-//@Require('Bug')
 //@Require('Class')
 //@Require('Collection')
+//@Require('Exception')
 //@Require('ICollection')
 //@Require('IList')
 //@Require('Obj')
@@ -26,9 +26,9 @@ var bugpack         = require('bugpack').context();
 //-------------------------------------------------------------------------------
 
 var ArgumentBug     = bugpack.require('ArgumentBug');
-var Bug             = bugpack.require('Bug');
 var Class           = bugpack.require('Class');
 var Collection      = bugpack.require('Collection');
+var Exception       = bugpack.require('Exception');
 var ICollection     = bugpack.require('ICollection');
 var IList           = bugpack.require('IList');
 var Obj             = bugpack.require('Obj');
@@ -90,7 +90,7 @@ var List = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Object Implementation
+    // Obj Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -99,7 +99,7 @@ var List = Class.extend(Collection, {
      */
     clone: function(deep) {
         var cloneList = new List();
-        if(deep){
+        if (deep) {
             this.forEach(function(item){
                 cloneList.add(Obj.clone(item, true));
             });
@@ -111,7 +111,7 @@ var List = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Extended Collection Methods
+    // Collection Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -134,7 +134,7 @@ var List = Class.extend(Collection, {
 
     /**
      * @override
-     * @param {function(*, number)} func
+     * @param {function(C, number)} func
      */
     forEach: function(func) {
         for (var i = 0, size = this.valueArray.length; i < size; i++) {
@@ -171,10 +171,10 @@ var List = Class.extend(Collection, {
         // the very end of the list.
 
         if (index <= this.getCount()) {
-            this.hashStore.addValue(value);
+            this.getHashStore().addValue(value);
             this.valueArray.splice(index, 0, value);
         } else {
-            throw new Bug("IndexOutOfBounds", {}, "index was out of bounds");
+            throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
         }
     },
 
@@ -206,7 +206,7 @@ var List = Class.extend(Collection, {
         if (index < this.getCount()) {
             return this.valueArray[index];
         } else {
-            throw new Bug("IndexOutOfBounds", {}, "index was out of bounds");
+            throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
         }
     },
 
@@ -237,20 +237,13 @@ var List = Class.extend(Collection, {
     },
 
     /**
-     * @param {function()} function
-     * @param {{*}} context
-     * @return {List}
-     * destructive
+     * @param {function(C):*} fn
+     * @param {*} context
+     * @return {List.<*>}
      */
     map: function(fn, context) {
-        var _this       = this;
         var newArray    = this.valueArray.map(fn, context);
-        this.clear();
-        this.valueArray = newArray;
-        this.valueArray.forEach(function(value){
-            _this.hashStore.addValue(value);
-        });
-        return this;
+        return new List(newArray);
     },
 
     /**
@@ -315,7 +308,7 @@ var List = Class.extend(Collection, {
             toIndex = this.getCount();
         }
         if (fromIndex < 0 || fromIndex > toIndex || toIndex > this.getCount()) {
-            throw new Bug("IndexOutOfBounds", {}, "index was out of bounds");
+            throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
         }
         var subList = new List();
         for (var i = fromIndex; i < toIndex; i++) {

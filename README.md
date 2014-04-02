@@ -9,11 +9,19 @@ inheritance](http://ejohn.org/blog/simple-javascript-inheritance/). In addition
 the library provides many basic data models and utility classes for common
 object oriented patterns.
 
+The library is extremely robust and makes up the foundation of our architecture
+for [airbug](http://airbug.com) so check out the docs for an overview of the
+full power of what the code has to offer. If the library is missing something
+you need, please let us know!
+
 
 ## Quick Examples
 
 Creation of a new class
 ```javascript
+var Class   = bugcore.Class;
+var Obj     = bugcore.Obj;
+
 var SomeClass = Class.extend(Obj, {});
 ```
 
@@ -28,9 +36,20 @@ var SomeClass = Class.extend(Obj, {
 
 Creation of a new class with overridden equals and hashCode methods
 ```javascript
+/**
+ * @class
+ * @extends {Obj}
+ */
 var SomeClass = Class.extend(Obj, {
 
+    /**
+     * @constructs
+     * @param {number} a
+     * @param {number} b
+     */
     _constructor: function(a, b) {
+
+        this._super(); // Call super constructor
 
         /**
          * @private
@@ -97,12 +116,6 @@ myMap.get(instance1)    // "value2"
 myMap.get(instance2)    // "value2"
 ```
 
-The library is extremely robust and makes up the foundation of our architecture
-for [airbug](http://airbug.com) so check out the docs for an overview of the
-full power of what the code has to offer. If the library is missing something
-you need, please let us know!
-
-
 ## Download
 
 The source is available for download from
@@ -110,6 +123,7 @@ The source is available for download from
 Alternatively, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
 
     npm install bugcore
+
 
 ## In the Browser
 
@@ -124,10 +138,12 @@ Usage:
 </script>
 ```
 
+
 ## Documentation
 
 ### Class System
 
+* [`Base`](#Base)
 * [`Class`](#Class)
 * [`Interface`](#Interface)
 * [`Obj`](#Obj)
@@ -150,7 +166,6 @@ Usage:
 
 
 <a name="Class" />
-
 ## Class
 
 Core static class used to build other classes.
@@ -171,13 +186,13 @@ Class.extend = function(_class, declaration) {
 
 __Parameters__
 
-* `_class` {function(new:Base)} - The class to extend
-* `declaration` {Object} - An object that declares the methods of the new class
+* `_class` {function(new:Base)} - The class to extend.
+* `declaration` {Object} - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:Base)} - the newly created class
+* {function(new:Base)} - The newly created class.
 
 
 __Examples__
@@ -186,6 +201,7 @@ __Examples__
 var BaseBall = Class.extend(Ball, {
 
     _constructor: function(diameter) {
+        this._super(); // Call super constructor
         this.diameter = diameter;
     }
 
@@ -195,9 +211,7 @@ var BaseBall = Class.extend(Ball, {
 });
 ```
 
-
 <a name="Obj" />
-
 ## Obj
 
 The root class of all other classes in the bugcore library. Provides basic functionality such as hash code support,
@@ -290,7 +304,7 @@ __Parameters__
 
 __Returns__
 
-* {number} - the unique internal id for this instance. Unique only to this JS runtime.
+* {number} - The unique internal id for this instance. Unique only to this JS runtime.
 
 
 __Examples__
@@ -298,4 +312,132 @@ __Examples__
 ```js
 var myObj       = new Obj();
 var internalId  = myObj.getInternalId();
+```
+
+<a name="Obj_clone" />
+### Obj#clone(deep)
+
+By default the clone method will use the instance's Class to instantiate a new instance.
+It will also iterate through the instance's properties and attempt to clone all properties
+that are not functions. If a deep clone is being performed, then the clone method will
+attempt to create a deep copy of each property. If a shallow clone is being performed
+then a reference to the property value will be set on the new instance.
+
+NOTE: _internalId is not cloned for deep or shallow clones. Therefore the clone instance
+is unique from that of the original.
+
+__Method__
+
+```javascript
+/**
+ * @param {boolean=} deep
+ * @return {*}
+ */
+clone: function(deep) {
+```
+
+__Parameters__
+
+* `deep` {boolean=} - Whether or not to perform a deep clone. Optional - default: false
+
+
+__Returns__
+
+* {*} - A clone of the instance.
+
+
+__Examples__
+
+```js
+var myObj               = new Obj();
+var shallowCloneObj     = myObj.clone();     //shallow clone
+var deepCloneObj        = myObj.clone(true); //deep clone
+```
+
+
+<a name="Obj_equals" />
+### Obj#equals(value)
+
+By default, the equality check will compare this instances _internalId to the value parameter.
+
+__Method__
+
+```javascript
+/**
+ * @param {*} value
+ * @return {boolean}
+ */
+equals: function(value) {
+```
+
+__Parameters__
+
+* `value` {*} - The value to compare to for equality.
+
+
+__Returns__
+
+* {boolean} - Whether or not the instance is equal to the value parameter.
+
+
+__Examples__
+
+Two different instances are not equal
+```js
+var obj1   = new Obj();
+var obj2   = new Obj();
+obj1.equals(obj2);      //false
+```
+
+An instance is equal to itself
+```js
+var obj1   = new Obj();
+obj1.equals(obj1);      //true
+```
+
+Clones are not equal unless the 'equals' method is overridden
+```js
+var obj         = new Obj();
+var objClone    = obj.clone();
+obj.equals(objClone);      //false
+```
+
+```js
+var obj         = new Obj();
+var objClone    = obj.clone(true);
+obj.equals(objClone);      //false
+```
+
+
+<a name="Obj_hashCode" />
+### Obj#hashCode()
+
+NOTE: If two instances are equal, they should return the same hash code.
+NOTE: Equal hash codes is not a guarantee of equality.
+
+__Method__
+
+```javascript
+/**
+ * @return {number}
+ */
+hashCode: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* {number} - The hash code of this instance.
+
+
+__Examples__
+
+Get hash code of instance
+```js
+var obj         = new Obj();
+var hashCode    = obj.hashCode();
 ```

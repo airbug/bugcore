@@ -221,7 +221,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
      * a modified value (other than the current one) will be visited before or after it is modified, or whether a
      * deleted value will be visited before it is deleted.
      *
-     * @param {function(*)} func
+     * @param {function(C)} func
      */
     forEach: function(func) {
         this.hashStore.forEach(func);
@@ -324,7 +324,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {boolean} deep
+     * @param {boolean=} deep
      * @return {Collection.<C>}
      */
     clone: function(deep) {

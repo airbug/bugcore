@@ -26,7 +26,7 @@ var TypeUtil    = bugpack.require('TypeUtil');
 //-------------------------------------------------------------------------------
 
 /**
- * @constructor
+ * @class
  */
 var Interface   = function() {};
 
@@ -73,7 +73,7 @@ Interface.declare = function(declaration) {
  * @static
  * @param {Interface} _interface
  * @param {Object} declaration
- * @return {Function}
+ * @return {Interface}
  */
 Interface.extend = function(_interface, declaration) {
     var prototype = new _interface();

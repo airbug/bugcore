@@ -39,6 +39,10 @@ var TypeUtil            = bugpack.require('TypeUtil');
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Obj}
+ */
 var CommandProcessor = Class.extend(Obj, {
 
     //-------------------------------------------------------------------------------
@@ -47,7 +51,6 @@ var CommandProcessor = Class.extend(Obj, {
 
     /**
      * @constructs
-     * @extends {Obj}
      */
     _constructor: function() {
 
@@ -74,6 +77,25 @@ var CommandProcessor = Class.extend(Obj, {
 
     //-------------------------------------------------------------------------------
     // Getters and Setters
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @return {Queue.<CommandBatch>}
+     */
+    getCommandBatchQueue: function() {
+        return this.commandBatchQueue;
+    },
+
+    /**
+     * @return {boolean}
+     */
+    getProcessing: function() {
+        return this.processing;
+    },
+
+
+    //-------------------------------------------------------------------------------
+    // Convenience Methods
     //-------------------------------------------------------------------------------
 
     /**

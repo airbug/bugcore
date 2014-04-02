@@ -67,6 +67,18 @@ var Command = Class.extend(Obj, /** @lends {Command.prototype} */{
     /**
      * @return {boolean}
      */
+    getExecuted: function() {
+        return this.executed;
+    },
+
+
+    //-------------------------------------------------------------------------------
+    // Convenience Methods
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @return {boolean}
+     */
     isExecuted: function() {
         return this.executed;
     },

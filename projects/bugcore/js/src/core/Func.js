@@ -29,6 +29,7 @@ var Obj             = bugpack.require('Obj');
 
 /**
  * @class
+ * @extends {Obj}
  */
 var Func = Class.extend(Obj, {});
 

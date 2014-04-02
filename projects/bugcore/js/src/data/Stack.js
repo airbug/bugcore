@@ -34,6 +34,7 @@ var Obj             = bugpack.require('Obj');
 /**
  * @class
  * @extends {Collection}
+ * @template C
  */
 var Stack = Class.extend(Collection, {
 
@@ -56,7 +57,7 @@ var Stack = Class.extend(Collection, {
 
         /**
          * @private
-         * @type {Array.<*>}
+         * @type {Array.<C>}
          */
         this.valueArray = [];
 
@@ -72,7 +73,7 @@ var Stack = Class.extend(Collection, {
 
     /**
      * @override
-     * @return {Array} Array is in the same order as the queue
+     * @return {Array.<C>} Array is in the same order as the queue
      */
     getValueArray: function() {
         var valueArray = [];
@@ -84,11 +85,11 @@ var Stack = Class.extend(Collection, {
 
 
     //-------------------------------------------------------------------------------
-    // Object Methods
+    // Obj Methods
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {boolean} deep
+     * @param {boolean=} deep
      * @return {Stack}
      */
     clone: function(deep) {
@@ -109,7 +110,7 @@ var Stack = Class.extend(Collection, {
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {*} value
+     * @param {C} value
      * @return {boolean}
      */
     add: function(value) {
@@ -120,7 +121,7 @@ var Stack = Class.extend(Collection, {
 
     /**
      * @override
-     * @param {function(*)} func
+     * @param {function(C)} func
      */
     forEach: function(func) {
         for (var i = 0, size = this.valueArray.length; i < size; i++) {
