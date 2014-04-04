@@ -210,7 +210,7 @@ Obj.hasOwnProperty = Object.prototype.hasOwnProperty;
 /**
  * @static
  * @param {A} value
- * @param {boolean} deep
+ * @param {boolean=} deep
  * @return {A}
  * @template A
  */

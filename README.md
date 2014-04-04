@@ -109,8 +109,8 @@ var instance2   = new SomeClass(123, "abc");
 myMap.put(instance1, "value");
 myMap.put(instance2, "value2");
 
-//hash codes and equality checks are equal therefore the two instances are considered the same key even though
-//they are separate instances in memory
+//hash codes and equality checks are equal therefore the two instances are considered
+//the same key even though they are separate instances in memory
 myMap.getCount();       // 1
 myMap.get(instance1)    // "value2"
 myMap.get(instance2)    // "value2"
@@ -440,4 +440,158 @@ Get hash code of instance
 ```js
 var obj         = new Obj();
 var hashCode    = obj.hashCode();
+```
+
+
+<a name="Obj-clone" />
+### Obj.clone(value, deep)
+
+Clones the value parameter.
+
+If the value implements IClone the clone() method will be called to perform a clone of
+the value. If the value is a basic value such as a number or string it will simply be
+passed through.
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {A} value
+ * @param {boolean=} deep
+ * @return {A}
+ * @template A
+ */
+Obj.clone = function(value, deep) {
+```
+
+__Parameters__
+
+* `value` {A} - The value to clone.
+* `deep` {boolean=} - Whether or not to perform a deep clone. Optional - default: false
+
+
+__Returns__
+
+* {A} - A clone of the value.
+
+
+__Examples__
+
+```js
+var myObj               = new Obj();
+var shallowCloneObj     = Obj.clone(myObj);         //shallow clone
+```
+
+```js
+var myObj               = new Obj();
+var deepCloneObj        = Obj.clone(myObj, true);   //deep clone
+```
+
+```js
+var myString            = "abc123";
+var cloneString         = Obj.clone(myString);      //"abc123"
+```
+
+
+<a name="Obj-equals" />
+### Obj.equals(value1, value2)
+
+Checks value1 and value2 for equality.
+
+If value1 implements IEquals, the value1.equals() method will be used to perform
+the equality check. Otherwise === is used to compare the two values.
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value1
+ * @param {*} value2
+ * @return {boolean}
+ */
+Obj.equals = function(value1, value2) {
+```
+
+__Parameters__
+
+* `value1` {*} - The value to compare value2 to for equality.
+* `value2` {*} - The value to compare value1 to for equality.
+
+
+__Returns__
+
+* {boolean} - Whether or not the two values are equal.
+
+
+__Examples__
+
+Two different instances are not equal
+```js
+var obj1   = new Obj();
+var obj2   = new Obj();
+Obj.equals(obj1, obj2);      //false
+```
+
+An instance is equal to itself
+```js
+var obj1   = new Obj();
+Obj.equals(obj1, obj1);      //true
+```
+
+Strings of the same value are equal
+```js
+var string1 = "mystring";
+var string2 = "mystring";
+Obj.equals(string1, string2) //true
+```
+
+Undefined and null are not equal
+```js
+var undefinedValue  = undefined;
+var nullValue       = null;
+Obj.equals(undefinedValue, nullValue) //false
+```
+
+
+<a name="Obj-hashCode" />
+### Obj.hashCode(value)
+
+Returns the hashCode of the value. If the value implements IHashCode, then the
+value.hashCode() method will be used to generate the hash code.
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @return {number}
+ */
+Obj.hashCode = function(value) {
+```
+
+__Parameters__
+
+* `value` {*} - The value to generate a hash code for..
+
+
+__Returns__
+
+* {number} - The hash code of the value.
+
+
+__Examples__
+
+Get hash code of an instance.
+```js
+var myObj       = new Obj();
+var hashCode    = Obj.hashCode(myObj);
+```
+
+Get hash code of a string.
+```js
+var myString    = "abc123";
+var hashCode    = Obj.hashCode(myString);
 ```
