@@ -26,7 +26,7 @@ var TypeUtil    = bugpack.require('TypeUtil');
 //-------------------------------------------------------------------------------
 
 /**
- * @class
+ * @constructor
  */
 var Interface   = function() {};
 

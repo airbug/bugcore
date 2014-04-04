@@ -16,27 +16,27 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack             = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var Class           = bugpack.require('Class');
-var IdGenerator     = bugpack.require('IdGenerator');
-var Obj             = bugpack.require('Obj');
-var TypeUtil        = bugpack.require('TypeUtil');
-var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var Class               = bugpack.require('Class');
+var IdGenerator         = bugpack.require('IdGenerator');
+var Obj                 = bugpack.require('Obj');
+var TypeUtil            = bugpack.require('TypeUtil');
+var BugMeta             = bugpack.require('bugmeta.BugMeta');
+var TestAnnotation      = bugpack.require('bugunit-annotate.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
 // Simplify References
 //-------------------------------------------------------------------------------
 
-var bugmeta         = BugMeta.context();
-var test            = TestAnnotation.test;
+var bugmeta             = BugMeta.context();
+var test                = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -75,10 +75,6 @@ var objInstantiationTest = {
             "Assert id of both objects are different");
     }
 };
-bugmeta.annotate(objInstantiationTest).with(
-    test().name("Obj instantiation test")
-);
-
 
 /**
  * This tests
@@ -117,10 +113,6 @@ var objHashCodeTest = {
             "Assert Obj.hashCode and the instantiated object hashCode match");
     }
 };
-bugmeta.annotate(objHashCodeTest).with(
-    test().name("Obj hashCode test")
-);
-
 
 /**
  * This tests
@@ -168,10 +160,6 @@ var objEqualsTest = {
             "Assert two different Obj instances are not equal");
     }
 };
-bugmeta.annotate(objEqualsTest).with(
-    test().name("Obj - #equals test")
-);
-
 
 /**
  * This tests
@@ -206,9 +194,6 @@ var objCloneObjShallowTest = {
             "Assert that the subObject has not been cloned");
     }
 };
-bugmeta.annotate(objCloneObjShallowTest).with(
-    test().name("Obj - clone Obj shallow test")
-);
 
 /**
  * This tests
@@ -243,9 +228,6 @@ var objCloneObjectLiteralShallowTest = {
             "Assert the subArray has not been cloned");
     }
 };
-bugmeta.annotate(objCloneObjectLiteralShallowTest).with(
-    test().name("Obj - #clone object literal shallow test")
-);
 
 /**
  * This tests
@@ -273,9 +255,6 @@ var objCloneDateTest = {
             "Assert that the Dates are equal");
     }
 };
-bugmeta.annotate(objCloneDateTest).with(
-    test().name("Obj - #clone Date test")
-);
 
 /**
  * This tests
@@ -314,9 +293,6 @@ var objClonePassThroughTest = {
         })
     }
 };
-bugmeta.annotate(objClonePassThroughTest).with(
-    test().name("Obj - #clone pass through test")
-);
 
 /**
  * This tests..
@@ -373,10 +349,6 @@ var objForInIterationTest = {
         }
     }
 };
-bugmeta.annotate(objForInIterationTest).with(
-    test().name("Obj forIn iteration test")
-);
-
 
 /**
  * This tests..
@@ -448,9 +420,6 @@ var objForInIterationDontEnumPropertiesTest = {
         Obj.isDontEnumSkipped = this.originalIsDontEnumSkipped;
     }
 };
-bugmeta.annotate(objForInIterationDontEnumPropertiesTest).with(
-    test().name("Obj forIn iteration of don't enum properties test")
-);
 
 var objEnsureInternalIdTest = {
 
@@ -481,9 +450,6 @@ var objEnsureInternalIdTest = {
             "Assert no error is thrown when the _internalId has already been set");
     }
 };
-bugmeta.annotate(objEnsureInternalIdTest).with(
-    test().name("Obj internalId already defined test")
-);
 
 var objMergeTest = {
 
@@ -515,6 +481,70 @@ var objMergeTest = {
             "Assert that the into object has all properties from itself and from the from object");
     }
 };
+
+var objSetPropertyTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function(test) {
+        this.propertyQuery  = "a.b";
+        this.testObject     = {};
+        this.testValue      = "testValue";
+    },
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        Obj.setProprerty(this.testObject, this.propertyQuery, this.testValue);
+        test.assertTrue(TypeUtil.isObject(this.testObject),
+            "Assert testObject is still an object");
+        test.assertTrue(TypeUtil.isObject(this.testObject.a),
+            "Assert testObject.a was created and is an object");
+        test.assertEqual(this.testObject.a.b, this.testValue,
+            "Assert testObject.a.b was set to the testValue");
+    }
+};
+
+
+//-------------------------------------------------------------------------------
+// BugMeta
+//-------------------------------------------------------------------------------
+
+bugmeta.annotate(objInstantiationTest).with(
+    test().name("Obj instantiation test")
+);
+bugmeta.annotate(objHashCodeTest).with(
+    test().name("Obj hashCode test")
+);
+bugmeta.annotate(objEqualsTest).with(
+    test().name("Obj - #equals test")
+);
+bugmeta.annotate(objCloneObjShallowTest).with(
+    test().name("Obj - clone Obj shallow test")
+);
+bugmeta.annotate(objCloneDateTest).with(
+    test().name("Obj - #clone Date test")
+);
+bugmeta.annotate(objCloneObjectLiteralShallowTest).with(
+    test().name("Obj - #clone object literal shallow test")
+);
+bugmeta.annotate(objClonePassThroughTest).with(
+    test().name("Obj - #clone pass through test")
+);
+bugmeta.annotate(objForInIterationTest).with(
+    test().name("Obj forIn iteration test")
+);
+bugmeta.annotate(objForInIterationDontEnumPropertiesTest).with(
+    test().name("Obj forIn iteration of don't enum properties test")
+);
+bugmeta.annotate(objEnsureInternalIdTest).with(
+    test().name("Obj internalId already defined test")
+);
 bugmeta.annotate(objMergeTest).with(
     test().name("Obj - .merge Test")
+);
+bugmeta.annotate(objSetPropertyTest).with(
+    test().name("Obj - .setProperty() Test")
 );

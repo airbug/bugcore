@@ -65,7 +65,7 @@ var Obj = Class.declare({
          * @private
          * @type {?number}
          */
-        this._hashCode      = undefined;
+        this._hashCode      = null;
 
         // NOTE BRN: This value is set during the call to IdGenerator.injectId(). We just put this here for clarity's sake.
 
@@ -73,11 +73,11 @@ var Obj = Class.declare({
          * @private
          * @type {?number}
          */
-        this._internalId    = undefined;
+        this._internalId    = null;
 
         IdGenerator.ensureId(this);
         Object.defineProperty(this, "_hashCode", {
-            value : undefined,
+            value : null,
             writable : true,
             enumerable : false,
             configurable : false
@@ -289,7 +289,7 @@ Obj.equals = function(value1, value2) {
  */
 Obj.findProperty = function(object, propertyQuery) {
 
-    //NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
+    // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
     // {
     //     name: {
     //         subName: "someValue"
@@ -331,7 +331,7 @@ Obj.findProperty = function(object, propertyQuery) {
  */
 Obj.forIn = function(object, func, context) {
     if (!func || (func && !func.call)) {
-        throw new TypeError('Iterator function is required');
+        throw new Error('Iterator function is required');
     }
 
     for (var propertyName in object) {
@@ -466,7 +466,7 @@ Obj.setProperty = function(object, propertyQuery, value) {
         if (i === size - 1) {
             propertyValue[part] = value;
         } else {
-            if (!TypeUtil.isObject(propertyValue)) {
+            if (!TypeUtil.isObject(propertyValue[part])) {
                 propertyValue[part] = {};
             }
             propertyValue = propertyValue[part];

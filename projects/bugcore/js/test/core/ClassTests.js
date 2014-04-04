@@ -45,7 +45,7 @@ var test            = TestAnnotation.test;
 // Declare Tests
 //-------------------------------------------------------------------------------
 
-var classCreateTest = {
+var classNewInstanceTest = {
 
     // Setup Test
     //-------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ var classCreateTest = {
 
             }
         });
-        this.instance = this.NewClass.create([this.testArgument1, this.testArgument2]);
+        this.instance = this.NewClass.newInstance([this.testArgument1, this.testArgument2]);
     },
 
 
@@ -86,8 +86,8 @@ var classCreateTest = {
             "Assert instance of new class extends NewClass");
     }
 };
-bugmeta.annotate(classCreateTest).with(
-    test().name("Class create test")
+bugmeta.annotate(classNewInstanceTest).with(
+    test().name("Class - #newInstance test")
 );
 
 /**

@@ -141,14 +141,14 @@ Usage:
 
 ## Documentation
 
-### Class System
+### Core System
 
-* [`Base`](#Base)
 * [`Class`](#Class)
+* [`Constructor`](#Constructor)
 * [`Interface`](#Interface)
 * [`Obj`](#Obj)
 
-### Interfaces
+### Core Interfaces
 
 * [`IClone`](#IClone)
 * [`IEquals`](#IEquals)
@@ -168,8 +168,71 @@ Usage:
 <a name="Class" />
 ## Class
 
-Core static class used to build other classes.
+Core class used to build other classes.
 
+__Class__
+
+```javascript
+/**
+ * @constructor
+ */
+var Class = function() {
+```
+
+
+__Getters and Setters Summary__
+
+* [`public getInterfaces() :Array.<Interface>`](#Class_getInterfaces)
+* [`public getSuperClass() :Class`](#Class_getSuperClass)
+
+
+__Static Method Summary__
+
+* [`static declare(Object declaration) :function(new:Constructor)`](#Class-declare)
+* [`static extend(function(new:Constructor) constructor, Object declaration) :function(new:Constructor)`](#Class-extend)
+
+
+<a name="Class-declare" />
+### Class.declare
+
+This method is used to declare a low level base class in the bugcore system. Most of the
+time you should not use this method to declare new classes unless you are sure of what
+you are doing. Instead use the [Class.extend](#Class-extend) method and extend Obj. By
+using this method, it will exclude many of the base methods that the rest of the bugcore
+system depends upon, including hashCode, equals, _internalId, and clone
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {Object} declaration
+ * @return {function(new:Constructor)}
+ */
+Class.declare = function(declaration) {
+```
+
+__Parameters__
+
+* `declaration` {Object} - An object that declares the methods of the new class.
+
+
+__Returns__
+
+* {function(new:Constructor)} - The newly created class's constructor.
+
+
+__Examples__
+
+```js
+var LowestLevelObject = Class.declare({
+    _constructor: function() {
+        // No need to call this._super, this is the lowest level.
+    }
+});
+```
+
+<a name="Class-extend" />
 ### Class.extend
 
 __Method__
@@ -177,22 +240,22 @@ __Method__
 ```javascript
 /**
  * @static
- * @param {function(new:Base)} _class
+ * @param {function(new:Constructor)} constructor
  * @param {Object} declaration
- * @return {function(new:Base)}
+ * @return {function(new:Constructor)}
  */
-Class.extend = function(_class, declaration) {
+Class.extend = function(constructor, declaration) {
 ```
 
 __Parameters__
 
-* `_class` {function(new:Base)} - The class to extend.
+* `constructor` {function(new:Constructor)} - The constructor of the class to extend.
 * `declaration` {Object} - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:Base)} - The newly created class.
+* {function(new:Constructor)} - The newly created class's constructor.
 
 
 __Examples__
@@ -210,6 +273,59 @@ var BaseBall = Class.extend(Ball, {
     }
 });
 ```
+
+
+<a name="Constructor" />
+## Constructor
+
+Represents the base instantiable constructor function of all classes declared in the
+BugCore system using [Class.declare](#Class-declare)
+
+__Class__
+
+```javascript
+/**
+ * @constructor
+ */
+var Constructor = function() {
+```
+
+
+__Getters and Setters Summary__
+
+* [`public getClass() :Class`](#Constructor_getClass)
+
+
+<a name="Constructor_getClass" />
+### Constructor#getClass
+
+Get the Class for this instance.
+
+__Method__
+
+```javascript
+/**
+ * @return {Class}
+ */
+getClass: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* {Class} - The Class of this instance.
+
+
+__Examples__
+
+```js
+//TODO BRN: Provide example of Class usage
+```
+
 
 <a name="Obj" />
 ## Obj
@@ -243,6 +359,7 @@ __Constructor Summary__
 
 __Getters and Setters Summary__
 
+* [`public getClass()           :Class`](#Obj_equals)
 * [`public getInternalId()      :number`](#Obj_getInternalId)
 
 

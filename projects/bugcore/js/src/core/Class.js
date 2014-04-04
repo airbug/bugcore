@@ -11,6 +11,7 @@
 
 //@Export('Class')
 
+//@Require('Constructor')
 //@Require('TypeUtil')
 
 
@@ -18,56 +19,25 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack     = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var TypeUtil    = bugpack.require('TypeUtil');
+var Constructor     = bugpack.require('Constructor');
+var TypeUtil        = bugpack.require('TypeUtil');
 
 
 //-------------------------------------------------------------------------------
-// Declare Class
+// Constructor
 //-------------------------------------------------------------------------------
 
 /**
- * @type {Object}
+ * @constructor
  */
-var Class = {};
-
-var Base = function() {};
-Base._interfaces = [];
-Base._superclass = null;
-
-var BaseStatic = {
-    getBugPackKey: function() {
-
-        //NOTE BRN: Perform this check for backwards compatibility with bugpack <= 0.0.5
-
-        if (this._bugPack) {
-            return this._bugPack.bugPackKey;
-        } else {
-            return this;
-        }
-    },
-    getInterfaces: function() {
-        return this._interfaces;
-    },
-    getSuperClass: function() {
-        return this._superclass;
-    }
-};
-
-var BasePrototype = {
-    _constructor: function() {
-
-    },
-    getClass: function() {
-        return this._class;
-    }
-};
+var Class = function() {};
 
 
 //-------------------------------------------------------------------------------
@@ -88,115 +58,115 @@ Class.extending = false;
 
 /**
  * @static
- * @param {*} _class
+ * @param {function(new:?)} adapteeConstructor
  * @param {Object} declaration
  */
-Class.adapt = function(_class, declaration) {
-    Base.prototype = _class.prototype;
-    var prototype = new Base();
-    var newClass = function() {};
-    for (var name in BasePrototype) {
-        prototype[name] = BasePrototype[name];
+Class.adapt = function(adapteeConstructor, declaration) {
+    var originalConstructorPrototype    = Constructor.prototype;
+    Constructor.prototype               = adapteeConstructor.prototype;
+    var prototype                       = new Constructor();
+    Constructor.prototype               = originalConstructorPrototype;
+    var newConstructor = function() {};
+    for (var name in originalConstructorPrototype) {
+        prototype[name] = originalConstructorPrototype[name];
     }
     prototype._constructor = function() {
-        _class.apply(this, arguments);
+        adapteeConstructor.apply(this, arguments);
     };
-    newClass.prototype = prototype;
-    newClass.constructor = newClass;
-    Class.static(newClass, BaseStatic);
-    newClass._interfaces = [];
-    return Class.extend(newClass, declaration);
+    Class.static(newConstructor, Constructor);
+    newConstructor.prototype        = prototype;
+    newConstructor.constructor      = newConstructor;
+    newConstructor._interfaces      = [];
+    return Class.extend(newConstructor, declaration);
 };
 
 /**
  * @static
  * @param {Object} declaration
- * @return {new:Base}
+ * @return {function(new:Constructor)}
  */
 Class.declare = function(declaration) {
-    Base.prototype = BasePrototype;
-    Class.static(Base, BaseStatic);
-    return Class.extend(Base, declaration);
+    return Class.extend(Constructor, declaration);
 };
 
 /**
  * @static
- * @param {function(new:Base)} _class
+ * @param {function(new:Constructor)} constructor
  * @param {Object} declaration
- * @return {function(new:Base)}
+ * @return {function(new:Constructor)}
  */
-Class.extend = function(_class, declaration) {
-    var _super = _class.prototype;
-    Class.extending = true;
-    var prototype = new _class();
-    Class.extending = false;
+Class.extend = function(constructor, declaration) {
+    var _super          = constructor.prototype;
+    Class.extending     = true;
+    var prototype       = new constructor();
+    Class.extending     = false;
     for (var name in declaration) {
         prototype[name] = TypeUtil.isFunction(prototype[name]) ?
             (function(name, fn) {
                 return function() {
-                    var tmp = this._super;
-                    this._super = _super[name];
-                    var ret = fn.apply(this, arguments);
-                    this._super = tmp;
-                    return ret;
+                    var oldSuper    = this._super;
+                    this._super     = _super[name];
+                    var returnValue = fn.apply(this, arguments);
+                    this._super     = oldSuper;
+                    return returnValue;
                 };
             })(name, declaration[name]):
             declaration[name];
     }
-    var newClass = function() {
+    var newConstructor = function() {
         if (!Class.extending && this._constructor) {
-            this._class = newClass;
+            this._class = newConstructor;
             this._constructor.apply(this, arguments);
         }
     };
-    newClass.prototype = prototype;
-    newClass.constructor = newClass;
-    Class.static(newClass, BaseStatic);
-    newClass._interfaces = [];
-    newClass._superclass = _class;
-    _class.getInterfaces().forEach(function(_interface) {
-        newClass._interfaces.push(_interface);
+    newConstructor.prototype        = prototype;
+    newConstructor.constructor      = newConstructor;
+    Class.static(newConstructor, Constructor);
+    newConstructor._interfaces      = [];
+    newConstructor._superclass      = constructor;
+    constructor.getInterfaces().forEach(function(_interface) {
+        newConstructor._interfaces.push(_interface);
     });
-    newClass.create = (function() {
+    newConstructor.newInstance = (function() {
         function F(args) {
-            return newClass.apply(this, args);
+            return newConstructor.apply(this, args);
         }
-        F.prototype = newClass.prototype;
+        F.prototype = newConstructor.prototype;
 
         return function(args) {
             return new F(args);
         }
     })();
-    return newClass;
+    return newConstructor;
 };
 
 /**
  * @static
- * @param {function(new:Base)} _class
+ * @param {function(new:Constructor)} constructor
  * @param {function(new:Interface)} _interface
  */
-Class.implement = function(_class, _interface) {
-    _class.getInterfaces().forEach(function(implementedInterface) {
+Class.implement = function(constructor, _interface) {
+    constructor.getInterfaces().forEach(function(implementedInterface) {
         if (implementedInterface === _interface) {
             throw new Error("Interface '" + implementedInterface.getBugPackKey() + "' has already been implemented by this class");
         }
     });
     for (var methodName in _interface.prototype) {
-        if (!TypeUtil.isFunction(_class.prototype[methodName])) {
-            throw new Error("Class '" + _class.getBugPackKey() + "' does not implement interface method '" + methodName + "'");
+        if (!TypeUtil.isFunction(constructor.prototype[methodName])) {
+            throw new Error("Class '" + constructor.getBugPackKey() + "' does not implement interface method '" + methodName + "'");
         }
     }
-    _class._interfaces.push(_interface);
+    constructor._interfaces.push(_interface);
 };
 
 /**
  * @static
  * @param {*} value
- * @param {function(new:Base)} _class
+ * @param {function(new:Constructor)} constructor
  * @return {boolean}
  */
-Class.doesExtend = function(value, _class) {
-    return value instanceof _class;
+Class.doesExtend = function(value, constructor) {
+    return value instanceof constructor;
 };
 
 /**
@@ -220,12 +190,12 @@ Class.doesImplement = function(value, _interface) {
 
 /**
  * @static
- * @param {function(new:Base)} _class
+ * @param {function(new:Constructor)} constructor
  * @param {Object} declaration
  */
-Class.static = function(_class, declaration) {
+Class.static = function(constructor, declaration) {
     for (var name in declaration) {
-        _class[name] = declaration[name];
+        constructor[name] = declaration[name];
     }
 };
 
