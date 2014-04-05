@@ -15,6 +15,7 @@
 //@Require('Map')
 //@Require('Obj')
 //@Require('Pair')
+//@Require('Proxy')
 //@Require('Queue')
 //@Require('Set')
 //@Require('Stack')
@@ -43,6 +44,7 @@ var List            = bugpack.require('List');
 var Map             = bugpack.require('Map');
 var Obj             = bugpack.require('Obj');
 var Pair            = bugpack.require('Pair');
+var Proxy           = bugpack.require('Proxy');
 var Queue           = bugpack.require('Queue');
 var Set             = bugpack.require('Set');
 var Stack           = bugpack.require('Stack');
@@ -210,6 +212,48 @@ var BugCore = Class.extend(Obj, {
         return new Stack(items);
     }
 });
+
+
+//-------------------------------------------------------------------------------
+// Private Static Variables
+//-------------------------------------------------------------------------------
+
+/**
+ * @static
+ * @private
+ * @type {BugCore}
+ */
+BugCore.instance = null;
+
+
+//-------------------------------------------------------------------------------
+// Private Static Methods
+//-------------------------------------------------------------------------------
+
+/**
+ * @static
+ * @return {BugCore}
+ */
+BugCore.getInstance = function() {
+    if (BugCore.instance === null) {
+        BugCore.instance = new BugCore();
+    }
+    return BugCore.instance;
+};
+
+
+//-------------------------------------------------------------------------------
+// Static Proxy
+//-------------------------------------------------------------------------------
+
+Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
+    "collection",
+    "list",
+    "map",
+    "queue",
+    "set",
+    "stack"
+]);
 
 
 //-------------------------------------------------------------------------------

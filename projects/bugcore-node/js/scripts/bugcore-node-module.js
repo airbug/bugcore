@@ -12,4 +12,4 @@ var BugCore     = bugpack.require("BugCore");
 // Exports
 //-------------------------------------------------------------------------------
 
-module.exports = new BugCore();
+module.exports = BugCore.getInstance();
