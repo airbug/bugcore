@@ -8,7 +8,7 @@
 //@Require('List')
 //@Require('Obj')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ var Class           = bugpack.require('Class');
 var List            = bugpack.require('List');
 var Obj             = bugpack.require('Obj');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

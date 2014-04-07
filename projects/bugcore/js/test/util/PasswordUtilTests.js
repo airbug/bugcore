@@ -7,7 +7,7 @@
 //@Require('PasswordUtil')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ var bugpack         = require('bugpack').context();
 var PasswordUtil    = bugpack.require('PasswordUtil');
 var TypeUtil        = bugpack.require('TypeUtil');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

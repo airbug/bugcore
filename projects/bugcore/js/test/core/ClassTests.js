@@ -10,7 +10,7 @@
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ var Interface       = bugpack.require('Interface');
 var Obj             = bugpack.require('Obj');
 var TypeUtil        = bugpack.require('TypeUtil');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

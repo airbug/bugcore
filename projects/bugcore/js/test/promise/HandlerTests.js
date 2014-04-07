@@ -8,7 +8,7 @@
 //@Require('Handler')
 //@Require('Promise')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ var Class           = bugpack.require('Class');
 var Handler         = bugpack.require('Handler');
 var Promise         = bugpack.require('Promise');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

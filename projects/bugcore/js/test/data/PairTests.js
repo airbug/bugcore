@@ -8,7 +8,7 @@
 //@Require('Obj')
 //@Require('Pair')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ var Class           = bugpack.require('Class');
 var Obj             = bugpack.require('Obj');
 var Pair            = bugpack.require('Pair');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

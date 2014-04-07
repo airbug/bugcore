@@ -8,7 +8,7 @@
 //@Require('GraphEdge')
 //@Require('GraphNode')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ var Class           = bugpack.require('Class');
 var GraphEdge       = bugpack.require('GraphEdge');
 var GraphNode       = bugpack.require('GraphNode');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

@@ -10,7 +10,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ var SetPropertyChange   = bugpack.require('SetPropertyChange');
 var TypeUtil            = bugpack.require('TypeUtil');
 var BugDouble           = bugpack.require('bugdouble.BugDouble');
 var BugMeta             = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation      = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

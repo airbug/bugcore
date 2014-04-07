@@ -10,7 +10,7 @@
 //@Require('Set')
 //@Require('WhereCondition')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ var Obj             = bugpack.require('Obj');
 var Set             = bugpack.require('Set');
 var WhereCondition  = bugpack.require('WhereCondition');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------

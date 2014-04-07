@@ -8,7 +8,7 @@
 //@Require('Config')
 //@Require('Properties')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit-annotate.TestAnnotation')
+//@Require('bugunit.TestAnnotation')
 
 
 //-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ var Class           = bugpack.require('Class');
 var Config          = bugpack.require('Config');
 var Properties      = bugpack.require('Properties');
 var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit-annotate.TestAnnotation');
+var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
