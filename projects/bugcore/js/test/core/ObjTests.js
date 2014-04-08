@@ -497,7 +497,7 @@ var objSetPropertyTest = {
     //-------------------------------------------------------------------------------
 
     test: function(test) {
-        Obj.setProprerty(this.testObject, this.propertyQuery, this.testValue);
+        Obj.setProperty(this.testObject, this.propertyQuery, this.testValue);
         test.assertTrue(TypeUtil.isObject(this.testObject),
             "Assert testObject is still an object");
         test.assertTrue(TypeUtil.isObject(this.testObject.a),

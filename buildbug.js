@@ -33,9 +33,9 @@ var nodejs              = enableModule('nodejs');
 // Values
 //-------------------------------------------------------------------------------
 
-var version             = "0.1.2";
+var version             = "0.1.6";
 var dependencies        = {
-    bugpack: "0.1.2"
+    bugpack: "0.1.5"
 };
 
 
@@ -84,9 +84,16 @@ buildProperties({
                 }
             },
             sourcePaths: [
+                "../buganno/projects/buganno/js/src",
+                "../bugflow/projects/bugflow/js/src",
+                "../bugfs/projects/bugfs/js/src",
+                "../bugmeta/projects/bugmeta/js/src",
+                "../bugtrace/projects/bugtrace/js/src",
+                "../bugunit/projects/bugdouble/js/src",
                 "../bugunit/projects/bugunit/js/src"
             ],
             scriptPaths: [
+                "../buganno/projects/buganno/js/scripts",
                 "../bugunit/projects/bugunit/js/scripts"
             ],
             testPaths: [
@@ -146,7 +153,7 @@ buildTarget('local').buildFlow(
                     packageVersion: "{{node.packageJson.version}}"
                 }
             }),
-            /*targetTask('startNodeModuleTests', {
+            targetTask('startNodeModuleTests', {
                 init: function(task, buildProject, properties) {
                     var packedNodePackage = nodejs.findPackedNodePackage(
                         buildProject.getProperty("node.packageJson.name"),
@@ -157,7 +164,7 @@ buildTarget('local').buildFlow(
                         //checkCoverage: true
                     });
                 }
-            }),*/
+            }),
             targetTask("s3PutFile", {
                 init: function(task, buildProject, properties) {
                     var packedNodePackage = nodejs.findPackedNodePackage(buildProject.getProperty("node.packageJson.name"),
@@ -218,7 +225,7 @@ buildTarget('prod').buildFlow(
                         packageName: "{{node.unitTest.packageJson.name}}",
                         packageVersion: "{{node.unitTest.packageJson.version}}"
                     }
-                })/*,
+                }),
                 targetTask('startNodeModuleTests', {
                     init: function(task, buildProject, properties) {
                         var packedNodePackage = nodejs.findPackedNodePackage(
@@ -230,7 +237,7 @@ buildTarget('prod').buildFlow(
                             checkCoverage: true
                         });
                     }
-                })*/
+                })
             ]),
 
             // Create production node bugcore package

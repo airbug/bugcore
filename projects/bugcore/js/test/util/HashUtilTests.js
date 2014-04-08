@@ -5,9 +5,9 @@
 //@TestFile
 
 //@Require('HashUtil')
-//@Require('TypeValueSetsHelper')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestAnnotation')
+//@Require('tests.TypeValueSetsHelper')
 
 
 //-------------------------------------------------------------------------------
