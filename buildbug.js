@@ -35,7 +35,7 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.1.7";
+var version             = "0.1.8";
 var dependencies        = {
     bugpack: "0.1.6"
 };
@@ -218,7 +218,7 @@ buildTarget('local').buildFlow(
                             sources.push(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
                         });
                         task.updateProperties({
-                            sources: sources
+                            sources: sources.concat("./projects/bugcore-web/js/scripts/bugcore-web.js")
                         });
                     },
                     properties: {
@@ -397,7 +397,7 @@ buildTarget('prod').buildFlow(
                             sources.push(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
                         });
                         task.updateProperties({
-                            sources: sources
+                            sources: sources.concat("./projects/bugcore-web/js/scripts/bugcore-web.js")
                         });
                     },
                     properties: {

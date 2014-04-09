@@ -14,29 +14,37 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var Class       = bugpack.require('Class');
-var Lock        = bugpack.require('Lock');
-var Obj         = bugpack.require('Obj');
-var Striped     = bugpack.require('bugstriped.Striped');
+var Class           = bugpack.require('Class');
+var Lock            = bugpack.require('Lock');
+var Obj             = bugpack.require('Obj');
+var Striped         = bugpack.require('Striped');
 
 
 //-------------------------------------------------------------------------------
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Obj}
+ */
 var LockStriped = Class.extend(Obj, {
 
     //-------------------------------------------------------------------------------
     // Constructor
     //-------------------------------------------------------------------------------
 
+    /**
+     * @constructs
+     * @param {number} maxNumberStripes
+     */
     _constructor: function(maxNumberStripes) {
 
         this._super();

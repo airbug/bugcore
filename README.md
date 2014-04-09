@@ -14,6 +14,8 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
+Latest Version `0.1.8`
+
 
 ## Quick Examples
 
@@ -120,9 +122,14 @@ myMap.get(instance2)    // "value2"
 
 The source is available for download from
 [GitHub](https://github.com/airbug/bugcore)
-Alternatively, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
+For node js, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
 
     npm install bugcore
+
+For the web, you can access the scripts here
+
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.min.js
 
 
 ## In the Browser
@@ -130,7 +137,7 @@ Alternatively, you can install using Node Package Manager [npm](https://www.npmj
 Usage:
 
 ```html
-<script type="text/javascript" src="bugcore.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
