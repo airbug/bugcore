@@ -18,47 +18,35 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var Class =     bugpack.require('Class');
-var Graph =     bugpack.require('Graph');
-var GraphEdge = bugpack.require('GraphEdge');
-var GraphNode = bugpack.require('GraphNode');
-var List =      bugpack.require('List');
-var Map =       bugpack.require('Map');
-var Obj =       bugpack.require('Obj');
-var Set =       bugpack.require('Set');
+var Class           = bugpack.require('Class');
+var Graph           = bugpack.require('Graph');
+var GraphEdge       = bugpack.require('GraphEdge');
+var GraphNode       = bugpack.require('GraphNode');
+var List            = bugpack.require('List');
+var Map             = bugpack.require('Map');
+var Obj             = bugpack.require('Obj');
+var Set             = bugpack.require('Set');
 
 
 //-------------------------------------------------------------------------------
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Graph}
+ */
 var DependencyGraph = Class.extend(Graph, {
 
     //-------------------------------------------------------------------------------
-    // Constructor
-    //-------------------------------------------------------------------------------
-
-    _constructor: function() {
-
-        this._super();
-
-
-        //-------------------------------------------------------------------------------
-        // Private Properties
-        //-------------------------------------------------------------------------------
-
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Class Methods
+    // Public Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -66,6 +54,12 @@ var DependencyGraph = Class.extend(Graph, {
      * @param {*} onValue
      */
     addDependency: function(ofValue, onValue) {
+        if (!this.containsNode(ofValue)) {
+            this.addNodeForValue(ofValue);
+        }
+        if (!this.containsNode(ofValue)) {
+            this.addNodeForValue(ofValue);
+        }
         this.addEdgeFromValueToValue(ofValue, onValue);
     },
 
@@ -84,7 +78,7 @@ var DependencyGraph = Class.extend(Graph, {
 
 
     //-------------------------------------------------------------------------------
-    // Private Class Methods
+    // Private Methods
     //-------------------------------------------------------------------------------
 
     /**

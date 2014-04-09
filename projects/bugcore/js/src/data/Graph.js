@@ -23,31 +23,38 @@
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack         = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
 // BugPack
 //-------------------------------------------------------------------------------
 
-var Class =     bugpack.require('Class');
-var GraphEdge = bugpack.require('GraphEdge');
-var GraphNode = bugpack.require('GraphNode');
-var Map =       bugpack.require('Map');
-var Obj =       bugpack.require('Obj');
-var Set =       bugpack.require('Set');
+var Class           = bugpack.require('Class');
+var GraphEdge       = bugpack.require('GraphEdge');
+var GraphNode       = bugpack.require('GraphNode');
+var Map             = bugpack.require('Map');
+var Obj             = bugpack.require('Obj');
+var Set             = bugpack.require('Set');
 
 
 //-------------------------------------------------------------------------------
 // Declare Class
 //-------------------------------------------------------------------------------
 
+/**
+ * @class
+ * @extends {Obj}
+ */
 var Graph = Class.extend(Obj, {
 
     //-------------------------------------------------------------------------------
     // Constructor
     //-------------------------------------------------------------------------------
 
+    /**
+     * @constructs
+     */
     _constructor: function() {
 
         this._super();
@@ -90,7 +97,7 @@ var Graph = Class.extend(Obj, {
 
 
     //-------------------------------------------------------------------------------
-    // Object Implementation
+    // Obj Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -103,7 +110,7 @@ var Graph = Class.extend(Obj, {
 
 
     //-------------------------------------------------------------------------------
-    // Class Methods
+    // Public Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -114,10 +121,10 @@ var Graph = Class.extend(Obj, {
         var fromNode = this.getNode(fromValue);
         var toNode = this.getNode(toValue);
         if (!fromNode) {
-            throw new Error("GraphNode for the fromValue does not exist");
+            throw new Error("GraphNode for the fromValue does not exist - fromValue:", fromValue);
         }
         if (!toNode) {
-            throw new Error("GraphNode for the toValue does not exist");
+            throw new Error("GraphNode for the toValue does not exist - toValue:", toValue);
         }
         var edge = new GraphEdge(fromNode, toNode);
         this.addEdge(edge);
@@ -133,7 +140,7 @@ var Graph = Class.extend(Obj, {
 
 
     //-------------------------------------------------------------------------------
-    // Protected Class Methods
+    // Protected Methods
     //-------------------------------------------------------------------------------
 
     /**
@@ -171,6 +178,15 @@ var Graph = Class.extend(Obj, {
         } else {
             throw new Error("Each node must be unique. A node with value '" + node.getValue() + "' already exists.");
         }
+    },
+
+    /**
+     * @protected
+     * @param {*} value
+     * @return {boolean}
+     */
+    containsNode: function(value) {
+        return this.valueToNodeMap.containsKey(value);
     },
 
     /**

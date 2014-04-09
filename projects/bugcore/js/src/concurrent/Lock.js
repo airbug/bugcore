@@ -8,7 +8,6 @@
 //@Require('Event')
 //@Require('EventDispatcher')
 //@Require('Queue')
-//@Require('bugtrace.BugTrace')
 
 
 //-------------------------------------------------------------------------------
@@ -26,15 +25,6 @@ var Class           = bugpack.require('Class');
 var Event           = bugpack.require('Event');
 var EventDispatcher = bugpack.require('EventDispatcher');
 var Queue           = bugpack.require('Queue');
-var BugTrace        = bugpack.require('bugtrace.BugTrace');
-
-
-
-//-------------------------------------------------------------------------------
-// Simplify References
-//-------------------------------------------------------------------------------
-
-var $trace = BugTrace.$trace;
 
 
 //-------------------------------------------------------------------------------
@@ -164,9 +154,9 @@ var Lock = Class.extend(EventDispatcher, {
         // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
         // queue.
 
-        setTimeout($trace(function() {
+        setTimeout(function() {
             _this.processQueue();
-        }), 0);
+        }, 0);
     }
 });
 

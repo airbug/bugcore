@@ -27,15 +27,17 @@ var bugpack             = enableModule('bugpack');
 var bugunit             = enableModule('bugunit');
 var core                = enableModule('core');
 var nodejs              = enableModule('nodejs');
+var uglifyjs            = enableModule("uglifyjs");
 
 
 //-------------------------------------------------------------------------------
 // Values
 //-------------------------------------------------------------------------------
 
+var name                = "bugcore";
 var version             = "0.1.6";
 var dependencies        = {
-    bugpack: "0.1.5"
+    bugpack: "0.1.6"
 };
 
 
@@ -46,7 +48,7 @@ var dependencies        = {
 buildProperties({
     node: {
         packageJson: {
-            name: "bugcore",
+            name: name,
             version: version,
             description: "bugcore is a JavaScript library that provides a foundational architecture for object oriented JS",
             main: "./scripts/bugcore-node-module.js",
@@ -75,7 +77,7 @@ buildProperties({
         readmePath: "./README.md",
         unitTest: {
             packageJson: {
-                name: "bugcore-test",
+                name: name + "-test",
                 version: version,
                 main: "./scripts/bugcore-node-module.js",
                 dependencies: dependencies,
@@ -100,6 +102,16 @@ buildProperties({
                 "./projects/bugcore/js/test"
             ]
         }
+    },
+    web: {
+        buildPath: buildProject.getProperty("buildPath") + "/web",
+        name: name,
+        version: version,
+        sourcePaths: [
+            "./projects/bugcore/js/src"
+        ],
+        outputFile: "{{distPath}}/{{web.name}}-{{web.version}}.js",
+        outputMinFile: "{{distPath}}/{{web.name}}-{{web.version}}.min.js"
     }
 });
 
@@ -122,65 +134,132 @@ buildTarget('clean').buildFlow(
 buildTarget('local').buildFlow(
     series([
         targetTask('clean'),
-        series([
-            targetTask('createNodePackage', {
-                properties: {
-                    packageJson: buildProject.getProperty("node.packageJson"),
-                    readmePath: buildProject.getProperty("node.readmePath"),
-                    sourcePaths: buildProject.getProperty("node.sourcePaths").concat(
-                        buildProject.getProperty("node.unitTest.sourcePaths")
-                    ),
-                    scriptPaths: buildProject.getProperty("node.scriptPaths").concat(
-                        buildProject.getProperty("node.unitTest.scriptPaths")
-                    ),
-                    testPaths: buildProject.getProperty("node.unitTest.testPaths")
-                }
-            }),
-            targetTask('generateBugPackRegistry', {
-                init: function(task, buildProject, properties) {
-                    var nodePackage = nodejs.findNodePackage(
-                        buildProject.getProperty("node.packageJson.name"),
-                        buildProject.getProperty("node.packageJson.version")
-                    );
-                    task.updateProperties({
-                        sourceRoot: nodePackage.getBuildPath()
-                    });
-                }
-            }),
-            targetTask('packNodePackage', {
-                properties: {
-                    packageName: "{{node.packageJson.name}}",
-                    packageVersion: "{{node.packageJson.version}}"
-                }
-            }),
-            targetTask('startNodeModuleTests', {
-                init: function(task, buildProject, properties) {
-                    var packedNodePackage = nodejs.findPackedNodePackage(
-                        buildProject.getProperty("node.packageJson.name"),
-                        buildProject.getProperty("node.packageJson.version")
-                    );
-                    task.updateProperties({
-                        modulePath: packedNodePackage.getFilePath()
-                        //checkCoverage: true
-                    });
-                }
-            }),
-            targetTask("s3PutFile", {
-                init: function(task, buildProject, properties) {
-                    var packedNodePackage = nodejs.findPackedNodePackage(buildProject.getProperty("node.packageJson.name"),
-                        buildProject.getProperty("node.packageJson.version"));
-                    task.updateProperties({
-                        file: packedNodePackage.getFilePath(),
-                        options: {
-                            acl: 'public-read',
-                            encrypt: true
+        parallel([
+            series([
+                targetTask('createNodePackage', {
+                    properties: {
+                        packageJson: buildProject.getProperty("node.packageJson"),
+                        readmePath: buildProject.getProperty("node.readmePath"),
+                        sourcePaths: buildProject.getProperty("node.sourcePaths").concat(
+                            buildProject.getProperty("node.unitTest.sourcePaths")
+                        ),
+                        scriptPaths: buildProject.getProperty("node.scriptPaths").concat(
+                            buildProject.getProperty("node.unitTest.scriptPaths")
+                        ),
+                        testPaths: buildProject.getProperty("node.unitTest.testPaths")
+                    }
+                }),
+                targetTask('generateBugPackRegistry', {
+                    init: function(task, buildProject, properties) {
+                        var nodePackage = nodejs.findNodePackage(
+                            buildProject.getProperty("node.packageJson.name"),
+                            buildProject.getProperty("node.packageJson.version")
+                        );
+                        task.updateProperties({
+                            sourceRoot: nodePackage.getBuildPath()
+                        });
+                    }
+                }),
+                targetTask('packNodePackage', {
+                    properties: {
+                        packageName: "{{node.packageJson.name}}",
+                        packageVersion: "{{node.packageJson.version}}"
+                    }
+                }),
+                targetTask('startNodeModuleTests', {
+                    init: function(task, buildProject, properties) {
+                        var packedNodePackage = nodejs.findPackedNodePackage(
+                            buildProject.getProperty("node.packageJson.name"),
+                            buildProject.getProperty("node.packageJson.version")
+                        );
+                        task.updateProperties({
+                            modulePath: packedNodePackage.getFilePath()
+                            //checkCoverage: true
+                        });
+                    }
+                }),
+                targetTask("s3PutFile", {
+                    init: function(task, buildProject, properties) {
+                        var packedNodePackage = nodejs.findPackedNodePackage(buildProject.getProperty("node.packageJson.name"),
+                            buildProject.getProperty("node.packageJson.version"));
+                        task.updateProperties({
+                            file: packedNodePackage.getFilePath(),
+                            options: {
+                                acl: 'public-read',
+                                encrypt: true
+                            }
+                        });
+                    },
+                    properties: {
+                        bucket: "{{local-bucket}}"
+                    }
+                })
+            ]),
+            series([
+                targetTask('copyContents', {
+                    properties: {
+                        fromPaths: buildProject.getProperty("web.sourcePaths"),
+                        intoPath: "{{web.buildPath}}"
+                    }
+                }),
+                targetTask('generateBugPackRegistry', {
+                    properties: {
+                        name: "{{web.name}}",
+                        sourceRoot: "{{web.buildPath}}"
+                    }
+                }),
+                targetTask("concat", {
+                    init: function(task, buildProject, properties) {
+                        var bugpackRegistry = bugpack.findBugPackRegistry(buildProject.getProperty("web.name"));
+                        var sources         = [];
+                        var registryEntries = bugpackRegistry.getRegistryEntriesInDependentOrder();
+
+                        registryEntries.forEach(function(bugPackRegistryEntry) {
+
+                            //TEST
+                            console.log(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
+
+                            sources.push(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
+                        });
+                        task.updateProperties({
+                            sources: sources
+                        });
+                    },
+                    properties: {
+                        outputFile: "{{web.outputFile}}"
+                    }
+                }),
+                parallel([
+                    targetTask("s3PutFile", {
+                        properties: {
+                            file:  "{{web.outputFile}}",
+                            options: {
+                                acl: 'public-read',
+                                gzip: true
+                            },
+                            bucket: "{{local-bucket}}"
                         }
-                    });
-                },
-                properties: {
-                    bucket: "{{local-bucket}}"
-                }
-            })
+                    }),
+                    series([
+                        targetTask("uglifyjsMinify", {
+                            properties: {
+                                sources: ["{{web.outputFile}}"],
+                                outputFile: "{{web.outputMinFile}}"
+                            }
+                        }),
+                        targetTask("s3PutFile", {
+                            properties: {
+                                file:  "{{web.outputMinFile}}",
+                                options: {
+                                    acl: 'public-read',
+                                    gzip: true
+                                },
+                                bucket: "{{local-bucket}}"
+                            }
+                        })
+                    ])
+                ])
+            ])
         ])
     ])
 ).makeDefault();

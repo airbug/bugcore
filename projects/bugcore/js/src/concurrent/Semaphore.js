@@ -7,14 +7,13 @@
 //@Require('Class')
 //@Require('Obj')
 //@Require('Queue')
-//@Require('bugtrace.BugTrace')
 
 
 //-------------------------------------------------------------------------------
 // Common Modules
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+var bugpack     = require('bugpack').context();
 
 
 //-------------------------------------------------------------------------------
@@ -24,14 +23,6 @@ var bugpack = require('bugpack').context();
 var Class       = bugpack.require('Class');
 var Obj         = bugpack.require('Obj');
 var Queue       = bugpack.require('Queue');
-var BugTrace    = bugpack.require('bugtrace.BugTrace');
-
-
-//-------------------------------------------------------------------------------
-// Simplify References
-//-------------------------------------------------------------------------------
-
-var $trace = BugTrace.$trace;
 
 
 //-------------------------------------------------------------------------------
@@ -133,9 +124,9 @@ var Semaphore = Class.extend(Obj, {
         // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
         // queue.
 
-        setTimeout($trace(function() {
+        setTimeout(function() {
             _this.processQueue();
-        }), 0);
+        }, 0);
     }
 });
 
