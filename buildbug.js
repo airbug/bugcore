@@ -35,7 +35,7 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.1.6";
+var version             = "0.1.7";
 var dependencies        = {
     bugpack: "0.1.6"
 };
@@ -215,10 +215,6 @@ buildTarget('local').buildFlow(
                         var registryEntries = bugpackRegistry.getRegistryEntriesInDependentOrder();
 
                         registryEntries.forEach(function(bugPackRegistryEntry) {
-
-                            //TEST
-                            console.log(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
-
                             sources.push(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
                         });
                         task.updateProperties({
@@ -360,7 +356,7 @@ buildTarget('prod').buildFlow(
                         });
                     },
                     properties: {
-                        bucket: "{{prod-deploy-bucket}}"
+                        bucket: "{{public-bucket}}"
                     }
                 }),
                 targetTask('npmConfigSet', {
@@ -375,6 +371,69 @@ buildTarget('prod').buildFlow(
                         packageVersion: "{{node.packageJson.version}}"
                     }
                 })
+            ]),
+
+
+            series([
+                targetTask('copyContents', {
+                    properties: {
+                        fromPaths: buildProject.getProperty("web.sourcePaths"),
+                        intoPath: "{{web.buildPath}}"
+                    }
+                }),
+                targetTask('generateBugPackRegistry', {
+                    properties: {
+                        name: "{{web.name}}",
+                        sourceRoot: "{{web.buildPath}}"
+                    }
+                }),
+                targetTask("concat", {
+                    init: function(task, buildProject, properties) {
+                        var bugpackRegistry = bugpack.findBugPackRegistry(buildProject.getProperty("web.name"));
+                        var sources         = [];
+                        var registryEntries = bugpackRegistry.getRegistryEntriesInDependentOrder();
+
+                        registryEntries.forEach(function(bugPackRegistryEntry) {
+                            sources.push(bugPackRegistryEntry.getResolvedPath().getAbsolutePath());
+                        });
+                        task.updateProperties({
+                            sources: sources
+                        });
+                    },
+                    properties: {
+                        outputFile: "{{web.outputFile}}"
+                    }
+                }),
+                parallel([
+                    targetTask("s3PutFile", {
+                        properties: {
+                            file:  "{{web.outputFile}}",
+                            options: {
+                                acl: 'public-read',
+                                gzip: true
+                            },
+                            bucket: "{{public-bucket}}"
+                        }
+                    }),
+                    series([
+                        targetTask("uglifyjsMinify", {
+                            properties: {
+                                sources: ["{{web.outputFile}}"],
+                                outputFile: "{{web.outputMinFile}}"
+                            }
+                        }),
+                        targetTask("s3PutFile", {
+                            properties: {
+                                file:  "{{web.outputMinFile}}",
+                                options: {
+                                    acl: 'public-read',
+                                    gzip: true
+                                },
+                                bucket: "{{public-bucket}}"
+                            }
+                        })
+                    ])
+                ])
             ])
         ])
     ])
