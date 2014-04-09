@@ -799,14 +799,14 @@ __Method__
 ```javascript
 /**
  * @constructs
- * @param {(ICollection.<I> | Array.<I>)=} items
+ * @param {(ICollection.<I>; | Array.<I>)=} items
  */
 _constructor: function(items) {
 ```
 
 __Parameters__
 
-* `values` {(ICollection.<I> | Array.<I>)=} - Starting items to add to the Collection (Optional)
+* `items` {(ICollection.&lt;I&gt; | Array.&lt;I&gt;)=} - Starting items to add to the Collection (Optional)
 
 
 __Examples__
@@ -908,14 +908,14 @@ __Method__
 
 ```javascript
 /**
- * @param {([ICollection](#ICollection).<I> | Array.<I>)} items
+ * @param {(ICollection.<I> | Array.<I>)} items
  */
 addAll: function(items) {
 ```
 
 __Parameters__
 
-* `items` {([ICollection](#ICollection).<I> | Array.<I>)} - The items to add to the collection. Can either be an Array or another Collection.
+* `items` {([ICollection](#ICollection).&lt;I&gt; | Array.&lt;I&gt;)} - The items to add to the collection. Can either be an Array or another Collection.
 
 
 __Returns__
