@@ -772,8 +772,8 @@ __Getters and Setters Summary__
 
 __Method Summary__
 
-* [`public add(C value):boolean`](#Collection_add)
-* [`public addAll((ICollection.<I> | Array.<I>) values)`](#Collection_addAll)
+* [`public add(I item):boolean`](#Collection_add)
+* [`public addAll((ICollection.<I> | Array.<I>) items)`](#Collection_addAll)
 * [`public clear()`](#Collection_clear)
 * [`public contains(* value):boolean`](#Collection_contains)
 * [`public containsAll((ICollection.<*> | Array.<*>) values):boolean`](#Collection_containsAll)
