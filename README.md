@@ -229,12 +229,12 @@ Class.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration` {Object} - An object that declares the methods of the new class.
+* `declaration {Object}` - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:Constructor)} - The newly created class's constructor.
+* `{function(new:Constructor)}` - The newly created class's constructor.
 
 
 __Examples__
@@ -264,13 +264,13 @@ Class.extend = function(constructor, declaration) {
 
 __Parameters__
 
-* `constructor` {function(new:Constructor)} - The constructor of the class to extend.
-* `declaration` {Object} - An object that declares the methods of the new class.
+* `constructor {function(new:Constructor)}` - The constructor of the class to extend.
+* `declaration {Object}` - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:Constructor)} - The newly created class's constructor.
+* `{function(new:Constructor)}` - The newly created class's constructor.
 
 
 __Examples__
@@ -332,7 +332,7 @@ __Parameters__
 
 __Returns__
 
-* {Class} - The Class of this instance.
+* `{Class}` - The Class of this instance.
 
 
 __Examples__
@@ -436,7 +436,7 @@ __Parameters__
 
 __Returns__
 
-* {number} - The unique internal id for this instance. Unique only to this JS runtime.
+* `{number}` - The unique internal id for this instance. Unique only to this JS runtime.
 
 
 __Examples__
@@ -470,12 +470,12 @@ clone: function(deep) {
 
 __Parameters__
 
-* `deep` {boolean=} - Whether or not to perform a deep clone. Optional - default: false
+* `deep {boolean=}` - Whether or not to perform a deep clone. Optional - default: false
 
 
 __Returns__
 
-* {*} - A clone of the instance.
+* `{*}` - A clone of the instance.
 
 
 __Examples__
@@ -504,12 +504,12 @@ equals: function(value) {
 
 __Parameters__
 
-* `value` {*} - The value to compare to for equality.
+* `value {*}` - The value to compare to for equality.
 
 
 __Returns__
 
-* {boolean} - Whether or not the instance is equal to the value parameter.
+* `{boolean}` - Whether or not the instance is equal to the value parameter.
 
 
 __Examples__
@@ -563,7 +563,7 @@ __Parameters__
 
 __Returns__
 
-* {number} - The hash code of this instance.
+* `{number}` - The hash code of this instance.
 
 
 __Examples__
@@ -599,13 +599,13 @@ Obj.clone = function(value, deep) {
 
 __Parameters__
 
-* `value` {A} - The value to clone.
-* `deep` {boolean=} - Whether or not to perform a deep clone. Optional - default: false
+* `value {A}` - The value to clone.
+* `deep {boolean=}` - Whether or not to perform a deep clone. Optional - default: false
 
 
 __Returns__
 
-* {A} - A clone of the value.
+* `{A}` - A clone of the value.
 
 
 __Examples__
@@ -648,13 +648,13 @@ Obj.equals = function(value1, value2) {
 
 __Parameters__
 
-* `value1` {*} - The value to compare value2 to for equality.
-* `value2` {*} - The value to compare value1 to for equality.
+* `value1 {*}` - The value to compare value2 to for equality.
+* `value2 {*}` - The value to compare value1 to for equality.
 
 
 __Returns__
 
-* {boolean} - Whether or not the two values are equal.
+* `{boolean}` - Whether or not the two values are equal.
 
 
 __Examples__
@@ -706,12 +706,12 @@ Obj.hashCode = function(value) {
 
 __Parameters__
 
-* `value` {*} - The value to generate a hash code for..
+* `value {*}` - The value to generate a hash code for..
 
 
 __Returns__
 
-* {number} - The hash code of the value.
+* `{number}` - The hash code of the value.
 
 
 __Examples__
@@ -806,7 +806,7 @@ _constructor: function(items) {
 
 __Parameters__
 
-* `items` {(ICollection.&lt;I&gt; | Array.&lt;I&gt;)=} - Starting items to add to the Collection (Optional)
+* `items {(ICollection.<I> | Array.<I>)=}` - Starting items to add to the Collection (Optional)
 
 
 __Examples__
@@ -855,7 +855,7 @@ __Parameters__
 
 __Returns__
 
-* {[HashStore](#HashStore)} - The underlying HashStore that supports this Collection
+* `{HashStore}` - The underlying HashStore that supports this Collection
 
 
 __Examples__
@@ -882,12 +882,12 @@ add: function(item) {
 
 __Parameters__
 
-* `value` {I} - The item to add to the collection
+* `item {I}` - The item to add to the collection
 
 
 __Returns__
 
-* {boolean} - Whether or not the item was added to the collection.
+* `{boolean}` - Whether or not the item was added to the collection.
 
 
 __Examples__
@@ -915,7 +915,7 @@ addAll: function(items) {
 
 __Parameters__
 
-* `items` {([ICollection](#ICollection).&lt;I&gt; | Array.&lt;I&gt;)} - The items to add to the collection. Can either be an Array or another Collection.
+* `items {([ICollection](#ICollection).<I> | Array.<I>)}` - The items to add to the collection. Can either be an Array or another Collection.
 
 
 __Returns__
