@@ -50,9 +50,9 @@ var TypeUtil            = bugpack.require('TypeUtil');
  * @class
  * @extends {Obj}
  * @implements {IArrayable}
- * @implements {ICollection.<C>}
+ * @implements {ICollection.<I>}
  * @implements {IIterable}
- * @template C
+ * @template I
  */
 var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
@@ -62,9 +62,9 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
     /**
      * @constructs
-     * @param {(ICollection.<C> | Array.<C>)} items
+     * @param {(ICollection.<I> | Array.<I>)=} values
      */
-    _constructor: function(items) {
+    _constructor: function(values) {
 
         this._super();
 
@@ -84,8 +84,8 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
         // Add Arguments to HashStore
         //-------------------------------------------------------------------------------
 
-        if (items) {
-            this.addAll(items);
+        if (values) {
+            this.addAll(values);
         }
     },
 
@@ -108,7 +108,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
     /**
      * @override
-     * @return (Array)
+     * @return (Array.<I>)
      */
     toArray: function() {
         return this.getValueArray();
@@ -120,22 +120,22 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {C} value
+     * @param {I} item
      * @return {boolean}
      */
-    add: function(value) {
-        this.hashStore.addValue(value);
+    add: function(item) {
+        this.hashStore.addValue(item);
         return true;
     },
 
     /**
-     * @param {(ICollection.<C> | Array.<C>)} items
+     * @param {(ICollection.<I> | Array.<I>)} items
      */
     addAll: function(items) {
         if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
             var _this = this;
-            items.forEach(function(value) {
-                _this.add(value);
+            items.forEach(function(item) {
+                _this.add(item);
             });
         } else {
             throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
@@ -163,14 +163,14 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
      * If you want to check for exact equality, use the equals function.
      * Empty collections are always contained by another collection
      * e.g. Collection[0,1] containsAll Collection[] is true
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      * @return {boolean}
      */
-    containsAll: function(items) {
-        if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
-            var valueArray = items;
-            if (Class.doesImplement(items, ICollection)) {
-                valueArray = items.getValueArray();
+    containsAll: function(values) {
+        if (Class.doesImplement(values, ICollection) || TypeUtil.isArray(values)) {
+            var valueArray = values;
+            if (Class.doesImplement(values, ICollection)) {
+                valueArray = values.getValueArray();
             }
             for (var i = 0, size = valueArray.length; i < size; i++) {
                 var value = valueArray[i];
@@ -180,20 +180,20 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
             }
             return true;
         } else {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
         }
     },
 
     /**
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      * @return {boolean}
      */
-    containsEqual: function(items) {
+    containsEqual: function(values) {
         var collection = undefined;
-        if (TypeUtil.isArray(items)) {
-            collection = new Collection(items);
+        if (TypeUtil.isArray(values)) {
+            collection = new Collection(values);
         } else {
-            collection = items;
+            collection = values;
         }
         if (Class.doesImplement(collection, ICollection)) {
             if (collection.getCount() === this.getCount()) {
@@ -208,7 +208,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
             }
             return false;
         } else {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
         }
     },
 
@@ -221,7 +221,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
      * a modified value (other than the current one) will be visited before or after it is modified, or whether a
      * deleted value will be visited before it is deleted.
      *
-     * @param {function(C)} func
+     * @param {function(I)} func
      */
     forEach: function(func) {
         this.hashStore.forEach(func);
@@ -235,7 +235,7 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
     },
 
     /**
-     * @return {Array.<C>}
+     * @return {Array.<I>}
      */
     getValueArray: function() {
 
@@ -268,35 +268,35 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
     },
 
     /**
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      */
-    removeAll: function(items) {
-        if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
+    removeAll: function(values) {
+        if (Class.doesImplement(values, ICollection) || TypeUtil.isArray(values)) {
             var _this = this;
-            items.forEach(function(value) {
+            values.forEach(function(value) {
                 _this.remove(value);
             });
         } else {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
         }
     },
 
     /**
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      */
-    retainAll: function(items) {
-        if (TypeUtil.isArray(items)) {
-            items = new Collection(items);
+    retainAll: function(values) {
+        if (TypeUtil.isArray(values)) {
+            values = new Collection(values);
         }
-        if (Class.doesImplement(items, ICollection)) {
+        if (Class.doesImplement(values, ICollection)) {
             var _this = this;
             _this.forEach(function(value) {
-                if (!items.contains(value)) {
+                if (!values.contains(value)) {
                     _this.remove(value);
                 }
             });
         } else {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
         }
     },
 
@@ -325,12 +325,12 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
     /**
      * @param {boolean=} deep
-     * @return {Collection.<C>}
+     * @return {Collection.<I>}
      */
     clone: function(deep) {
         var cloneCollection = new Collection();
         if (deep) {
-            this.forEach(function(item){
+            this.forEach(function(item) {
                 cloneCollection.add(Obj.clone(item, true));
             });
         } else {

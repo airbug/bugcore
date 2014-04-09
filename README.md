@@ -120,8 +120,8 @@ myMap.get(instance2)    // "value2"
 
 ## Download
 
-The source is available for download from
-[GitHub](https://github.com/airbug/bugcore)
+The source is available for download from [GitHub](https://github.com/airbug/bugcore)
+
 For node js, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
 
     npm install bugcore
@@ -132,9 +132,17 @@ For the web, you can access the scripts here
     https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.min.js
 
 
-## In the Browser
+## Usage
 
-Usage:
+In node js:
+
+```javascript
+var bugcore = require('bugcore');
+
+var map     = new bugcore.Map();
+```
+
+In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.js"></script>
@@ -718,4 +726,260 @@ Get hash code of a string.
 ```js
 var myString    = "abc123";
 var hashCode    = Obj.hashCode(myString);
+```
+
+
+<a name="Collection" />
+## Collection
+
+The root class of several of the data objects. A collection represents a group of items.
+A Collection instance on its own allows for duplicate elements.
+
+__Class__
+
+```javascript
+/**
+ * @class
+ * @extends {Obj}
+ * @implements {IArrayable}
+ * @implements {ICollection.<I>}
+ * @implements {IIterable}
+ * @template I
+ */
+var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
+```
+
+__Extends__
+* [`Obj`](#Obj)
+
+
+__Interfaces__
+
+* [`IArrayable`](#IArrayable)
+* [`ICollection`](#ICollection)
+* [`IIterable`](#IIterable)
+
+
+__Constructor Summary__
+
+* [`public _constructor()`](#Collection__constructor)
+
+
+__Getters and Setters Summary__
+
+* [`public getHashStore()       :HashStore`](#Collection_getHashStore)
+
+
+__Method Summary__
+
+* [`public add(C value):boolean`](#Collection_add)
+* [`public addAll((ICollection.<I> | Array.<I>) values)`](#Collection_addAll)
+* [`public clear()`](#Collection_clear)
+* [`public contains(* value):boolean`](#Collection_contains)
+* [`public containsAll((ICollection.<*> | Array.<*>) values):boolean`](#Collection_containsAll)
+* [`public containsEqual((ICollection.<*> | Array.<*>) values):boolean`](#Collection_containsAll)
+* [`public forEach(function(I) func)`](#Collection_forEach)
+* [`public getCount():number`](#Collection_getCount)
+* [`public getValueArray():Array.<I>`](#Collection_getValueArray)
+* [`public getValueCount(* value):number`](#Collection_getValueCount)
+* [`public isEmpty():boolean`](#Collection_isEmpty)
+* [`public iterator():IIterator`](#Collection_iterator)
+* [`public remove(* value):boolean`](#Collection_remove)
+* [`public removeAll((ICollection.<*> | Array.<*>) values)`](#Collection_removeAll)
+* [`public retainAll((ICollection.<*> | Array.<*>) values)`](#Collection_retainAll)
+* [`public toArray():Array.<I>`](#Collection_retainAll)
+
+
+<a name="Collection__constructor" />
+
+### Obj#_constructor()
+
+__Method__
+
+```javascript
+/**
+ * @constructs
+ * @param {(ICollection.<I> | Array.<I>)=} values
+ */
+_constructor: function(values) {
+```
+
+__Parameters__
+
+* `values` {(ICollection.<I> | Array.<I>)=} - Starting values to add to the Collection
+
+
+__Examples__
+
+No parameters
+```js
+var myCollection = new Collection();
+```
+
+Array parameter
+```js
+var values          = [
+    "value1",
+    "value2"
+];
+var myCollection    = new Collection(values);
+```
+
+
+Array parameter
+```js
+var valuesCollection    = new Collection([
+    "value1",
+    "value2"
+]);
+var myCollection        = new Collection(valuesCollection);
+```
+
+<a name="Collection_getHashStore" />
+
+### Obj#getHashStore()
+
+__Method__
+
+```javascript
+/**
+ * @return {HashStore}
+ */
+getHashStore: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* {HashStore} - The underlying HashStore that supports this Collection
+
+
+__Examples__
+
+```js
+var myCollection    = new Collection();
+var hashStore       = myCollection.getHashStore();
+```
+
+<a name="Collection_add" />
+### Collection#add(item):boolean
+
+Adds an item to the collection
+
+__Method__
+
+```javascript
+/**
+ * @param {I} item
+ * @return {boolean}
+ */
+add: function(item) {
+```
+
+__Parameters__
+
+* `value` {I} - The item to add to the collection
+
+
+__Returns__
+
+* {boolean} - Whether or not the item was added to the collection.
+
+
+__Examples__
+
+```js
+var myCollection        = new Collection();
+var myItem              = "myItem";
+var result              = myCollection.add(myItem); // true
+```
+
+
+<a name="Obj_addAll" />
+### Collection#addAll(items)
+
+Adds an Array or Collection of items to the Collection
+
+__Method__
+
+```javascript
+/**
+ * @param {(ICollection.<I> | Array.<I>)} items
+ */
+addAll: function(items) {
+```
+
+__Parameters__
+
+* `items` {(ICollection.<I> | Array.<I>)} - The items to add to the collection. Can either be an Array or another Collection.
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+Add an array of items.
+```js
+var myCollection    = new Collection();
+var myItems         = [
+    "item1",
+    "item2"
+];
+myCollection.addAll(myItems);
+```
+
+Add a Collection of items.
+```js
+var myCollection    = new Collection();
+var itemsCollection = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.addAll(itemsCollection);
+```
+
+
+<a name="Collection_clear" />
+### Collection#clear()
+
+Removes all of the items from this collection.
+
+__Method__
+
+```javascript
+/**
+ *
+ */
+clear: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+Empty the Collection
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.getCount();    // 2
+
+myCollection.clear();
+myCollection.getCount();    // 0
 ```

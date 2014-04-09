@@ -27,7 +27,7 @@ var Interface           = bugpack.require('Interface');
 
 /**
  * @interface
- * @template A
+ * @template I
  */
 var ICollection = Interface.declare({
 
@@ -36,13 +36,13 @@ var ICollection = Interface.declare({
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {A} value
+     * @param {I} item
      * @return {boolean}
      */
-    add: function(value) {},
+    add: function(item) {},
 
     /**
-     * @param {(ICollection.<A> | Array.<A>)} items
+     * @param {(ICollection.<I> | Array.<I>)} items
      */
     addAll: function(items) {},
 
@@ -63,16 +63,16 @@ var ICollection = Interface.declare({
      * If you want to check for exact equality, use the equals function.
      * Empty collections are always contained by another collection
      * e.g. Collection[0,1] containsAll Collection[] is true
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      * @return {boolean}
      */
-    containsAll: function(items) {},
+    containsAll: function(values) {},
 
     /**
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      * @return {boolean}
      */
-    containsEqual: function(items) {},
+    containsEqual: function(values) {},
 
     /**
      * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
@@ -83,7 +83,7 @@ var ICollection = Interface.declare({
      * a modified value (other than the current one) will be visited before or after it is modified, or whether a
      * deleted value will be visited before it is deleted.
      *
-     * @param {function(A)} func
+     * @param {function(I)} func
      */
     forEach: function(func) {},
 
@@ -93,7 +93,7 @@ var ICollection = Interface.declare({
     getCount: function() {},
 
     /**
-     * @return {Array.<A>}
+     * @return {Array.<I>}
      */
     getValueArray: function() {},
 
@@ -115,9 +115,9 @@ var ICollection = Interface.declare({
     remove: function(value) {},
 
     /**
-     * @param {(ICollection.<*> | Array.<*>)} items
+     * @param {(ICollection.<*> | Array.<*>)} values
      */
-    removeAll: function(items) {}
+    removeAll: function(values) {}
 });
 
 
