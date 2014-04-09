@@ -762,7 +762,7 @@ __Interfaces__
 
 __Constructor Summary__
 
-* [`public _constructor()`](#Collection__constructor)
+* [`public _constructor(items)`](#Collection__constructor)
 
 
 __Getters and Setters Summary__
@@ -792,21 +792,21 @@ __Method Summary__
 
 <a name="Collection__constructor" />
 
-### Obj#_constructor()
+### Obj#_constructor(items)
 
 __Method__
 
 ```javascript
 /**
  * @constructs
- * @param {(ICollection.<I> | Array.<I>)=} values
+ * @param {(ICollection.<I> | Array.<I>)=} items
  */
-_constructor: function(values) {
+_constructor: function(items) {
 ```
 
 __Parameters__
 
-* `values` {(ICollection.<I> | Array.<I>)=} - Starting values to add to the Collection
+* `values` {(ICollection.<I> | Array.<I>)=} - Starting items to add to the Collection (Optional)
 
 
 __Examples__
@@ -818,9 +818,9 @@ var myCollection = new Collection();
 
 Array parameter
 ```js
-var values          = [
-    "value1",
-    "value2"
+var items          = [
+    "item1",
+    "item2"
 ];
 var myCollection    = new Collection(values);
 ```
@@ -828,16 +828,16 @@ var myCollection    = new Collection(values);
 
 Array parameter
 ```js
-var valuesCollection    = new Collection([
-    "value1",
-    "value2"
+var itemsCollection     = new Collection([
+    "item1",
+    "item2"
 ]);
-var myCollection        = new Collection(valuesCollection);
+var myCollection        = new Collection(itemsCollection);
 ```
 
 <a name="Collection_getHashStore" />
 
-### Obj#getHashStore()
+### Collection#getHashStore()
 
 __Method__
 
@@ -855,7 +855,7 @@ __Parameters__
 
 __Returns__
 
-* {HashStore} - The underlying HashStore that supports this Collection
+* {[HashStore](#HashStore)} - The underlying HashStore that supports this Collection
 
 
 __Examples__
@@ -908,14 +908,14 @@ __Method__
 
 ```javascript
 /**
- * @param {(ICollection.<I> | Array.<I>)} items
+ * @param {([ICollection](#ICollection).<I> | Array.<I>)} items
  */
 addAll: function(items) {
 ```
 
 __Parameters__
 
-* `items` {(ICollection.<I> | Array.<I>)} - The items to add to the collection. Can either be an Array or another Collection.
+* `items` {([ICollection](#ICollection).<I> | Array.<I>)} - The items to add to the collection. Can either be an Array or another Collection.
 
 
 __Returns__

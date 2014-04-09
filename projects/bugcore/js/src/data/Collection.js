@@ -62,9 +62,9 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
     /**
      * @constructs
-     * @param {(ICollection.<I> | Array.<I>)=} values
+     * @param {(ICollection.<I> | Array.<I>)=} items
      */
-    _constructor: function(values) {
+    _constructor: function(items) {
 
         this._super();
 
@@ -84,8 +84,8 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
         // Add Arguments to HashStore
         //-------------------------------------------------------------------------------
 
-        if (values) {
-            this.addAll(values);
+        if (items) {
+            this.addAll(items);
         }
     },
 
