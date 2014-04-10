@@ -915,7 +915,7 @@ addAll: function(items) {
 
 __Parameters__
 
-* `items {([ICollection](#ICollection).<I> | Array.<I>)}` - The items to add to the collection. Can either be an Array or another Collection.
+* `items {(ICollection.<I> | Array.<I>)}` - The items to add to the collection. Can either be an Array or another Collection.
 
 
 __Returns__
@@ -982,4 +982,140 @@ myCollection.getCount();    // 2
 
 myCollection.clear();
 myCollection.getCount();    // 0
+```
+
+<a name="Collection_contains" />
+### Collection#contains(value):boolean
+
+Checks the Collection to see if it contains a value.
+
+__Method__
+
+```javascript
+ /**
+ * @param {*} value
+ * @return {boolean}
+ */
+contains: function(value) {
+```
+
+__Parameters__
+
+* `value {*}` - The value that we're checking if the collection contains.
+
+
+__Returns__
+
+* `{boolean}`
+
+
+__Examples__
+
+Value not contained
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.contains("item3");    // false
+```
+
+Value contained
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.contains("item2");    // true
+```
+
+<a name="Collection_containsAll" />
+### Collection#containsAll(values):boolean
+
+Checks the Collection to see if it contains all of the values in the given argument.
+If ALL of the values are contained by the collection, this method will return true.
+Otherwise, false.
+
+NOTE  Multiple elements are ignored in this function.
+e.g. Collection[0,1] containsAll Collection[0,1,1,1] is true
+If you want to check for exact equality, use the equals function.
+
+NOTE Empty collections are always contained by another collection
+e.g. Collection[0,1] containsAll Collection[] is true
+
+__Method__
+
+```javascript
+/**
+ * @param {(ICollection.<*> | Array.<*>)} values
+ * @return {boolean}
+ */
+containsAll: function(values) {
+```
+
+__Parameters__
+
+* `values {(ICollection.<*> | Array.<*>)} ` - The values that we're checking to see if the collection contains all of them.
+
+
+__Returns__
+
+* `{boolean}`
+
+
+__Examples__
+
+Values not contained
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsAll(["item3"]);                        // false
+```
+
+Partial values contained are not a match.
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsAll(["item2", "item3"]);               // false
+```
+
+Values contained
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2",
+    "item3"
+]);
+myCollection.containsAll(["item2", "item3"]);               // true
+```
+
+Exact match is true
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsAll(["item1", "item2"]);               // true
+```
+
+Multiple elements are ignored. Match is true.
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsAll(["item1", "item2", "item2"]);      // true
+```
+
+Empty collections are contained by any collection
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsAll([]);                               // true
 ```
