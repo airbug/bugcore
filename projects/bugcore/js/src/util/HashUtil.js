@@ -18,8 +18,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var IdGenerator =   bugpack.require('IdGenerator');
-    var TypeUtil =      bugpack.require('TypeUtil');
+    var IdGenerator     = bugpack.require('IdGenerator');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
