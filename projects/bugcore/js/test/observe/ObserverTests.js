@@ -115,3 +115,5 @@ var observerInstantiationWithParametersTest = {
 bugmeta.annotate(observerInstantiationWithParametersTest).with(
     test().name("Observer - instantiation with parameters test")
 );
+
+

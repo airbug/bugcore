@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.1.8`
+Latest Version `0.1.9`
 
 
 ## Quick Examples
@@ -128,8 +128,8 @@ For node js, you can install using Node Package Manager [npm](https://www.npmjs.
 
 For the web, you can access the scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.min.js
 
 
 ## Usage
@@ -145,7 +145,7 @@ var map     = new bugcore.Map();
 In the browser:
 
 ```html
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.8.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
