@@ -142,8 +142,10 @@ For node js, you can install using Node Package Manager [npm](https://www.npmjs.
 
 For the web, simply include these scripts in your application
 
-   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
-   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js"></script>
+```html
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js"></script>
+```
 
 
 ## Usage
