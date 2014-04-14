@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.1.9`
+Latest Version `0.1.10`
 
 
 ## Quick Examples
@@ -130,8 +130,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js
 
 
 ## Install
@@ -143,7 +143,7 @@ For node js, you can install using Node Package Manager [npm](https://www.npmjs.
 For the web, simply include these scripts in your application
 
    <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
-   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.min.js"></script>
+   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js"></script>
 
 
 ## Usage
@@ -162,7 +162,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
