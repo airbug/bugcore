@@ -12,173 +12,173 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var ArgumentBug         = bugpack.require('ArgumentBug');
-var Class               = bugpack.require('Class');
-var Obj                 = bugpack.require('Obj');
-var ObjectPathMatcher   = bugpack.require('ObjectPathMatcher');
-var TypeUtil            = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Obj}
- */
-var Observer = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var ArgumentBug         = bugpack.require('ArgumentBug');
+    var Class               = bugpack.require('Class');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectPathMatcher   = bugpack.require('ObjectPathMatcher');
+    var TypeUtil            = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {string} objectPathPattern
-     * @param {function(ObservableChange)} observerFunction
-     * @param {Object=} observerContext
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function(objectPathPattern, observerFunction, observerContext) {
-
-        this._super();
-
-        if (!TypeUtil.isString(objectPathPattern)) {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "objectPathPattern", objectPathPattern, "parameter must be a string");
-        }
-        if (!TypeUtil.isFunction(observerFunction)) {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "observerFunction", observerFunction, "parameter must be a function");
-        }
+    var Observer = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {string}
+         * @constructs
+         * @param {string} observationPathPattern
+         * @param {function(Observation)} observerFunction
+         * @param {Object=} observerContext
          */
-        this.objectPathPattern  = objectPathPattern;
+        _constructor: function(observationPathPattern, observerFunction, observerContext) {
+
+            this._super();
+
+            if (!TypeUtil.isString(observationPathPattern)) {
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "observationPathPattern", observationPathPattern, "parameter must be a string");
+            }
+            if (!TypeUtil.isFunction(observerFunction)) {
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "observerFunction", observerFunction, "parameter must be a function");
+            }
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.observationPathPattern     = observationPathPattern;
+
+            /**
+             * @private
+             * @type {ObjectPathMatcher}
+             */
+            this.objectPathMatcher          = new ObjectPathMatcher(this.observationPathPattern);
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.observerContext            = observerContext;
+
+            /**
+             * @private
+             * @type {function(Observation)}
+             */
+            this.observerFunction           = observerFunction;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {ObjectPathMatcher}
+         * @return {ObjectPathMatcher}
          */
-        this.objectPathMatcher  = new ObjectPathMatcher(this.objectPathPattern);
+        getObjectPathMatcher: function() {
+            return this.objectPathMatcher;
+        },
 
         /**
-         * @private
-         * @type {Object}
+         * @return {string}
          */
-        this.observerContext    = observerContext;
+        getObservationPathPattern: function() {
+            return this.observationPathPattern;
+        },
 
         /**
-         * @private
-         * @type {function(ObservableChange)}
+         * @return {Object}
          */
-        this.observerFunction   = observerFunction;
-    },
+        getObserverContext: function() {
+            return this.observerContext;
+        },
+
+        /**
+         * @return {function(Observation)}
+         */
+        getObserverFunction: function() {
+            return this.observerFunction;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {ObjectPathMatcher}
-     */
-    getObjectPathMatcher: function() {
-        return this.objectPathMatcher;
-    },
+        /**
+         * @override
+         * @param {*} value
+         * @return {boolean}
+         */
+        equals: function(value) {
+            if (Class.doesExtend(value, Observer)) {
+                return (Obj.equals(value.getObserverFunction(), this.getObserverFunction()) &&
+                    Obj.equals(value.getObserverContext(), this.getObserverContext()) &&
+                    Obj.equals(value.getObservationPathPattern(), this.getObservationPathPattern()));
+            }
+            return false;
+        },
 
-    /**
-     * @return {string}
-     */
-    getObjectPathPattern: function() {
-        return this.objectPathPattern;
-    },
-
-    /**
-     * @return {Object}
-     */
-    getObserverContext: function() {
-        return this.observerContext;
-    },
-
-    /**
-     * @return {function(ObservableChange)}
-     */
-    getObserverFunction: function() {
-        return this.observerFunction;
-    },
+        /**
+         * @override
+         * @return {number}
+         */
+        hashCode: function() {
+            if (!this._hashCode) {
+                this._hashCode = Obj.hashCode("[Observer]" +
+                    Obj.hashCode(this.getObserverFunction()) + "_" +
+                    Obj.hashCode(this.getObserverContext()) + "_" +
+                    Obj.hashCode(this.getObservationPathPattern()));
+            }
+            return this._hashCode;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Obj Methods
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @override
-     * @param {*} value
-     * @return {boolean}
-     */
-    equals: function(value) {
-        if (Class.doesExtend(value, Observer)) {
-            return (Obj.equals(value.getObserverFunction(), this.getObserverFunction()) &&
-                Obj.equals(value.getObserverContext(), this.getObserverContext()) &&
-                Obj.equals(value.getObjectPathPattern(), this.getObjectPathPattern()));
+        /**
+         * @param {string} observationPath
+         * @returns {boolean}
+         */
+        match: function(observationPath) {
+            return this.objectPathMatcher.match(observationPath);
+        },
+
+        /**
+         * @param {Observation} observation
+         */
+        observeObservation: function(observation) {
+            this.getObserverFunction().call(this.getObserverContext(), observation);
         }
-        return false;
-    },
-
-    /**
-     * @override
-     * @return {number}
-     */
-    hashCode: function() {
-        if (!this._hashCode) {
-            this._hashCode = Obj.hashCode("[Observer]" +
-                Obj.hashCode(this.getObserverFunction()) + "_" +
-                Obj.hashCode(this.getObserverContext()) + "_" +
-                Obj.hashCode(this.getObjectPathPattern()));
-        }
-        return this._hashCode;
-    },
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {string} objectPath
-     * @returns {boolean}
-     */
-    match: function(objectPath) {
-        return this.objectPathMatcher.match(objectPath);
-    },
-
-    /**
-     * @param {ObservableChange} change
-     */
-    observeChange: function(change) {
-        this.getObserverFunction().call(this.getObserverContext(), change);
-    }
+    bugpack.export('Observer', Observer);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Observer', Observer);

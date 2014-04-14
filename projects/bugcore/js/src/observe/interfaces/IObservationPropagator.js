@@ -2,9 +2,8 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ISet')
+//@Export('IObservationPropagator')
 
-//@Require('ICollection')
 //@Require('Interface')
 
 
@@ -17,26 +16,43 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
-
-    var ICollection         = bugpack.require('ICollection');
-    var Interface           = bugpack.require('Interface');
-
-
+    
+    var Interface = bugpack.require('Interface');
+    
+    
     //-------------------------------------------------------------------------------
     // Declare Interface
     //-------------------------------------------------------------------------------
-
+    
     /**
      * @interface
-     * @extends {ICollection.<B>}
-     * @template B
      */
-    var ISet = Interface.extend(ICollection, {});
-
-
+    var IObservationPropagator = Interface.declare({
+    
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
+    
+        /**
+         * @param {IObservationPropagator} observationPropagator
+         */
+        addObservationPropagator: function(observationPropagator) {},
+    
+        /**
+         * @param {Observation} observation
+         */
+        propagateObservation: function(observation) {},
+    
+        /**
+         * @param {IObservationPropagator} observationPropagator
+         */
+        removeObservationPropagator: function(observationPropagator) {}
+    });
+    
+    
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
-
-    bugpack.export('ISet', ISet);
+    
+    bugpack.export('IObservationPropagator', IObservationPropagator);
 });

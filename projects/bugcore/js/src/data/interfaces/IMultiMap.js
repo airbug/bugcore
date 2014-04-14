@@ -9,75 +9,75 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var IMap                = bugpack.require('IMap');
-var Interface           = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- * @extends {IMap.<K,V>}
- * @template K, V
- */
-var IMultiMap = Interface.extend(IMap, /** @lends {IMultiMap.prototype} */{
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var IMap                = bugpack.require('IMap');
+    var Interface           = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {number}
+     * @interface
+     * @extends {IMap.<K,V>}
+     * @template K, V
      */
-    getKeyCount: function() {},
+    var IMultiMap = Interface.extend(IMap, /** @lends {IMultiMap.prototype} */{
 
-    /**
-     * @param {function(ICollection.<V>, K)} func
-     */
-    forEachCollection: function(func) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {function(V, K)} func
-     */
-    forEachValue: function(func) {},
+        /**
+         * @return {number}
+         */
+        getKeyCount: function() {},
 
-    /**
-     * @override
-     * @param {*} key
-     * @return {ICollection.<V>}
-     */
-    get: function(key) {},
+        /**
+         * @param {function(ICollection.<V>, K)} func
+         */
+        forEachCollection: function(func) {},
 
-    /**
-     * @override
-     * @param {*} key
-     * @return {ICollection.<V>}
-     */
-    remove: function(key) {},
+        /**
+         * @param {function(V, K)} func
+         */
+        forEachValue: function(func) {},
 
-    /**
-     * @param {*} key
-     * @param {*} value
-     * @return {boolean}
-     */
-    removeKeyValuePair: function(key, value) {}
+        /**
+         * @override
+         * @param {*} key
+         * @return {ICollection.<V>}
+         */
+        get: function(key) {},
+
+        /**
+         * @override
+         * @param {*} key
+         * @return {ICollection.<V>}
+         */
+        remove: function(key) {},
+
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @return {boolean}
+         */
+        removeKeyValuePair: function(key, value) {}
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IMultiMap', IMultiMap);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IMultiMap', IMultiMap);

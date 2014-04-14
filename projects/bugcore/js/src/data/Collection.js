@@ -260,6 +260,16 @@ var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
     },
 
     /**
+     * @param {function(I):*} fn
+     * @param {*} context
+     * @return {Collection.<*>}
+     */
+    map: function(fn, context) {
+        var newArray    = this.getValueArray().map(fn, context);
+        return new Collection(newArray);
+    },
+
+    /**
      * @param {*} value
      * @return {boolean}
      */

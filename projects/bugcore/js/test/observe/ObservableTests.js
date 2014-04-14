@@ -105,7 +105,7 @@ var observableAddObserverTest = {
             "Assert that the testObservable has the observer after adding it");
         var observerList    = this.testObservable.getChangeTypeObserverMap().get(this.testChangeType);
         var observer        = observerList.getAt(0);
-        test.assertEqual(observer.getObjectPathPattern(), this.testObjectPattern,
+        test.assertEqual(observer.getObservationPathPattern(), this.testObjectPattern,
             "Assert that the observer has the correct objectPathPattern");
         test.assertEqual(observer.getObserverContext(), this.testObserverContext,
             "Assert tht the observer has the testObserverContext");

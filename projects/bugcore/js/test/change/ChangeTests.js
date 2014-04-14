@@ -4,7 +4,8 @@
 
 //@TestFile
 
-//@Require('Event')
+//@Require('Change')
+//@Require('Class')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestAnnotation')
 
@@ -19,7 +20,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Event           = bugpack.require('Event');
+    var Change          = bugpack.require('Change');
+    var Class           = bugpack.require('Class');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
@@ -38,18 +40,16 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) Instantiation of a new Event
-     * 2) That the "target" value is null after instantiation since the target is set when the event is dispatched
+     * 1) Instantiation of a new Change
      */
-    var eventInstantiationTest = {
+    var changeInstantiationTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testType = "testEventType";
-            this.testData = "testEventData";
-            this.event = new Event(this.testType, this.testData);
+            this.testChangeType = "testChangeType";
+            this.testChange     = new Change(this.testChangeType);
         },
 
 
@@ -57,16 +57,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.event.getBubbles(), true,
-                "Assert event bubbles by default after instantiation");
-            test.assertEqual(this.event.getData(), this.testData,
-                "Assert event data was set correctly during instantiation");
-            test.assertEqual(this.event.isPropagationStopped(), false,
-                "Assert propagation is not stopped by default");
-            test.assertEqual(this.event.getTarget(), null,
-                "Assert target is null after instantiation");
-            test.assertEqual(this.event.getType(), this.testType,
-                "Assert event type was set correctly during instantiation");
+            test.assertTrue(Class.doesExtend(this.testChange, Change),
+                "Assert instance of Change");
+            test.assertEqual(this.testChange.getChangeType(), this.testChangeType,
+                "Assert .changeType was set correctly");
         }
     };
 
@@ -75,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(eventInstantiationTest).with(
-        test().name("Event instantiation test")
+    bugmeta.annotate(changeInstantiationTest).with(
+        test().name("Change - instantiation test")
     );
 });

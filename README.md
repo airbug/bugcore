@@ -118,23 +118,39 @@ myMap.get(instance1)    // "value2"
 myMap.get(instance2)    // "value2"
 ```
 
-## Download
+
+## Dependencies
+
+bugcore is dependent upon the [bugpack](https://github.com/airbug/bugpack) framework
+
+
+## Download Source
 
 The source is available for download from [GitHub](https://github.com/airbug/bugcore)
 
-For node js, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
-
-    npm install bugcore
-
-For the web, you can access the scripts here
+From the web, you can download the packaged scripts here
 
     https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js
     https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.min.js
 
 
+## Install
+
+For node js, you can install using Node Package Manager [npm](https://www.npmjs.org/package/bugcore)
+
+    npm install bugcore
+
+For the web, simply include these scripts in your application
+
+   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
+   <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.min.js"></script>
+
+
 ## Usage
 
 In node js:
+
+npm will install the bugpack dependency
 
 ```javascript
 var bugcore = require('bugcore');
@@ -145,6 +161,7 @@ var map     = new bugcore.Map();
 In the browser:
 
 ```html
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.js"></script>
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.9.js"></script>
 <script type="text/javascript">
 
@@ -784,6 +801,7 @@ __Method Summary__
 * [`public getValueCount(* value):number`](#Collection_getValueCount)
 * [`public isEmpty():boolean`](#Collection_isEmpty)
 * [`public iterator():IIterator`](#Collection_iterator)
+* [`public map(function fn, Object context):ICollection`](#Collection_map)
 * [`public remove(* value):boolean`](#Collection_remove)
 * [`public removeAll((ICollection.<*> | Array.<*>) values)`](#Collection_removeAll)
 * [`public retainAll((ICollection.<*> | Array.<*>) values)`](#Collection_retainAll)
@@ -1118,4 +1136,145 @@ var myCollection    = new Collection([
     "item2"
 ]);
 myCollection.containsAll([]);                               // true
+```
+
+<a name="Collection_containsEqual" />
+### Collection#containsEqual(values):boolean
+
+Checks the Collection to see if it contains exactly the values in the given argument.
+If the collection contains the exact same values as the collection given in the parameter,
+this method will return true. Otherwise, false.
+
+__Method__
+
+```javascript
+/**
+ * @param {(ICollection.<*> | Array.<*>)} values
+ * @return {boolean}
+ */
+containsEqual: function(values) {
+```
+
+__Parameters__
+
+* `values {(ICollection.<*> | Array.<*>)} ` - The values that we're checking to see if the collection contains exactly.
+
+
+__Returns__
+
+* `{boolean}`
+
+
+__Examples__
+
+Values not contained at all
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsEqual(["item3"]);                        // false
+```
+
+Partial values contained are not a match.
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsEqual(["item2", "item3"]);               // false
+```
+
+Values contained but not an exact match
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2",
+    "item3"
+]);
+myCollection.containsEqual(["item2", "item3"]);               // false
+```
+
+Exact match is true
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.containsEqual(["item1", "item2"]);               // true
+```
+
+Exact match out of order is true
+```js
+var myCollection    = new Collection([
+    "item2",
+    "item1"
+]);
+myCollection.containsEqual(["item1", "item2"]);               // true
+```
+
+Multiple elements are considered
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2",
+    "item2"
+]);
+myCollection.containsEqual(["item1", "item2"]);               // false
+```
+
+
+<a name="Collection_forEach" />
+### Collection#forEach(func)
+
+forEach executes the provided function once for each element of the Collection.
+
+NOTE: If a value is modified in one iteration and then visited at a later time, its value in
+the loop is its value at that later time. A value that is deleted before it has been visited
+will not be visited later. Values added to the Collection over which iteration is occurring
+may either be visited or omitted from iteration. In general it is best not to add, modify or
+remove values from the Collection during iteration, other than the value currently being
+visited. There is no guarantee whether or not an added value will be visited, whether a
+modified value (other than the current one) will be visited before or after it is modified,
+or whether a deleted value will be visited before it is deleted.
+
+__Method__
+
+```javascript
+/**
+ * @param {function(I)} func
+ */
+forEach: function(func) {
+```
+
+__Parameters__
+
+* `func {function(I)} ` - The function to execute for each item
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+Execute for each item
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+myCollection.forEach(function(item) {
+    console.log(item);  // item1 on first pass, item2 on second
+});
+```
+
+Partial values contained are not a match.
+```js
+var myCollection    = new Collection([]);
+
+myCollection.forEach(function(item) {
+    console.log(item);  // never executed
+});
 ```

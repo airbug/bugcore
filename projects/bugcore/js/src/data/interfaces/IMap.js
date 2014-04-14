@@ -8,115 +8,115 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Interface           = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- * @template K, V
- */
-var IMap = Interface.declare({
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Interface           = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     *
+     * @interface
+     * @template K, V
      */
-    clear: function() {},
+    var IMap = Interface.declare({
 
-    /**
-     * @param {*} key
-     * @return {boolean}
-     */
-    containsKey: function(key) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {*} value
-     * @return {boolean}
-     */
-    containsValue: function(value) {},
+        /**
+         *
+         */
+        clear: function() {},
 
-    /**
-     * @param {function(V, K)} func
-     */
-    forEach: function(func) {},
+        /**
+         * @param {*} key
+         * @return {boolean}
+         */
+        containsKey: function(key) {},
 
-    /**
-     * @param {*} key
-     * @return {V}
-     */
-    get: function(key) {},
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        containsValue: function(value) {},
 
-    /**
-     * @return {number}
-     */
-    getCount: function() {},
+        /**
+         * @param {function(V, K)} func
+         */
+        forEach: function(func) {},
 
-    /**
-     * @return {Array.<K>}
-     */
-    getKeyArray: function() {},
+        /**
+         * @param {*} key
+         * @return {V}
+         */
+        get: function(key) {},
 
-    /**
-     * @return {ICollection.<K>}
-     */
-    getKeyCollection: function() {},
+        /**
+         * @return {number}
+         */
+        getCount: function() {},
 
-    /**
-     * @return {Array.<V>}
-     */
-    getValueArray: function() {},
+        /**
+         * @return {Array.<K>}
+         */
+        getKeyArray: function() {},
 
-    /**
-     * @return {ICollection.<V>}
-     */
-    getValueCollection: function() {},
+        /**
+         * @return {ICollection.<K>}
+         */
+        getKeyCollection: function() {},
 
-    /**
-     * @return {boolean}
-     */
-    isEmpty: function() {},
+        /**
+         * @return {Array.<V>}
+         */
+        getValueArray: function() {},
 
-    /**
-     * @param {K} key
-     * @param {V} value
-     * @return {V}
-     */
-    put: function(key, value) {},
+        /**
+         * @return {ICollection.<V>}
+         */
+        getValueCollection: function() {},
 
-    /**
-     * @param {IMap.<K, V>} map
-     */
-    putAll: function(map) {},
+        /**
+         * @return {boolean}
+         */
+        isEmpty: function() {},
 
-    /**
-     * @param {*} key
-     * @return {V}
-     */
-    remove: function(key) {
-        return this.hashTable.remove(key);
-    }
+        /**
+         * @param {K} key
+         * @param {V} value
+         * @return {V}
+         */
+        put: function(key, value) {},
+
+        /**
+         * @param {IMap.<K, V>} map
+         */
+        putAll: function(map) {},
+
+        /**
+         * @param {*} key
+         * @return {V}
+         */
+        remove: function(key) {
+            return this.hashTable.remove(key);
+        }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IMap', IMap);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IMap', IMap);

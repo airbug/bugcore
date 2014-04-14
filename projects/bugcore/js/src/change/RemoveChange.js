@@ -2,13 +2,11 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ObservableSet')
+//@Export('RemoveChange')
 
+//@Require('Change')
 //@Require('Class')
-//@Require('ISet')
 //@Require('Obj')
-//@Require('ObservableCollection')
-//@Require('Set')
 
 
 //-------------------------------------------------------------------------------
@@ -21,11 +19,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                           = bugpack.require('Class');
-    var ISet                            = bugpack.require('ISet');
-    var Obj                             = bugpack.require('Obj');
-    var ObservableCollection            = bugpack.require('ObservableCollection');
-    var Set                             = bugpack.require('Set');
+    var Change      = bugpack.require('Change');
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -34,57 +30,79 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {ObservableCollection}
-     * @implements {ISet}
+     * @extends {Change}
      */
-    var ObservableSet = Class.extend(ObservableCollection, /** @lends {ObservableSet.prototype} */{
+    var RemoveChange = Class.extend(Change, /** @lends {RemoveChange.prototype} */ {
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {*} value
+         */
+        _constructor: function (value) {
+
+            this._super(RemoveChange.CHANGE_TYPE);
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.value = value;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {*}
+         */
+        getValue: function () {
+            return this.value;
+        },
+
 
         //-------------------------------------------------------------------------------
         // Obj Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {boolean} deep
-         * @return {ObservableSet}
+         * @param {boolean=} deep
+         * @return {RemoveChange}
          */
-        clone: function(deep) {
-            var cloneSet = new ObservableSet();
+        clone: function (deep) {
+            var value = this.getValue();
             if (deep) {
-                this.forEach(function(item){
-                    cloneSet.add(Obj.clone(item, true));
-                });
-            } else {
-                cloneSet.addAll(this);
+                value = Obj.clone(value, deep);
             }
-            return cloneSet;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Protected Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @override
-         * @protected
-         * @param {(ICollection.<*> | Array.<*>)=} items
-         */
-        factoryObserved: function(items) {
-            return new Set(items);
+            return new RemoveChange(value);
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Implement Interfaces
+    // Static Properties
     //-------------------------------------------------------------------------------
 
-    Class.implement(ObservableSet, ISet);
+    /**
+     * @static
+     * @const {string}
+     */
+    RemoveChange.CHANGE_TYPE = "Remove";
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ObservableSet', ObservableSet);
+    bugpack.export('RemoveChange', RemoveChange);
 });

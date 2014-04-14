@@ -9,88 +9,113 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var ICollection         = bugpack.require('ICollection');
-var Interface           = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- * @extends {ICollection.<B>}
- * @template B
- */
-var IList = Interface.extend(ICollection, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var ICollection         = bugpack.require('ICollection');
+    var Interface           = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {number} index
-     * @param {B} value
+     * @interface
+     * @extends {ICollection.<I>}
+     * @template I
      */
-    addAt: function(index, value) {},
+    var IList = Interface.extend(ICollection, {
 
-    /**
-     * @param {number} index
-     * @param {(ICollection.<B> | Array.<B>)} items
-     */
-    addAllAt: function(index, items) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {number} index
-     * @return {B}
-     */
-    getAt: function(index) {},
+        /**
+         * @param {number} index
+         * @param {I} item
+         */
+        addAt: function(index, item) {},
 
-    /**
-     * @param {*} value
-     * @return {number}
-     */
-    indexOfFirst: function(value) {},
+        /**
+         * @param {number} index
+         * @param {(ICollection.<I> | Array.<I>)} items
+         */
+        addAllAt: function(index, items) {},
 
-    /**
-     * @param {*} value
-     * @return {number}
-     */
-    indexOfLast: function(value) {},
+        /**
+         * @param {number} index
+         * @return {I}
+         */
+        getAt: function(index) {},
 
-    /**
-     * @param {number} index
-     * @return {B} The removed value
-     */
-    removeAt: function(index) {},
+        /**
+         * @param {*} value
+         * @return {number}
+         */
+        indexOfFirst: function(value) {},
 
-    /**
-     * @param {number} index
-     * @param {B} value
-     */
-    set: function(index, value) {},
+        /**
+         * @param {*} value
+         * @return {number}
+         */
+        indexOfLast: function(value) {},
 
-    /**
-     * @param {number} fromIndex
-     * @param {number} toIndex
-     * @return {IList.<B>}
-     */
-    subList: function(fromIndex, toIndex) {}
+        /**
+         * @return {I} The removed value
+         */
+        pop: function() {},
+
+        /**
+         * @param {I} value
+         */
+        prepend: function(value) {},
+
+        /**
+         * @param {I} value
+         */
+        push: function(value) {},
+
+        /**
+         * @param {number} index
+         * @return {I} The removed item
+         */
+        removeAt: function(index) {},
+
+        /**
+         * @param {number} index
+         * @param {I} item
+         */
+        set: function(index, item) {},
+
+        /**
+         * @return {I} The removed value
+         */
+        shift: function() {},
+
+        /**
+         * @param {number} fromIndex
+         * @param {number} toIndex
+         * @return {IList.<I>}
+         */
+        subList: function(fromIndex, toIndex) {},
+
+        /**
+         * @param {I} item
+         */
+        unshift: function(item) {}
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IList', IList);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IList', IList);

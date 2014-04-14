@@ -2,13 +2,11 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ObservableSet')
+//@Export('ClearChange')
 
+//@Require('Change')
 //@Require('Class')
-//@Require('ISet')
 //@Require('Obj')
-//@Require('ObservableCollection')
-//@Require('Set')
 
 
 //-------------------------------------------------------------------------------
@@ -21,11 +19,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                           = bugpack.require('Class');
-    var ISet                            = bugpack.require('ISet');
-    var Obj                             = bugpack.require('Obj');
-    var ObservableCollection            = bugpack.require('ObservableCollection');
-    var Set                             = bugpack.require('Set');
+    var Change      = bugpack.require('Change');
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -34,57 +30,56 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {ObservableCollection}
-     * @implements {ISet}
+     * @extends {Change}
      */
-    var ObservableSet = Class.extend(ObservableCollection, /** @lends {ObservableSet.prototype} */{
+    var ClearChange = Class.extend(Change, /** @lends {ClearChange.prototype} */ {
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         */
+        _constructor: function() {
+
+            this._super(ClearChange.CHANGE_TYPE);
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+        },
+
 
         //-------------------------------------------------------------------------------
         // Obj Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {boolean} deep
-         * @return {ObservableSet}
+         * @param {boolean=} deep
+         * @return {ClearChange}
          */
         clone: function(deep) {
-            var cloneSet = new ObservableSet();
-            if (deep) {
-                this.forEach(function(item){
-                    cloneSet.add(Obj.clone(item, true));
-                });
-            } else {
-                cloneSet.addAll(this);
-            }
-            return cloneSet;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Protected Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @override
-         * @protected
-         * @param {(ICollection.<*> | Array.<*>)=} items
-         */
-        factoryObserved: function(items) {
-            return new Set(items);
+            return new ClearChange();
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Implement Interfaces
+    // Static Properties
     //-------------------------------------------------------------------------------
 
-    Class.implement(ObservableSet, ISet);
+    /**
+     * @static
+     * @const {string}
+     */
+    ClearChange.CHANGE_TYPE = "Clear";
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ObservableSet', ObservableSet);
+    bugpack.export('ClearChange', ClearChange);
 });

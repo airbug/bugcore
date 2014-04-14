@@ -4,85 +4,86 @@
 
 //@Export('IObservable')
 
-//@Require('IChangePropagator')
+//@Require('IObservationPropagator')
 //@Require('Interface')
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var IChangePropagator   = bugpack.require('IChangePropagator');
-var Interface           = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- * @extends {IChangePropagator}
- */
-var IObservable = Interface.extend(IChangePropagator, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var IObservationPropagator      = bugpack.require('IObservationPropagator');
+    var Interface                   = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {(string | Array.<string>)} changeTypes
-     * @param {(string | Array.<string>)} pathPatterns
-     * @param {function(ObservableChange)} observerFunction
-     * @param {Object=} observerContext
+     * @interface
+     * @extends {IObservationPropagator}
      */
-    addObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {},
+    var IObservable = Interface.extend(IObservationPropagator, {
 
-    /**
-     * @param {string} changeType
-     * @param {string} pathPattern
-     * @param {function(ObservableChange)} observerFunction
-     * @param {Object=} observerContext
-     * @return {boolean}
-     */
-    hasObserver: function(changeType, pathPattern, observerFunction, observerContext) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {string} changeType
-     * @param {string} objectPath
-     * @return {boolean}
-     */
-    isObserving: function(changeType, objectPath) {},
+        /**
+         * @param {(string | Array.<string>)} changeTypes
+         * @param {(string | Array.<string>)} pathPatterns
+         * @param {function(Observation)} observerFunction
+         * @param {Object=} observerContext
+         */
+        addObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {},
 
-    /**
-     * @param {ObservableChange} change
-     */
-    notifyObservers: function(change) {},
+        /**
+         * @param {string} changeType
+         * @param {string} pathPattern
+         * @param {function(Observation)} observerFunction
+         * @param {Object=} observerContext
+         * @return {boolean}
+         */
+        hasObserver: function(changeType, pathPattern, observerFunction, observerContext) {},
 
-    /**
-     *
-     */
-    removeAllObservers: function(paths, changeTypes) {},
+        /**
+         * @param {string} changeType
+         * @param {string} objectPath
+         * @return {boolean}
+         */
+        isObserving: function(changeType, objectPath) {},
 
-    /**
-     * @param {(string | Array.<string>)} changeTypes
-     * @param {(string | Array.<string>)} pathPatterns
-     * @param {function(ObservableChange)} observerFunction
-     * @param {Object=} observerContext
-     */
-    removeObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {}
+        /**
+         * @param {Change} change
+         */
+        notifyObservers: function(change) {},
+
+        /**
+         * @param {Array.<string>} paths
+         * @param {Array.<string>} changeTypes
+         */
+        removeAllObservers: function(paths, changeTypes) {},
+
+        /**
+         * @param {(string | Array.<string>)} changeTypes
+         * @param {(string | Array.<string>)} pathPatterns
+         * @param {function(Observation)} observerFunction
+         * @param {Object=} observerContext
+         */
+        removeObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {}
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IObservable', IObservable);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IObservable', IObservable);

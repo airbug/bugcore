@@ -2,8 +2,9 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Event')
+//@Export('PutChange')
 
+//@Require('Change')
 //@Require('Class')
 //@Require('Obj')
 
@@ -18,6 +19,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Change      = bugpack.require('Change');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
 
@@ -28,9 +30,9 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
+     * @extends {Change}
      */
-    var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
+    var PutChange = Class.extend(Change, /** @lends {PutChange.prototype} */ {
 
         //-------------------------------------------------------------------------------
         // Constructor
@@ -38,12 +40,13 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {string} type
-         * @param {*} data
+         * @param {*} key
+         * @param {*} value
+         * @param {*=} previousValue
          */
-        _constructor: function(type, data) {
+        _constructor: function (key, value, previousValue) {
 
-            this._super();
+            this._super(PutChange.CHANGE_TYPE);
 
 
             //-------------------------------------------------------------------------------
@@ -52,39 +55,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
+             * @type {*}
              */
-            this.bubbles            = true;
+            this.key            = key;
 
             /**
              * @private
              * @type {*}
              */
-            this.currentTarget      = null;
+            this.previousValue  = previousValue;
 
             /**
              * @private
              * @type {*}
              */
-            this.data               = data;
-
-            /**
-             * @private
-             * @type {boolean}
-             */
-            this.propagationStopped = false;
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.target             = null;
-
-            /**
-             * @private
-             * @type {string}
-             */
-            this.type               = type;
+            this.value          = value;
         },
 
 
@@ -93,87 +78,67 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @return {boolean}
+         * @returns {*}
          */
-        getBubbles: function() {
-            return this.bubbles;
-        },
-
-        /**
-         * @param {boolean} bubbles
-         */
-        setBubbles: function(bubbles) {
-            this.bubbles = bubbles;
+        getKey: function () {
+            return this.key;
         },
 
         /**
          * @return {*}
          */
-        getCurrentTarget: function() {
-            return this.currentTarget;
-        },
-
-        /**
-         * @param {*} currentTarget
-         */
-        setCurrentTarget: function(currentTarget) {
-            this.currentTarget = currentTarget;
+        getPreviousValue: function () {
+            return this.previousValue;
         },
 
         /**
          * @return {*}
          */
-        getData: function() {
-            return this.data;
-        },
-
-        /**
-         * @return {*}
-         */
-        getTarget: function() {
-            return this.target;
-        },
-
-        /**
-         * @param {*} target
-         */
-        setTarget: function(target) {
-            this.target = target;
-        },
-
-        /**
-         * @return {string}
-         */
-        getType: function() {
-            return this.type;
+        getValue: function () {
+            return this.value;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Obj Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @param {boolean=} deep
+         * @return {PutChange}
          */
-        isPropagationStopped: function() {
-            return this.propagationStopped
-        },
-
-        /**
-         * Prevents an further processing event listeners on parent nodes. All event listeners on the current node will be
-         * executed though.
-         */
-        stopPropagation: function() {
-            this.propagationStopped = true;
+        clone: function (deep) {
+            var value = this.getValue();
+            if (deep) {
+                value = Obj.clone(value, deep);
+            }
+            var key = this.getKey();
+            if (deep) {
+                key = Obj.clone(key, deep);
+            }
+            var previousValue = this.getPreviousValue();
+            if (deep) {
+                previousValue = Obj.clone(previousValue, deep);
+            }
+            return new PutChange(key, value, previousValue);
         }
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Static Properties
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @const {string}
+     */
+    PutChange.CHANGE_TYPE = "Put";
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Event', Event);
+    bugpack.export('PutChange', PutChange);
 });

@@ -2,11 +2,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('EventDispatcher')
+//@Export('Change')
 
 //@Require('Class')
-//@Require('EventReceiver')
-//@Require('IEventDispatcher')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -19,9 +18,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var EventReceiver       = bugpack.require('EventReceiver');
-    var IEventDispatcher    = bugpack.require('IEventDispatcher');
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -30,39 +28,51 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {EventReceiver}
+     * @extends {Obj}
      */
-    var EventDispatcher = Class.extend(EventReceiver, {
+    var Change = Class.extend(Obj, /** @lends {Change.prototype} */{
 
         //-------------------------------------------------------------------------------
-        // IEventDispatcher Implementation
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Event} event
-         * @param {?boolean=} bubbles
+         * @constructs
+         * @param {string} changeType
          */
-        dispatchEvent: function(event, bubbles) {
-            if (bubbles === undefined) {
-                bubbles = true;
-            }
-            event.setBubbles(bubbles);
-            event.setTarget(this.getTarget());
-            this.propagateEvent(event);
+        _constructor: function(changeType) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.changeType             = changeType;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @returns {string}
+         */
+        getChangeType: function() {
+            return this.changeType;
         }
     });
-
-
-    //-------------------------------------------------------------------------------
-    // Interfaces
-    //-------------------------------------------------------------------------------
-
-    Class.implement(EventDispatcher, IEventDispatcher);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('EventDispatcher', EventDispatcher);
+    bugpack.export('Change', Change);
 });

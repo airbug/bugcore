@@ -101,7 +101,7 @@ var observerInstantiationWithParametersTest = {
     test: function(test) {
         test.assertTrue(Class.doesExtend(this.testObserver, Observer),
             "Assert that testObserver is an instance of Observable");
-        test.assertEqual(this.testObserver.getObjectPathPattern(), this.testObjectPathPattern,
+        test.assertEqual(this.testObserver.getObservationPathPattern(), this.testObjectPathPattern,
             "Assert that Observer.objectPathPattern is undefined");
         test.assertEqual(this.testObserver.getObserverContext(), this.testObserverContext,
             "Assert that Observer.observerContext is undefined");

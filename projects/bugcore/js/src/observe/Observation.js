@@ -2,7 +2,7 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Event')
+//@Export('Observation')
 
 //@Require('Class')
 //@Require('Obj')
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      */
-    var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
+    var Observation = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
         // Constructor
@@ -38,10 +38,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {string} type
-         * @param {*} data
+         * @param {Change} change
+         * @param {string} observationPath
          */
-        _constructor: function(type, data) {
+        _constructor: function(change, observationPath) {
 
             this._super();
 
@@ -52,39 +52,27 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
+             * @type {Change}
              */
-            this.bubbles            = true;
+            this.change                 = change;
 
             /**
              * @private
-             * @type {*}
+             * @type {IObservable}
              */
-            this.currentTarget      = null;
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.data               = data;
-
-            /**
-             * @private
-             * @type {boolean}
-             */
-            this.propagationStopped = false;
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.target             = null;
+            this.changingObservable     = null;
 
             /**
              * @private
              * @type {string}
              */
-            this.type               = type;
+            this.observationPath        = observationPath;
+
+            /**
+             * @private
+             * @type {IObservable}
+             */
+            this.reportingObservable    = null;
         },
 
 
@@ -93,80 +81,81 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @return {boolean}
+         * @return {Change}
          */
-        getBubbles: function() {
-            return this.bubbles;
+        getChange: function() {
+            return this.change;
         },
 
         /**
-         * @param {boolean} bubbles
+         * @return {IObservable}
          */
-        setBubbles: function(bubbles) {
-            this.bubbles = bubbles;
+        getChangingObservable: function() {
+            return this.changingObservable;
         },
 
         /**
-         * @return {*}
+         * @param {IObservable} changingObservable
          */
-        getCurrentTarget: function() {
-            return this.currentTarget;
-        },
-
-        /**
-         * @param {*} currentTarget
-         */
-        setCurrentTarget: function(currentTarget) {
-            this.currentTarget = currentTarget;
-        },
-
-        /**
-         * @return {*}
-         */
-        getData: function() {
-            return this.data;
-        },
-
-        /**
-         * @return {*}
-         */
-        getTarget: function() {
-            return this.target;
-        },
-
-        /**
-         * @param {*} target
-         */
-        setTarget: function(target) {
-            this.target = target;
+        setChangingObservable: function(changingObservable) {
+            this.changingObservable = changingObservable;
         },
 
         /**
          * @return {string}
          */
-        getType: function() {
-            return this.type;
+        getObservationPath: function() {
+            return this.observationPath;
+        },
+
+        /**
+         * @param {string} observationPath
+         */
+        setObservationPath: function(observationPath) {
+            this.observationPath = observationPath;
+        },
+
+        /**
+         * @return {IObservable}
+         */
+        getReportingObservable: function() {
+            return this.reportingObservable;
+        },
+
+        /**
+         * @param {IObservable} reportingObservable
+         */
+        setReportingObservable: function(reportingObservable) {
+            this.reportingObservable = reportingObservable;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Convenience Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @returns {string}
          */
-        isPropagationStopped: function() {
-            return this.propagationStopped
+        getChangeType: function() {
+            return this.change.getChangeType();
         },
 
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
         /**
-         * Prevents an further processing event listeners on parent nodes. All event listeners on the current node will be
-         * executed though.
+         * @param {boolean=} deep
+         * @return {Observation}
          */
-        stopPropagation: function() {
-            this.propagationStopped = true;
+        clone: function(deep) {
+            var change = this.getChange();
+            if (deep) {
+                change = Obj.clone(change, deep);
+            }
+            return new Observation(change, this.getObservationPath());
         }
     });
 
@@ -175,5 +164,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Event', Event);
+    bugpack.export('Observation', Observation);
 });

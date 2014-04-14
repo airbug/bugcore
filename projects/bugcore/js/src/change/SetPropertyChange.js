@@ -2,8 +2,9 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Event')
+//@Export('SetPropertyChange')
 
+//@Require('Change')
 //@Require('Class')
 //@Require('Obj')
 
@@ -18,6 +19,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Change      = bugpack.require('Change');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
 
@@ -28,9 +30,9 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
+     * @extends {Change}
      */
-    var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
+    var SetPropertyChange = Class.extend(Change, /** @lends {SetPropertyChange.prototype} */{
 
         //-------------------------------------------------------------------------------
         // Constructor
@@ -38,12 +40,13 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {string} type
-         * @param {*} data
+         * @param {string} propertyName
+         * @param {*} propertyValue
+         * @param {*} previousValue
          */
-        _constructor: function(type, data) {
+        _constructor: function (propertyName, propertyValue, previousValue) {
 
-            this._super();
+            this._super(SetPropertyChange.CHANGE_TYPE);
 
 
             //-------------------------------------------------------------------------------
@@ -52,39 +55,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
-             */
-            this.bubbles            = true;
-
-            /**
-             * @private
              * @type {*}
              */
-            this.currentTarget      = null;
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.data               = data;
-
-            /**
-             * @private
-             * @type {boolean}
-             */
-            this.propagationStopped = false;
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.target             = null;
+            this.previousValue      = previousValue;
 
             /**
              * @private
              * @type {string}
              */
-            this.type               = type;
+            this.propertyName       = propertyName;
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.propertyValue      = propertyValue;
         },
 
 
@@ -93,87 +78,63 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @return {boolean}
-         */
-        getBubbles: function() {
-            return this.bubbles;
-        },
-
-        /**
-         * @param {boolean} bubbles
-         */
-        setBubbles: function(bubbles) {
-            this.bubbles = bubbles;
-        },
-
-        /**
          * @return {*}
          */
-        getCurrentTarget: function() {
-            return this.currentTarget;
-        },
-
-        /**
-         * @param {*} currentTarget
-         */
-        setCurrentTarget: function(currentTarget) {
-            this.currentTarget = currentTarget;
-        },
-
-        /**
-         * @return {*}
-         */
-        getData: function() {
-            return this.data;
-        },
-
-        /**
-         * @return {*}
-         */
-        getTarget: function() {
-            return this.target;
-        },
-
-        /**
-         * @param {*} target
-         */
-        setTarget: function(target) {
-            this.target = target;
+        getPreviousValue: function () {
+            return this.previousValue;
         },
 
         /**
          * @return {string}
          */
-        getType: function() {
-            return this.type;
+        getPropertyName: function () {
+            return this.propertyName;
+        },
+
+        /**
+         * @return {*}
+         */
+        getPropertyValue: function () {
+            return this.propertyValue;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Obj Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @param {boolean=} deep
+         * @return {SetPropertyChange}
          */
-        isPropagationStopped: function() {
-            return this.propagationStopped
-        },
-
-        /**
-         * Prevents an further processing event listeners on parent nodes. All event listeners on the current node will be
-         * executed though.
-         */
-        stopPropagation: function() {
-            this.propagationStopped = true;
+        clone: function (deep) {
+            var propertyValue = this.getPropertyValue();
+            if (deep) {
+                propertyValue = Obj.clone(propertyValue, deep);
+            }
+            var previousValue = this.getPreviousValue();
+            if (deep) {
+                previousValue = Obj.clone(previousValue, deep);
+            }
+            return new SetPropertyChange(this.getPropertyName(), propertyValue, previousValue);
         }
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Static Properties
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @const {string}
+     */
+    SetPropertyChange.CHANGE_TYPE = "SetProperty";
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Event', Event);
+    bugpack.export('SetPropertyChange', SetPropertyChange);
 });
