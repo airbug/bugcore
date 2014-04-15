@@ -198,11 +198,16 @@ In the browser:
 * [`Set`](#Set)
 * [`Stack`](#Stack)
 
+### Utils
 
-<a name="Class" />
+* [`TypeUtil`](#TypeUtil)
+
+
+<br /><a name="Class" />
 ## Class
 
 Core class used to build other classes.
+
 
 __Class__
 
@@ -226,6 +231,10 @@ __Static Method Summary__
 * [`static extend(function(new:Constructor) constructor, Object declaration) :function(new:Constructor)`](#Class-extend)
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Class-declare" />
 ### Class.declare
 
@@ -234,6 +243,7 @@ time you should not use this method to declare new classes unless you are sure o
 you are doing. Instead use the [Class.extend](#Class-extend) method and extend Obj. By
 using this method, it will exclude many of the base methods that the rest of the bugcore
 system depends upon, including hashCode, equals, _internalId, and clone
+
 
 __Method__
 
@@ -265,6 +275,11 @@ var LowestLevelObject = Class.declare({
     }
 });
 ```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
 
 <a name="Class-extend" />
 ### Class.extend
@@ -309,11 +324,12 @@ var BaseBall = Class.extend(Ball, {
 ```
 
 
-<a name="Constructor" />
+<br /><a name="Constructor" />
 ## Constructor
 
 Represents the base instantiable constructor function of all classes declared in the
 BugCore system using [Class.declare](#Class-declare)
+
 
 __Class__
 
@@ -330,10 +346,15 @@ __Getters and Setters Summary__
 * [`public getClass() :Class`](#Constructor_getClass)
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Constructor_getClass" />
 ### Constructor#getClass
 
 Get the Class for this instance.
+
 
 __Method__
 
@@ -343,6 +364,7 @@ __Method__
  */
 getClass: function() {
 ```
+
 
 __Parameters__
 
@@ -361,11 +383,12 @@ __Examples__
 ```
 
 
-<a name="Obj" />
+<br /><a name="Obj" />
 ## Obj
 
 The root class of all other classes in the bugcore library. Provides basic functionality such as hash code support,
 equality checks and clone support.
+
 
 __Class__
 
@@ -378,6 +401,7 @@ __Class__
  */
 var Obj = Class.declare({
 ```
+
 
 __Interfaces__
 
@@ -411,9 +435,14 @@ __Static Method Summary__
 * [`static hashCode(* value)                :number`](#Obj-hashCode)
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj__constructor" />
 
 ### Obj#_constructor()
+
 
 __Method__
 
@@ -423,6 +452,7 @@ __Method__
  */
 _constructor: function() {
 ```
+
 
 __Parameters__
 
@@ -435,9 +465,15 @@ __Examples__
 var myObj = new Obj();
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj_getInternalId" />
 
 ### Obj#getInternalId()
+
 
 __Method__
 
@@ -465,6 +501,11 @@ var myObj       = new Obj();
 var internalId  = myObj.getInternalId();
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj_clone" />
 ### Obj#clone(deep)
 
@@ -477,6 +518,7 @@ then a reference to the property value will be set on the new instance.
 NOTE: _internalId is not cloned for deep or shallow clones. Therefore the clone instance
 is unique from that of the original.
 
+
 __Method__
 
 ```javascript
@@ -486,6 +528,7 @@ __Method__
  */
 clone: function(deep) {
 ```
+
 
 __Parameters__
 
@@ -506,10 +549,15 @@ var deepCloneObj        = myObj.clone(true); //deep clone
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj_equals" />
 ### Obj#equals(value)
 
 By default, the equality check will compare this instances _internalId to the value parameter.
+
 
 __Method__
 
@@ -520,6 +568,7 @@ __Method__
  */
 equals: function(value) {
 ```
+
 
 __Parameters__
 
@@ -560,11 +609,16 @@ obj.equals(objClone);      //false
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj_hashCode" />
 ### Obj#hashCode()
 
 NOTE: If two instances are equal, they should return the same hash code.
 NOTE: Equal hash codes is not a guarantee of equality.
+
 
 __Method__
 
@@ -574,6 +628,7 @@ __Method__
  */
 hashCode: function() {
 ```
+
 
 __Parameters__
 
@@ -594,6 +649,10 @@ var hashCode    = obj.hashCode();
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj-clone" />
 ### Obj.clone(value, deep)
 
@@ -602,6 +661,7 @@ Clones the value parameter.
 If the value implements IClone the clone() method will be called to perform a clone of
 the value. If the value is a basic value such as a number or string it will simply be
 passed through.
+
 
 __Method__
 
@@ -645,6 +705,10 @@ var cloneString         = Obj.clone(myString);      //"abc123"
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj-equals" />
 ### Obj.equals(value1, value2)
 
@@ -652,6 +716,7 @@ Checks value1 and value2 for equality.
 
 If value1 implements IEquals, the value1.equals() method will be used to perform
 the equality check. Otherwise === is used to compare the two values.
+
 
 __Method__
 
@@ -664,6 +729,7 @@ __Method__
  */
 Obj.equals = function(value1, value2) {
 ```
+
 
 __Parameters__
 
@@ -706,11 +772,16 @@ Obj.equals(undefinedValue, nullValue) //false
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Obj-hashCode" />
 ### Obj.hashCode(value)
 
 Returns the hashCode of the value. If the value implements IHashCode, then the
 value.hashCode() method will be used to generate the hash code.
+
 
 __Method__
 
@@ -722,6 +793,7 @@ __Method__
  */
 Obj.hashCode = function(value) {
 ```
+
 
 __Parameters__
 
@@ -748,11 +820,12 @@ var hashCode    = Obj.hashCode(myString);
 ```
 
 
-<a name="Collection" />
+<br /><a name="Collection" />
 ## Collection
 
 The root class of several of the data objects. A collection represents a group of items.
 A Collection instance on its own allows for duplicate elements.
+
 
 __Class__
 
@@ -767,6 +840,7 @@ __Class__
  */
 var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 ```
+
 
 __Extends__
 * [`Obj`](#Obj)
@@ -810,9 +884,13 @@ __Method Summary__
 * [`public toArray():Array.<I>`](#Collection_retainAll)
 
 
-<a name="Collection__constructor" />
+<br />
+------------------------------------------------------------------------------------
+<br />
 
+<a name="Collection__constructor" />
 ### Obj#_constructor(items)
+
 
 __Method__
 
@@ -823,6 +901,7 @@ __Method__
  */
 _constructor: function(items) {
 ```
+
 
 __Parameters__
 
@@ -855,9 +934,14 @@ var itemsCollection     = new Collection([
 var myCollection        = new Collection(itemsCollection);
 ```
 
-<a name="Collection_getHashStore" />
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_getHashStore" />
 ### Collection#getHashStore()
+
 
 __Method__
 
@@ -867,6 +951,7 @@ __Method__
  */
 getHashStore: function() {
 ```
+
 
 __Parameters__
 
@@ -885,10 +970,16 @@ var myCollection    = new Collection();
 var hashStore       = myCollection.getHashStore();
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_add" />
 ### Collection#add(item):boolean
 
 Adds an item to the collection
+
 
 __Method__
 
@@ -899,6 +990,7 @@ __Method__
  */
 add: function(item) {
 ```
+
 
 __Parameters__
 
@@ -919,10 +1011,15 @@ var result              = myCollection.add(myItem); // true
 ```
 
 
-<a name="Obj_addAll" />
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_addAll" />
 ### Collection#addAll(items)
 
 Adds an Array or Collection of items to the Collection
+
 
 __Method__
 
@@ -932,6 +1029,7 @@ __Method__
  */
 addAll: function(items) {
 ```
+
 
 __Parameters__
 
@@ -966,10 +1064,15 @@ myCollection.addAll(itemsCollection);
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_clear" />
 ### Collection#clear()
 
 Removes all of the items from this collection.
+
 
 __Method__
 
@@ -1004,10 +1107,16 @@ myCollection.clear();
 myCollection.getCount();    // 0
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_contains" />
 ### Collection#contains(value):boolean
 
 Checks the Collection to see if it contains a value.
+
 
 __Method__
 
@@ -1018,6 +1127,7 @@ __Method__
  */
 contains: function(value) {
 ```
+
 
 __Parameters__
 
@@ -1049,6 +1159,11 @@ var myCollection    = new Collection([
 myCollection.contains("item2");    // true
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_containsAll" />
 ### Collection#containsAll(values):boolean
 
@@ -1063,6 +1178,7 @@ If you want to check for exact equality, use the equals function.
 NOTE Empty collections are always contained by another collection
 e.g. Collection[0,1] containsAll Collection[] is true
 
+
 __Method__
 
 ```javascript
@@ -1072,6 +1188,7 @@ __Method__
  */
 containsAll: function(values) {
 ```
+
 
 __Parameters__
 
@@ -1140,12 +1257,18 @@ var myCollection    = new Collection([
 myCollection.containsAll([]);                               // true
 ```
 
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_containsEqual" />
 ### Collection#containsEqual(values):boolean
 
 Checks the Collection to see if it contains exactly the values in the given argument.
 If the collection contains the exact same values as the collection given in the parameter,
 this method will return true. Otherwise, false.
+
 
 __Method__
 
@@ -1156,6 +1279,7 @@ __Method__
  */
 containsEqual: function(values) {
 ```
+
 
 __Parameters__
 
@@ -1226,6 +1350,10 @@ myCollection.containsEqual(["item1", "item2"]);               // false
 ```
 
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Collection_forEach" />
 ### Collection#forEach(func)
 
@@ -1240,6 +1368,7 @@ visited. There is no guarantee whether or not an added value will be visited, wh
 modified value (other than the current one) will be visited before or after it is modified,
 or whether a deleted value will be visited before it is deleted.
 
+
 __Method__
 
 ```javascript
@@ -1248,6 +1377,7 @@ __Method__
  */
 forEach: function(func) {
 ```
+
 
 __Parameters__
 
@@ -1280,3 +1410,97 @@ myCollection.forEach(function(item) {
     console.log(item);  // never executed
 });
 ```
+
+
+<br /><a name="TypeUtil" />
+## TypeUtil
+
+Utility class for determining the data type of values.
+
+
+__Class__
+
+```javascript
+/**
+ * @constructor
+ */
+var TypeUtil = function() {
+```
+
+
+__Static Method Summary__
+
+* [`static isArray(* value) :boolean`](#TypeUtil-isArray)
+* [`static isBoolean(* value) :boolean`](#TypeUtil-isBoolean)
+* [`static isDate(* value) :boolean`](#TypeUtil-isDate)
+* [`static isFunction(* value) :boolean`](#TypeUtil-isFunction)
+* [`static isNull(* value) :boolean`](#TypeUtil-isNull)
+* [`static isNumber(* value) :boolean`](#TypeUtil-isNumber)
+* [`static isObject(* value) :boolean`](#TypeUtil-isObject)
+* [`static isString(* value) :boolean`](#TypeUtil-isString)
+* [`static isUndefined(* value) :boolean`](#TypeUtil-isUndefined)
+* [`static toType(* value) :string`](#TypeUtil-toType)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="TypeUtil-isArray" />
+### TypeUtil.isArray
+
+Determines if the given value is an array.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @return {boolean}
+ */
+TypeUtil.isArray = function(value) {
+```
+
+
+__Parameters__
+
+* `value {*}` - The value to check for the type of array
+
+
+__Returns__
+
+* `{boolean}` - Whether or not the value is an array.
+
+
+__Examples__
+
+Array literal is an array
+```js
+var myArray = [];
+TypeUtil.isArray(myArray);      //true
+```
+
+Instance of Array is an array
+```js
+var myArray = new Array();
+TypeUtil.isArray(myArray);      //true
+```
+
+Instance of Collection is NOT an array
+```js
+var myCollection = new Collection();
+TypeUtil.isArray(myCollection); //false
+```
+
+number is NOT an array
+```js
+var myNumber = 123;
+TypeUtil.isArray(myNumber);     //false
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />

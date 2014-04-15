@@ -23,241 +23,241 @@
 
 
 //-------------------------------------------------------------------------------
-// Requires
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Collection      = bugpack.require('Collection');
-var Func            = bugpack.require('Func');
-var IClone          = bugpack.require('IClone');
-var IEquals         = bugpack.require('IEquals');
-var IHashCode       = bugpack.require('IHashCode');
-var Interface       = bugpack.require('Interface');
-var List            = bugpack.require('List');
-var Map             = bugpack.require('Map');
-var Obj             = bugpack.require('Obj');
-var Pair            = bugpack.require('Pair');
-var Proxy           = bugpack.require('Proxy');
-var Queue           = bugpack.require('Queue');
-var Set             = bugpack.require('Set');
-var Stack           = bugpack.require('Stack');
-var TypeUtil        = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Obj}
- */
-var BugCore = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Collection      = bugpack.require('Collection');
+    var Func            = bugpack.require('Func');
+    var IClone          = bugpack.require('IClone');
+    var IEquals         = bugpack.require('IEquals');
+    var IHashCode       = bugpack.require('IHashCode');
+    var Interface       = bugpack.require('Interface');
+    var List            = bugpack.require('List');
+    var Map             = bugpack.require('Map');
+    var Obj             = bugpack.require('Obj');
+    var Pair            = bugpack.require('Pair');
+    var Proxy           = bugpack.require('Proxy');
+    var Queue           = bugpack.require('Queue');
+    var Set             = bugpack.require('Set');
+    var Stack           = bugpack.require('Stack');
+    var TypeUtil        = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function() {
-
-        this._super();
-
+    var BugCore = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Public Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @type {function(new:Class)}
+         * @constructs
          */
-        this.Class          = Class;
+        _constructor: function() {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Public Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @type {function(new:Class)}
+             */
+            this.Class          = Class;
+
+            /**
+             * @type {function(new:Collection)}
+             */
+            this.Collection     = Collection;
+
+            /**
+             * @type {function(new:Func)}
+             */
+            this.Func           = Func;
+
+            /**
+             * @type {function(new:IClone)}
+             */
+            this.IClone         = IClone;
+
+            /**
+             * @type {function(new:IEquals)}
+             */
+            this.IEquals        = IEquals;
+
+            /**
+             * @type {function(new:IHashCode)}
+             */
+            this.IHashCode      = IHashCode;
+
+            /**
+             * @type {function(new:Interface)}
+             */
+            this.Interface      = Interface;
+
+            /**
+             * @type {function(new:List)}
+             */
+            this.List           = List;
+
+            /**
+             * @type {function(new:Map)}
+             */
+            this.Map            = Map;
+
+            /**
+             * @type {function(new:Obj)}
+             */
+            this.Obj            = Obj;
+
+            /**
+             * @type {function(new:Pair)}
+             */
+            this.Pair           = Pair;
+
+            /**
+             * @type {function(new:Queue)}
+             */
+            this.Queue          = Queue;
+
+            /**
+             * @type {function(new:Set)}
+             */
+            this.Set            = Set;
+
+            /**
+             * @type {function(new:Stack)}
+             */
+            this.Stack          = Stack;
+
+            /**
+             * @type {function(new:TypeUtil)}
+             */
+            this.TypeUtil       = TypeUtil;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
         /**
-         * @type {function(new:Collection)}
+         * @param {(ICollection.<C> | Array.<C>)=} items
+         * @return {Collection.<C>}
+         * @template C
          */
-        this.Collection     = Collection;
+        collection: function(items) {
+            return new Collection(items);
+        },
 
         /**
-         * @type {function(new:Func)}
+         * @param {(ICollection.<C> | Array.<C>)=} items
+         * @return {List.<C>}
+         * @template C
          */
-        this.Func           = Func;
+        list: function(items) {
+            return new List(items);
+        },
 
         /**
-         * @type {function(new:IClone)}
+         * @param {Map.<K, V>=} map
+         * @return {Map.<K, V>}
+         * @template K, V
          */
-        this.IClone         = IClone;
+        map: function(map) {
+            return new Map(map);
+        },
 
         /**
-         * @type {function(new:IEquals)}
+         * @param {(Collection.<*> | Array.<*>)} items
+         * @return {Queue.<C>}
+         * @template C
          */
-        this.IEquals        = IEquals;
+        queue: function(items) {
+            return new Queue(items);
+        },
 
         /**
-         * @type {function(new:IHashCode)}
+         * @param {(ICollection.<C> | Array.<C>)=} items
+         * @return {Set.<C>}
+         * @template C
          */
-        this.IHashCode      = IHashCode;
+        set: function(items) {
+            return new Set(items);
+        },
 
         /**
-         * @type {function(new:Interface)}
+         * @param {(ICollection.<C> | Array.<C>)=} items
+         * @return {Stack.<C>}
+         * @template C
          */
-        this.Interface      = Interface;
-
-        /**
-         * @type {function(new:List)}
-         */
-        this.List           = List;
-
-        /**
-         * @type {function(new:Map)}
-         */
-        this.Map            = Map;
-
-        /**
-         * @type {function(new:Obj)}
-         */
-        this.Obj            = Obj;
-
-        /**
-         * @type {function(new:Pair)}
-         */
-        this.Pair           = Pair;
-
-        /**
-         * @type {function(new:Queue)}
-         */
-        this.Queue          = Queue;
-
-        /**
-         * @type {function(new:Set)}
-         */
-        this.Set            = Set;
-
-        /**
-         * @type {function(new:Stack)}
-         */
-        this.Stack          = Stack;
-
-        /**
-         * @type {function(new:TypeUtil)}
-         */
-        this.TypeUtil       = TypeUtil;
-    },
+        stack: function(items) {
+            return new Stack(items);
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // Private Static Variables
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {(ICollection.<C> | Array.<C>)=} items
-     * @return {Collection.<C>}
-     * @template C
+     * @static
+     * @private
+     * @type {BugCore}
      */
-    collection: function(items) {
-        return new Collection(items);
-    },
+    BugCore.instance = null;
+
+
+    //-------------------------------------------------------------------------------
+    // Private Static Methods
+    //-------------------------------------------------------------------------------
 
     /**
-     * @param {(ICollection.<C> | Array.<C>)=} items
-     * @return {List.<C>}
-     * @template C
+     * @static
+     * @return {BugCore}
      */
-    list: function(items) {
-        return new List(items);
-    },
+    BugCore.getInstance = function() {
+        if (BugCore.instance === null) {
+            BugCore.instance = new BugCore();
+        }
+        return BugCore.instance;
+    };
 
-    /**
-     * @param {Map.<K, V>=} map
-     * @return {Map.<K, V>}
-     * @template K, V
-     */
-    map: function(map) {
-        return new Map(map);
-    },
 
-    /**
-     * @param {(Collection.<*> | Array.<*>)} items
-     * @return {Queue.<C>}
-     * @template C
-     */
-    queue: function(items) {
-        return new Queue(items);
-    },
+    //-------------------------------------------------------------------------------
+    // Static Proxy
+    //-------------------------------------------------------------------------------
 
-    /**
-     * @param {(ICollection.<C> | Array.<C>)=} items
-     * @return {Set.<C>}
-     * @template C
-     */
-    set: function(items) {
-        return new Set(items);
-    },
+    Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
+        "collection",
+        "list",
+        "map",
+        "queue",
+        "set",
+        "stack"
+    ]);
 
-    /**
-     * @param {(ICollection.<C> | Array.<C>)=} items
-     * @return {Stack.<C>}
-     * @template C
-     */
-    stack: function(items) {
-        return new Stack(items);
-    }
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('BugCore', BugCore);
 });
-
-
-//-------------------------------------------------------------------------------
-// Private Static Variables
-//-------------------------------------------------------------------------------
-
-/**
- * @static
- * @private
- * @type {BugCore}
- */
-BugCore.instance = null;
-
-
-//-------------------------------------------------------------------------------
-// Private Static Methods
-//-------------------------------------------------------------------------------
-
-/**
- * @static
- * @return {BugCore}
- */
-BugCore.getInstance = function() {
-    if (BugCore.instance === null) {
-        BugCore.instance = new BugCore();
-    }
-    return BugCore.instance;
-};
-
-
-//-------------------------------------------------------------------------------
-// Static Proxy
-//-------------------------------------------------------------------------------
-
-Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
-    "collection",
-    "list",
-    "map",
-    "queue",
-    "set",
-    "stack"
-]);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('BugCore', BugCore);

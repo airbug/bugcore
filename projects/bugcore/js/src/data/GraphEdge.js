@@ -10,113 +10,122 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class =     bugpack.require('Class');
-var GraphNode = bugpack.require('GraphNode');
-var Obj =       bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var GraphEdge = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(fromNode, toNode) {
+    var Class       = bugpack.require('Class');
+    var GraphNode   = bugpack.require('GraphNode');
+    var Obj         = bugpack.require('Obj');
 
-        this._super();
 
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var GraphEdge = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {GraphNode}
+         * @constructs
+         * @param {GraphNode} fromNode
+         * @param {GraphNode} toNode
          */
-        this.fromNode = fromNode;
+        _constructor: function(fromNode, toNode) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {GraphNode}
+             */
+            this.fromNode   = fromNode;
+
+            /**
+             * @private
+             * @type {GraphNode}
+             */
+            this.toNode     = toNode;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {GraphNode}
+         * @return {GraphNode}
          */
-        this.toNode = toNode;
-    },
+        getFromNode: function() {
+            return this.fromNode;
+        },
+
+        /**
+         * @return {GraphNode}
+         */
+        getToNode: function() {
+            return this.toNode;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {GraphNode}
-     */
-    getFromNode: function() {
-        return this.fromNode;
-    },
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        equals: function(value) {
+            if (Class.doesExtend(value, GraphEdge)) {
+                return (Obj.equals(value.getFromNode(), this.getFromNode()) && Obj.equals(value.getToNode(), this.getToNode()));
+            }
+            return false;
+        },
 
-    /**
-     * @return {GraphNode}
-     */
-    getToNode: function() {
-        return this.toNode;
-    },
+        /**
+         * @return {number}
+         */
+        hashCode: function() {
+            if (!this._hashCode) {
+                this._hashCode = Obj.hashCode("[GraphEdge]" + Obj.hashCode(this.fromNode) + "_" + Obj.hashCode(this.toNode));
+            }
+            return this._hashCode;
+        },
 
+        /**
+         * @return {string}
+         */
+        toString: function() {
+            var output = "";
+            output += "{\n";
 
-    //-------------------------------------------------------------------------------
-    // Object Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {*} value
-     * @return {boolean}
-     */
-    equals: function(value) {
-        if (Class.doesExtend(value, GraphEdge)) {
-            return (Obj.equals(value.getFromNode(), this.getFromNode()) && Obj.equals(value.getToNode(), this.getToNode()));
+            output += "}\n";
+            return output;
         }
-        return false;
-    },
+    });
 
-    /**
-     * @return {number}
-     */
-    hashCode: function() {
-        if (!this._hashCode) {
-            this._hashCode = Obj.hashCode("[GraphEdge]" + Obj.hashCode(this.fromNode) + "_" + Obj.hashCode(this.toNode));
-        }
-        return this._hashCode;
-    },
 
-    /**
-     * @return {string}
-     */
-    toString: function() {
-        var output = "";
-        output += "{\n";
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
 
-        output += "}\n";
-        return output;
-    }
+    bugpack.export('GraphEdge', GraphEdge);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('GraphEdge', GraphEdge);

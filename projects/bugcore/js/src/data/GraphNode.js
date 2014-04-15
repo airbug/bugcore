@@ -9,99 +9,107 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class = bugpack.require('Class');
-var Obj =   bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var GraphNode = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(value) {
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
 
-        this._super();
 
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var GraphNode = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {*}
+         * @constructs
+         * @param {*} value
          */
-        this.value = value;
-    },
+        _constructor: function(value) {
+
+            this._super();
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
 
-    /**
-     * @return {*}
-     */
-    getValue: function() {
-        return this.value;
-    },
+            /**
+             * @private
+             * @type {*}
+             */
+            this.value = value;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Object Implementation
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {*} value
-     * @return {boolean}
-     */
-    equals: function(value) {
-        if (Class.doesExtend(value, GraphNode)) {
-            return Obj.equals(value.getValue(), this.value);
+        /**
+         * @return {*}
+         */
+        getValue: function() {
+            return this.value;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        equals: function(value) {
+            if (Class.doesExtend(value, GraphNode)) {
+                return Obj.equals(value.getValue(), this.value);
+            }
+            return false;
+        },
+
+        /**
+         * @return {number}
+         */
+        hashCode: function() {
+            if (!this._hashCode) {
+                this._hashCode = Obj.hashCode("[GraphNode]" + Obj.hashCode(this.value));
+            }
+            return this._hashCode;
+        },
+
+        /**
+         * @return {string}
+         */
+        toString: function() {
+            var output = "";
+            output += "{\n";
+            output += "  " + this.value.toString() + "\n";
+            output += "}\n";
+            return output;
         }
-        return false;
-    },
+    });
 
-    /**
-     * @return {number}
-     */
-    hashCode: function() {
-        if (!this._hashCode) {
-            this._hashCode = Obj.hashCode("[GraphNode]" + Obj.hashCode(this.value));
-        }
-        return this._hashCode;
-    },
 
-    /**
-     * @return {string}
-     */
-    toString: function() {
-        var output = "";
-        output += "{\n";
-        output += "  " + this.value.toString() + "\n";
-        output += "}\n";
-        return output;
-    }
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('GraphNode', GraphNode);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('GraphNode', GraphNode);

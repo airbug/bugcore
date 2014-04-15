@@ -12,6 +12,7 @@
 //@Export('Graph')
 
 //@Require('Class')
+//@Require('Exception')
 //@Require('GraphEdge')
 //@Require('GraphNode')
 //@Require('Map')
@@ -20,240 +21,345 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var GraphEdge       = bugpack.require('GraphEdge');
-var GraphNode       = bugpack.require('GraphNode');
-var Map             = bugpack.require('Map');
-var Obj             = bugpack.require('Obj');
-var Set             = bugpack.require('Set');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Obj}
- */
-var Graph = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
+    var GraphEdge       = bugpack.require('GraphEdge');
+    var GraphNode       = bugpack.require('GraphNode');
+    var Map             = bugpack.require('Map');
+    var Obj             = bugpack.require('Obj');
+    var Set             = bugpack.require('Set');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function() {
-
-        this._super();
-
+    var Graph = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Set<GraphEdge>}
+         * @constructs
          */
-        this.edgeSet = new Set();
+        _constructor: function() {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Set.<GraphEdge>}
+             */
+            this.edgeSet                    = new Set();
+
+            /**
+             * @private
+             * @type {Map.<GraphNode, Set.<GraphEdge>>}
+             */
+            this.fromNodeToEdgeSetMap       = new Map();
+
+            /**
+             * @private
+             * @type {Set.<GraphNode>}
+             */
+            this.nodeSet                    = new Set();
+
+            /**
+             * @private
+             * @type {Map.<GraphNode, Set.<GraphEdge>>}
+             */
+            this.toNodeToEdgeSetMap         = new Map();
+
+            /**
+             * @private
+             * @type {Map.<*, GraphNode>}
+             */
+            this.valueToNodeMap             = new Map();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Map<GraphNode, Set<GraphEdge>>}
+         * @return {string}
          */
-        this.fromNodeToEdgeSetMap = new Map();
+        toString: function() {
+            var output = "";
+            return output;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Set<GraphNode>}
+         * @param {*} fromValue
+         * @param {*} toValue
+         * @return {boolean}
          */
-        this.nodeSet = new Set();
-
-        /**
-         * @private
-         * @type {Map<GraphNode, Set<GraphEdge>>}
-         */
-        this.toNodeToEdgeSetMap = new Map();
-
-        /**
-         * @private
-         * @type {Map<*, GraphNode>}
-         */
-        this.valueToNodeMap = new Map();
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Obj Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @return {string}
-     */
-    toString: function() {
-        var output = "";
-        return output;
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Public Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {*} fromValue
-     * @param {*} toValue
-     */
-    addEdgeFromValueToValue: function(fromValue, toValue) {
-        var fromNode = this.getNode(fromValue);
-        var toNode = this.getNode(toValue);
-        if (!fromNode) {
-            throw new Error("GraphNode for the fromValue does not exist - fromValue:", fromValue);
-        }
-        if (!toNode) {
-            throw new Error("GraphNode for the toValue does not exist - toValue:", toValue);
-        }
-        var edge = new GraphEdge(fromNode, toNode);
-        this.addEdge(edge);
-    },
-
-    /**
-     * @param {*} value
-     */
-    addNodeForValue: function(value) {
-        var node = new GraphNode(value);
-        this.addNode(node);
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Protected Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @protected
-     * @param {GraphEdge} edge
-     */
-    addEdge: function(edge) {
-        if (!this.edgeSet.contains(edge)) {
-            this.edgeSet.add(edge);
-            var edgeFromSet = this.getEdgesFrom(edge.getFromNode());
-            if (!edgeFromSet) {
-                edgeFromSet = new Set();
-                this.fromNodeToEdgeSetMap.put(edge.getFromNode(), edgeFromSet)
+        addEdgeFromValueToValue: function(fromValue, toValue) {
+            var fromNode = this.getNode(fromValue);
+            var toNode = this.getNode(toValue);
+            if (!fromNode) {
+                this.addNodeForValue(fromNode);
             }
-            edgeFromSet.add(edge);
-            var edgeToSet = this.getEdgesTo(edge.getToNode());
-            if (!edgeToSet) {
-                edgeToSet = new Set();
-                this.toNodeToEdgeSetMap.put(edge.getToNode(), edgeToSet)
+            if (!toNode) {
+                this.addNodeForValue(toNode);
             }
-            edgeToSet.add(edge);
-        } else {
-            throw new Error("Each edge must be unique.");
-        }
-    },
+            var edge = new GraphEdge(fromNode, toNode);
+            return this.addEdge(edge);
+        },
 
-    /**
-     * @protected
-     * @param {GraphNode} node
-     */
-    addNode: function(node) {
-        if (!this.nodeSet.contains(node)) {
-            this.nodeSet.add(node);
-            this.valueToNodeMap.put(node.getValue(), node);
-        } else {
-            throw new Error("Each node must be unique. A node with value '" + node.getValue() + "' already exists.");
-        }
-    },
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        addNodeForValue: function(value) {
+            var node = new GraphNode(value);
+            return this.addNode(node);
+        },
 
-    /**
-     * @protected
-     * @param {*} value
-     * @return {boolean}
-     */
-    containsNode: function(value) {
-        return this.valueToNodeMap.containsKey(value);
-    },
+        /**
+         * @param {*} fromValue
+         * @param {*} toValue
+         * @return {boolean}
+         */
+        removeEdgeFromValueToValue: function(fromValue, toValue) {
+            var fromNode = this.getNode(fromValue);
+            var toNode = this.getNode(toValue);
+            if (fromNode && toNode) {
+                var edge = new GraphEdge(fromNode, toNode);
+                return this.removeEdge(edge);
+            }
+            return false;
+        },
 
-    /**
-     * @protected
-     * @param {*} value
-     * @return {GraphNode}
-     */
-    getNode: function(value) {
-        return this.valueToNodeMap.get(value);
-    },
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        removeNodeForValue: function(value) {
+            var node = this.getNode(value);
+            if (node) {
+                return this.removeNode(node);
+            }
+            return false;
+        },
 
-    /**
-     * @protected
-     * @param {GraphNode} fromNode
-     * @return {Set<GraphEdge>}
-     */
-    getEdgesFrom: function(fromNode) {
-        return this.fromNodeToEdgeSetMap.get(fromNode);
-    },
-
-    /**
-     * @protected
-     * @param {GraphNode} toNode
-     * @return {Set<GraphEdge>}
-     */
-    getEdgesTo: function(toNode) {
-        return this.toNodeToEdgeSetMap.get(toNode);
-    },
-
-    /**
-     * Get nodes that are connected by edges leading from the node parameter
-     * @protected
-     * @param {GraphNode} fromNode
-     * @return {Set<GraphNode>}
-     */
-    getNodesFrom: function(fromNode) {
-        var nodesFromSet = new Set();
-        var edgeFromSet = this.getEdgesFrom(fromNode);
-        if (edgeFromSet) {
-            edgeFromSet.forEach(function(edge) {
-                nodesFromSet.add(edge.getToNode());
+        /**
+         * @param {(ICollection.<*> | Array.<*>)} values
+         */
+        removeNodesForValues: function(values) {
+            var _this = this;
+            values.forEach(function(value) {
+                _this.removeNodeForValue(value);
             });
-        }
-        return nodesFromSet;
-    },
+        },
 
-    /**
-     * Get nodes that are connected by edges leading to the node parameter
-     * @protected
-     * @param {GraphNode} toNode
-     * @return {Set<GraphNode>}
-     */
-    getNodesTo: function(toNode) {
-        var nodesToSet = new Set();
-        var edgeToSet = this.getEdgesTo(toNode);
-        if (edgeToSet) {
-            edgeToSet.forEach(function(edge) {
-                nodesToSet.add(edge.getFromNode());
+
+        //-------------------------------------------------------------------------------
+        // Protected Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @protected
+         * @param {GraphEdge} edge
+         * @return {boolean}
+         */
+        addEdge: function(edge) {
+            if (!this.edgeSet.contains(edge)) {
+                this.edgeSet.add(edge);
+                var edgeFromSet = this.getEdgesFrom(edge.getFromNode());
+                if (!edgeFromSet) {
+                    edgeFromSet = new Set();
+                    this.fromNodeToEdgeSetMap.put(edge.getFromNode(), edgeFromSet)
+                }
+                edgeFromSet.add(edge);
+                var edgeToSet = this.getEdgesTo(edge.getToNode());
+                if (!edgeToSet) {
+                    edgeToSet = new Set();
+                    this.toNodeToEdgeSetMap.put(edge.getToNode(), edgeToSet)
+                }
+                edgeToSet.add(edge);
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} node
+         * @return {boolean}
+         */
+        addNode: function(node) {
+            if (!this.nodeSet.contains(node)) {
+                this.nodeSet.add(node);
+                this.valueToNodeMap.put(node.getValue(), node);
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * @protected
+         * @param {*} value
+         * @return {boolean}
+         */
+        containsNode: function(value) {
+            return this.valueToNodeMap.containsKey(value);
+        },
+
+        /**
+         * @protected
+         * @param {*} value
+         * @return {GraphNode}
+         */
+        getNode: function(value) {
+            return this.valueToNodeMap.get(value);
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} fromNode
+         * @return {Set.<GraphEdge>}
+         */
+        getEdgesFrom: function(fromNode) {
+            return this.fromNodeToEdgeSetMap.get(fromNode);
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} toNode
+         * @return {Set.<GraphEdge>}
+         */
+        getEdgesTo: function(toNode) {
+            return this.toNodeToEdgeSetMap.get(toNode);
+        },
+
+        /**
+         * Get nodes that are connected by edges leading from the node parameter
+         * @protected
+         * @param {GraphNode} fromNode
+         * @return {Set.<GraphNode>}
+         */
+        getNodesFrom: function(fromNode) {
+            var nodesFromSet = new Set();
+            var edgeFromSet = this.getEdgesFrom(fromNode);
+            if (edgeFromSet) {
+                edgeFromSet.forEach(function(edge) {
+                    nodesFromSet.add(edge.getToNode());
+                });
+            }
+            return nodesFromSet;
+        },
+
+        /**
+         * Get nodes that are connected by edges leading to the node parameter
+         * @protected
+         * @param {GraphNode} toNode
+         * @return {Set.<GraphNode>}
+         */
+        getNodesTo: function(toNode) {
+            var nodesToSet = new Set();
+            var edgeToSet = this.getEdgesTo(toNode);
+            if (edgeToSet) {
+                edgeToSet.forEach(function(edge) {
+                    nodesToSet.add(edge.getFromNode());
+                });
+            }
+            return nodesToSet;
+        },
+
+        /**
+         * @protected
+         * @param {ICollection.<GraphEdge>} edges
+         */
+        removeAllEdges: function(edges) {
+            var _this = this;
+            edges.forEach(function(edge) {
+                _this.removeEdge(edge);
             });
+        },
+
+        /**
+         * @protected
+         * @param {GraphEdge} edge
+         * @return {boolean}
+         */
+        removeEdge: function(edge) {
+            if (this.edgeSet.contains(edge)) {
+                var edgeFromSet = this.getEdgesFrom(edge.getFromNode());
+                edgeFromSet.remove(edge);
+                if (edgeFromSet.getCount() === 0) {
+                    this.fromNodeToEdgeSetMap.remove(edge.getFromNode());
+                }
+                var edgeToSet = this.getEdgesTo(edge.getToNode());
+                edgeToSet.remove(edge);
+                if (edgeToSet.getCount() === 0) {
+                    this.fromNodeToEdgeSetMap.remove(edge.getToNode());
+                }
+                this.edgeSet.remove(edge);
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * @protected
+         * @param {ICollection.<GraphNode>} nodes
+         */
+        removeAllNodes: function(nodes) {
+            var _this = this;
+            nodes.forEach(function(node) {
+                _this.removeNode(node);
+            });
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} node
+         * @return {boolean}
+         */
+        removeNode: function(node) {
+            if (this.nodeSet.contains(node)) {
+                var edgesFrom = this.getEdgesFrom(node);
+                this.removeAllEdges(edgesFrom);
+                var edgesTo = this.getEdgesTo(node);
+                this.removeAllEdges(edgesTo);
+                this.nodeSet.remove(node);
+                this.valueToNodeMap.remove(node.getValue());
+                return true;
+            }
+            return false;
         }
-        return nodesToSet;
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('Graph', Graph);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Graph', Graph);
