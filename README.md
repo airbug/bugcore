@@ -1493,13 +1493,15 @@ myCollection.getCount()    //2
 <a name="Collection_getValueArray" />
 ### Collection#getValueArray():Array.<I>
 
-Returns a copy of the underlying value array.
+Returns an Array of the Collection's values.
 
 __Notes__
 
 * Order of items in the Array is unpredictable.
-* This method returns a copy, so manipulating the array will not affect the Collection
-
+* This method generates a new Array each time.
+* Manipulating the Array will not affect the Collection.
+* Manipulating the Collection will not affect the returned Array after it has
+been generated.
 
 __Method__
 
@@ -1518,7 +1520,7 @@ __Parameters__
 
 __Returns__
 
-* `{Array.<I>}` - The copy of the underlying value array.
+* `{Array.<I>}` - An Array of the Collection's values.
 
 
 __Examples__
