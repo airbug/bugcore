@@ -6,23 +6,34 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+require('bugpack').context("*", function(bugpack) {
+
+    //-------------------------------------------------------------------------------
+    // Constructor
+    //-------------------------------------------------------------------------------
+
+    // NOTE BRN: We don't use the base level Class system here because our low level Object class depends on this class
+    // and Class depends on Object. Thus, if this class depends on Class it creates s circular dependency.
+
+    /**
+     * @constructor
+     */
+    var IdGenerator = function() {};
 
 
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------
+    // Static Properties
+    //-------------------------------------------------------------------------------
 
-// NOTE BRN: We don't use the base level Class system here because our low level Object class depends on this class
-// and Class depends on Object. Thus, if this class depends on Class it creates s circular dependency.
+    /**
+     * @static
+     * @type {number}
+     */
+    IdGenerator.lastId = 0;
 
-/**
- * @class
- */
-var IdGenerator = {
 
     //-------------------------------------------------------------------------------
     // Static Methods
@@ -30,25 +41,35 @@ var IdGenerator = {
 
     /**
      * @static
-     * @type {number}
+     * @param {Object} obj
      */
-    lastId: 0,
+    IdGenerator.ensureId = function(obj) {
+        if (obj !== null && obj !== undefined) {
+            if (!obj._internalId) {
+                IdGenerator.injectId(obj);
+            }
+        }
+    };
 
     /**
      * @static
      * @return {number}
      */
-    generateId: function() {
+    IdGenerator.generateId = function() {
         return IdGenerator.lastId++;
-    },
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Private Static Methods
+    //-------------------------------------------------------------------------------
 
     /**
      * @static
      * @private
      * @param {Object} obj
      */
-    //NOTE: Use IdGenerator.ensureId
-    injectId: function(obj) {
+    IdGenerator.injectId = function(obj) {
         if (obj !== null && obj !== undefined) {
             if (!obj._internalId) {
                 Object.defineProperty(obj, "_internalId", {
@@ -61,24 +82,12 @@ var IdGenerator = {
                 throw new Error("Trying to inject an id in to a object that already has one.");
             }
         }
-    },
-
-    /**
-     * @static
-     * @param {Object} obj
-     */
-    ensureId: function(obj) {
-        if (obj !== null && obj !== undefined) {
-            if (!obj._internalId) {
-                IdGenerator.injectId(obj);
-            }
-        }
-    }
-};
+    };
 
 
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
 
-bugpack.export('IdGenerator', IdGenerator);
+    bugpack.export('IdGenerator', IdGenerator);
+});

@@ -38,6 +38,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
+     * @extends {Constructor}
      * @implements {IClone}
      * @implements {IEquals}
      * @implements {IHashCode}

@@ -353,7 +353,7 @@ __Getters and Setters Summary__
 <a name="Constructor_getClass" />
 ### Constructor#getClass
 
-Get the Class for this instance.
+Get the [Class](#Class) for this instance.
 
 
 __Method__
@@ -395,12 +395,17 @@ __Class__
 ```javascript
 /**
  * @class
+ * @extends {Constructor}
  * @implements {IClone}
  * @implements {IEquals}
  * @implements {IHashCode}
  */
 var Obj = Class.declare(/** @lends {Obj.prototype} */{
 ```
+
+__Extends__
+
+* [`Constructor`](#Constructor)
 
 
 __Interfaces__
@@ -417,7 +422,6 @@ __Constructor Summary__
 
 __Getters and Setters Summary__
 
-* [`public getClass()           :Class`](#Obj_equals)
 * [`public getInternalId()      :number`](#Obj_getInternalId)
 
 
@@ -1593,7 +1597,7 @@ __Static Method Summary__
 <br />
 
 <a name="TypeUtil-isArray" />
-### TypeUtil.isArray
+### TypeUtil.isArray(value):boolean
 
 Determines if the given value is an array.
 
