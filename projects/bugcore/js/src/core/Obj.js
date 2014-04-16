@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      * @implements {IEquals}
      * @implements {IHashCode}
      */
-    var Obj = Class.declare({
+    var Obj = Class.declare(/** @lends {Obj.prototype} */{
 
         //-------------------------------------------------------------------------------
         // Constructor

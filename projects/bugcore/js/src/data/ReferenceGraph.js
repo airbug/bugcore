@@ -88,6 +88,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
+         * @return {boolean}
          */
         addValue: function(value) {
             var result = this.addNodeForValue(value);
@@ -96,17 +97,20 @@ require('bugpack').context("*", function(bugpack) {
                     this.addUnreferenced(value);
                 }
             }
+            return result;
         },
 
         /**
          * @param {*} fromValue
          * @param {*} toValue
+         * @return {boolean}
          */
         addReference: function(fromValue, toValue) {
             var result = this.addEdgeFromValueToValue(fromValue, toValue);
             if (result) {
                 this.removeUnreferenced(toValue);
             }
+            return result;
         },
 
         /**
@@ -118,7 +122,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
-         * @returns {boolean}
+         * @return {boolean}
          */
         isRootValue: function(value) {
             return this.rootValueSet.contains(value);
@@ -126,6 +130,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
+         * @return {boolean}
          */
         removeValue: function(value) {
             var _this   = this;
@@ -142,7 +147,9 @@ require('bugpack').context("*", function(bugpack) {
                         }
                     }
                 });
+                return true;
             }
+            return false;
         },
 
         /**

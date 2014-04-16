@@ -399,7 +399,7 @@ __Class__
  * @implements {IEquals}
  * @implements {IHashCode}
  */
-var Obj = Class.declare({
+var Obj = Class.declare(/** @lends {Obj.prototype} */{
 ```
 
 
@@ -925,7 +925,7 @@ var myCollection    = new Collection(values);
 ```
 
 
-Array parameter
+Other Collection parameter
 ```js
 var itemsCollection     = new Collection([
     "item1",
@@ -1409,6 +1409,125 @@ var myCollection    = new Collection([]);
 myCollection.forEach(function(item) {
     console.log(item);  // never executed
 });
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_getCount" />
+### Collection#getCount():number
+
+Returns the number of items in the collection.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {number}
+ */
+getCount: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{number}` - The number of items in the Collection.
+
+
+__Examples__
+
+Empty Collection
+```js
+var myCollection    = new Collection([]);
+
+myCollection.getCount();   //0
+```
+
+Starts with 2 items
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+
+myCollection.getCount()    //2
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_getValueArray" />
+### Collection#getValueArray():Array.<I>
+
+Returns a copy of the underlying value array.
+
+__Notes__
+
+* The array will be in the same order as the Collection
+* This method returns a copy, so manipulating the array will not affect the Collection
+
+
+__Method__
+
+```javascript
+/**
+ * @return {Array.<I>}
+ */
+getValueArray: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{Array.<I>}` - The copy of the underlying value array.
+
+
+__Examples__
+
+Empty Collection
+```js
+var myCollection    = new Collection([]);
+
+myCollection.getValueArray();   // []
+```
+
+Starts with 2 items
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+
+myCollection.getValueArray()                // ["item1", "item2"]
+```
+
+Manipulation of Collection after array is returned.
+```js
+var myCollection    = new Collection([
+    "item1",
+    "item2"
+]);
+var myValueArray    = myCollection.getValueArray();
+
+myCollection.add("item3")                   // ["item1", "item2"]
+
+console.log(myCollection.getValueArray())   // ["item1", "item2", "item3"]
+console.log(myValueArray)                   // ["item1", "item2"]
 ```
 
 

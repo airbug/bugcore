@@ -36,7 +36,7 @@ var TypeUtil            = bugpack.require('TypeUtil');
 //-------------------------------------------------------------------------------
 
 /**
- * @constructor
+ * @class
  * @extends {Obj}
  * @implements {IArrayable}
  * @implements {IObjectable}
