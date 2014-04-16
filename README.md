@@ -515,7 +515,10 @@ that are not functions. If a deep clone is being performed, then the clone metho
 attempt to create a deep copy of each property. If a shallow clone is being performed
 then a reference to the property value will be set on the new instance.
 
-NOTE: _internalId is not cloned for deep or shallow clones. Therefore the clone instance
+
+__Notes__
+
+* _internalId is not cloned for deep or shallow clones. Therefore the clone instance
 is unique from that of the original.
 
 
@@ -616,8 +619,17 @@ obj.equals(objClone);      //false
 <a name="Obj_hashCode" />
 ### Obj#hashCode()
 
-NOTE: If two instances are equal, they should return the same hash code.
-NOTE: Equal hash codes is not a guarantee of equality.
+Returns the objects hashCode. The generation of the hashCode is only run once and
+then cached.
+
+
+__Notes__
+
+* If two instances are equal, they should return the same hash code.
+* Equal hash codes is not a guarantee of equality.
+* A hash code should not change for an instance over the lifespan of the instance.
+* Generation of hash codes should be done only using immutable values.
+
 
 
 __Method__
@@ -824,7 +836,12 @@ var hashCode    = Obj.hashCode(myString);
 ## Collection
 
 The root class of several of the data objects. A collection represents a group of items.
-A Collection instance on its own allows for duplicate elements.
+
+__Notes__
+
+* A Collection instance on its own allows for duplicate elements.
+* Order is not maintained in a Collection. Therefore iteration my not be in the order
+items were added to a collection.
 
 
 __Class__
@@ -1171,11 +1188,13 @@ Checks the Collection to see if it contains all of the values in the given argum
 If ALL of the values are contained by the collection, this method will return true.
 Otherwise, false.
 
-NOTE  Multiple elements are ignored in this function.
+
+__Notes__
+
+* Multiple elements are ignored in this function.
 e.g. Collection[0,1] containsAll Collection[0,1,1,1] is true
 If you want to check for exact equality, use the equals function.
-
-NOTE Empty collections are always contained by another collection
+* Empty collections are always contained by another collection
 e.g. Collection[0,1] containsAll Collection[] is true
 
 
@@ -1359,7 +1378,12 @@ myCollection.containsEqual(["item1", "item2"]);               // false
 
 forEach executes the provided function once for each element of the Collection.
 
-NOTE: If a value is modified in one iteration and then visited at a later time, its value in
+
+__Notes__
+
+* Order is not maintained in a Collection. Therefore the order of iteration in items in a
+Collection is unpredictable.
+* If a value is modified in one iteration and then visited at a later time, its value in
 the loop is its value at that later time. A value that is deleted before it has been visited
 will not be visited later. Values added to the Collection over which iteration is occurring
 may either be visited or omitted from iteration. In general it is best not to add, modify or
@@ -1473,7 +1497,7 @@ Returns a copy of the underlying value array.
 
 __Notes__
 
-* The array will be in the same order as the Collection
+* Order of items in the Array is unpredictable.
 * This method returns a copy, so manipulating the array will not affect the Collection
 
 
@@ -1506,7 +1530,7 @@ var myCollection    = new Collection([]);
 myCollection.getValueArray();   // []
 ```
 
-Starts with 2 items
+Starts with 2 items (order of items shown in examples is not indicative of real world results)
 ```js
 var myCollection    = new Collection([
     "item1",
@@ -1517,6 +1541,7 @@ myCollection.getValueArray()                // ["item1", "item2"]
 ```
 
 Manipulation of Collection after array is returned.
+(order of items shown in examples is not indicative of real world results)
 ```js
 var myCollection    = new Collection([
     "item1",
