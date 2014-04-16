@@ -1491,7 +1491,7 @@ myCollection.getCount()    //2
 <br />
 
 <a name="Collection_getValueArray" />
-### Collection#getValueArray():Array.&l;tI&gt;
+### Collection#getValueArray():Array.&lt;I&gt;
 
 Returns an Array of the Collection's values.
 
