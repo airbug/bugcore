@@ -4,8 +4,10 @@
 
 //@Export('BugCore')
 
+//@Require('Bug')
 //@Require('Class')
 //@Require('Collection')
+//@Require('Exception')
 //@Require('Func')
 //@Require('IClone')
 //@Require('IEquals')
@@ -19,6 +21,7 @@
 //@Require('Queue')
 //@Require('Set')
 //@Require('Stack')
+//@Require('Throwable')
 //@Require('TypeUtil')
 
 
@@ -32,8 +35,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
     var Collection      = bugpack.require('Collection');
+    var Exception       = bugpack.require('Exception');
     var Func            = bugpack.require('Func');
     var IClone          = bugpack.require('IClone');
     var IEquals         = bugpack.require('IEquals');
@@ -47,6 +52,7 @@ require('bugpack').context("*", function(bugpack) {
     var Queue           = bugpack.require('Queue');
     var Set             = bugpack.require('Set');
     var Stack           = bugpack.require('Stack');
+    var Throwable       = bugpack.require('Throwable');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -77,6 +83,11 @@ require('bugpack').context("*", function(bugpack) {
             //-------------------------------------------------------------------------------
 
             /**
+             * @type {function(new:Bug)}
+             */
+            this.Bug            = Bug;
+
+            /**
              * @type {function(new:Class)}
              */
             this.Class          = Class;
@@ -85,6 +96,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Collection)}
              */
             this.Collection     = Collection;
+
+            /**
+             * @type {function(new:Exception)}
+             */
+            this.Exception       = Exception;
 
             /**
              * @type {function(new:Func)}
@@ -145,6 +161,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Stack)}
              */
             this.Stack          = Stack;
+
+            /**
+             * @type {function(new:Throwable)}
+             */
+            this.Throwable      = Throwable;
 
             /**
              * @type {function(new:TypeUtil)}

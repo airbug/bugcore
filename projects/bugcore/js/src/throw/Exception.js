@@ -26,6 +26,10 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Class
     //-------------------------------------------------------------------------------
 
+    /**
+     * @class
+     * @extends {Throwable}
+     */
     var Exception = Class.extend(Throwable, {});
 
 

@@ -10,105 +10,114 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Bug             = bugpack.require('Bug');
-var Class           = bugpack.require('Class');
-var StackTraceUtil  = bugpack.require('StackTraceUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Bug}
- */
-var ArgumentBug = Class.extend(Bug, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(type, argName, argValue, message, causes) {
+    var Bug             = bugpack.require('Bug');
+    var Class           = bugpack.require('Class');
+    var StackTraceUtil  = bugpack.require('StackTraceUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Bug}
+     */
+    var ArgumentBug = Class.extend(Bug, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
+         * @constructs
+         * @param {string} type
+         * @param {string} argName
+         * @param {*} argValue
+         * @param {string} message
+         * @param {Array.<(Throwable | Error)>} causes
          * @private
-         * @type {string}
          */
-        this.argName    = argName;
+        _constructor: function(type, argName, argValue, message, causes) {
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.argName    = argName;
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.argValue   = argValue;
+
+            this._super(type, {}, message, causes);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {*}
+         * @return {string}
          */
-        this.argValue   = argValue;
+        getArgName: function() {
+            return this.argName;
+        },
 
-        this._super(type, {}, message, causes);
-    },
+        /**
+         * @return {string}
+         */
+        getArgValue: function() {
+            return this.argValue;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Throwable Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @protected
+         * @returns {string}
+         */
+        generateStackTrace: function() {
+            return this.getMessage() + "\n" +
+                "Argument '" + this.argName + "' was " + this.argValue + "\n" +
+                StackTraceUtil.generateStackTrace();
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Static Properties
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {string}
+     * @static
+     * @const {string}
      */
-    getArgName: function() {
-        return this.argName;
-    },
-
-    /**
-     * @return {string}
-     */
-    getArgValue: function() {
-        return this.argValue;
-    },
+    ArgumentBug.ILLEGAL = "ArgumentBug:Illegal";
 
 
     //-------------------------------------------------------------------------------
-    // Throwable Methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @protected
-     * @returns {string}
-     */
-    generateStackTrace: function() {
-        return this.getMessage() + "\n" +
-            "Argument '" + this.argName + "' was " + this.argValue + "\n" +
-            StackTraceUtil.generateStackTrace();
-    }
+    bugpack.export('ArgumentBug', ArgumentBug);
 });
-
-
-//-------------------------------------------------------------------------------
-// Static Properties
-//-------------------------------------------------------------------------------
-
-/**
- * @static
- * @const {string}
- */
-ArgumentBug.ILLEGAL = "ArgumentBug:Illegal";
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('ArgumentBug', ArgumentBug);

@@ -232,7 +232,14 @@ require('bugpack').context("*", function(bugpack) {
                 _this.attachObserverToTypes(changeTypes, observer);
             });
         },
-    
+
+        /**
+         *
+         */
+        detachAllObservers: function() {
+            this.changeTypeObserverMap.clear();
+        },
+
         /**
          * @param {string} changeType
          * @param {Observer} observer
@@ -273,7 +280,14 @@ require('bugpack').context("*", function(bugpack) {
         unobserve: function() {
             this.removeObserver.apply(this, arguments);
         },
-    
+
+        /**
+         *
+         */
+        unobserveAll: function() {
+            this.detachAllObservers();
+        },
+
         /**
          *
          */

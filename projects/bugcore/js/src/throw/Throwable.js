@@ -8,230 +8,250 @@
 //@Require('IObjectable')
 //@Require('Obj')
 //@Require('StackTraceUtil')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var IObjectable     = bugpack.require('IObjectable');
-var Obj             = bugpack.require('Obj');
-var StackTraceUtil  = bugpack.require('StackTraceUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var Throwable = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var IObjectable     = bugpack.require('IObjectable');
+    var Obj             = bugpack.require('Obj');
+    var StackTraceUtil  = bugpack.require('StackTraceUtil');
+    var TypeUtil        = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {string} type
-     * @param {*=} data
-     * @param {string=} message
-     * @param {Array.<Throwable>=} causes
-     * @private
+     * @class
+     * @extends {Obj}
+     * @implements {IObjectable}
      */
-    _constructor: function(type, data, message, causes) {
-
-        this._super();
-
+    var Throwable = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Array.<Throwable>}
+         * @constructs
+         * @param {string} type
+         * @param {*=} data
+         * @param {string=} message
+         * @param {Array.<(Throwable | Error)>=} causes
          */
-        this.causes             = causes ? causes : [];
+        _constructor: function(type, data, message, causes) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Array.<(Throwable | Error)>}
+             */
+            this.causes             = causes ? causes : [];
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.data               = data;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.message            = TypeUtil.isString(message) ? message : "";
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.primaryStack       = null;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.stack              = null;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.type               = type;
+
+            this.buildStackTrace();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {*}
+         * @return {Array.<(Throwable | Error)>}
          */
-        this.data               = data;
+        getCauses: function() {
+            return this.causes;
+        },
 
         /**
-         * @private
-         * @type {string}
+         * @return {*}
          */
-        this.message            = message;
+        getData: function() {
+            return this.data;
+        },
 
         /**
-         * @private
-         * @type {string}
+         * @param {*} data
          */
-        this.primaryStack       = undefined;
+        setData: function(data) {
+            this.data = data;
+        },
 
         /**
-         * @private
-         * @type {string}
+         * @return {string}
          */
-        this.stack              = undefined;
+        getMessage: function() {
+            return this.message;
+        },
 
         /**
-         * @private
-         * @type {string}
+         * @param {string} message
          */
-        this.type               = type;
+        setMessage: function(message) {
+            this.message = message;
+        },
 
-        this.buildStackTrace();
-    },
+        /**
+         * @return {string}
+         */
+        getStack: function() {
+            return this.stack;
+        },
 
-
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @return {Array.<Throwable>}
-     */
-    getCauses: function() {
-        return this.causes;
-    },
-
-    /**
-     * @return {*}
-     */
-    getData: function() {
-        return this.data;
-    },
-
-    /**
-     * @param {*} data
-     */
-    setData: function(data) {
-        this.data = data;
-    },
-
-    /**
-     * @return {string}
-     */
-    getMessage: function() {
-        return this.message;
-    },
-
-    /**
-     * @param {string} message
-     */
-    setMessage: function(message) {
-        this.message = message;
-    },
-
-    /**
-     * @return {string}
-     */
-    getStack: function() {
-        return this.stack;
-    },
-
-    /**
-     * @return {string}
-     */
-    getType: function() {
-        return this.type;
-    },
+        /**
+         * @return {string}
+         */
+        getType: function() {
+            return this.type;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // IObjectable Implementation
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // IObjectable Implementation
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {Object}
-     */
-    toObject: function() {
-        return {
-            causes: this.getCauses(),
-            data: this.getData(),
-            message: this.getMessage(),
-            type: this.getType()
+        /**
+         * @return {{
+         *      causes: Array.<Throwable>,
+         *      data: *,
+         *      message: string,
+         *      type: string
+         *  }}
+         */
+        toObject: function() {
+            return {
+                causes: this.getCauses(),
+                data: this.getData(),
+                message: this.getMessage(),
+                type: this.getType()
+            };
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Object Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {string}
+         */
+        toString: function() {
+            return "{" +
+                "causes:"   + this.getCauses().join(",\n") + "," +
+                "data:"     + this.getData() + "\n" +
+                "message:"  + this.getMessage() + "\n" +
+                "type:"     + this.getType() + "\n" +
+                "}";
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {(Throwable | Error)} cause
+         */
+        addCause: function(cause) {
+            this.causes.push(cause);
+            this.buildStackTrace();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Protected Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @protected
+         */
+        buildStackTrace: function() {
+            var _this = this;
+            if (!this.primaryStack) {
+                this.primaryStack = this.generateStackTrace();
+            }
+            var stack = this.primaryStack + "\n";
+            stack += "\n";
+            if (this.causes.length > 0) {
+                stack += this.type + " was caused by " + this.causes.length + " exceptions:\n";
+                var count = 0;
+                this.causes.forEach(function(cause) {
+                    count++;
+                    stack += _this.type + " cause " + count + ":\n";
+                    stack += cause.message + "\n";
+                    stack += cause.stack;
+                });
+            }
+            this.stack = stack;
+        },
+
+        /**
+         * @protected
+         * @returns {string}
+         */
+        generateStackTrace: function() {
+            return this.message + "\n" + StackTraceUtil.generateStackTrace();
         }
-    },
-
-    toString: function() {
-        return "{" +
-            "causes:"   + this.getCauses().join(",\n") + "," +
-            "data:"     + this.getData() + "\n" +
-            "message:"  + this.getMessage() + "\n" +
-            "type:"     + this.getType() + "\n" +
-            "}";
-    },
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // Interfaces
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {Throwable} cause
-     */
-    addCause: function(cause) {
-        this.causes.push(cause);
-        this.buildStackTrace();
-    },
+    Class.implement(Throwable, IObjectable);
 
 
     //-------------------------------------------------------------------------------
-    // Protected Methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @protected
-     */
-    buildStackTrace: function() {
-        var _this = this;
-        if (!this.primaryStack) {
-            this.primaryStack = this.generateStackTrace();
-        }
-        var stack = this.primaryStack + "\n";
-        stack += "\n";
-        if (this.causes.length > 0) {
-            stack += this.type + " was caused by " + this.causes.length + " exceptions:\n";
-            var count = 0;
-            this.causes.forEach(function(cause) {
-                count++;
-                stack += _this.type + " cause " + count + ":\n";
-                stack += cause.message + "\n";
-                stack += cause.stack;
-            });
-        }
-        this.stack = stack;
-    },
-
-    /**
-     * @protected
-     * @returns {string}
-     */
-    generateStackTrace: function() {
-        return this.message + "\n" + StackTraceUtil.generateStackTrace();
-    }
+    bugpack.export('Throwable', Throwable);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(Throwable, IObjectable);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Throwable', Throwable);

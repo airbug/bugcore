@@ -10,86 +10,131 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var Map         = bugpack.require('Map');
-var Throwable   = bugpack.require('Throwable');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var MappedThrowable = Class.extend(Throwable, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(type, data) {
+    var Class       = bugpack.require('Class');
+    var Map         = bugpack.require('Map');
+    var Throwable   = bugpack.require('Throwable');
 
-        this._super(type, data);
 
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Throwable}
+     */
+    var MappedThrowable = Class.extend(Throwable, {
 
         //-------------------------------------------------------------------------------
-        // Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Map.<string, Throwable>}
+         * @constructs
+         * @param {string} type
+         * @param {*} data
          */
-        this.throwableMap   = new Map();
-    },
+        _constructor: function(type, data) {
+
+            this._super(type, data);
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Map.<*, Throwable>}
+             */
+            this.causeMap   = new Map();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @return {Array.<Throwable>}
+         */
+        getCauses: function() {
+            return this.causeMap.getValueArray();
+        },
+
+        /**
+         * @return {Map.<*, Throwable>}
+         */
+        getCauseMap: function() {
+            return this.causeMap;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {string} key
+         * @param {Throwable} throwable
+         */
+        putCause: function(key, throwable) {
+            this.causeMap.put(key, throwable);
+            this.buildStackTrace();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Throwable Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @protected
+         */
+        buildStackTrace: function() {
+            var _this = this;
+            if (!this.primaryStack) {
+                this.primaryStack = this.generateStackTrace();
+            }
+            var stack = this.primaryStack;
+            stack += "\n\n";
+            stack += this.getType() + " was caused by " + this.causeMap.getCount() + " exceptions:\n";
+            var count = 0;
+            this.causeMap.forEach(function(cause, key) {
+                count++;
+                stack += _this.getType() + " cause mapped to '" + key + "':\n";
+                stack += cause.getMessage() + "\n";
+                stack += cause.getStack();
+            });
+            this.stack = stack;
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Static Properties
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {Map.<string, Throwable>}
+     * @const {string}
      */
-    getThrowableMap: function() {
-        return this.throwableMap;
-    },
+    MappedThrowable.MAPPED = "MappedThrowable:Mapped";
 
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {string} key
-     * @param {Throwable} throwable
-     */
-    putThrowable: function(key, throwable) {
-        this.throwableMap.put(key, throwable);
-    }
+    bugpack.export('MappedThrowable', MappedThrowable);
 });
-
-
-//-------------------------------------------------------------------------------
-// Static Properties
-//-------------------------------------------------------------------------------
-
-/**
- * @const {string}
- */
-MappedThrowable.MAPPED = "MappedThrowable:Mapped";
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('MappedThrowable', MappedThrowable);

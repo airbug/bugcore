@@ -94,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
             var result = this.addNodeForValue(value);
             if (result) {
                 if (!this.isRootValue(value)) {
-                    this.addUnreferenced(value);
+                    this.addUnreferencedValue(value);
                 }
             }
             return result;
@@ -108,7 +108,7 @@ require('bugpack').context("*", function(bugpack) {
         addReference: function(fromValue, toValue) {
             var result = this.addEdgeFromValueToValue(fromValue, toValue);
             if (result) {
-                this.removeUnreferenced(toValue);
+                this.removeUnreferencedValue(toValue);
             }
             return result;
         },
@@ -138,14 +138,10 @@ require('bugpack').context("*", function(bugpack) {
             if (node) {
                 var referencedNodes = this.getNodesFrom(node);
                 this.removeNodeForValue(value);
-                this.removeUnreferenced(value);
+                this.removeUnreferencedValue(value);
+                this.rootValueSet.remove(value);
                 referencedNodes.forEach(function(referencedNode) {
-                    if (!_this.isRootValue(referencedNode.getValue())) {
-                        var referenceCount = _this.getNodeReferenceCount(referencedNode);
-                        if (referenceCount === 0) {
-                            _this.addUnreferenced(referencedNode.getValue());
-                        }
-                    }
+                    _this.runUnreferencedValueCheck(referencedNode.getValue());
                 });
                 return true;
             }
@@ -169,11 +165,7 @@ require('bugpack').context("*", function(bugpack) {
         removeReference: function(fromValue, toValue) {
             var result = this.removeEdgeFromValueToValue(fromValue, toValue);
             if (result) {
-                var toNode = this.getNode(toValue);
-                var referenceCount = this.getNodeReferenceCount(toNode);
-                if (referenceCount === 0) {
-                    this.addUnreferenced(toNode.getValue());
-                }
+                this.runUnreferencedValueCheck(toValue);
             }
         },
 
@@ -186,7 +178,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          * @param {*} value
          */
-        addUnreferenced: function(value) {
+        addUnreferencedValue: function(value) {
             if (this.containsNode(value)) {
                 this.unreferencedValueSet.add(value);
             }
@@ -205,8 +197,22 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          * @param {*} value
          */
-        removeUnreferenced: function(value) {
+        removeUnreferencedValue: function(value) {
             this.unreferencedValueSet.remove(value);
+        },
+
+        /**
+         * @private
+         * @param {*} value
+         */
+        runUnreferencedValueCheck: function(value) {
+            if (!this.isRootValue(value)) {
+                var node = this.getNode(value);
+                var referenceCount = this.getNodeReferenceCount(node);
+                if (referenceCount === 0) {
+                    this.addUnreferencedValue(node.getValue());
+                }
+            }
         }
     });
 

@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.1.10`
+Latest Version `0.1.11`
 
 
 ## Quick Examples
@@ -130,8 +130,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.min.js
 
 
 ## Install
@@ -144,7 +144,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.min.js"></script>
 ```
 
 
@@ -164,7 +164,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.10.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -197,6 +197,13 @@ In the browser:
 * [`Queue`](#Queue)
 * [`Set`](#Set)
 * [`Stack`](#Stack)
+
+### Throwables
+
+* [`Bug`](#Bug)
+* [`Exception`](#Exception)
+* [`Throwable`](#Throwable)
+
 
 ### Utils
 
@@ -836,6 +843,200 @@ var hashCode    = Obj.hashCode(myString);
 ```
 
 
+<br /><a name="Throwable" />
+## Throwable
+
+The root throwable class of the bugcore system. Has support for more complex stack
+traces including cause chains.
+
+
+__Class__
+
+```javascript
+/**
+ * @class
+ * @extends {Obj}
+ * @implements {IObjectable}
+ */
+var Throwable = Class.extend(Obj, {
+```
+
+__Extends__
+
+* [`Obj`](#Obj)
+
+
+__Interfaces__
+
+* [`IObjectable`](#IObjectable)
+
+
+__Constructor Summary__
+
+* [`public _constructor(string type, *= data, string= message, Array.<(Throwable | Error)>= causes)`](#Throwable__constructor)
+
+
+__Getters and Setters Summary__
+
+* [`public getCauses() :Array.<(Throwable | Error)>`](#Throwable_getCauses)
+* [`public getData() :*`](#Throwable_getData)
+* [`public setData(* data)](#Throwable_setData)
+* [`public getMessage() :string`](#Throwable_getMessage)
+* [`public setMessage(string message)](#Throwable_setMessage)
+* [`public getStack() :string`](#Throwable_getStack)
+* [`public getType() :string`](#Throwable_getType)
+
+
+__Method Summary__
+
+* [`public addCause((Throwable | Error) cause)  :*`](#Throwable_addCause)
+* [`public toObject() :{ causes: Array.<Throwable>, data: *, message: string, type: string}`](#Throwable_toObject)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable__constructor" />
+
+### Throwable#_constructor(type, data, message, causes)
+
+
+__Method__
+
+```javascript
+/**
+ * @constructs
+ * @param {string} type
+ * @param {*=} data
+ * @param {string=} message
+ * @param {Array.<(Throwable | Error)>=} causes
+ */
+_constructor: function(type, data, message, causes) {
+```
+
+
+__Parameters__
+
+* `type {string}` - The type of throwable.
+* `data {*=}` - Any extra data to pass along with this throwable.
+* `message {string=}` - A message to add to this throwable. (optional - default: "")
+* `causes {Array.<(Throwable | Error)>=}` - An array of other throwables or js errors that caused this throwable. (optional - default: [])
+
+
+__Examples__
+
+Simple throwable
+```js
+var myThrowable = new Throwable("MyThrowable", {}, "Something bad happened");
+throw myThrowable;
+```
+
+Throwable with cause
+```js
+try {
+    somethingWillGoWrong();
+} catch (error) {
+    var myThrowable     = new Throwable("SomethingWentWrong", {}, "Something went wrong in the somethingWillGoWrong function", [error]);
+    throw throwable;
+}
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_getCauses" />
+
+### Throwable#getCauses():Array.<(Throwable | Error)>
+
+Get the causes of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {Array.<(Throwable | Error)>}
+ */
+getCauses: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{Array.<(Throwable | Error)>}` - An array of other Throwables or JS Errors that caused this Throwable.
+
+
+__Examples__
+
+```js
+try {
+    somethingWillGoWrong();
+} catch (error) {
+    var myThrowable     = new Throwable("SomethingWentWrong", {}, "Something went wrong in the somethingWillGoWrong function", [error]);
+    var causes          = myThrowable.getCauses();  // [error]
+}
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_addCause" />
+### Throwable#addCause(cause)
+
+Add a cause to the Throwables list of causes.
+
+
+__Notes__
+
+* All causes will be included in the stack of the throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {(Throwable | Error)} cause
+ */
+addCause: function(cause) {
+```
+
+
+__Parameters__
+
+* `cause {(Throwable | Error)}` - The cause to add to the Throwable's array of causes.
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+Add multiple causes to a single throwable
+```js
+var myThrowable = new Throwable("MultipleCauses", {}, "Several things went wrong");
+
+//We want this to complete the looping even if a throwable occurs.
+for (var i = 0; i < 10; i++) {
+    try {
+        somethingMightGoWrong();
+    } catch (error) {
+        myThrowable.addCause(error);
+    }
+}
+```
+
+
 <br /><a name="Collection" />
 ## Collection
 
@@ -910,7 +1111,7 @@ __Method Summary__
 <br />
 
 <a name="Collection__constructor" />
-### Obj#_constructor(items)
+### Collection#_constructor(items)
 
 
 __Method__

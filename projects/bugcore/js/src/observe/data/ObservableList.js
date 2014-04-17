@@ -43,8 +43,8 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {ObservableCollection}
-     * @implements {IList}
-     * @template {I}
+     * @implements {IList.<I>}
+     * @template I
      */
     var ObservableList = Class.extend(ObservableCollection, /** @lends {ObservableList.prototype} */{
 
