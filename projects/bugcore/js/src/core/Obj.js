@@ -216,7 +216,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     Obj.clone = function(value, deep) {
         var clone = null;
-        if (TypeUtil.isObject(value)) {
+        if (TypeUtil.isDate(value)) {
+            clone = new Date();
+            clone.setTime(value.getTime());
+        } else if (TypeUtil.isObject(value)) {
             if (Class.doesImplement(value, IClone)) {
                 clone = value.clone(deep);
             } else {
@@ -240,7 +243,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
             }
         } else {
-            //TODO BRN: Any basic types that need to be cloned?
+            //TODO BRN: Any other basic types that need to be cloned?
             clone = value;
         }
         return clone;

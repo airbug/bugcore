@@ -240,7 +240,7 @@ var objCloneDateTest = {
     //-------------------------------------------------------------------------------
 
     setup: function() {
-        this.testDate = new Date();
+        this.testDate = new Date(1);
     },
 
 
@@ -251,8 +251,10 @@ var objCloneDateTest = {
         var cloneDateObject = Obj.clone(this.testDate);
         test.assertTrue(Class.doesExtend(cloneDateObject, Date),
             "Assert that the clone is an instance of Date");
+        test.assertTrue(cloneDateObject !== this.testDate,
+            "Assert that the Date instances are not equal");
         test.assertEqual(cloneDateObject, this.testDate,
-            "Assert that the Dates are equal");
+            "Assert that the Date values are equal");
     }
 };
 

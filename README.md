@@ -698,6 +698,15 @@ __Method__
 Obj.clone = function(value, deep) {
 ```
 
+__Notes__
+
+* If the value implements IClone, the clone() method will be used to clone the value.
+* Cloning an object literal will create a new object literal and set references to all
+iterable property values of the original object.
+* Cloning a Date will create a new Date instance with the same time.
+* Cloning an Array will create a new Array with the same values in the same order.
+
+
 __Parameters__
 
 * `value {A}` - The value to clone.
@@ -740,6 +749,11 @@ If value1 implements IEquals, the value1.equals() method will be used to perform
 the equality check. Otherwise === is used to compare the two values.
 
 
+__Notes__
+
+* Two Date instances of the same time are considered equal
+
+
 __Method__
 
 ```javascript
@@ -770,20 +784,20 @@ Two different instances are not equal
 ```js
 var obj1   = new Obj();
 var obj2   = new Obj();
-Obj.equals(obj1, obj2);      //false
+Obj.equals(obj1, obj2);         //false
 ```
 
 An instance is equal to itself
 ```js
 var obj1   = new Obj();
-Obj.equals(obj1, obj1);      //true
+Obj.equals(obj1, obj1);         //true
 ```
 
 Strings of the same value are equal
 ```js
 var string1 = "mystring";
 var string2 = "mystring";
-Obj.equals(string1, string2) //true
+Obj.equals(string1, string2)    //true
 ```
 
 Undefined and null are not equal
@@ -791,6 +805,14 @@ Undefined and null are not equal
 var undefinedValue  = undefined;
 var nullValue       = null;
 Obj.equals(undefinedValue, nullValue) //false
+```
+
+Two Dates of the same time are equal
+```js
+var time    = Date.now();
+var date1   = new Date(time);
+var date2   = new Date(time);
+Obj.equals(date1, date2)        //true
 ```
 
 
