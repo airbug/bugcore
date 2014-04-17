@@ -188,6 +188,12 @@ In the browser:
 * [`IEquals`](#IEquals)
 * [`IHashCode`](#IHashCode)
 
+### Throwables
+
+* [`Bug`](#Bug)
+* [`Exception`](#Exception)
+* [`Throwable`](#Throwable)
+
 ### Data Models
 
 * [`Collection`](#Collection)
@@ -197,13 +203,6 @@ In the browser:
 * [`Queue`](#Queue)
 * [`Set`](#Set)
 * [`Stack`](#Stack)
-
-### Throwables
-
-* [`Bug`](#Bug)
-* [`Exception`](#Exception)
-* [`Throwable`](#Throwable)
-
 
 ### Utils
 
@@ -880,9 +879,9 @@ __Getters and Setters Summary__
 
 * [`public getCauses() :Array.<(Throwable | Error)>`](#Throwable_getCauses)
 * [`public getData() :*`](#Throwable_getData)
-* [`public setData(* data)](#Throwable_setData)
+* [`public setData(* data)`](#Throwable_setData)
 * [`public getMessage() :string`](#Throwable_getMessage)
-* [`public setMessage(string message)](#Throwable_setMessage)
+* [`public setMessage(string message)`](#Throwable_setMessage)
 * [`public getStack() :string`](#Throwable_getStack)
 * [`public getType() :string`](#Throwable_getType)
 
