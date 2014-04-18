@@ -475,7 +475,7 @@ require('bugpack').context("*", function(bugpack) {
                 propertyValue = propertyValue[part];
             }
         }
-    }
+    };
 
 
     //-------------------------------------------------------------------------------

@@ -76,7 +76,7 @@ bugmeta.annotate(eventPropagatorInstantiationTest).with(
  * 1) Adding an eventPropagator
  * 2) Propagating a simple event
  */
-var eventPropagatrSimpleAddEventPropagatorPropagateEventTest = {
+var eventPropagatorSimpleAddEventPropagatorPropagateEventTest = {
 
     // Setup Test
     //-------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ var eventPropagatrSimpleAddEventPropagatorPropagateEventTest = {
             "Assert that propagateEvent was called on the added eventPropagator");
     }
 };
-bugmeta.annotate(eventPropagatrSimpleAddEventPropagatorPropagateEventTest).with(
+bugmeta.annotate(eventPropagatorSimpleAddEventPropagatorPropagateEventTest).with(
     test().name("EventPropagator simple add eventPropagator and propagateEvent test")
 );
 

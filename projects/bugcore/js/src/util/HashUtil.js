@@ -27,7 +27,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     // NOTE BRN: We don't use the base level Class system here because our low level Object class depends on this class
-    // and Class depends on Object. Thus, if this class depends on Class it creates s circular dependency.
+    // and Class depends on Object. Thus, if this class depends on Class it creates a circular dependency.
 
     /**
      * @constructor
@@ -55,6 +55,11 @@ require('bugpack').context("*", function(bugpack) {
             case "boolean":
                 key += "b_" + value;
                 break;
+
+                // TODO BRN: Dates are not immutable. Therefore we can run in to issues here if a Date is stored as
+                // a key and then is changed later. We should rethink this and perhaps implement our own immutable
+                // Date class.
+
             case "date":
                 key += "d_" + value;
                 break;
