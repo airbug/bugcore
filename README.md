@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.2.1`
+Latest Version `0.2.2`
 
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been
@@ -135,8 +135,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.1.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.1.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.min.js
 
 
 ## Install
@@ -148,8 +148,8 @@ For node js, you can install using Node Package Manager [npm](https://www.npmjs.
 For the web, simply include these scripts in your application
 
 ```html
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.1.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.min.js"></script>
 ```
 
 
@@ -168,8 +168,8 @@ var map     = new bugcore.Map();
 In the browser:
 
 ```html
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.1.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();

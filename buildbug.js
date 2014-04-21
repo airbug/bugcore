@@ -35,9 +35,9 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.2.1";
+var version             = "0.2.2";
 var dependencies        = {
-    bugpack: "0.1.11"
+    bugpack: "0.1.12"
 };
 
 
@@ -410,7 +410,8 @@ buildTarget('prod').buildFlow(
                             file:  "{{web.outputFile}}",
                             options: {
                                 acl: 'public-read',
-                                gzip: true
+                                gzip: true,
+                                cacheControl: "max-age=31536000, public"
                             },
                             bucket: "{{public-bucket}}"
                         }
@@ -427,7 +428,8 @@ buildTarget('prod').buildFlow(
                                 file:  "{{web.outputMinFile}}",
                                 options: {
                                     acl: 'public-read',
-                                    gzip: true
+                                    gzip: true,
+                                    cacheControl: "max-age=31536000, public"
                                 },
                                 bucket: "{{public-bucket}}"
                             }
