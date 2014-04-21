@@ -32,6 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var NodeJsEvent = Class.extend(Event, {
 
+        _name: "NodeJsEvent",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

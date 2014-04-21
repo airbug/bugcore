@@ -37,6 +37,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventPropagator = Class.extend(Obj, {
 
+        _name: "EventPropagator",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

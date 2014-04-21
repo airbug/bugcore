@@ -31,7 +31,11 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {ICollection.<B>}
      * @template B
      */
-    var ISet = Interface.extend(ICollection, {});
+    var ISet = Interface.extend(ICollection, {
+
+        _name: "ISet"
+
+    });
 
 
     //-------------------------------------------------------------------------------

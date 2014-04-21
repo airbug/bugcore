@@ -43,8 +43,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Observable}
+     * @implements {IObjectable}
      */
     var ObservableObject = Class.extend(Observable, /** @lends {ObservableObject.prototype} */{
+
+        _name: "ObservableObject",
+
 
         //-------------------------------------------------------------------------------
         // Constructor

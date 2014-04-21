@@ -29,6 +29,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IEventDispatcher = Interface.declare({
 
+        _name: "IEventDispatcher",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

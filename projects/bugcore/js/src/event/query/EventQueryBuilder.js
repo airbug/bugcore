@@ -38,6 +38,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventQueryBuilder = Class.extend(QueryBuilder, {
 
+        _name: "EventQueryBuilder",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

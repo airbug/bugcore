@@ -16,77 +16,80 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack     = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var List        = bugpack.require('List');
-var MultiMap    = bugpack.require('MultiMap');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {MultiMap.<K, V>}
- * @template K, V
- */
-var MultiListMap = Class.extend(MultiMap, /** @lends {MultiListMap.prototype} */{
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Obj Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class       = bugpack.require('Class');
+    var List        = bugpack.require('List');
+    var MultiMap    = bugpack.require('MultiMap');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {boolean} deep
-     * @return {MultiListMap.<K, V>}
+     * @class
+     * @extends {MultiMap.<K, V>}
+     * @template K, V
      */
-    clone: function(deep) {
+    var MultiListMap = Class.extend(MultiMap, /** @lends {MultiListMap.prototype} */{
 
-        //TODO BRN: Implement "deep" cloning
+        _name: "MultiListMap",
 
-        /** @type {MultiListMap.<K, V>} */
-        var cloneMultiListMap = new MultiListMap();
-        cloneMultiListMap.putAll(this);
-        return cloneMultiListMap;
-    },
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {boolean} deep
+         * @return {MultiListMap.<K, V>}
+         */
+        clone: function(deep) {
+
+            //TODO BRN: Implement "deep" cloning
+
+            /** @type {MultiListMap.<K, V>} */
+            var cloneMultiListMap = new MultiListMap();
+            cloneMultiListMap.putAll(this);
+            return cloneMultiListMap;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Map Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {K} key
+         * @param {V} value
+         * @return {V}
+         */
+        put: function(key, value) {
+            var valueSet = this.getHashTable().get(key);
+            if (!valueSet) {
+                valueSet = new List();
+                this.getHashTable().put(key, valueSet);
+            }
+            var result = valueSet.add(value);
+            if (result) {
+                return value;
+            }
+            return undefined;
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Map Methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {K} key
-     * @param {V} value
-     * @return {V}
-     */
-    put: function(key, value) {
-        var valueSet = this.getHashTable().get(key);
-        if (!valueSet) {
-            valueSet = new List();
-            this.getHashTable().put(key, valueSet);
-        }
-        var result = valueSet.add(value);
-        if (result) {
-            return value;
-        }
-        return undefined;
-    }
+    bugpack.export('MultiListMap', MultiListMap);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('MultiListMap', MultiListMap);

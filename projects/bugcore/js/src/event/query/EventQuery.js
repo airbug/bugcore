@@ -30,7 +30,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Query}
      */
-    var EventQuery = Class.extend(Query, {});
+    var EventQuery = Class.extend(Query, {
+        _name: "EventQuery"
+    });
 
 
     //-------------------------------------------------------------------------------

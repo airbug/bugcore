@@ -16,88 +16,92 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var DualMultiMap    = bugpack.require('DualMultiMap');
-var Set             = bugpack.require('Set');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @extends {DualMultiMap}
- */
-var DualMultiSetMap = Class.extend(DualMultiMap, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var DualMultiMap    = bugpack.require('DualMultiMap');
+    var Set             = bugpack.require('Set');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {number}
+     * @class
+     * @extends {DualMultiMap}
      */
-    getKeyCount: function() {
-        return this.getCount();
-    },
+    var DualMultiSetMap = Class.extend(DualMultiMap, {
+
+        _name: "DualMultiSetMap",
 
 
-    //-------------------------------------------------------------------------------
-    // Object Implementation
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {DualMultiSetMap}
-     */
-    clone: function() {
-        var cloneDualMultiSetMap = new DualMultiSetMap();
-        cloneDualMultiSetMap.putAll(this);
-        return cloneDualMultiSetMap;
-    },
+        /**
+         * @return {number}
+         */
+        getKeyCount: function() {
+            return this.getCount();
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Class methods
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {*} key
-     * @param {*} value
-     * @return {*}
-     */
-    put: function(key, value) {
-        var valueCollection = this.keyValueHashTable.get(key);
-        if (!valueCollection) {
-            valueCollection = new Set();
-            this.keyValueHashTable.put(key, valueCollection);
-        }
-        var result = valueCollection.add(value);
-        if (result) {
-            var keyCollection = this.valueKeyCollectionHashTable.get(value);
-            if (!keyCollection) {
-                keyCollection = new Set();
-                this.valueKeyCollectionHashTable.put(value, keyCollection);
+        /**
+         * @return {DualMultiSetMap}
+         */
+        clone: function() {
+            var cloneDualMultiSetMap = new DualMultiSetMap();
+            cloneDualMultiSetMap.putAll(this);
+            return cloneDualMultiSetMap;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Map Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @return {*}
+         */
+        put: function(key, value) {
+            var valueCollection = this.keyValueHashTable.get(key);
+            if (!valueCollection) {
+                valueCollection = new Set();
+                this.keyValueHashTable.put(key, valueCollection);
             }
-            keyCollection.add(key);
-            return value;
+            var result = valueCollection.add(value);
+            if (result) {
+                var keyCollection = this.valueKeyCollectionHashTable.get(value);
+                if (!keyCollection) {
+                    keyCollection = new Set();
+                    this.valueKeyCollectionHashTable.put(value, keyCollection);
+                }
+                keyCollection.add(key);
+                return value;
+            }
+            return undefined;
         }
-        return undefined;
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('DualMultiSetMap', DualMultiSetMap);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('DualMultiSetMap', DualMultiSetMap);

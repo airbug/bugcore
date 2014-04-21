@@ -44,6 +44,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ReferenceGraph = Class.extend(Graph, {
 
+        _name: "ReferenceGraph",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

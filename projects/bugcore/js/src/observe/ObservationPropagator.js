@@ -37,6 +37,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservationPropagator = Class.extend(Obj, {
 
+        _name: "ObservationPropagator",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

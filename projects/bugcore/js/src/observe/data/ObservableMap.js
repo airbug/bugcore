@@ -46,7 +46,16 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Class
     //-------------------------------------------------------------------------------
 
+    /**
+     * @class
+     * @extends {Observable}
+     * @implements {IMap.<K, V>}
+     * @implements {IObjectable}
+     */
     var ObservableMap = Class.extend(Observable, /** @lends {ObservableMap.prototype} */ {
+
+        _name: "ObservableMap",
+
 
         //-------------------------------------------------------------------------------
         // Constructor

@@ -30,6 +30,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ICollection = Interface.declare({
 
+        _name: "ICollection",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

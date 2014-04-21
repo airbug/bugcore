@@ -43,6 +43,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventReceiver = Class.extend(EventPropagator, /** @lends {EventReceiver.prototype} */{
 
+        _name: "EventReceiver",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

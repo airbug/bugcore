@@ -29,6 +29,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IEventPropagator = Interface.declare({
 
+        _name: "IEventPropagator",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

@@ -32,6 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IObservable = Interface.extend(IObservationPropagator, {
 
+        _name: "IObservable",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

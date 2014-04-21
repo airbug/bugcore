@@ -48,6 +48,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableList = Class.extend(ObservableCollection, /** @lends {ObservableList.prototype} */{
 
+        _name: "ObservableList",
+
+
         //-------------------------------------------------------------------------------
         // Obj Methods
         //-------------------------------------------------------------------------------

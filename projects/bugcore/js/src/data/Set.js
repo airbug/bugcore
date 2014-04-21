@@ -20,94 +20,97 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Collection      = bugpack.require('Collection');
-var ISet            = bugpack.require('ISet');
-var Obj             = bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Collection.<D>}
- * @implements {ISet.<D>}
- * @template D
- */
-var Set = Class.extend(Collection, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Obj Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Collection      = bugpack.require('Collection');
+    var ISet            = bugpack.require('ISet');
+    var Obj             = bugpack.require('Obj');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {boolean=} deep
-     * @return {Set.<D>}
+     * @class
+     * @extends {Collection.<D>}
+     * @implements {ISet.<D>}
+     * @template D
      */
-    clone: function(deep) {
-        var cloneSet = new Set();
-        if (deep) {
-            this.forEach(function(item){
-                cloneSet.add(Obj.clone(item, true));
-            });
-        } else {
-            cloneSet.addAll(this);
+    var Set = Class.extend(Collection, {
+
+        _name: "Set",
+
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {boolean=} deep
+         * @return {Set.<D>}
+         */
+        clone: function(deep) {
+            var cloneSet = new Set();
+            if (deep) {
+                this.forEach(function(item){
+                    cloneSet.add(Obj.clone(item, true));
+                });
+            } else {
+                cloneSet.addAll(this);
+            }
+            return cloneSet;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Collection Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @param {D} value
+         * @return {boolean}
+         */
+        add: function(value) {
+            if (!this.getHashStore().hasValue(value)) {
+                this.getHashStore().addValue(value);
+                return true;
+            }
+            return false;
+        },
+
+        /**
+         * @override
+         * @param {function(I):*} fn
+         * @param {*} context
+         * @return {Set.<*>}
+         */
+        map: function(fn, context) {
+            var newArray    = this.getValueArray().map(fn, context);
+            return new Set(newArray);
         }
-        return cloneSet;
-    },
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Collection Methods
+    // Implement Interfaces
     //-------------------------------------------------------------------------------
 
-    /**
-     * @override
-     * @param {D} value
-     * @return {boolean}
-     */
-    add: function(value) {
-        if (!this.getHashStore().hasValue(value)) {
-            this.getHashStore().addValue(value);
-            return true;
-        }
-        return false;
-    },
+    Class.implement(Set, ISet);
 
-    /**
-     * @override
-     * @param {function(I):*} fn
-     * @param {*} context
-     * @return {Set.<*>}
-     */
-    map: function(fn, context) {
-        var newArray    = this.getValueArray().map(fn, context);
-        return new Set(newArray);
-    }
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('Set', Set);
 });
-
-
-//-------------------------------------------------------------------------------
-// Implement Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(Set, ISet);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Set', Set);

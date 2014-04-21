@@ -33,6 +33,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IMultiMap = Interface.extend(IMap, /** @lends {IMultiMap.prototype} */{
 
+        _name: "IMultiMap",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

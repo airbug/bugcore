@@ -29,6 +29,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IDocument = Interface.declare({
 
+        _name: "IDocument",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

@@ -10,99 +10,102 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class               = bugpack.require('Class');
-var Obj                 = bugpack.require('Obj');
-var TypeUtil            = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @extends {Obj}
- */
-var UrlQuery = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class               = bugpack.require('Class');
+    var Obj                 = bugpack.require('Obj');
+    var TypeUtil            = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {string} queryKey
-     * @param {*} queryValue
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function(queryKey, queryValue) {
+    var UrlQuery = Class.extend(Obj, {
 
-        this._super();
+        _name: "UrlQuery",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {string}
+         * @constructs
+         * @param {string} queryKey
+         * @param {*} queryValue
          */
-        this.queryKey   = queryKey;
+        _constructor: function(queryKey, queryValue) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.queryKey   = queryKey;
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.queryValue  = queryValue;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {*}
+         * @returns {string}
          */
-        this.queryValue  = queryValue;
-    },
+        getQueryKey: function() {
+            return this.queryKey;
+        },
+
+        /**
+         * @param {string} queryKey
+         */
+        setQueryKey: function(queryKey) {
+            this.queryKey   = queryKey;
+        },
+
+        /**
+         * @returns {*}
+         */
+        getQueryValue: function() {
+            return this.queryValue;
+        },
+
+        /**
+         * @param {*} queryValue
+         */
+        setQueryValue: function(queryValue) {
+            this.queryValue = queryValue;
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @returns {string}
-     */
-    getQueryKey: function() {
-        return this.queryKey;
-    },
-
-    /**
-     * @param {string} queryKey
-     */
-    setQueryKey: function(queryKey) {
-        this.queryKey   = queryKey;
-    },
-
-    /**
-     * @returns {*}
-     */
-    getQueryValue: function() {
-        return this.queryValue;
-    },
-
-    /**
-     * @param {*} queryValue
-     */
-    setQueryValue: function(queryValue) {
-        this.queryValue = queryValue;
-    }
+    bugpack.export('UrlQuery', UrlQuery);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('UrlQuery', UrlQuery);

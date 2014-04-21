@@ -44,6 +44,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var DependencyGraph = Class.extend(Graph, {
 
+        _name: "DependencyGraph",
+
+
         //-------------------------------------------------------------------------------
         // Public Methods
         //-------------------------------------------------------------------------------

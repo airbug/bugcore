@@ -46,7 +46,10 @@ require('bugpack').context("*", function(bugpack) {
      * @implements {IObservable}
      */
     var Observable = Class.extend(ObservationPropagator, {
-    
+
+        _name: "Observable",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

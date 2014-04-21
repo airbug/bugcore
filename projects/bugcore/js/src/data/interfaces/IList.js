@@ -33,6 +33,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IList = Interface.extend(ICollection, {
 
+        _name: "IList",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

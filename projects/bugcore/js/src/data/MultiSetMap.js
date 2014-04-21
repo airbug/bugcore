@@ -16,67 +16,74 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var MultiMap    = bugpack.require('MultiMap');
-var Set         = bugpack.require('Set');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var MultiSetMap = Class.extend(MultiMap, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Object Implementation
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class       = bugpack.require('Class');
+    var MultiMap    = bugpack.require('MultiMap');
+    var Set         = bugpack.require('Set');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {*}
+     * @class
+     * @extends {MultiMap}
      */
-    clone: function() {
-        var cloneMultiSetMap = new MultiSetMap();
-        cloneMultiSetMap.putAll(this);
-        return cloneMultiSetMap;
-    },
+    var MultiSetMap = Class.extend(MultiMap, {
+
+        _name: "MultiSetMap",
+
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {*}
+         */
+        clone: function() {
+            var cloneMultiSetMap = new MultiSetMap();
+            cloneMultiSetMap.putAll(this);
+            return cloneMultiSetMap;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Map Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @return {*}
+         */
+        put: function(key, value) {
+            var valueSet = this.hashTable.get(key);
+            if (!valueSet) {
+                valueSet = new Set();
+                this.hashTable.put(key, valueSet);
+            }
+            var result = valueSet.add(value);
+            if (result) {
+                return value;
+            }
+            return undefined;
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Class methods
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {*} key
-     * @param {*} value
-     * @return {*}
-     */
-    put: function(key, value) {
-        var valueSet = this.hashTable.get(key);
-        if (!valueSet) {
-            valueSet = new Set();
-            this.hashTable.put(key, valueSet);
-        }
-        var result = valueSet.add(value);
-        if (result) {
-            return value;
-        }
-        return undefined;
-    }
+    bugpack.export('MultiSetMap', MultiSetMap);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('MultiSetMap', MultiSetMap);

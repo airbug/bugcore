@@ -9,201 +9,211 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class = bugpack.require('Class');
-var Obj =   bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var HashTableNode = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function() {
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
 
-        this._super();
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var HashTableNode = Class.extend(Obj, {
+
+        _name: "HashTableNode",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {number}
+         * @constructs
          */
-        this.count = 0;
+        _constructor: function() {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.count = 0;
+
+            /**
+             * @private
+             * @type {Array<*>}
+             */
+            this.hashTableKeyArray = [];
+
+            /**
+             * @private
+             * @type {Array<*>}
+             */
+            this.hashTableValueArray = [];
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Array<*>}
+         * @return {number}
          */
-        this.hashTableKeyArray = [];
+        getCount: function() {
+            return this.count;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Object Implementation
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Array<*>}
+         * @return {string}
          */
-        this.hashTableValueArray = [];
-    },
+        toString: function() {
+            var output = "{";
+            output += "  count:" + this.getCount() + ",\n";
+            output += "  hashTableKeyArray:[\n";
+            this.hashTableKeyArray.forEach(function(value) {
+                output += value.toString() + ",";
+            });
+            output += "  ]";
+            output += "  hashTableValueArray:[\n";
+            this.hashTableValueArray.forEach(function(value) {
+                output += value.toString() + ",";
+            });
+            output += "  ]";
+            output += "}";
+            return output;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Class Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {number}
-     */
-    getCount: function() {
-        return this.count;
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Object Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @return {string}
-     */
-    toString: function() {
-        var output = "{";
-        output += "  count:" + this.getCount() + ",\n";
-        output += "  hashTableKeyArray:[\n";
-        this.hashTableKeyArray.forEach(function(value) {
-            output += value.toString() + ",";
-        });
-        output += "  ]";
-        output += "  hashTableValueArray:[\n";
-        this.hashTableValueArray.forEach(function(value) {
-            output += value.toString() + ",";
-        });
-        output += "  ]";
-        output += "}";
-        return output;
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Class Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {*} key
-     * @return {boolean}
-     */
-    containsKey: function(key) {
-        for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-            var hashTableKey = this.hashTableKeyArray[i];
-            if (Obj.equals(key, hashTableKey)) {
-                return true;
+        /**
+         * @param {*} key
+         * @return {boolean}
+         */
+        containsKey: function(key) {
+            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
+                var hashTableKey = this.hashTableKeyArray[i];
+                if (Obj.equals(key, hashTableKey)) {
+                    return true;
+                }
             }
-        }
-        return false;
-    },
+            return false;
+        },
 
-    /**
-     * @param {*} value
-     * @return {boolean}
-     */
-    containsValue: function(value) {
-        for (var i = 0, size = this.hashTableValueArray.length; i < size; i++) {
-            var hashTableValue = this.hashTableValueArray[i];
-            if (Obj.equals(value, hashTableValue)) {
-                return true;
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        containsValue: function(value) {
+            for (var i = 0, size = this.hashTableValueArray.length; i < size; i++) {
+                var hashTableValue = this.hashTableValueArray[i];
+                if (Obj.equals(value, hashTableValue)) {
+                    return true;
+                }
             }
-        }
-        return false;
-    },
+            return false;
+        },
 
-    /**
-     * @param {*} key
-     * @return {*}
-     */
-    get: function(key) {
-        for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-            var hashTableKey = this.hashTableKeyArray[i];
-            if (Obj.equals(key, hashTableKey)) {
-                return this.hashTableValueArray[i];
+        /**
+         * @param {*} key
+         * @return {*}
+         */
+        get: function(key) {
+            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
+                var hashTableKey = this.hashTableKeyArray[i];
+                if (Obj.equals(key, hashTableKey)) {
+                    return this.hashTableValueArray[i];
+                }
             }
-        }
-        return undefined;
-    },
+            return undefined;
+        },
 
-    /**
-     * @return {Array<*>}
-     */
-    getKeyArray: function() {
-        return this.hashTableKeyArray;
-    },
+        /**
+         * @return {Array<*>}
+         */
+        getKeyArray: function() {
+            return this.hashTableKeyArray;
+        },
 
-    /**
-     * @return {Array<*>}
-     */
-    getValueArray: function() {
-        return this.hashTableValueArray;
-    },
+        /**
+         * @return {Array<*>}
+         */
+        getValueArray: function() {
+            return this.hashTableValueArray;
+        },
 
-    /**
-     * @param {*} key
-     * @param {*} value
-     * @return {*}
-     */
-    put: function(key, value) {
-        for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-            var hashTableKey = this.hashTableKeyArray[i];
-            if (Obj.equals(key, hashTableKey)) {
-                var previousValue = this.hashTableValueArray[i];
-                this.hashTableValueArray[i] = value;
-                return previousValue;
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @return {*}
+         */
+        put: function(key, value) {
+            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
+                var hashTableKey = this.hashTableKeyArray[i];
+                if (Obj.equals(key, hashTableKey)) {
+                    var previousValue = this.hashTableValueArray[i];
+                    this.hashTableValueArray[i] = value;
+                    return previousValue;
+                }
             }
-        }
 
-        //NOTE BRN: If we make it to here it means we did not find a hash table entry that already exists for this key.
+            //NOTE BRN: If we make it to here it means we did not find a hash table entry that already exists for this key.
 
-        this.hashTableKeyArray.push(key);
-        this.hashTableValueArray.push(value);
-        this.count++;
-        return undefined;
-    },
+            this.hashTableKeyArray.push(key);
+            this.hashTableValueArray.push(value);
+            this.count++;
+            return undefined;
+        },
 
-    /**
-     * @param {*} key
-     * @return {*}
-     */
-    remove: function(key) {
-        for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-            var hashTableKey = this.hashTableKeyArray[i];
-            if (Obj.equals(key, hashTableKey)) {
-                var removedValue = this.hashTableValueArray[i];
-                this.hashTableKeyArray.splice(i, 1);
-                this.hashTableValueArray.splice(i, 1);
-                this.count--;
-                return removedValue;
+        /**
+         * @param {*} key
+         * @return {*}
+         */
+        remove: function(key) {
+            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
+                var hashTableKey = this.hashTableKeyArray[i];
+                if (Obj.equals(key, hashTableKey)) {
+                    var removedValue = this.hashTableValueArray[i];
+                    this.hashTableKeyArray.splice(i, 1);
+                    this.hashTableValueArray.splice(i, 1);
+                    this.count--;
+                    return removedValue;
+                }
             }
+            return undefined;
         }
-        return undefined;
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('HashTableNode', HashTableNode);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('HashTableNode', HashTableNode);

@@ -32,6 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventQueryListener = Class.extend(EventListener, {
 
+        _name: "EventQueryListener",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

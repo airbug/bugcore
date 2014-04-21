@@ -29,7 +29,7 @@ require('bugpack').context("*", function(bugpack) {
 
 
     //-------------------------------------------------------------------------------
-    // Class
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
@@ -37,6 +37,9 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Observer = Class.extend(Obj, {
+
+        _name: "Observer",
+
 
         //-------------------------------------------------------------------------------
         // Constructor

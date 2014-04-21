@@ -35,9 +35,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {ObservableCollection}
-     * @implements {ISet}
+     * @implements {ISet.<I>}
      */
     var ObservableSet = Class.extend(ObservableCollection, /** @lends {ObservableSet.prototype} */{
+
+        _name: "ObservableSet",
+
 
         //-------------------------------------------------------------------------------
         // Obj Methods

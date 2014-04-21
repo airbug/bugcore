@@ -32,6 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventListener = Class.extend(Obj, {
 
+        _name: "EventListener",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

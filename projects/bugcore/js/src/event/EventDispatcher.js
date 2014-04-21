@@ -35,6 +35,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventDispatcher = Class.extend(EventReceiver, {
 
+        _name: "EventDispatcher",
+
+
         //-------------------------------------------------------------------------------
         // IEventDispatcher Implementation
         //-------------------------------------------------------------------------------

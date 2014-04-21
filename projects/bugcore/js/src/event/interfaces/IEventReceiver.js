@@ -29,6 +29,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IEventReceiver = Interface.declare({
 
+        _name: "IEventReceiver",
+
+
         //-------------------------------------------------------------------------------
         // Interface Methods
         //-------------------------------------------------------------------------------

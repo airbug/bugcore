@@ -44,6 +44,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var NodeJsEventEmitterAdapter = Class.extend(Obj, {
 
+        _name: "NodeJsEventEmitterAdapter",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

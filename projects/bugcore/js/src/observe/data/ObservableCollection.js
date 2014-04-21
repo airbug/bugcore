@@ -57,6 +57,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableCollection = Class.extend(Observable, /** @lends {ObservableCollection.prototype} */{
 
+        _name: "ObservableCollection",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
@@ -203,6 +206,15 @@ require('bugpack').context("*", function(bugpack) {
          */
         isEmpty: function() {
             return this.observed.isEmpty();
+        },
+
+        /**
+         * @param {function(I):*} fn
+         * @param {*} context
+         * @return {ICollection.<*>}
+         */
+        map: function(fn, context) {
+            return this.observed.map(fn, context);
         },
 
         /**
