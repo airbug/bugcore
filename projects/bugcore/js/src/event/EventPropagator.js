@@ -11,128 +11,128 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class               = bugpack.require('Class');
-var IEventPropagator    = bugpack.require('IEventPropagator');
-var List                = bugpack.require('List');
-var Obj                 = bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @extends {Obj}
- * @implements {IEventPropagator}
- */
-var EventPropagator = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class               = bugpack.require('Class');
+    var IEventPropagator    = bugpack.require('IEventPropagator');
+    var List                = bugpack.require('List');
+    var Obj                 = bugpack.require('Obj');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {*} target
+     * @class
+     * @extends {Obj}
+     * @implements {IEventPropagator}
      */
-    _constructor: function(target) {
-
-        this._super();
-
+    var EventPropagator = Class.extend(Obj, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {List.<IEventPropagator>}
+         * @constructs
+         * @param {*} target
          */
-        this.eventPropagatorList    = new List();
+        _constructor: function(target) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {List.<IEventPropagator>}
+             */
+            this.eventPropagatorList    = new List();
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.target                 = target ? target : this;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {*}
+         * @returns {List.<IEventPropagator>}
          */
-        this.target                 = target ? target : this;
-    },
+        getEventPropagatorList: function() {
+            return this.eventPropagatorList;
+        },
+
+        /**
+         * @return {*}
+         */
+        getTarget: function() {
+            return this.target;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // IEventPropagator Implementation
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @returns {List.<IEventPropagator>}
-     */
-    getEventPropagatorList: function() {
-        return this.eventPropagatorList;
-    },
+        /**
+         * @param {IEventPropagator} eventPropagator
+         */
+        addEventPropagator: function(eventPropagator) {
+            if (!this.eventPropagatorList.contains(eventPropagator)) {
+                this.eventPropagatorList.add(eventPropagator);
+            }
+        },
 
-    /**
-     * @return {*}
-     */
-    getTarget: function() {
-        return this.target;
-    },
+        /**
+         * @param {Event} event
+         */
+        propagateEvent: function(event) {
+            if (!event.isPropagationStopped()) {
+                event.setCurrentTarget(this.getTarget());
+                this.eventPropagatorList.forEach(function(eventPropagator) {
+                    eventPropagator.propagateEvent(event);
+                });
+            }
+        },
 
-
-    //-------------------------------------------------------------------------------
-    // IEventPropagator Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {IEventPropagator} eventPropagator
-     */
-    addEventPropagator: function(eventPropagator) {
-        if (!this.eventPropagatorList.contains(eventPropagator)) {
-            this.eventPropagatorList.add(eventPropagator);
+        /**
+         * @param {IEventPropagator} eventPropagator
+         */
+        removeEventPropagator: function(eventPropagator) {
+            if (this.eventPropagatorList.contains(eventPropagator)) {
+                this.eventPropagatorList.remove(eventPropagator);
+            }
         }
-    },
+    });
 
-    /**
-     * @param {Event} event
-     */
-    propagateEvent: function(event) {
-        if (!event.isPropagationStopped()) {
-            event.setCurrentTarget(this.getTarget());
-            this.eventPropagatorList.forEach(function(eventPropagator) {
-                eventPropagator.propagateEvent(event);
-            });
-        }
-    },
 
-    /**
-     * @param {IEventPropagator} eventPropagator
-     */
-    removeEventPropagator: function(eventPropagator) {
-        if (this.eventPropagatorList.contains(eventPropagator)) {
-            this.eventPropagatorList.remove(eventPropagator);
-        }
-    }
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(EventPropagator, IEventPropagator);
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('EventPropagator', EventPropagator);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(EventPropagator, IEventPropagator);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('EventPropagator', EventPropagator);

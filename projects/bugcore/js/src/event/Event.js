@@ -32,6 +32,8 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
 
+        _name: "Event",
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
@@ -39,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          * @param {string} type
-         * @param {*} data
+         * @param {*=} data
          */
         _constructor: function(type, data) {
 
@@ -93,7 +95,6 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
          * @return {boolean}
          */
         getBubbles: function() {

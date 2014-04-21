@@ -10,128 +10,144 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class =     bugpack.require('Class');
-var HashUtil =  bugpack.require('HashUtil');
-var Obj =       bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var PublisherSubscription = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(topic, subscriberFunction, subscriberContext, oneTimeDelivery) {
+    var Class           = bugpack.require('Class');
+    var HashUtil        = bugpack.require('HashUtil');
+    var Obj             = bugpack.require('Obj');
 
-        this._super();
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var PublisherSubscription = Class.extend(Obj, {
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {string} topic
+         * @param {function(string, PublisherMessage)} subscriberFunction
+         * @param {Object} subscriberContext
+         * @param {boolean} oneTimeDelivery
+         */
+        _constructor: function(topic, subscriberFunction, subscriberContext, oneTimeDelivery) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.oneTimeDelivery        = oneTimeDelivery || false;
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.subscriberContext      = subscriberContext;
+
+            /**
+             * @private
+             * @type {function(string, PublisherMessage)}
+             */
+            this.subscriberFunction     = subscriberFunction;
+
+            /**
+             * @private
+             * @type {*}
+             */
+            this.topic                  = topic;
+        },
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Getters and Setters
         //-------------------------------------------------------------------------------
 
-        if (oneTimeDelivery === undefined) {
-            oneTimeDelivery = false;
+        /**
+         * @return {string}
+         */
+        getTopic: function() {
+            return this.topic;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {boolean}
+         */
+        isOneTimeDelivery: function() {
+            return this.oneTimeDelivery;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Obj Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {number}
+         */
+        hashCode: function() {
+            if (!this._hashCode) {
+                this._hashCode = Obj.hashCode("[PublisherSubscription]" + Obj.hashCode(this.topic) + Obj.hashCode(this.subscriberFunction) +
+                    Obj.hashCode(this.subscriberContext));
+            }
+            return this._hashCode;
+        },
+
+        /**
+         * @param {*} value
+         * @return {boolean}
+         */
+        equals: function(value) {
+            if (Class.doesExtend(value, PublisherSubscription)) {
+                return (Obj.equals(this.topic, value.topic) &&
+                    Obj.equals(this.subscriberFunction, value.subscriberFunction) &&
+                    Obj.equals(this.subscriberContext, value.subscriberContext));
+            }
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {PublisherMessage} message
+         */
+        deliverMessage: function(message) {
+            this.subscriberFunction.call(this.subscriberContext, message);
         }
-
-        /**
-         * @private
-         * @type {boolean}
-         */
-        this.oneTimeDelivery = oneTimeDelivery;
-
-        /**
-         * @private
-         * @type {function(string, *}}
-         */
-        this.subscriberFunction = subscriberFunction;
-
-        /**
-         * @private
-         * @type {Object}
-         */
-        this.subscriberContext = subscriberContext;
-
-        /**
-         * @private
-         * @type {*}
-         */
-        this.topic = topic;
-    },
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @return {string}
-     */
-    getTopic: function() {
-        return this.topic;
-    },
-
-    /**
-     * @return {boolean}
-     */
-    isOneTimeDelivery: function() {
-        return this.oneTimeDelivery;
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Object Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @return {number}
-     */
-    hashCode: function() {
-        if (!this._hashCode) {
-            this._hashCode = Obj.hashCode("[PublisherSubscription]" + Obj.hashCode(this.topic) + Obj.hashCode(this.subscriberFunction) +
-                Obj.hashCode(this.subscriberContext));
-        }
-        return this._hashCode;
-    },
-
-    equals: function(value) {
-        if (Class.doesExtend(value, PublisherSubscription)) {
-            return (Obj.equals(this.topic, value.topic) &&
-                Obj.equals(this.subscriberFunction, value.subscriberFunction) &&
-                Obj.equals(this.subscriberContext, value.subscriberContext));
-        }
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Class Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {PublisherMessage} message
-     */
-    deliverMessage: function(message) {
-        this.subscriberFunction.call(this.subscriberContext, message);
-    }
+    bugpack.export('PublisherSubscription', PublisherSubscription);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('PublisherSubscription', PublisherSubscription);

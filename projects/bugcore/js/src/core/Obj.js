@@ -45,6 +45,8 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Obj = Class.declare(/** @lends {Obj.prototype} */{
 
+        _name: "Obj",
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
@@ -52,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          */
-        _constructor: function() {
+        _constructor: function Obj() {
 
             this._super();
 
@@ -106,8 +108,9 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         clone: function(deep) {
-            var classObject = this.getClass();
-            var cloneObject = new classObject();
+            var _class          = this.getClass();
+            var constructor     = _class.getConstructor();
+            var cloneObject     = new constructor();
             Obj.forIn(this, function(key, value) {
                 if (!TypeUtil.isFunction(value)) {
                     if (deep) {
@@ -198,7 +201,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @private
-     * @type {function()}
+     * @type {function(Object, string):boolean}
      */
     Obj.hasOwnProperty = Object.prototype.hasOwnProperty;
 

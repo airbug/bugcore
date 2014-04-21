@@ -9,82 +9,89 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack             = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class               = bugpack.require('Class');
-var EventListener       = bugpack.require('EventListener');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @extends {EventListener}
- */
-var EventQueryListener = Class.extend(EventListener, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(listenerFunction, listenerContext, once, eventQuery) {
+    var Class               = bugpack.require('Class');
+    var EventListener       = bugpack.require('EventListener');
 
-        this._super(listenerFunction, listenerContext, once);
 
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {EventListener}
+     */
+    var EventQueryListener = Class.extend(EventListener, {
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {EventQuery}
+         * @constructs
+         * @param {function(Event)} listenerFunction
+         * @param {Object} listenerContext
+         * @param {boolean} once
+         * @param {EventQuery} eventQuery
          */
-        this.eventQuery     = eventQuery;
-    },
+        _constructor: function(listenerFunction, listenerContext, once, eventQuery) {
+
+            this._super(listenerFunction, listenerContext, once);
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
 
-    /**
-     * @return {EventQuery}
-     */
-    getEventQuery: function() {
-        return this.eventQuery;
-    },
+            /**
+             * @private
+             * @type {EventQuery}
+             */
+            this.eventQuery     = eventQuery;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // EventListener Methods
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @override
-     * @param {Event} event
-     */
-    hearEvent: function(event) {
-        var result = this.eventQuery.run(event);
-        if (result) {
-            this.getListenerFunction().call(this.getListenerContext(), event);
+        /**
+         * @return {EventQuery}
+         */
+        getEventQuery: function() {
+            return this.eventQuery;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // EventListener Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @param {Event} event
+         */
+        hearEvent: function(event) {
+            var result = this.eventQuery.run(event);
+            if (result) {
+                this.getListenerFunction().call(this.getListenerContext(), event);
+            }
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('EventQueryListener', EventQueryListener);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('EventQueryListener', EventQueryListener);

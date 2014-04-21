@@ -4,6 +4,7 @@
 
 //@Export('Interface')
 
+//@Require('Implementable')
 //@Require('TypeUtil')
 
 
@@ -17,7 +18,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var TypeUtil    = bugpack.require('TypeUtil');
+    var Implementable   = bugpack.require('Implementable');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -26,19 +28,57 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @constructor
+     * @param {function(new:Implementable)} implementable
+     * @param {string} name
+     * @param {Interface} superinterface
      */
-    var Interface   = function() {};
+    var Interface = function(implementable, name, superinterface) {
 
-    var InterfaceStatic = {
-        getBugPackKey: function() {
+        /**
+         * @private
+         * @type {function(new:Implementable)}
+         */
+        this.implementable      = implementable;
 
-            //NOTE BRN: Perform this check for backwards compatibility with bugpack <= 0.0.5
+        /**
+         * @private
+         * @type {string}
+         */
+        this.name               = name;
 
-            if (this._bugPack) {
-                return this._bugPack.bugPackKey;
-            } else {
-                return this;
-            }
+        /**
+         * @private
+         * @type {Interface}
+         */
+        this.superinterface     = superinterface;
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Prototype
+    //-------------------------------------------------------------------------------
+
+    Interface.prototype = {
+
+        /**
+         * @return {function(new:Implementable)}
+         */
+        getImplementable: function() {
+            return this.implementable;
+        },
+
+        /**
+         * @return {string}
+         */
+        getName: function() {
+            return this.name;
+        },
+
+        /**
+         * @return {Interface}
+         */
+        getSuperinterface: function() {
+            return this.superinterface;
         }
     };
 
@@ -49,55 +89,56 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {Object} declaration
-     * @return {Interface}
+     * @param {Object.<string, function(..):*>} declaration
+     * @return {function(new:Implementable)}
      */
     Interface.declare = function(declaration) {
-        var prototype = {};
-        for (var name in declaration) {
-            if (TypeUtil.isFunction(declaration[name])) {
-                prototype[name] = declaration[name];
-            } else {
-                throw new Error("Interface can only declare functions");
-            }
-        }
-        var newInterface = function() {};
-        newInterface.prototype = prototype;
-        newInterface.constructor = newInterface;
-        Interface.static(newInterface, InterfaceStatic);
-        return newInterface;
+        return Interface.extend(Implementable, declaration);
     };
 
     /**
      * @static
-     * @param {Interface} _interface
-     * @param {Object} declaration
-     * @return {Interface}
+     * @param {function(new:Implementable)} implementable
+     * @param {Object.<string, function(..):*>} declaration
+     * @return {function(new:Implementable)}
      */
-    Interface.extend = function(_interface, declaration) {
-        var prototype = new _interface();
+    Interface.extend = function(implementable, declaration) {
+        var prototype       = new implementable();
+        var interfaceName   = declaration["_name"] || "";
+        delete declaration["_name"];
         for (var name in declaration) {
-            if (TypeUtil.isFunction(declaration[name])) {
-                prototype[name] = declaration[name];
-            } else {
-                throw new Error("Interface can only declare functions");
+            if (Object.prototype.hasOwnProperty.call(declaration, name)) {
+                if (TypeUtil.isFunction(declaration[name])) {
+                    prototype[name] = declaration[name];
+                } else {
+                    throw new Error("Interface can only declare functions");
+                }
             }
         }
-        var newInterface = function() {};
-        newInterface.prototype = prototype;
-        newInterface.constructor = newInterface;
-        Interface.static(newInterface, InterfaceStatic);
-        return newInterface;
+        var newImplementable = function() {};
+        newImplementable.prototype = prototype;
+        newImplementable.constructor = newImplementable;
+        Interface.static(newImplementable, Implementable);
+        var newInterface = new Interface(newImplementable, interfaceName, implementable.getInterface());
+        Object.defineProperty(newImplementable, "_interface", {
+            value : newInterface,
+            writable : false,
+            enumerable : false,
+            configurable : false
+        });
+        return newImplementable;
     };
 
     /**
      * @static
-     * @param {Interface} _interface
+     * @param {function(new:Implementable)} implementable
      * @param {Object} declaration
      */
-    Interface['static'] = function(_interface, declaration) {
+    Interface['static'] = function(implementable, declaration) {
         for (var name in declaration) {
-            _interface[name] = declaration[name];
+            if (Object.prototype.hasOwnProperty.call(declaration, name)) {
+                implementable[name] = declaration[name];
+            }
         }
     };
 

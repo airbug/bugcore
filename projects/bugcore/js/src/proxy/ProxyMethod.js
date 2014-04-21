@@ -11,83 +11,96 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var Interface   = bugpack.require('Interface');
-var IProxy      = bugpack.require('IProxy');
-var Obj         = bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var ProxyMethod = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(method, context) {
-
-        this._super();
-
-
-        //-------------------------------------------------------------------------------
-        // Private Properties
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         * @type {Object}
-         */
-        this.context = context;
-
-        /**
-         * @private
-         * @type {function()}
-         */
-        this.method = method;
-    },
+    var Class       = bugpack.require('Class');
+    var Interface   = bugpack.require('Interface');
+    var IProxy      = bugpack.require('IProxy');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
-    // IProxy Implementation
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {string} functionName
-     * @param {Array.<*>} args
+     * @class
+     * @extends {Obj}
+     * @implements {IProxy}
      */
-    proxy: function(functionName, args) {
-        var target = this.method.call(this.context);
-        if (target) {
-            return target[functionName].apply(target, args);
-        } else {
-            throw new Error("Method did not return a value that could be proxied.");
+    var ProxyMethod = Class.extend(Obj, {
+
+        _name: "ProxyMethod",
+
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {function(..):*} method
+         * @param {Object} context
+         */
+        _constructor: function(method, context) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.context    = context;
+
+            /**
+             * @private
+             * @type {function(...):*}
+             */
+            this.method     = method;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IProxy Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {string} functionName
+         * @param {Array.<*>} args
+         */
+        proxy: function(functionName, args) {
+            var target = this.method.call(this.context);
+            if (target) {
+                return target[functionName].apply(target, args);
+            } else {
+                throw new Error("Method did not return a value that could be proxied.");
+            }
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(ProxyMethod, IProxy);
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('ProxyMethod', ProxyMethod);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(ProxyMethod, IProxy);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('ProxyMethod', ProxyMethod);

@@ -5,7 +5,9 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('Event')
+//@Require('Constructor')
+//@Require('Obj')
+//@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestAnnotation')
 
@@ -21,7 +23,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
-    var Event           = bugpack.require('Event');
+    var Constructor     = bugpack.require('Constructor');
+    var Obj             = bugpack.require('Obj');
+    var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
@@ -38,41 +42,22 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Tests
     //-------------------------------------------------------------------------------
 
-    /**
-     * This tests
-     * 1) Instantiation of a new Event
-     * 2) That the "target" value is null after instantiation since the target is set when the event is dispatched
-     */
-    var eventInstantiationTest = {
+    var constructorInstantiationTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function() {
-            this.testType = "testEventType";
-            this.testData = "testEventData";
-            this.event = new Event(this.testType, this.testData);
+        setup: function (test) {
+            this.testConstructor = new Constructor();
         },
 
 
         // Run Test
         //-------------------------------------------------------------------------------
 
-        test: function(test) {
-            test.assertTrue(Class.doesExtend(this.event, Event),
-                "Assert instance of Event");
-            test.assertEqual(this.event.getClass().getConstructor(), Event,
-                "Assert #getClass#getConstructor returns Event");
-            test.assertEqual(this.event.getBubbles(), true,
-                "Assert event bubbles by default after instantiation");
-            test.assertEqual(this.event.getData(), this.testData,
-                "Assert event data was set correctly during instantiation");
-            test.assertEqual(this.event.isPropagationStopped(), false,
-                "Assert propagation is not stopped by default");
-            test.assertEqual(this.event.getTarget(), null,
-                "Assert target is null after instantiation");
-            test.assertEqual(this.event.getType(), this.testType,
-                "Assert event type was set correctly during instantiation");
+        test: function (test) {
+            test.assertTrue(Class.doesExtend(this.testConstructor, Constructor),
+                "Assert instance of Constructor");
         }
     };
 
@@ -81,7 +66,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(eventInstantiationTest).with(
-        test().name("Event instantiation test")
+    bugmeta.annotate(constructorInstantiationTest).with(
+        test().name("Constructor - instantiation test")
     );
 });

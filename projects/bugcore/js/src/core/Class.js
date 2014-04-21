@@ -36,8 +36,86 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @constructor
+     * @param {function(new:Constructor)} constructor
+     * @param {Array.<Interface>} interfaces
+     * @param {string} name
+     * @param {Class} superclass
      */
-    var Class = function () {};
+    var Class = function(constructor, interfaces, name, superclass) {
+
+        /**
+         * @private
+         * @type {function(new:Constructor)}
+         */
+        this.constructor    = constructor;
+
+        /**
+         * @private
+         * @type {Array.<Interface>}
+         */
+        this.interfaces     = interfaces;
+
+        /**
+         * @private
+         * @type {string}
+         */
+        this.name           = name;
+
+        /**
+         * @private
+         * @type {Class}
+         */
+        this.superclass     = superclass;
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Prototype
+    //-------------------------------------------------------------------------------
+
+    Class.prototype = {
+
+        /**
+         * @return {function(new:Constructor)}
+         */
+        getConstructor: function() {
+            return this.constructor;
+        },
+
+        /**
+         * @return {Array.<Interface>}
+         */
+        getInterfaces: function() {
+            return this.interfaces;
+        },
+
+        /**
+         * @return {string}
+         */
+        getName: function() {
+            return this.name;
+        },
+
+        /**
+         * @return {Class}
+         */
+        getSuperclass: function() {
+            return this.superclass;
+        },
+
+        /**
+         * @param {Array.<*>=} args
+         * @return {Constructor}
+         */
+        newInstance: function(args) {
+            var constructor = this.getConstructor();
+            function F(args) {
+                return constructor.apply(this, args);
+            }
+            F.prototype = constructor.prototype;
+            return new F(args);
+        }
+    };
 
 
     //-------------------------------------------------------------------------------
@@ -60,18 +138,19 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(new:?)} adapteeConstructor
      * @param {Object} declaration
+     * @return {function(new:Constructor)}
      */
-    Class.adapt = function (adapteeConstructor, declaration) {
+    Class.adapt = function(adapteeConstructor, declaration) {
         var originalConstructorPrototype = Constructor.prototype;
         Constructor.prototype = adapteeConstructor.prototype;
         var prototype = new Constructor();
         Constructor.prototype = originalConstructorPrototype;
-        var newConstructor = function () {
+        var newConstructor = function() {
         };
         for (var name in originalConstructorPrototype) {
             prototype[name] = originalConstructorPrototype[name];
         }
-        prototype._constructor = function () {
+        prototype._constructor = function() {
             adapteeConstructor.apply(this, arguments);
         };
         Class.static(newConstructor, Constructor);
@@ -86,79 +165,8 @@ require('bugpack').context("*", function(bugpack) {
      * @param {Object} declaration
      * @return {function(new:Constructor)}
      */
-    Class.declare = function (declaration) {
+    Class.declare = function(declaration) {
         return Class.extend(Constructor, declaration);
-    };
-
-    /**
-     * @static
-     * @param {function(new:Constructor)} constructor
-     * @param {Object} declaration
-     * @return {function(new:Constructor)}
-     */
-    Class.extend = function (constructor, declaration) {
-        var _super = constructor.prototype;
-        Class.extending = true;
-        var prototype = new constructor();
-        Class.extending = false;
-        for (var name in declaration) {
-            prototype[name] = TypeUtil.isFunction(prototype[name]) ?
-                (function (name, fn) {
-                    return function () {
-                        var oldSuper = this._super;
-                        this._super = _super[name];
-                        var returnValue = fn.apply(this, arguments);
-                        this._super = oldSuper;
-                        return returnValue;
-                    };
-                })(name, declaration[name]) :
-                declaration[name];
-        }
-        var newConstructor = function () {
-            if (!Class.extending && this._constructor) {
-                this._class = newConstructor;
-                this._constructor.apply(this, arguments);
-            }
-        };
-        newConstructor.prototype = prototype;
-        newConstructor.constructor = newConstructor;
-        Class.static(newConstructor, Constructor);
-        newConstructor._interfaces = [];
-        newConstructor._superclass = constructor;
-        constructor.getInterfaces().forEach(function (_interface) {
-            newConstructor._interfaces.push(_interface);
-        });
-        newConstructor.newInstance = (function () {
-            function F(args) {
-                return newConstructor.apply(this, args);
-            }
-
-            F.prototype = newConstructor.prototype;
-
-            return function (args) {
-                return new F(args);
-            }
-        })();
-        return newConstructor;
-    };
-
-    /**
-     * @static
-     * @param {function(new:Constructor)} constructor
-     * @param {function(new:Interface)} _interface
-     */
-    Class.implement = function (constructor, _interface) {
-        constructor.getInterfaces().forEach(function (implementedInterface) {
-            if (implementedInterface === _interface) {
-                throw new Error("Interface '" + implementedInterface.getBugPackKey() + "' has already been implemented by this class");
-            }
-        });
-        for (var methodName in _interface.prototype) {
-            if (!TypeUtil.isFunction(constructor.prototype[methodName])) {
-                throw new Error("Class '" + constructor.getBugPackKey() + "' does not implement interface method '" + methodName + "'");
-            }
-        }
-        constructor._interfaces.push(_interface);
     };
 
     /**
@@ -167,22 +175,22 @@ require('bugpack').context("*", function(bugpack) {
      * @param {function(new:Constructor)} constructor
      * @return {boolean}
      */
-    Class.doesExtend = function (value, constructor) {
+    Class.doesExtend = function(value, constructor) {
         return value instanceof constructor;
     };
 
     /**
      * @static
      * @param {*} value
-     * @param {function(new:Interface)} _interface
+     * @param {function(new:Implementable)} implementable
      * @return {boolean}
      */
-    Class.doesImplement = function (value, _interface) {
+    Class.doesImplement = function(value, implementable) {
         if (TypeUtil.isObject(value) && TypeUtil.isFunction(value.getClass)) {
             for (var i = 0, size = value.getClass().getInterfaces().length; i < size; i++) {
-                var implementedInterface = value.getClass().getInterfaces()[i];
-                var implementedInterfaceInstance = new implementedInterface();
-                if (implementedInterfaceInstance instanceof _interface) {
+                var interfaceImplementable = value.getClass().getInterfaces()[i].getImplementable();
+                var implementableInstance = new interfaceImplementable();
+                if (implementableInstance instanceof implementable) {
                     return true;
                 }
             }
@@ -194,10 +202,95 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(new:Constructor)} constructor
      * @param {Object} declaration
+     * @return {function(new:Constructor)}
      */
-    Class['static'] = function (constructor, declaration) {
+    Class.extend = function(constructor, declaration) {
+        var _super = constructor.prototype;
+        Class.extending = true;
+        var prototype = new constructor();
+        Class.extending = false;
+        var className   = declaration["_name"];
+        var newClass    = null;
+        delete declaration["_name"];
         for (var name in declaration) {
-            constructor[name] = declaration[name];
+            if (Object.prototype.hasOwnProperty.call(declaration, name)) {
+                prototype[name] = TypeUtil.isFunction(prototype[name]) ?
+                    (function(name, fn) {
+                        return function() {
+                            var oldSuper = this._super;
+                            this._super = _super[name];
+                            var returnValue = fn.apply(this, arguments);
+                            this._super = oldSuper;
+                            return returnValue;
+                        };
+                    })(name, declaration[name]) :
+                    declaration[name];
+            }
+        }
+        var newConstructor = function() {
+            if (!Class.extending) {
+                Object.defineProperty(this, "_class", {
+                    value : newClass,
+                    writable : false,
+                    enumerable : false,
+                    configurable : false
+                });
+                if (this._constructor) {
+                    this._constructor.apply(this, arguments);
+                }
+            }
+        };
+        newConstructor.prototype = prototype;
+        newConstructor.constructor = newConstructor;
+        Class.static(newConstructor, Constructor);
+        var superclass  = constructor.getClass();
+        var interfaces  = [];
+        if (superclass) {
+            superclass.getInterfaces().forEach(function(_interface) {
+                interfaces.push(_interface);
+            });
+        }
+        newClass = new Class(newConstructor, interfaces, className, superclass);
+        Object.defineProperty(newConstructor, "_class", {
+            value : newClass,
+            writable : false,
+            enumerable : false,
+            configurable : false
+        });
+        return newConstructor;
+    };
+
+    /**
+     * @static
+     * @param {function(new:Constructor)} constructor
+     * @param {function(new:Implementable)} implementable
+     */
+    Class.implement = function(constructor, implementable) {
+        constructor.getClass().getInterfaces().forEach(function(implementedInterface) {
+            if (implementedInterface === implementable.getInterface()) {
+                throw new Error("Interface '" + implementedInterface.getName() + "' has already been implemented by " +
+                    "the class '" + constructor.getClass().getName() + "'");
+            }
+        });
+        for (var methodName in implementable.prototype) {
+            if (!TypeUtil.isFunction(constructor.prototype[methodName])) {
+                throw new Error("Class '" + constructor.getClass().getName() + "' does not implement method '" +
+                    methodName + "' of interface '" + implementable.getInterface().getName() + "'");
+            }
+        }
+        constructor.getClass().getInterfaces().push(implementable.getInterface());
+    };
+
+    /**
+     * @static
+     * @param {function(new:Constructor)} constructor
+     * @param {Object} declaration
+     */
+    Class['static'] = function(constructor, declaration) {
+        for (var name in declaration) {
+            if (Object.prototype.hasOwnProperty.call(declaration, name)) {
+                constructor[name] = declaration[name];
+            }
         }
     };
 

@@ -46,7 +46,7 @@ var Proxy = Class.extend(Obj, {});
 
 /**
  * @param {Object} proxyInstance
- * @param {(function() | Object | IProxy}} proxy
+ * @param {(function() | Object | IProxy)} proxy
  * @param {Array<string>} functionNameArray
  */
 Proxy.proxy = function(proxyInstance, proxy, functionNameArray) {
@@ -64,9 +64,9 @@ Proxy.proxy = function(proxyInstance, proxy, functionNameArray) {
 };
 
 /**
- * @param {function(...)} method
+ * @param {function(...):*} method
  * @param {Object=} context
- * @return {*}
+ * @return {ProxyMethod}
  */
 Proxy.method = function(method, context) {
     return new ProxyMethod(method, context);
@@ -74,7 +74,7 @@ Proxy.method = function(method, context) {
 
 /**
  * @param {Object} instance
- * @return {*}
+ * @return {ProxyObject}
  */
 Proxy.object = function(instance) {
     return new ProxyObject(instance);
@@ -83,7 +83,7 @@ Proxy.object = function(instance) {
 /**
  * @param {Object} instance
  * @param {string} propertyName
- * @return {*}
+ * @return {ProxyProperty}
  */
 Proxy.property = function(instance, propertyName) {
     return new ProxyProperty(instance, propertyName);

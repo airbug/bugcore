@@ -8,51 +8,51 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Interface = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- */
-var IEventPropagator = Interface.declare({
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Interface = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {IEventPropagator} eventPropagator
+     * @interface
      */
-    addEventPropagator: function(eventPropagator) {},
+    var IEventPropagator = Interface.declare({
 
-    /**
-     * @param {Event} event
-     */
-    propagateEvent: function(event) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {IEventPropagator} eventPropagator
-     */
-    removeEventPropagator: function(eventPropagator) {}
+        /**
+         * @param {IEventPropagator} eventPropagator
+         */
+        addEventPropagator: function(eventPropagator) {},
+
+        /**
+         * @param {Event} event
+         */
+        propagateEvent: function(event) {},
+
+        /**
+         * @param {IEventPropagator} eventPropagator
+         */
+        removeEventPropagator: function(eventPropagator) {}
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IEventPropagator', IEventPropagator);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IEventPropagator', IEventPropagator);

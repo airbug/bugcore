@@ -8,74 +8,74 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Interface           = bugpack.require('Interface');
-
-
-//-------------------------------------------------------------------------------
-// Declare Interface
-//-------------------------------------------------------------------------------
-
-/**
- * @interface
- */
-var IEventReceiver = Interface.declare({
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Interface Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Interface           = bugpack.require('Interface');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Interface
     //-------------------------------------------------------------------------------
 
     /**
-     * @return {IEventPropagator}
+     * @interface
      */
-    getParentPropagator: function() {},
+    var IEventReceiver = Interface.declare({
 
-    /**
-     * @param {IEventPropagator} parentPropagator
-     */
-    setParentPropagator: function(parentPropagator) {},
+        //-------------------------------------------------------------------------------
+        // Interface Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {(string | Array.<string>)} eventTypes
-     * @param {function(Event)=} listenerFunction
-     * @param {(Object | boolean)=} listenerContext
-     * @param {boolean=} once
-     * @return {(undefined | EventQueryBuilder)}
-     */
-    addEventListener: function(eventTypes, listenerFunction, listenerContext, once) {},
+        /**
+         * @return {IEventPropagator}
+         */
+        getParentPropagator: function() {},
 
-    /**
-     * @param {string} eventType
-     * @param {function(Event)} listenerFunction
-     * @param {Object=} listenerContext
-     */
-    hasEventListener: function(eventType, listenerFunction, listenerContext) {},
+        /**
+         * @param {IEventPropagator} parentPropagator
+         */
+        setParentPropagator: function(parentPropagator) {},
 
-    /**
-     *
-     */
-    removeAllListeners: function() {},
+        /**
+         * @param {(string | Array.<string>)} eventTypes
+         * @param {function(Event)=} listenerFunction
+         * @param {(Object | boolean)=} listenerContext
+         * @param {boolean=} once
+         * @return {(undefined | EventQueryBuilder)}
+         */
+        addEventListener: function(eventTypes, listenerFunction, listenerContext, once) {},
 
-    /**
-     * @param {string} eventType
-     * @param {function(Event)} listenerFunction
-     * @param {Object=} listenerContext
-     */
-    removeEventListener: function(eventType, listenerFunction, listenerContext) {}
+        /**
+         * @param {string} eventType
+         * @param {function(Event)} listenerFunction
+         * @param {Object=} listenerContext
+         */
+        hasEventListener: function(eventType, listenerFunction, listenerContext) {},
+
+        /**
+         *
+         */
+        removeAllListeners: function() {},
+
+        /**
+         * @param {string} eventType
+         * @param {function(Event)} listenerFunction
+         * @param {Object=} listenerContext
+         */
+        removeEventListener: function(eventType, listenerFunction, listenerContext) {}
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('IEventReceiver', IEventReceiver);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('IEventReceiver', IEventReceiver);

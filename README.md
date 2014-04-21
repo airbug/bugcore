@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.1.11`
+Latest Version `0.2.0`
 
 
 ## Quick Examples
@@ -130,8 +130,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.0.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.0.min.js
 
 
 ## Install
@@ -144,7 +144,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.0.min.js"></script>
 ```
 
 
@@ -164,7 +164,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.11.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.1.11.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.0.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -179,6 +179,7 @@ In the browser:
 
 * [`Class`](#Class)
 * [`Constructor`](#Constructor)
+* [`Implementable`](#Implementable)
 * [`Interface`](#Interface)
 * [`Obj`](#Obj)
 
@@ -204,6 +205,19 @@ In the browser:
 * [`Set`](#Set)
 * [`Stack`](#Stack)
 
+### Event System
+
+* [`Event`](#Event)
+* [`EventDispatcher`](#EventDispatcher)
+* [`EventPropagator`](#EventPropagator)
+* [`EventReceiver`](#EventReceiver)
+
+### Event Interfaces
+
+* [`IEventDispatcher`](#IEventDispatcher)
+* [`IEventPropagator`](#IEventPropagator)
+* [`IEventReceiver`](#IEventReceiver)
+
 ### Utils
 
 * [`TypeUtil`](#TypeUtil)
@@ -227,8 +241,9 @@ var Class = function() {
 
 __Getters and Setters Summary__
 
+* [`public getConstructor() :function(new:Constructor)`](#Class_getConstructor)
 * [`public getInterfaces() :Array.<Interface>`](#Class_getInterfaces)
-* [`public getSuperClass() :Class`](#Class_getSuperClass)
+* [`public getSuperclass() :Class`](#Class_getSuperclass)
 
 
 __Static Method Summary__
@@ -352,6 +367,11 @@ __Getters and Setters Summary__
 * [`public getClass() :Class`](#Constructor_getClass)
 
 
+__Static Getters and Setters Summary__
+
+* [`static getClass() :Class`](#Constructor-getClass)
+
+
 <br />
 ------------------------------------------------------------------------------------
 <br />
@@ -380,6 +400,44 @@ __Parameters__
 __Returns__
 
 * `{Class}` - The Class of this instance.
+
+
+__Examples__
+
+```js
+//TODO BRN: Provide example of Class usage
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Constructor-getClass" />
+### Constructor.getClass
+
+Get the [Class](#Class) for this Constructor.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @return {Class}
+ */
+Constructor.getClass = function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{Class}` - The Class of this Constructor.
 
 
 __Examples__
@@ -1781,6 +1839,186 @@ myCollection.add("item3")                   // ["item1", "item2"]
 
 console.log(myCollection.getValueArray())   // ["item1", "item2", "item3"]
 console.log(myValueArray)                   // ["item1", "item2"]
+```
+
+
+<br /><a name="Event" />
+## Event
+
+The root event class for all other events in the bugcore system.
+
+
+__Notes__
+
+* Events can be listened for by type and queried on by the data they contain
+* Events bubble by default
+
+
+__Class__
+
+```javascript
+/**
+ * @class
+ * @extends {Obj}
+ */
+var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
+```
+
+
+__Extends__
+* [`Obj`](#Obj)
+
+
+__Constructor Summary__
+
+* [`public _constructor(string type, * data)`](#Event__constructor)
+
+
+__Getters and Setters Summary__
+
+* [`public getBubbles() :boolean`](#Event_getBubbles)
+* [`public setBubbles(boolean bubbles)`](#Event_setBubbles)
+* [`public getCurrentTarget() :*`](#Event_getCurrentTarget)
+* [`public setCurrentTarget(* currentTarget)`](#Event_setCurrentTarget)
+* [`public getData() :*`](#Event_getData)
+* [`public getTarget(): *`](#Event_getTarget)
+* [`public setTarget(* target)`](#Event_setTarget)
+* [`public getType() :string`](#Event_getType)
+
+
+__Method Summary__
+
+* [`public isPropagationStopped() :boolean`](#Event_isPropagationStopped)
+* [`public stopPropagation()`](#Event_stopPropagation)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Event__constructor" />
+### Event#_constructor(type, data)
+
+
+__Method__
+
+```javascript
+/**
+ * @constructs
+ * @param {string} type
+ * @param {*=} data
+ */
+_constructor: function(type, data) {
+```
+
+
+__Parameters__
+
+* `type {string}` - The type of this event
+* `data {*=}` - Any data to pass along with this Event (Optional)
+
+
+__Examples__
+
+Simple instantiation
+```js
+var myEvent = new Event("MyEvent");
+```
+
+Dispatching an event
+```js
+var myDispatcher = new EventDispatcher();
+
+myDispatcher.dispatchEvent(new Event("MyEvent", {my: "data"}));
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Event_getBubbles" />
+### Event#getBubbles()
+
+Whether or not this Event bubbles
+
+
+__Notes__
+
+* Events bubble by default. So this will return true unless otherwise set.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {boolean}
+ */
+getBubbles: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{boolean}` - Whether or not this event bubbles
+
+
+__Examples__
+
+```js
+var myEvent    = new Event();
+myEvent.getBubbles();       // true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Event_isPropagationStopped" />
+### Event#isPropagationStopped():boolean
+
+Returns whether or not propagation of this event has stopped.
+
+
+__Notes__
+
+* Event propagation is not stopped by default.
+* To stop propagation simply call [`stopPropagation()`]("#Event_stopPorpagation"]
+
+
+__Method__
+
+```javascript
+/**
+ * @return {boolean}
+ */
+isPropagationStopped: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{boolean}` - Whether or not propagation of this event has stopped.
+
+
+__Examples__
+
+```js
+var myEvent     = new Event();
+myEvent.isPropagationStopped();           // false;
+myEvent.stopPropagation();
+myEvent.isPropagationStopped();           // true;
 ```
 
 
