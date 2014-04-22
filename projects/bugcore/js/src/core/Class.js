@@ -153,10 +153,8 @@ require('bugpack').context("*", function(bugpack) {
         prototype._constructor = function() {
             adapteeConstructor.apply(this, arguments);
         };
-        Class.static(newConstructor, Constructor);
         newConstructor.prototype = prototype;
         newConstructor.constructor = newConstructor;
-        newConstructor._interfaces = [];
         return Class.extend(newConstructor, declaration);
     };
 

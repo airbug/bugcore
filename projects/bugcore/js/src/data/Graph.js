@@ -149,6 +149,31 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} toValue
          * @return {boolean}
          */
+        containsEdgeFromValueToValue: function(fromValue, toValue) {
+            if (this.containsNodeForValue(fromValue) && this.containsNodeForValue(toValue)) {
+                var fromNode = this.getNode(fromValue);
+                var toNode = this.getNode(toValue);
+                var edgesFrom = this.getEdgesFrom(fromNode);
+                var edge = new GraphEdge(fromNode, toNode);
+                return edgesFrom.contains(edge);
+            }
+            return false;
+        },
+
+        /**
+         * @param {*} value
+         * @returns {boolean}
+         */
+        containsNodeForValue: function(value) {
+            var node = new GraphNode(value);
+            return this.containsNode(node);
+        },
+
+        /**
+         * @param {*} fromValue
+         * @param {*} toValue
+         * @return {boolean}
+         */
         removeEdgeFromValueToValue: function(fromValue, toValue) {
             var fromNode = this.getNode(fromValue);
             var toNode = this.getNode(toValue);
@@ -194,16 +219,20 @@ require('bugpack').context("*", function(bugpack) {
         addEdge: function(edge) {
             if (!this.edgeSet.contains(edge)) {
                 this.edgeSet.add(edge);
-                var edgeFromSet = this.getEdgesFrom(edge.getFromNode());
-                if (!edgeFromSet) {
+                var edgeFromSet = null;
+                if (!this.containsEdgesFrom(edge.getFromNode())) {
                     edgeFromSet = new Set();
-                    this.fromNodeToEdgeSetMap.put(edge.getFromNode(), edgeFromSet)
+                    this.fromNodeToEdgeSetMap.put(edge.getFromNode(), edgeFromSet);
+                } else {
+                    edgeFromSet = this.getEdgesFrom(edge.getFromNode());
                 }
                 edgeFromSet.add(edge);
-                var edgeToSet = this.getEdgesTo(edge.getToNode());
-                if (!edgeToSet) {
+                var edgeToSet = null;
+                if (!this.containsEdgesTo(edge.getToNode())) {
                     edgeToSet = new Set();
-                    this.toNodeToEdgeSetMap.put(edge.getToNode(), edgeToSet)
+                    this.toNodeToEdgeSetMap.put(edge.getToNode(), edgeToSet);
+                } else {
+                    edgeToSet = this.getEdgesTo(edge.getToNode());
                 }
                 edgeToSet.add(edge);
                 return true;
@@ -227,11 +256,29 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {*} value
+         * @param {GraphNode} fromNode
          * @return {boolean}
          */
-        containsNode: function(value) {
-            return this.valueToNodeMap.containsKey(value);
+        containsEdgesFrom: function(fromNode) {
+            return this.fromNodeToEdgeSetMap.containsKey(fromNode);
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} toNode
+         * @return {boolean}
+         */
+        containsEdgesTo: function(toNode) {
+            return this.toNodeToEdgeSetMap.containsKey(toNode);
+        },
+
+        /**
+         * @protected
+         * @param {GraphNode} node
+         * @return {boolean}
+         */
+        containsNode: function(node) {
+            return this.valueToNodeMap.containsKey(node.getValue());
         },
 
         /**
@@ -249,7 +296,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Set.<GraphEdge>}
          */
         getEdgesFrom: function(fromNode) {
-            return this.fromNodeToEdgeSetMap.get(fromNode);
+            var edgeSet = this.fromNodeToEdgeSetMap.get(fromNode);
+            if (!edgeSet) {
+                edgeSet = new Set();
+            }
+            return edgeSet;
         },
 
         /**
@@ -258,7 +309,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Set.<GraphEdge>}
          */
         getEdgesTo: function(toNode) {
-            return this.toNodeToEdgeSetMap.get(toNode);
+            var edgeSet = this.toNodeToEdgeSetMap.get(toNode);
+            if (!edgeSet) {
+                edgeSet = new Set();
+            }
+            return edgeSet;
         },
 
         /**
@@ -270,11 +325,9 @@ require('bugpack').context("*", function(bugpack) {
         getNodesFrom: function(fromNode) {
             var nodesFromSet = new Set();
             var edgeFromSet = this.getEdgesFrom(fromNode);
-            if (edgeFromSet) {
-                edgeFromSet.forEach(function(edge) {
-                    nodesFromSet.add(edge.getToNode());
-                });
-            }
+            edgeFromSet.forEach(function(edge) {
+                nodesFromSet.add(edge.getToNode());
+            });
             return nodesFromSet;
         },
 
@@ -321,7 +374,7 @@ require('bugpack').context("*", function(bugpack) {
                 var edgeToSet = this.getEdgesTo(edge.getToNode());
                 edgeToSet.remove(edge);
                 if (edgeToSet.getCount() === 0) {
-                    this.fromNodeToEdgeSetMap.remove(edge.getToNode());
+                    this.toNodeToEdgeSetMap.remove(edge.getToNode());
                 }
                 this.edgeSet.remove(edge);
                 return true;
@@ -347,9 +400,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeNode: function(node) {
             if (this.nodeSet.contains(node)) {
-                var edgesFrom = this.getEdgesFrom(node);
+                var edgesFrom = this.getEdgesFrom(node).clone();
                 this.removeAllEdges(edgesFrom);
-                var edgesTo = this.getEdgesTo(node);
+                var edgesTo = this.getEdgesTo(node).clone();
                 this.removeAllEdges(edgesTo);
                 this.nodeSet.remove(node);
                 this.valueToNodeMap.remove(node.getValue());

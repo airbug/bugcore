@@ -32,6 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Change = Class.extend(Obj, /** @lends {Change.prototype} */{
 
+        _name: "Change",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

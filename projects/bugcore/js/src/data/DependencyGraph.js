@@ -56,10 +56,10 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} onValue
          */
         addDependency: function(ofValue, onValue) {
-            if (!this.containsNode(ofValue)) {
+            if (!this.containsNodeForValue(ofValue)) {
                 this.addNodeForValue(ofValue);
             }
-            if (!this.containsNode(onValue)) {
+            if (!this.containsNodeForValue(onValue)) {
                 this.addNodeForValue(onValue);
             }
             this.addEdgeFromValueToValue(ofValue, onValue);

@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {IEventPropagator}
              */
-            this.parentPropagator       = undefined;
+            this.parentPropagator       = null;
         },
 
 

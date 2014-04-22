@@ -247,7 +247,7 @@ require('bugpack').context("*", function(bugpack) {
          * @returns {IObservable}
          */
         getObservableProperty: function(propertyName) {
-            return this.observablePropertyMap.get(propertyName);
+            return this.observablePropertyMap.getValue(propertyName);
         },
 
         /**
@@ -275,7 +275,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeObservableProperty: function(propertyName) {
             var observable = this.getObservableProperty(propertyName);
-            this.observablePropertyMap.remove(propertyName);
+            this.observablePropertyMap.removeByKey(propertyName);
             if (!this.containsObservable(observable)) {
                 observable.removeObservationPropagator(this);
             }

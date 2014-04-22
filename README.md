@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.2.2`
+Latest Version `0.2.3`
 
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been
@@ -135,8 +135,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.3.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.3.min.js
 
 
 ## Install
@@ -149,7 +149,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.3.min.js"></script>
 ```
 
 
@@ -169,7 +169,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.2.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.3.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -239,22 +239,71 @@ __Class__
 ```javascript
 /**
  * @constructor
+ * @param {function(new:Constructor)} constructor
+ * @param {Array.<Interface>} interfaces
+ * @param {string} name
+ * @param {Class} superclass
  */
-var Class = function() {
+var Class = function(constructor, interfaces, name, superclass) {
 ```
+
+__Constructor Summary__
+
+* [`new Class(Constructor constructor, Array.<Interface> interfaces, string name, Class superclass)`](#Class_constructor)
 
 
 __Getters and Setters Summary__
 
 * [`public getConstructor() :function(new:Constructor)`](#Class_getConstructor)
 * [`public getInterfaces() :Array.<Interface>`](#Class_getInterfaces)
+* [`public getName(): string`](#Class_getName)
 * [`public getSuperclass() :Class`](#Class_getSuperclass)
 
 
 __Static Method Summary__
 
 * [`static declare(Object declaration) :function(new:Constructor)`](#Class-declare)
+* [`static doesExtend(* value, function(new:Constructor) constructor) :boolean`](#Class-doesExtend)
+* [`static doesImplement(* value, function(new:Implementable) implementable) :boolean`](#Class-doesImplement)
 * [`static extend(function(new:Constructor) constructor, Object declaration) :function(new:Constructor)`](#Class-extend)
+* [`static implement(function(new:Constructor) constructor, function(new:Implementable) implementable)`](#Class-implement)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_constructor" />
+### new Class(constructor, interfaces, name, superclass)
+
+
+__Method__
+
+```javascript
+/**
+ * @constructor
+ * @param {function(new:Constructor)} constructor
+ * @param {Array.<Interface>} interfaces
+ * @param {string} name
+ * @param {Class} superclass
+ */
+var Class = function(constructor, interfaces, name, superclass) {
+```
+
+
+__Parameters__
+
+* `constructor {function(new:Constructor)}` - The Constructor of this class.
+* `interfaces {Array.<Interface>}` - Any Interfaces that this Class implements.
+* `name {string} - The name of this Class.
+* `superclass {Class} - The superclass of this Class.
+
+
+__Examples__
+
+```js
+var myClass = new Class(constructor, interfaces, name, superclass);
+```
 
 
 <br />
@@ -344,6 +393,130 @@ var BaseBall = Class.extend(Ball, {
     }
 
     throwBall: function() {
+
+    }
+});
+```
+
+
+<br /><a name="Interface" />
+## Interface
+
+Core class used to build interfaces.
+
+
+__Class__
+
+```javascript
+/**
+ * @constructor
+ * @param {function(new:Implementable)} implementable
+ * @param {string} name
+ * @param {Interface} superinterface
+ */
+var Interface = function(implementable, name, superinterface) {
+```
+
+__Constructor Summary__
+
+* [`new Interface(function(new:Implementable) implementable, string name, Interface superinterface)`](#Interface_constructor)
+
+
+__Getters and Setters Summary__
+
+* [`public getImplementable() :function(new:Implementable)`](#Interface_getImplementable)
+* [`public getName() :string`](#Interface_getName)
+* [`public getSuperinterface() :Interface`](#Interface_getSuperinterface)
+
+
+__Static Method Summary__
+
+* [`static declare(Object declaration) :function(new:Implementable)`](#Interface-declare)
+* [`static extend(function(new:Implementable) implementable, Object declaration) :function(new:Implementable)`](#Implementable-extend)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Implementable-declare" />
+### Implementable.declare
+
+This method is used to declare a low level base Interface in the bugcore system. Unlike Class.declare
+this method should be freely used to declare basic interfaces that extend no other Interface.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {Object.<string, function(..):*>} declaration
+ * @return {function(new:Implementable)}
+ */
+Interface.declare = function(declaration) {
+```
+
+__Parameters__
+
+* `declaration {Object}` - An object that declares the methods of the new Interface.
+
+
+__Returns__
+
+* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+
+
+__Examples__
+
+```javascript
+var MyImplementable = Interface.declare({
+    foo: function() {},
+    bar: function() {}
+});
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface-extend" />
+### Interface.extend
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {function(new:Implementable)} implementable
+ * @param {Object.<string, function(..):*>} declaration
+ * @return {function(new:Implementable)}
+ */
+Interface.extend = function(implementable, declaration) {
+```
+
+__Parameters__
+
+* `implementable {function(new:Implementable)}` - The Implementable of the Interface to extend.
+* `declaration {Object}` - An object that declares the methods of the new Interface.
+
+
+__Returns__
+
+* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+
+
+__Examples__
+
+```javascript
+var IBall = Interface.declare({
+    throwBall: function() {
+
+    }
+});
+var IBaseBall = Class.extend(IBall, {
+    hitBall: function() {
 
     }
 });

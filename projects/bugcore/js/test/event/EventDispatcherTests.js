@@ -60,8 +60,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.eventDispatcherWithoutTarget.getParentPropagator(), undefined,
-                "Assert parentPropagator defaults to undefined");
+            test.assertEqual(this.eventDispatcherWithoutTarget.getParentPropagator(), null,
+                "Assert parentPropagator defaults to null");
             test.assertEqual(this.eventDispatcherWithoutTarget.getTarget(), this.eventDispatcherWithoutTarget,
                 "Assert dispatcher target is set to itself if no target is passed in during instantiation");
             test.assertEqual(this.eventDispatcherWithTarget.getTarget(), this.testTarget,

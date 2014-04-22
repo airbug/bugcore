@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var RemovePropertyChange = Class.extend(Change, /** @lends {RemovePropertyChange.prototype} */ {
 
+        _name: "RemovePropertyChange",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

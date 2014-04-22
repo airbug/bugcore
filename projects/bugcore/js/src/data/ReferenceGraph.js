@@ -182,7 +182,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} value
          */
         addUnreferencedValue: function(value) {
-            if (this.containsNode(value)) {
+            if (this.containsNodeForValue(value)) {
                 this.unreferencedValueSet.add(value);
             }
         },

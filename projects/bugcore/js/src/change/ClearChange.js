@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ClearChange = Class.extend(Change, /** @lends {ClearChange.prototype} */ {
 
+        _name: "ClearChange",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

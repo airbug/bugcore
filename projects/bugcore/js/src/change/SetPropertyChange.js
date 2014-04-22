@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var SetPropertyChange = Class.extend(Change, /** @lends {SetPropertyChange.prototype} */{
 
+        _name: "SetPropertyChange",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
