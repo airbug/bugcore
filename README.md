@@ -399,130 +399,6 @@ var BaseBall = Class.extend(Ball, {
 ```
 
 
-<br /><a name="Interface" />
-## Interface
-
-Core class used to build interfaces.
-
-
-__Class__
-
-```javascript
-/**
- * @constructor
- * @param {function(new:Implementable)} implementable
- * @param {string} name
- * @param {Interface} superinterface
- */
-var Interface = function(implementable, name, superinterface) {
-```
-
-__Constructor Summary__
-
-* [`new Interface(function(new:Implementable) implementable, string name, Interface superinterface)`](#Interface_constructor)
-
-
-__Getters and Setters Summary__
-
-* [`public getImplementable() :function(new:Implementable)`](#Interface_getImplementable)
-* [`public getName() :string`](#Interface_getName)
-* [`public getSuperinterface() :Interface`](#Interface_getSuperinterface)
-
-
-__Static Method Summary__
-
-* [`static declare(Object declaration) :function(new:Implementable)`](#Interface-declare)
-* [`static extend(function(new:Implementable) implementable, Object declaration) :function(new:Implementable)`](#Implementable-extend)
-
-
-<br />
-------------------------------------------------------------------------------------
-<br />
-
-<a name="Implementable-declare" />
-### Implementable.declare
-
-This method is used to declare a low level base Interface in the bugcore system. Unlike Class.declare
-this method should be freely used to declare basic interfaces that extend no other Interface.
-
-
-__Method__
-
-```javascript
-/**
- * @static
- * @param {Object.<string, function(..):*>} declaration
- * @return {function(new:Implementable)}
- */
-Interface.declare = function(declaration) {
-```
-
-__Parameters__
-
-* `declaration {Object}` - An object that declares the methods of the new Interface.
-
-
-__Returns__
-
-* `{function(new:Implementable)}` - The newly created Interface's Implementable.
-
-
-__Examples__
-
-```javascript
-var MyImplementable = Interface.declare({
-    foo: function() {},
-    bar: function() {}
-});
-```
-
-
-<br />
-------------------------------------------------------------------------------------
-<br />
-
-<a name="Interface-extend" />
-### Interface.extend
-
-__Method__
-
-```javascript
-/**
- * @static
- * @param {function(new:Implementable)} implementable
- * @param {Object.<string, function(..):*>} declaration
- * @return {function(new:Implementable)}
- */
-Interface.extend = function(implementable, declaration) {
-```
-
-__Parameters__
-
-* `implementable {function(new:Implementable)}` - The Implementable of the Interface to extend.
-* `declaration {Object}` - An object that declares the methods of the new Interface.
-
-
-__Returns__
-
-* `{function(new:Implementable)}` - The newly created Interface's Implementable.
-
-
-__Examples__
-
-```javascript
-var IBall = Interface.declare({
-    throwBall: function() {
-
-    }
-});
-var IBaseBall = Class.extend(IBall, {
-    hitBall: function() {
-
-    }
-});
-```
-
-
 <br /><a name="Constructor" />
 ## Constructor
 
@@ -622,6 +498,130 @@ __Examples__
 
 ```js
 //TODO BRN: Provide example of Class usage
+```
+
+
+<br /><a name="Interface" />
+## Interface
+
+Core class used to build interfaces.
+
+
+__Class__
+
+```javascript
+/**
+ * @constructor
+ * @param {function(new:Implementable)} implementable
+ * @param {string} name
+ * @param {Interface} superinterface
+ */
+var Interface = function(implementable, name, superinterface) {
+```
+
+__Constructor Summary__
+
+* [`new Interface(function(new:Implementable) implementable, string name, Interface superinterface)`](#Interface_constructor)
+
+
+__Getters and Setters Summary__
+
+* [`public getImplementable() :function(new:Implementable)`](#Interface_getImplementable)
+* [`public getName() :string`](#Interface_getName)
+* [`public getSuperinterface() :Interface`](#Interface_getSuperinterface)
+
+
+__Static Method Summary__
+
+* [`static declare(Object declaration) :function(new:Implementable)`](#Interface-declare)
+* [`static extend(function(new:Implementable) implementable, Object declaration) :function(new:Implementable)`](#Implementable-extend)
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface-declare" />
+### Interface.declare
+
+This method is used to declare a low level base Interface in the bugcore system. Unlike Class.declare
+this method should be freely used to declare basic interfaces that extend no other Interface.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {Object.<string, function(..):*>} declaration
+ * @return {function(new:Implementable)}
+ */
+Interface.declare = function(declaration) {
+```
+
+__Parameters__
+
+* `declaration {Object}` - An object that declares the methods of the new Interface.
+
+
+__Returns__
+
+* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+
+
+__Examples__
+
+```javascript
+var MyImplementable = Interface.declare({
+    foo: function() {},
+    bar: function() {}
+});
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface-extend" />
+### Interface.extend
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {function(new:Implementable)} implementable
+ * @param {Object.<string, function(..):*>} declaration
+ * @return {function(new:Implementable)}
+ */
+Interface.extend = function(implementable, declaration) {
+```
+
+__Parameters__
+
+* `implementable {function(new:Implementable)}` - The Implementable of the Interface to extend.
+* `declaration {Object}` - An object that declares the methods of the new Interface.
+
+
+__Returns__
+
+* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+
+
+__Examples__
+
+```javascript
+var IBall = Interface.declare({
+    throwBall: function() {
+
+    }
+});
+var IBaseBall = Class.extend(IBall, {
+    hitBall: function() {
+
+    }
+});
 ```
 
 
