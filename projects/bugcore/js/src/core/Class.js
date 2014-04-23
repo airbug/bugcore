@@ -141,18 +141,15 @@ require('bugpack').context("*", function(bugpack) {
      * @return {function(new:Constructor)}
      */
     Class.adapt = function(adapteeConstructor, declaration) {
-        var originalConstructorPrototype = Constructor.prototype;
-        Constructor.prototype = adapteeConstructor.prototype;
-        var prototype = new Constructor();
-        Constructor.prototype = originalConstructorPrototype;
-        var newConstructor = function() {
-        };
-        for (var name in originalConstructorPrototype) {
-            prototype[name] = originalConstructorPrototype[name];
+        var prototype = new adapteeConstructor();
+        var newConstructor = function() {};
+        for (var name in Constructor.prototype) {
+            prototype[name] = Constructor.prototype[name];
         }
         prototype._constructor = function() {
             adapteeConstructor.apply(this, arguments);
         };
+        Class.static(newConstructor, Constructor);
         newConstructor.prototype = prototype;
         newConstructor.constructor = newConstructor;
         return Class.extend(newConstructor, declaration);

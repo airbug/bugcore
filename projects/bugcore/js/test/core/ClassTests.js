@@ -5,6 +5,7 @@
 //@TestFile
 
 //@Require('Class')
+//@Require('Constructor')
 //@Require('IHashCode')
 //@Require('Interface')
 //@Require('Obj')
@@ -24,6 +25,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
+    var Constructor     = bugpack.require('Constructor');
+    var IClone          = bugpack.require('IClone');
+    var IEquals         = bugpack.require('IEquals');
     var IHashCode       = bugpack.require('IHashCode');
     var Interface       = bugpack.require('Interface');
     var Obj             = bugpack.require('Obj');
@@ -85,9 +89,81 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends NewConstructor");
         }
     };
-    bugmeta.annotate(classNewInstanceTest).with(
-        test().name("Class - #newInstance test")
-    );
+
+    /**
+     *
+     */
+    var classAdaptTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.AdapteeClass = function() {};
+            this.AdapteeClass.prototype = {
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            };
+            this.ChildClass = Class.adapt(this.AdapteeClass, {
+                someTestFunction1: function() {
+
+                },
+                someTestFunction3: function() {
+
+                }
+            });
+            this.instanceChildClass = new this.ChildClass();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertFalse(TypeUtil.isFunction(this.AdapteeClass.prototype._constructor),
+                "Assert _constructor has not been added to the AdapteeClass");
+            test.assertFalse(TypeUtil.isFunction(this.AdapteeClass.prototype.getClass),
+                "Assert getClass has not been added to the AdapteeClass");
+            test.assertFalse(TypeUtil.isFunction(this.AdapteeClass.getClass),
+                "Assert getClass has not been added statically the AdapteeClass");
+
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction1),
+                "Assert override function added to child class is function and is present in child class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction2),
+                "Assert function of parent class is function and is present in child class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction3),
+                "Assert function added to child class is function and is present in child class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype._constructor),
+                "Assert _constructor function has been added to child class, is a function, and is present in child class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.getClass),
+                "Assert getClass added to child class is function and is present in child class prototype");
+
+            test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction1),
+                "Assert override function added to child class is present in child class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction2),
+                "Assert function of parent class is present in child class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction3),
+                "Assert function added to child class is present in child class instance");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype._constructor),
+                "Assert _constructor function is present on child instance");
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.getClass),
+                "Assert getClass function is present on child instance");
+
+            test.assertTrue(Class.doesExtend(this.instanceChildClass, this.AdapteeClass),
+                "Assert child class extends parent AdapteeClass");
+            test.assertTrue(Class.doesExtend(this.instanceChildClass, this.ChildClass),
+                "Assert child class extends itself");
+
+
+            //NOTE BRN: This is not possible. Can't inject Constructor.prototype in to the prototype chain.
+            /*test.assertTrue(Class.doesExtend(this.instanceChildClass, Constructor),
+                "Assert child class extends base level Constructor class");*/
+        }
+    };
 
     /**
      *
@@ -122,16 +198,18 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert function added to class is present in class instance");
             test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
                 "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of new class extends base level Constructor function");
             test.assertTrue(Class.doesExtend(this.instance, Obj),
-                "Assert instance of new class extends base level Object class");
+                "Assert instance of new class extends base level Obj class");
             test.assertTrue(Class.doesImplement(this.instance, IHashCode),
                 "Assert instance of new class implements IHashCode");
+            test.assertTrue(Class.doesImplement(this.instance, IEquals),
+                "Assert instance of new class implements IEquals");
+            test.assertTrue(Class.doesImplement(this.instance, IClone),
+                "Assert instance of new class implements IClone");
         }
     };
-    bugmeta.annotate(classExtendObjTest).with(
-        test().name("Class extend Obj test")
-    );
-
 
     /**
      *
@@ -142,7 +220,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.ParentClass = Class.extend(Obj, {
+            this.ParentClass = Class.declare( {
                 someTestFunction1: function() {
 
                 },
@@ -170,7 +248,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert override function added to child class is function and is present in child class prototype");
             test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction2),
                 "Assert function of parent class is function and is present in child class prototype");
-            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction2),
+            test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction3),
                 "Assert function added to child class is function and is present in child class prototype");
             test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction1),
                 "Assert override function added to child class is present in child class instance");
@@ -179,16 +257,14 @@ require('bugpack').context("*", function(bugpack) {
             test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction3),
                 "Assert function added to child class is present in child class instance");
 
-            test.assertTrue(Class.doesExtend(this.instanceChildClass, Obj),
-                "Assert child class extends base level Object class");
-            test.assertTrue(Class.doesExtend(this.instanceChildClass, Obj),
+            test.assertTrue(Class.doesExtend(this.instanceChildClass, Constructor),
+                "Assert child class extends base level Constructor function");
+            test.assertTrue(Class.doesExtend(this.instanceChildClass, this.ParentClass),
                 "Assert child class extends parent class");
+            test.assertTrue(Class.doesExtend(this.instanceChildClass, this.ChildClass),
+                "Assert child class extends itself");
         }
     };
-    bugmeta.annotate(classExtendTest).with(
-        test().name("Class extend test")
-    );
-
 
     /**
      *
@@ -241,10 +317,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert Class.doesImplement returns true for instance implementing TestImplementable");
         }
     };
-    bugmeta.annotate(classImplementTest).with(
-        test().name("Class - #implement test")
-    );
-
 
     /**
      *
@@ -278,10 +350,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert implementing an interfaces that a Class does not implement throws an error");
         }
     };
-    bugmeta.annotate(classNonImplementErrorTest).with(
-        test().name("Class - non implement Error test")
-    );
-
 
     /**
      *
@@ -319,9 +387,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert implementing an interface twice throws an error");
         }
     };
-    bugmeta.annotate(classImplementTwiceErrorTest).with(
-        test().name("Class - implement twice Error test")
-    );
 
     /**
      *
@@ -367,10 +432,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert implementing a sub interface of an already implemented interface does not throw an error");
         }
     };
-    bugmeta.annotate(classImplementExtendedInterfaceNoErrorTest).with(
-        test().name("Class - implement extended interface of already implemented interfaces does not error test")
-    );
-
 
     /**
      *
@@ -422,10 +483,6 @@ require('bugpack').context("*", function(bugpack) {
             });
         }
     };
-    bugmeta.annotate(classDoesImplementTest).with(
-        test().name("Class doesImplement test")
-    );
-
 
     /**
      *
@@ -487,10 +544,6 @@ require('bugpack').context("*", function(bugpack) {
             });
         }
     };
-    bugmeta.annotate(classDoesImplementExtendedInterfaceTest).with(
-        test().name("Class - #doesImplement extended Interface test")
-    );
-
 
     /**
      *
@@ -522,7 +575,43 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the constructor was called during instantiation");
         }
     };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.annotate(classNewInstanceTest).with(
+        test().name("Class - #newInstance test")
+    );
+    bugmeta.annotate(classAdaptTest).with(
+        test().name("Class - #adapt test")
+    );
+    bugmeta.annotate(classExtendObjTest).with(
+        test().name("Class - #extend Obj test")
+    );
+    bugmeta.annotate(classExtendTest).with(
+        test().name("Class - #extend test")
+    );
+    bugmeta.annotate(classImplementTest).with(
+        test().name("Class - #implement test")
+    );
+    bugmeta.annotate(classNonImplementErrorTest).with(
+        test().name("Class - non implement Error test")
+    );
+    bugmeta.annotate(classImplementTwiceErrorTest).with(
+        test().name("Class - implement twice Error test")
+    );
+    bugmeta.annotate(classImplementExtendedInterfaceNoErrorTest).with(
+        test().name("Class - implement extended interface of already implemented interfaces does not error test")
+    );
+    bugmeta.annotate(classDoesImplementTest).with(
+        test().name("Class - #doesImplement test")
+    );
+    bugmeta.annotate(classDoesImplementExtendedInterfaceTest).with(
+        test().name("Class - #doesImplement extended Interface test")
+    );
     bugmeta.annotate(classConstructorTest).with(
-        test().name("Class constructor test")
+        test().name("Class - #_constructor test")
     );
 });
