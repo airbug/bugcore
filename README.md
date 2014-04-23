@@ -29,12 +29,12 @@ Creation of a new class
 var Class   = bugcore.Class;
 var Obj     = bugcore.Obj;
 
-var SomeClass = Class.extend(Obj, {});
+var SomeClassConstructor = Class.extend(Obj, {});
 ```
 
-Creation of a new class with a constructor
+Creation of a new class with an internal _constructor method
 ```javascript
-var SomeClass = Class.extend(Obj, {
+var SomeClassConstructor = Class.extend(Obj, {
     _constructor: function() {
         this._super(); // Call super constructor
     }
@@ -47,7 +47,7 @@ Creation of a new class with overridden equals and hashCode methods
  * @class
  * @extends {Obj}
  */
-var SomeClass = Class.extend(Obj, {
+var SomeClassConstructor = Class.extend(Obj, {
 
     /**
      * @constructs
@@ -200,7 +200,7 @@ In the browser:
 * [`Exception`](#Exception)
 * [`Throwable`](#Throwable)
 
-### Data Models
+### Data Classes
 
 * [`Collection`](#Collection)
 * [`List`](#List)
@@ -209,6 +209,15 @@ In the browser:
 * [`Queue`](#Queue)
 * [`Set`](#Set)
 * [`Stack`](#Stack)
+* [`Striped`](#Striped)
+
+### Data Interfaces
+
+* [`ICollection`](#ICollection)
+* ['IIterator
+* [`IList`](#IList)
+* [`IMap`](#IMap)
+* [`ISet`](#ISet)
 
 ### Event System
 
@@ -225,6 +234,8 @@ In the browser:
 
 ### Utils
 
+* [`HashUtil`](#HashUtil)
+* [`IdGenerator`](#IdGenerator)
 * [`TypeUtil`](#TypeUtil)
 
 
@@ -249,23 +260,23 @@ var Class = function(constructor, interfaces, name, superclass) {
 
 __Constructor Summary__
 
-* [`new Class(Constructor constructor, Array.<Interface> interfaces, string name, Class superclass)`](#Class_constructor)
+* [`constructor Class(Constructor constructor, Array.<Interface> interfaces, string name, Class superclass)`](#Class_constructor)
 
 
 __Getters and Setters Summary__
 
-* [`public getConstructor() :function(new:Constructor)`](#Class_getConstructor)
-* [`public getInterfaces() :Array.<Interface>`](#Class_getInterfaces)
+* [`public getConstructor(): function(new:Constructor)`](#Class_getConstructor)
+* [`public getInterfaces(): Array.<Interface>`](#Class_getInterfaces)
 * [`public getName(): string`](#Class_getName)
-* [`public getSuperclass() :Class`](#Class_getSuperclass)
+* [`public getSuperclass(): Class`](#Class_getSuperclass)
 
 
 __Static Method Summary__
 
-* [`static declare(Object declaration) :function(new:Constructor)`](#Class-declare)
-* [`static doesExtend(* value, function(new:Constructor) constructor) :boolean`](#Class-doesExtend)
-* [`static doesImplement(* value, function(new:Implementable) implementable) :boolean`](#Class-doesImplement)
-* [`static extend(function(new:Constructor) constructor, Object declaration) :function(new:Constructor)`](#Class-extend)
+* [`static declare(Object.<string, *> declaration): function(new:Constructor)`](#Class-declare)
+* [`static doesExtend(* value, function(new:Constructor) constructor): boolean`](#Class-doesExtend)
+* [`static doesImplement(* value, function(new:Implementable) implementable): boolean`](#Class-doesImplement)
+* [`static extend(function(new:Constructor) constructor, Object.<string, *> declaration): function(new:Constructor)`](#Class-extend)
 * [`static implement(function(new:Constructor) constructor, function(new:Implementable) implementable)`](#Class-implement)
 
 
@@ -274,7 +285,7 @@ __Static Method Summary__
 <br />
 
 <a name="Class_constructor" />
-### new Class(constructor, interfaces, name, superclass)
+### Class(constructor, interfaces, name, superclass)
 
 
 __Method__
@@ -295,8 +306,8 @@ __Parameters__
 
 * `constructor {function(new:Constructor)}` - The Constructor of this class.
 * `interfaces {Array.<Interface>}` - Any Interfaces that this Class implements.
-* `name {string} - The name of this Class.
-* `superclass {Class} - The superclass of this Class.
+* `name {string}` - The name of this Class.
+* `superclass {Class}` - The superclass of this Class.
 
 
 __Examples__
@@ -305,13 +316,190 @@ __Examples__
 var myClass = new Class(constructor, interfaces, name, superclass);
 ```
 
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_getConstructor" />
+### Class#getConstructor(): function(new:Constructor)
+
+Get the classes Constructor function
+
+
+__Method__
+
+```javascript
+/**
+ * @return {function(new:Constructor)}
+ */
+getConstructor: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `{function(new:Constructor)}` - The Class's Constructor function.
+
+
+__Examples__
+
+```javascript
+/** @type {function(new:MyClassConstructor)} */
+var MyClassConstructor = Class.extend(Obj, {});
+
+/** @type {Class} */
+var MyClass             = MyClassConstructor.getClass();
+
+console.log(MyClassConstructor === MyClass.getConstructor());   // true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_getInterfaces" />
+### Class#getInterfaces(): Array.<Interface>
+
+Get the Class's implemented Interfaces
+
+
+__Method__
+
+```javascript
+/**
+ * @return {Array.<Interface>}
+ */
+getInterfaces: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `Array.<Interface>` - The Class's implemented Interfaces.
+
+
+__Examples__
+
+```javascript
+
+var MyInterface         = Interface.declare({
+    myMethod: function() {}
+});
+var MyClassConstructor  = Class.extend(Obj, {
+    myMethod: function() {}
+});
+
+Class.implement(MyClassConstructor, MyInterface);
+
+var MyClass = MyClassConstructor.getClass();
+MyClass.getInterfaces();                            // [ MyInterface ]
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_getName" />
+### Class#getName(): string
+
+Get the Class's name (if one was supplied)
+
+
+__Method__
+
+```javascript
+/**
+ * @return {string}
+ */
+getName: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `string` - The Class's name.
+
+
+__Examples__
+
+```javascript
+var MyClassConstructor  = Class.extend(Obj, {
+    _name: "MyClass"
+});
+
+var MyClass = MyClassConstructor.getClass();
+MyClass.getName();                         // "MyClass"
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_getSuperclass" />
+### Class#getSuperclass(): Class
+
+Get the Class's superclass (if there is one)
+
+
+__Method__
+
+```javascript
+/**
+ * @return {Class}
+ */
+getSuperclass: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* `Class` - The Class's superclass.
+
+
+__Examples__
+
+Extended Class
+```javascript
+var MyClassConstructor  = Class.extend(Obj, {});
+
+var MyClass = MyClassConstructor.getClass();
+MyClass.getSuperclass();                         // Obj
+```
+
+Declared Class
+```javascript
+var MyBaseClassConstructor  = Class.declare({});
+
+var MyBaseClass = MyBaseClassConstructor.getClass();
+MyBaseClass.getSuperclass();                     // null
+```
+
 
 <br />
 ------------------------------------------------------------------------------------
 <br />
 
 <a name="Class-declare" />
-### Class.declare
+### Class.declare(declaration): function(new:Constructor)
 
 This method is used to declare a low level base class in the bugcore system. Most of the
 time you should not use this method to declare new classes unless you are sure of what
@@ -325,7 +513,7 @@ __Method__
 ```javascript
 /**
  * @static
- * @param {Object} declaration
+ * @param {Object.<string, *>} declaration
  * @return {function(new:Constructor)}
  */
 Class.declare = function(declaration) {
@@ -333,7 +521,7 @@ Class.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration {Object}` - An object that declares the methods of the new class.
+* `declaration {Object.<string, *>}` - An object that declares the methods of the new class.
 
 
 __Returns__
@@ -357,7 +545,7 @@ var LowestLevelObject = Class.declare({
 <br />
 
 <a name="Class-extend" />
-### Class.extend
+### Class.extend(constructor, declaration): function(new:Constructor)
 
 __Method__
 
@@ -365,7 +553,7 @@ __Method__
 /**
  * @static
  * @param {function(new:Constructor)} constructor
- * @param {Object} declaration
+ * @param {Object.<string, *>} declaration
  * @return {function(new:Constructor)}
  */
 Class.extend = function(constructor, declaration) {
@@ -374,7 +562,7 @@ Class.extend = function(constructor, declaration) {
 __Parameters__
 
 * `constructor {function(new:Constructor)}` - The constructor of the class to extend.
-* `declaration {Object}` - An object that declares the methods of the new class.
+* `declaration {Object.<string, *>}` - An object that declares the methods of the new class.
 
 
 __Returns__

@@ -42,7 +42,6 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          * @param {string} objectPathPattern
-         * @extends {Obj}
          */
         _constructor: function(objectPathPattern) {
 

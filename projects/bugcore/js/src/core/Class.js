@@ -59,13 +59,13 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          * @type {string}
          */
-        this.name           = name;
+        this.name           = name || "";
 
         /**
          * @private
          * @type {Class}
          */
-        this.superclass     = superclass;
+        this.superclass     = superclass || null;
     };
 
 
@@ -137,7 +137,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {function(new:?)} adapteeConstructor
-     * @param {Object} declaration
+     * @param {Object.<string, *>} declaration
      * @return {function(new:Constructor)}
      */
     Class.adapt = function(adapteeConstructor, declaration) {
@@ -157,7 +157,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {Object} declaration
+     * @param {Object.<string, *>} declaration
      * @return {function(new:Constructor)}
      */
     Class.declare = function(declaration) {
@@ -196,7 +196,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {function(new:Constructor)} constructor
-     * @param {Object} declaration
+     * @param {Object.<string, *>} declaration
      * @return {function(new:Constructor)}
      */
     Class.extend = function(constructor, declaration) {

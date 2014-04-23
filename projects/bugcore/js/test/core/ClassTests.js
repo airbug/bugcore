@@ -168,6 +168,72 @@ require('bugpack').context("*", function(bugpack) {
     /**
      *
      */
+    var classDeclareTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.NewClass = Class.declare({
+                _name: "NewClass",
+
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            });
+            this.instance = new this.NewClass();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(TypeUtil.isFunction(this.NewClass.prototype.someTestFunction1),
+                "Assert function added to class is function and is present in class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.NewClass.prototype.someTestFunction2),
+                "Assert second function added to class is function and is present in class prototype");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
+                "Assert function added to class is present in class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
+                "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of new class extends base level Constructor function");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewClass),
+                "Assert instance of new class extends itself");
+
+            var classFromConstructor = this.NewClass.getClass();
+            test.assertTrue(Class.doesExtend(classFromConstructor, Class),
+                "Assert getClass returns instance of Class");
+            if (Class.doesExtend(classFromConstructor, Class)) {
+                test.assertEqual(classFromConstructor.getSuperclass(), null,
+                    "Assert #getSuperclass returns null");
+                test.assertEqual(classFromConstructor.getConstructor(), this.NewClass,
+                    "Assert #getConstructor returns NewClass");
+                test.assertEqual(classFromConstructor.getName(), "NewClass",
+                    "Assert #getName returns the name of the class");
+            }
+
+            var classFromInstance = this.instance.getClass();
+            test.assertTrue(Class.doesExtend(classFromInstance, Class),
+                "Assert getClass returns instance of Class");
+            if (Class.doesExtend(classFromInstance, Class)) {
+                test.assertEqual(classFromInstance.getSuperclass(), null,
+                    "Assert #getSuperclass returns null");
+                test.assertEqual(classFromInstance.getConstructor(), this.NewClass,
+                    "Assert #getConstructor returns NewClass");
+                test.assertEqual(classFromInstance.getName(), "NewClass",
+                    "Assert #getName returns the name of the class");
+            }
+        }
+    };
+
+    /**
+     *
+     */
     var classExtendObjTest = {
 
         // Setup Test
@@ -175,6 +241,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.NewClass = Class.extend(Obj, {
+                _name: "NewClass",
+
                 someTestFunction1: function() {
 
                 },
@@ -202,12 +270,38 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Constructor function");
             test.assertTrue(Class.doesExtend(this.instance, Obj),
                 "Assert instance of new class extends base level Obj class");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewClass),
+                "Assert instance of new class extends itself");
             test.assertTrue(Class.doesImplement(this.instance, IHashCode),
                 "Assert instance of new class implements IHashCode");
             test.assertTrue(Class.doesImplement(this.instance, IEquals),
                 "Assert instance of new class implements IEquals");
             test.assertTrue(Class.doesImplement(this.instance, IClone),
                 "Assert instance of new class implements IClone");
+
+            var classFromConstructor = this.NewClass.getClass();
+            test.assertTrue(Class.doesExtend(classFromConstructor, Class),
+                "Assert getClass returns instance of Class");
+            if (Class.doesExtend(classFromConstructor, Class)) {
+                test.assertEqual(classFromConstructor.getSuperclass(), Obj.getClass(),
+                    "Assert getSuperclass returns Obj.getClass()");
+                test.assertEqual(classFromConstructor.getConstructor(), this.NewClass,
+                    "Assert #getConstructor returns NewClass");
+                test.assertEqual(classFromConstructor.getName(), "NewClass",
+                    "Assert #getName returns the name of the class");
+            }
+
+            var classFromInstance = this.instance.getClass();
+            test.assertTrue(Class.doesExtend(classFromInstance, Class),
+                "Assert getClass returns instance of Class");
+            if (Class.doesExtend(classFromInstance, Class)) {
+                test.assertEqual(classFromInstance.getSuperclass(), Obj.getClass(),
+                    "Assert #getSuperclass returns Obj.getClass()");
+                test.assertEqual(classFromInstance.getConstructor(), this.NewClass,
+                    "Assert #getConstructor returns NewClass");
+                test.assertEqual(classFromInstance.getName(), "NewClass",
+                    "Assert #getName returns the name of the class");
+            }
         }
     };
 
@@ -586,6 +680,9 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.annotate(classAdaptTest).with(
         test().name("Class - #adapt test")
+    );
+    bugmeta.annotate(classDeclareTest).with(
+        test().name("Class - #declare test")
     );
     bugmeta.annotate(classExtendObjTest).with(
         test().name("Class - #extend Obj test")

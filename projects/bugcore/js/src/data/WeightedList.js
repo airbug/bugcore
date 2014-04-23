@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         contains: function(value) {
             var weightedListNode = new WeightedListNode(value, 1);
-            return this.hashStore.hasValue(weightedListNode);
+            return this.getHashStore().hasValue(weightedListNode);
         },
 
         /**
