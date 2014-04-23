@@ -215,8 +215,8 @@ In the browser:
 
 * [`IArrayable`](#IArrayable)
 * [`ICollection`](#ICollection)
-* ['IIterable`](#IIterable)
-* ['IIterator`](#IIterator)
+* [`IIterable`](#IIterable)
+* [`IIterator`](#IIterator)
 * [`IList`](#IList)
 * [`IMap`](#IMap)
 * [`IObjectable`](#IObjectable)
