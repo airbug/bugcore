@@ -35,6 +35,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Command = Class.extend(Obj, /** @lends {Command.prototype} */{
 
+        _name: "Command",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

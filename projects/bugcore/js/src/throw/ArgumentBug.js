@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ArgumentBug = Class.extend(Bug, {
 
+        _name: "ArgumentBug",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

@@ -12,138 +12,141 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var IJsonable       = bugpack.require('IJsonable');
-var IObjectable     = bugpack.require('IObjectable');
-var Obj             = bugpack.require('Obj');
-var Properties      = bugpack.require('Properties');
-
-
-//-------------------------------------------------------------------------------
-// Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @extends {Obj}
- * @implements {IJsonable}
- * @implements {IObjectable}
- */
-var Config = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var IJsonable       = bugpack.require('IJsonable');
+    var IObjectable     = bugpack.require('IObjectable');
+    var Obj             = bugpack.require('Obj');
+    var Properties      = bugpack.require('Properties');
+
+
+    //-------------------------------------------------------------------------------
+    // Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {Object} config
+     * @class
+     * @extends {Obj}
+     * @implements {IJsonable}
+     * @implements {IObjectable}
      */
-    _constructor: function(config) {
+    var Config = Class.extend(Obj, {
 
-        this._super();
+        _name: "Config",
 
 
         //-------------------------------------------------------------------------------
-        // Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Properties}
+         * @constructs
+         * @param {Object} config
          */
-        this.properties = new Properties(config);
-    },
+        _constructor: function(config) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Properties}
+             */
+            this.properties = new Properties(config);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Config} config
+         * @param {(Array.<string> | Collection.<string>)} propertyNames
+         */
+        absorbConfig: function(config, propertyNames) {
+            this.properties.absorbProperties(config.getProperties(), propertyNames);
+        },
+
+        /**
+         * @return {Properties}
+         */
+        getProperties: function() {
+            return this.properties;
+        },
+
+        /**
+         * @param {string} propertyName
+         * @return {*}
+         */
+        getProperty: function(propertyName) {
+            return this.properties.getProperty(propertyName);
+        },
+
+        /**
+         * @param {string} propertyName
+         * @param {*} propertyValue
+         */
+        setProperty: function(propertyName, propertyValue) {
+            this.properties.setProperty(propertyName, propertyValue);
+        },
+
+        /**
+         * @param {Object} propertiesObject
+         */
+        updateProperties: function(propertiesObject) {
+            this.properties.updateProperties(propertiesObject);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IObjectable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Object}
+         */
+        toObject: function() {
+            return Obj.clone(this.properties.getPropertiesObject(), true);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IJsonable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {string}
+         */
+        toJson: function() {
+            return JSON.stringify(this.toObject());
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Interfaces
     //-------------------------------------------------------------------------------
 
-    /**
-     * @param {Config} config
-     * @param {(Array.<string> | Collection.<string>)} propertyNames
-     */
-    absorbConfig: function(config, propertyNames) {
-        this.properties.absorbProperties(config.getProperties(), propertyNames);
-    },
-
-    /**
-     * @return {Properties}
-     */
-    getProperties: function() {
-        return this.properties;
-    },
-
-    /**
-     * @param {string} propertyName
-     * @return {*}
-     */
-    getProperty: function(propertyName) {
-        return this.properties.getProperty(propertyName);
-    },
-
-    /**
-     * @param {string} propertyName
-     * @param {*} propertyValue
-     */
-    setProperty: function(propertyName, propertyValue) {
-        this.properties.setProperty(propertyName, propertyValue);
-    },
-
-    /**
-     * @param {Object} propertiesObject
-     */
-    updateProperties: function(propertiesObject) {
-        this.properties.updateProperties(propertiesObject);
-    },
+    Class.implement(Config, IJsonable);
+    Class.implement(Config, IObjectable);
 
 
     //-------------------------------------------------------------------------------
-    // IObjectable Implementation
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @return {Object}
-     */
-    toObject: function() {
-        return Obj.clone(this.properties.getPropertiesObject(), true);
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // IJsonable Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @return {string}
-     */
-    toJson: function() {
-        return JSON.stringify(this.toObject());
-    }
+    bugpack.export("Config", Config);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(Config, IJsonable);
-Class.implement(Config, IObjectable);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export("Config", Config);

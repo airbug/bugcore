@@ -44,6 +44,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CommandProcessor = Class.extend(Obj, {
 
+        _name: "CommandProcessor",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

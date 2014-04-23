@@ -12,7 +12,7 @@
 require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Declare Class
+    // Constructor
     //-------------------------------------------------------------------------------
 
     // NOTE BRN: We don't use the base level Class system here because our low level Object class depends on this class
@@ -126,7 +126,7 @@ require('bugpack').context("*", function(bugpack) {
 
 
     //-------------------------------------------------------------------------------
-    // Static Variables
+    // Static Properties
     //-------------------------------------------------------------------------------
 
     /**

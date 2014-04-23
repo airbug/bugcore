@@ -10,50 +10,53 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Handler         = bugpack.require('Handler');
-var TypeUtil        = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Handler}
- */
-var FinallyHandler = Class.extend(Handler, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Handler         = bugpack.require('Handler');
+    var TypeUtil        = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {Array.<*>} args
+     * @class
+     * @extends {Handler}
      */
-    handle: function(args) {
-        if (TypeUtil.isFunction(this.getMethod())) {
-            this.doHandleMethod(args);
-        } else {
-            this.getForwardPromise().resolvePromise(args);
+    var FinallyHandler = Class.extend(Handler, {
+
+        _name: "FinallyHandler",
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Array.<*>} args
+         */
+        handle: function(args) {
+            if (TypeUtil.isFunction(this.getMethod())) {
+                this.doHandleMethod(args);
+            } else {
+                this.getForwardPromise().resolvePromise(args);
+            }
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('FinallyHandler', FinallyHandler);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('FinallyHandler', FinallyHandler);

@@ -10,129 +10,140 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack     = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var Obj         = bugpack.require('Obj');
-var Queue       = bugpack.require('Queue');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var Semaphore = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(numberPermits) {
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
+    var Queue       = bugpack.require('Queue');
 
-        this._super();
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var Semaphore = Class.extend(Obj, {
+
+        _name: "Semaphore",
 
 
         //-------------------------------------------------------------------------------
-        // Properties
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {number} numberPermits
+         */
+        _constructor: function(numberPermits) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Queue.<function()>}
+             */
+            this.acquisitionQueue       = new Queue();
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.numberPermitsAcquired  = 0;
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.numberPermits          = numberPermits;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function()} method
+         */
+        acquire: function(method) {
+            this.queueAcquisition(method);
+            this.processQueue();
+        },
+
+        /**
+         *
+         */
+        release: function() {
+            this.releasePermit();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Private Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @private
-         * @type {Queue.<function()>}
          */
-        this.acquisitionQueue       = new Queue();
+        acquirePermit: function(method) {
+            this.numberPermitsAcquired++;
+            method();
+        },
 
         /**
          * @private
-         * @type {number}
          */
-        this.numberPermitsAcquired  = 0;
+        processQueue: function() {
+            while (this.numberPermitsAcquired < this.numberPermits && this.acquisitionQueue.getCount() > 0) {
+                var nextMethod = this.acquisitionQueue.dequeue();
+                this.acquirePermit(nextMethod);
+            }
+        },
 
         /**
          * @private
-         * @type {number}
+         * @param {function()} method
          */
-        this.numberPermits          = numberPermits;
-    },
+        queueAcquisition: function(method) {
+            this.acquisitionQueue.enqueue(method);
+        },
 
+        /**
+         * @private
+         */
+        releasePermit: function() {
+            this.numberPermitsAcquired--;
+            var _this = this;
 
-    //-------------------------------------------------------------------------------
-    // Public Instance Methods
-    //-------------------------------------------------------------------------------
+            // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
+            // queue.
 
-    /**
-     * @param {function()} method
-     */
-    acquire: function(method) {
-        this.queueAcquisition(method);
-        this.processQueue();
-    },
-
-    /**
-     *
-     */
-    release: function() {
-        this.releasePermit();
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Private Instance Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    acquirePermit: function(method) {
-        this.numberPermitsAcquired++;
-        method();
-    },
-
-    /**
-     * @private
-     */
-    processQueue: function() {
-        while (this.numberPermitsAcquired < this.numberPermits && this.acquisitionQueue.getCount() > 0) {
-            var nextMethod = this.acquisitionQueue.dequeue();
-            this.acquirePermit(nextMethod);
+            setTimeout(function() {
+                _this.processQueue();
+            }, 0);
         }
-    },
+    });
 
-    /**
-     * @private
-     * @param {function()} method
-     */
-    queueAcquisition: function(method) {
-        this.acquisitionQueue.enqueue(method);
-    },
 
-    /**
-     * @private
-     */
-    releasePermit: function() {
-        this.numberPermitsAcquired--;
-        var _this = this;
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
 
-        // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
-        // queue.
-
-        setTimeout(function() {
-            _this.processQueue();
-        }, 0);
-    }
+    bugpack.export('Semaphore', Semaphore);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Semaphore', Semaphore);

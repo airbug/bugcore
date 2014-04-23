@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MappedThrowable = Class.extend(Throwable, {
 
+        _name: "MappedThrowable",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

@@ -6,20 +6,20 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
+require('bugpack').context("*", function(bugpack) {
 
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
 
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
+    /**
+     * @constructor
+     */
+    var UuidGenerator = function() {};
 
-/**
- * @class
- */
-var UuidGenerator = {
 
     //-------------------------------------------------------------------------------
     // Static Methods
@@ -29,45 +29,45 @@ var UuidGenerator = {
      * @static
      * @return {string}
      */
-    generateHex4: function() {
+    UuidGenerator.generateHex4 = function() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
             .substring(1);
-    },
+    };
 
     /**
      * @static
      * @return {string}
      */
-    generateHexUuid: function() {
+    UuidGenerator.generateHexUuid = function() {
         return UuidGenerator.generateHex4() + UuidGenerator.generateHex4() +
             UuidGenerator.generateHex4() + UuidGenerator.generateHex4() +
             UuidGenerator.generateHex4() + UuidGenerator.generateHex4();
-    },
+    };
 
     /**
      * @static
      * @return {string}
      */
-    generateShortHexUuid: function() {
+    UuidGenerator.generateShortHexUuid = function() {
         return UuidGenerator.generateHex4() + UuidGenerator.generateHex4();
-    },
+    };
 
     /**
      * @static
      * @return {string}
      */
-    generateUuid: function() {
+    UuidGenerator.generateUuid = function() {
         return  UuidGenerator.generateHex4() + UuidGenerator.generateHex4() + '-' +
             UuidGenerator.generateHex4() + '-' + UuidGenerator.generateHex4() + '-' +
             UuidGenerator.generateHex4() + '-' +
             UuidGenerator.generateHex4() + UuidGenerator.generateHex4() + UuidGenerator.generateHex4();
-    }
-};
+    };
 
 
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
 
-bugpack.export('UuidGenerator', UuidGenerator);
+    bugpack.export('UuidGenerator', UuidGenerator);
+});

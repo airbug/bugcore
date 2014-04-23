@@ -10,50 +10,53 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Handler         = bugpack.require('Handler');
-var TypeUtil        = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Handler}
- */
-var RejectedHandler = Class.extend(Handler, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Public Methods
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Handler         = bugpack.require('Handler');
+    var TypeUtil        = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {Array.<*>} args
+     * @class
+     * @extends {Handler}
      */
-    handle: function(args) {
-        if (TypeUtil.isFunction(this.getMethod())) {
-            this.doHandleMethod(args);
-        } else {
-            this.getForwardPromise().rejectPromise(args);
+    var RejectedHandler = Class.extend(Handler, {
+
+        _name: "RejectedHandler",
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Array.<*>} args
+         */
+        handle: function(args) {
+            if (TypeUtil.isFunction(this.getMethod())) {
+                this.doHandleMethod(args);
+            } else {
+                this.getForwardPromise().rejectPromise(args);
+            }
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('RejectedHandler', RejectedHandler);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('RejectedHandler', RejectedHandler);

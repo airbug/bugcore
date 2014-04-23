@@ -10,118 +10,121 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Obj             = bugpack.require('Obj');
-var TypeUtil        = bugpack.require('TypeUtil');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Obj}
- */
-var Handler = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var Obj             = bugpack.require('Obj');
+    var TypeUtil        = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {function(...):*} method
-     * @param {Promise} forwardPromise
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function(method, forwardPromise) {
+    var Handler = Class.extend(Obj, {
 
-        this._super();
+        _name: "Handler",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {function(...[*]): *}
+         * @constructs
+         * @param {function(...):*} method
+         * @param {Promise} forwardPromise
          */
-        this.method             = method;
+        _constructor: function(method, forwardPromise) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {function(...[*]): *}
+             */
+            this.method             = method;
+
+            /**
+             * @private
+             * @type {Promise}
+             */
+            this.forwardPromise     = forwardPromise;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Promise}
+         * @return {function(...):*}
          */
-        this.forwardPromise     = forwardPromise;
-    },
+        getMethod: function() {
+            return this.method;
+        },
+
+        /**
+         * @return {Promise}
+         */
+        getForwardPromise: function() {
+            return this.forwardPromise;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Abstract Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @return {function(...):*}
-     */
-    getMethod: function() {
-        return this.method;
-    },
+        /**
+         * @abstract
+         * @param {Array.<*>} args
+         */
+        handle: function(args) {
 
-    /**
-     * @return {Promise}
-     */
-    getForwardPromise: function() {
-        return this.forwardPromise;
-    },
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Abstract Methods
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @abstract
-     * @param {Array.<*>} args
-     */
-    handle: function(args) {
-
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Public Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @protected
-     * @param {Array.<*>} args
-     */
-    doHandleMethod: function(args) {
-        try {
-            var result = this.method.apply(null, args);
-            if (!TypeUtil.isUndefined(result)) {
-                this.forwardPromise.resolvePromise([result]);
+        /**
+         * @protected
+         * @param {Array.<*>} args
+         */
+        doHandleMethod: function(args) {
+            try {
+                var result = this.method.apply(null, args);
+                if (!TypeUtil.isUndefined(result)) {
+                    this.forwardPromise.resolvePromise([result]);
+                }
+            } catch(e) {
+                this.forwardPromise.rejectPromise([e]);
             }
-        } catch(e) {
-            this.forwardPromise.rejectPromise([e]);
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('Handler', Handler);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Handler', Handler);

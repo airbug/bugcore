@@ -12,133 +12,137 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack                 = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class                   = bugpack.require('Class');
-var IConditionBuilder       = bugpack.require('IConditionBuilder');
-var Obj                     = bugpack.require('Obj');
-var Set                     = bugpack.require('Set');
-var WhereCondition          = bugpack.require('WhereCondition');
-
-
-//-------------------------------------------------------------------------------
-// Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @extends {Obj}
- */
-var WhereConditionBuilder = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class                   = bugpack.require('Class');
+    var IConditionBuilder       = bugpack.require('IConditionBuilder');
+    var Obj                     = bugpack.require('Obj');
+    var Set                     = bugpack.require('Set');
+    var WhereCondition          = bugpack.require('WhereCondition');
+
+
+    //-------------------------------------------------------------------------------
+    // Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
-     * @param {QueryBuilder} queryBuilder
-     * @param {string} propertyQuery
+     * @class
+     * @extends {Obj}
+     * @implements {IConditionBuilder}
      */
-    _constructor: function(queryBuilder, propertyQuery) {
+    var WhereConditionBuilder = Class.extend(Obj, {
 
-        this._super();
+        _name: "WhereConditionBuilder",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Set.<string>}
+         * @constructs
+         * @param {QueryBuilder} queryBuilder
+         * @param {string} propertyQuery
          */
-        this.inSet              = new Set();
+        _constructor: function(queryBuilder, propertyQuery) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Set.<string>}
+             */
+            this.inSet              = new Set();
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.propertyQuery      = propertyQuery;
+
+            /**
+             * @private
+             * @type {QueryBuilder}
+             */
+            this.queryBuilder       = queryBuilder;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {string}
+         * @return {Set.<string>}
          */
-        this.propertyQuery      = propertyQuery;
+        getInSet: function() {
+            return this.inSet;
+        },
 
         /**
-         * @private
-         * @type {QueryBuilder}
+         * @returns {string}
          */
-        this.queryBuilder       = queryBuilder;
-    },
+        getPropertyQuery: function() {
+            return this.propertyQuery;
+        },
+
+        /**
+         * @returns {QueryBuilder}
+         */
+        getQueryBuilder: function() {
+            return this.queryBuilder;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IConditionBuilder Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {ICondition}
+         */
+        buildCondition: function() {
+            return new WhereCondition(this.propertyQuery, this.inSet);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Array.<string>} ins
+         * @return {QueryBuilder}
+         */
+        in: function(ins) {
+            this.inSet.addAll(ins);
+            return this.getQueryBuilder();
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Interfaces
     //-------------------------------------------------------------------------------
 
-    /**
-     * @return {Set.<string>}
-     */
-    getInSet: function() {
-        return this.inSet;
-    },
-
-    /**
-     * @returns {string}
-     */
-    getPropertyQuery: function() {
-        return this.propertyQuery;
-    },
-
-    /**
-     * @returns {QueryBuilder}
-     */
-    getQueryBuilder: function() {
-        return this.queryBuilder;
-    },
+    Class.implement(WhereConditionBuilder, IConditionBuilder);
 
 
     //-------------------------------------------------------------------------------
-    // IConditionBuilder Implementation
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @return {ICondition}
-     */
-    buildCondition: function() {
-        return new WhereCondition(this.propertyQuery, this.inSet);
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Public Methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {Array.<string>} ins
-     * @return {QueryBuilder}
-     */
-    in: function(ins) {
-        this.inSet.addAll(ins);
-        return this.getQueryBuilder();
-    }
+    bugpack.export('WhereConditionBuilder', WhereConditionBuilder);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(WhereConditionBuilder, IConditionBuilder);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('WhereConditionBuilder', WhereConditionBuilder);

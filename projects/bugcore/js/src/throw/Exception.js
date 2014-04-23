@@ -30,7 +30,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Throwable}
      */
-    var Exception = Class.extend(Throwable, {});
+    var Exception = Class.extend(Throwable, {
+        _name: "Exception"
+    });
 
 
     //-------------------------------------------------------------------------------

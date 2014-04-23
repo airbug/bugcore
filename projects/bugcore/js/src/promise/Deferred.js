@@ -11,124 +11,127 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var ArgUtil         = bugpack.require('ArgUtil');
-var Class           = bugpack.require('Class');
-var Obj             = bugpack.require('Obj');
-var Promise         = bugpack.require('Promise');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-/**
- * @class
- * @extends {Obj}
- */
-var Deferred = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var ArgUtil         = bugpack.require('ArgUtil');
+    var Class           = bugpack.require('Class');
+    var Obj             = bugpack.require('Obj');
+    var Promise         = bugpack.require('Promise');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
+     * @class
+     * @extends {Obj}
      */
-    _constructor: function() {
+    var Deferred = Class.extend(Obj, {
 
-        this._super();
+        _name: "Deferred",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Promise}
+         * @constructs
          */
-        this.deferredPromise    = new Promise();
-    },
+        _constructor: function() {
+
+            this._super();
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
 
-    /**
-     * @return {Promise}
-     */
-    getDeferredPromise: function() {
-        return this.deferredPromise;
-    },
+            /**
+             * @private
+             * @type {Promise}
+             */
+            this.deferredPromise    = new Promise();
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Public Methods
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @param {function(Throwable=, ...=)} callback
-     */
-    callback: function(callback) {
-        this.deferredPromise.then(function() {
+        /**
+         * @return {Promise}
+         */
+        getDeferredPromise: function() {
+            return this.deferredPromise;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(Throwable=, ...=)} callback
+         */
+        callback: function(callback) {
+            this.deferredPromise.then(function() {
+                var args = ArgUtil.toArray(arguments);
+                args.unshift(null);
+                return callback.apply(null, args);
+            }, function(throwable) {
+                return callback(throwable);
+            });
+        },
+
+        /**
+         * @param {...[*]} args
+         */
+        reject: function() {
             var args = ArgUtil.toArray(arguments);
-            args.unshift(null);
-            return callback.apply(null, args);
-        }, function(throwable) {
-            return callback(throwable);
-        });
-    },
+            this.deferredPromise.rejectPromise(args);
+        },
+
+        /**
+         * @param {...[*]} args
+         */
+        resolve: function() {
+            var args = ArgUtil.toArray(arguments);
+            this.deferredPromise.resolvePromise(args);
+        },
+
+        /**
+         * @return {Promise}
+         */
+        promise: function() {
+            return this.getDeferredPromise();
+        }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Static Methods
+    //-------------------------------------------------------------------------------
 
     /**
-     * @param {...[*]} args
+     * @return {Deferred}
      */
-    reject: function() {
-        var args = ArgUtil.toArray(arguments);
-        this.deferredPromise.rejectPromise(args);
-    },
+    Deferred.$defer = function() {
+        return new Deferred();
+    };
 
-    /**
-     * @param {...[*]} args
-     */
-    resolve: function() {
-        var args = ArgUtil.toArray(arguments);
-        this.deferredPromise.resolvePromise(args);
-    },
 
-    /**
-     * @return {Promise}
-     */
-    promise: function() {
-        return this.getDeferredPromise();
-    }
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('Deferred', Deferred);
 });
-
-
-//-------------------------------------------------------------------------------
-// Static Methods
-//-------------------------------------------------------------------------------
-
-/**
- * @return {Deferred}
- */
-Deferred.$defer = function() {
-    return new Deferred();
-};
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('Deferred', Deferred);

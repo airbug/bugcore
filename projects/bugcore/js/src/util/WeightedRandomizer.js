@@ -13,88 +13,98 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class =         bugpack.require('Class');
-var Collection =    bugpack.require('Collection');
-var HashTable =     bugpack.require('HashTable');
-var MathUtil =      bugpack.require('MathUtil');
-var Obj =           bugpack.require('Obj');
-var WeightedList =  bugpack.require('WeightedList');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var WeightedRandomizer = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function() {
+    var Class           = bugpack.require('Class');
+    var Collection      = bugpack.require('Collection');
+    var HashTable       = bugpack.require('HashTable');
+    var MathUtil        = bugpack.require('MathUtil');
+    var Obj             = bugpack.require('Obj');
+    var WeightedList    = bugpack.require('WeightedList');
 
-        this._super();
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {Obj}
+     */
+    var WeightedRandomizer = Class.extend(Obj, {
+
+        _name: "WeightedRandomizer",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {WeightedList}
+         * @constructs
          */
-        this.weightedList = new WeightedList();
-    },
+        _constructor: function() {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {WeightedList}
+             */
+            this.weightedList = new WeightedList();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {number}
+         */
+        getCount: function() {
+            return this.weightedList.getCount();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Class methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {*} value
+         * @param {number} weight
+         */
+        addValue: function(value, weight) {
+            this.weightedList.add(value, weight);
+        },
+
+        /**
+         * @return {*}
+         */
+        getRandom: function() {
+            var totalWeight = this.weightedList.getTotalWeight();
+            var randomNumber = MathUtil.randomBetween(1, totalWeight);
+            return this.weightedList.getAtWeight(randomNumber);
+        }
+    });
 
 
     //-------------------------------------------------------------------------------
-    // Getters and Setters
+    // Exports
     //-------------------------------------------------------------------------------
 
-    /**
-     * @return {number}
-     */
-    getCount: function() {
-        return this.weightedList.getCount();
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // Class methods
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {*} value
-     * @param {number} weight
-     */
-    addValue: function(value, weight) {
-        this.weightedList.add(value, weight);
-    },
-
-    /**
-     * @return {*}
-     */
-    getRandom: function() {
-        var totalWeight = this.weightedList.getTotalWeight();
-        var randomNumber = MathUtil.randomBetween(1, totalWeight);
-        return this.weightedList.getAtWeight(randomNumber);
-    }
+    bugpack.export('WeightedRandomizer', WeightedRandomizer);
 });
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('WeightedRandomizer', WeightedRandomizer);

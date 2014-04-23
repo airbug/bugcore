@@ -34,6 +34,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var PublisherSubscription = Class.extend(Obj, {
 
+        _name: "PublisherSubscription",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

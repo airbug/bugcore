@@ -11,72 +11,84 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var Interface   = bugpack.require('Interface');
-var IProxy      = bugpack.require('IProxy');
-var Obj         = bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var ProxyObject = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(instance) {
-
-        this._super();
-
-
-        //-------------------------------------------------------------------------------
-        // Private Properties
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         * @type {Object}
-         */
-        this.instance = instance;
-    },
+    var Class       = bugpack.require('Class');
+    var Interface   = bugpack.require('Interface');
+    var IProxy      = bugpack.require('IProxy');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
-    // IProxy Implementation
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {string} functionName
-     * @param {Array.<*>} args
+     * @class
+     * @extends {Obj}
+     * @implements {IProxy}
      */
-    proxy: function(functionName, args) {
-        return this.instance[functionName].apply(this.instance, args);
-    }
+    var ProxyObject = Class.extend(Obj, {
+
+        _name: "ProxyObject",
+
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {Object} instance
+         */
+        _constructor: function(instance) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.instance = instance;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IProxy Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {string} functionName
+         * @param {Array.<*>} args
+         */
+        proxy: function(functionName, args) {
+            return this.instance[functionName].apply(this.instance, args);
+        }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(ProxyObject, IProxy);
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('ProxyObject', ProxyObject);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(ProxyObject, IProxy);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('ProxyObject', ProxyObject);

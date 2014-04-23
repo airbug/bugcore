@@ -11,109 +11,114 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack                 = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class                   = bugpack.require('Class');
-var ICondition              = bugpack.require('ICondition');
-var Obj                     = bugpack.require('Obj');
-var Set                     = bugpack.require('Set');
-
-
-//-------------------------------------------------------------------------------
-// Class
-//-------------------------------------------------------------------------------
-
-/**
- * @constructor
- * @implements {ICondition}
- * @extends {Obj}
- */
-var WhereCondition = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class                   = bugpack.require('Class');
+    var ICondition              = bugpack.require('ICondition');
+    var Obj                     = bugpack.require('Obj');
+    var Set                     = bugpack.require('Set');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructs
+     * @class
+     * @extends {Obj}
+     * @implements {ICondition}
      */
-    _constructor: function(propertyQuery, inSet) {
+    var WhereCondition = Class.extend(Obj, {
 
-        this._super();
+        _name: "WhereCondition",
 
 
         //-------------------------------------------------------------------------------
-        // Private Properties
+        // Constructor
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Set.<string>}
+         * @constructs
+         * @param {string} propertyQuery
+         * @param {Set.<string>} inSet
          */
-        this.inSet              = inSet;
+        _constructor: function(propertyQuery, inSet) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Set.<string>}
+             */
+            this.inSet              = inSet;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.propertyQuery      = propertyQuery;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {string}
+         * @returns {Set.<string>}
          */
-        this.propertyQuery      = propertyQuery;
-    },
+        getInSet: function() {
+            return this.inSet;
+        },
+
+        /**
+         * @returns {string}
+         */
+        getPropertyQuery: function() {
+            return this.propertyQuery;
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Getters and Setters
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // ICondition Implementation
+        //-------------------------------------------------------------------------------
 
-    /**
-     * @returns {Set.<string>}
-     */
-    getInSet: function() {
-        return this.inSet;
-    },
-
-    /**
-     * @returns {string}
-     */
-    getPropertyQuery: function() {
-        return this.propertyQuery;
-    },
-
-
-    //-------------------------------------------------------------------------------
-    // ICondition Implementation
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @param {Object} value
-     * @return {boolean}
-     */
-    check: function(value) {
-        var propertyValue = Obj.findProperty(value, this.propertyQuery);
-        if (this.inSet.contains(propertyValue)) {
-            return true;
+        /**
+         * @param {Object} value
+         * @return {boolean}
+         */
+        check: function(value) {
+            var propertyValue = Obj.findProperty(value, this.propertyQuery);
+            if (this.inSet.contains(propertyValue)) {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(WhereCondition, ICondition);
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('WhereCondition', WhereCondition);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(WhereCondition, ICondition);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('WhereCondition', WhereCondition);

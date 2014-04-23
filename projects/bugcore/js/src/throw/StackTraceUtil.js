@@ -32,7 +32,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      */
-    var StackTraceUtil = Class.extend(Obj, {});
+    var StackTraceUtil = Class.extend(Obj, {
+        _name: "StackTraceUtil"
+    });
 
 
     //-------------------------------------------------------------------------------

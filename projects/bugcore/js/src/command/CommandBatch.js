@@ -38,6 +38,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CommandBatch = Class.extend(Obj, /** @lends {CommandBatch.prototype} */{
 
+        _name: "CommandBatch",
+
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------

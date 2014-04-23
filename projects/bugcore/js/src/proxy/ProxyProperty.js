@@ -11,83 +11,96 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack = require('bugpack').context();
-
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class       = bugpack.require('Class');
-var Interface   = bugpack.require('Interface');
-var IProxy      = bugpack.require('IProxy');
-var Obj         = bugpack.require('Obj');
-
-
-//-------------------------------------------------------------------------------
-// Declare Class
-//-------------------------------------------------------------------------------
-
-var ProxyProperty = Class.extend(Obj, {
+require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    _constructor: function(instance, propertyName) {
-
-        this._super();
-
-
-        //-------------------------------------------------------------------------------
-        // Private Properties
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         * @type {Object}
-         */
-        this.instance = instance;
-
-        /**
-         * @private
-         * @type {string}
-         */
-        this.propertyName = propertyName;
-    },
+    var Class       = bugpack.require('Class');
+    var Interface   = bugpack.require('Interface');
+    var IProxy      = bugpack.require('IProxy');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
-    // IProxy Implementation
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {string} functionName
-     * @param {Array.<*>} args
+     * @class
+     * @extends {Obj}
+     * @implements {IProxy}
      */
-    proxy: function(functionName, args) {
-        var target = this.instance[this.propertyName];
-        if (target) {
-            return target[functionName].apply(target, args);
-        } else {
-            throw new Error("Could not find property '" + this.propertyName + "' on instance");
+    var ProxyProperty = Class.extend(Obj, {
+
+        _name: "ProxyProperty",
+
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         * @param {Object} instance
+         * @param {string} propertyName
+         */
+        _constructor: function(instance, propertyName) {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.instance = instance;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.propertyName = propertyName;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IProxy Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {string} functionName
+         * @param {Array.<*>} args
+         */
+        proxy: function(functionName, args) {
+            var target = this.instance[this.propertyName];
+            if (target) {
+                return target[functionName].apply(target, args);
+            } else {
+                throw new Error("Could not find property '" + this.propertyName + "' on instance");
+            }
         }
-    }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(ProxyProperty, IProxy);
+
+
+    //-------------------------------------------------------------------------------
+    // Exports
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('ProxyProperty', ProxyProperty);
 });
-
-
-//-------------------------------------------------------------------------------
-// Interfaces
-//-------------------------------------------------------------------------------
-
-Class.implement(ProxyProperty, IProxy);
-
-
-//-------------------------------------------------------------------------------
-// Exports
-//-------------------------------------------------------------------------------
-
-bugpack.export('ProxyProperty', ProxyProperty);
