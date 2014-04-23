@@ -213,10 +213,13 @@ In the browser:
 
 ### Data Interfaces
 
+* [`IArrayable`](#IArrayable)
 * [`ICollection`](#ICollection)
-* ['IIterator
+* ['IIterable`](#IIterable)
+* ['IIterator`](#IIterator)
 * [`IList`](#IList)
 * [`IMap`](#IMap)
+* [`IObjectable`](#IObjectable)
 * [`ISet`](#ISet)
 
 ### Event System
