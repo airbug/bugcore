@@ -315,10 +315,10 @@ var Class = function(constructor, interfaces, name, superclass) {
 
 __Parameters__
 
-* `constructor {function(new:Constructor)}` - The Constructor of this class.
-* `interfaces {Array.<Interface>}` - Any Interfaces that this Class implements.
-* `name {string}` - The name of this Class.
-* `superclass {Class}` - The superclass of this Class.
+* `constructor` {function(new:[Constructor](#Constructor)} - The Constructor of this class.
+* `interfaces` {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).<[Interface](#Interface)>} - Any Interfaces that this Class implements.
+* `name` {string} - The name of this Class.
+* `superclass` {[Class](#Class)} - The superclass of this Class.
 
 
 __Examples__
@@ -353,14 +353,14 @@ __Parameters__
 
 __Returns__
 
-* {function(new:[Constructor)} - The Class's Constructor function.
+* {function(new:[Constructor](#Constructor))} - The Class's Constructor function.
 
 
 __Examples__
 
 ```javascript
 /** @type {function(new:MyClassConstructor)} */
-var MyClassConstructor = Class.extend(Obj, {});
+var MyClassConstructor  = Class.extend(Obj, {});
 
 /** @type {Class} */
 var MyClass             = MyClassConstructor.getClass();
@@ -395,7 +395,7 @@ __Parameters__
 
 __Returns__
 
-* `Array.<Interface>` - The Class's implemented Interfaces.
+* {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;} - The Class's implemented Interfaces.
 
 
 __Examples__
@@ -441,7 +441,7 @@ __Parameters__
 
 __Returns__
 
-* `string` - The Class's name.
+* {string} - The Class's name.
 
 
 __Examples__
@@ -531,7 +531,7 @@ Class.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).<string, *>} - An object that declares the methods of the new class.
+* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} - An object that declares the methods of the new class.
 
 
 __Returns__
@@ -673,7 +673,7 @@ Class.extend = function(constructor, declaration) {
 __Parameters__
 
 * `constructor` {function(new:[Constructor](#Constructor))} - The constructor of the class to extend.
-* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).<string, *>} - An object that declares the methods of the new class.
+* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} - An object that declares the methods of the new class.
 
 
 __Returns__
@@ -805,7 +805,7 @@ __Parameters__
 
 __Returns__
 
-* `{Class}` - The Class of this instance.
+* {[Class](#Class)} - The Class of this instance.
 
 
 __Examples__
@@ -843,7 +843,7 @@ __Parameters__
 
 __Returns__
 
-* `{Class}` - The Class of this Constructor.
+* {[Class](#Class)} - The Class of this Constructor.
 
 
 __Examples__
