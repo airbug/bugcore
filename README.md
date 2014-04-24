@@ -667,7 +667,7 @@ Class.extend = function(constructor, declaration) {
 __Parameters__
 
 * `constructor` {function(new:[Constructor](#Constructor))} - The constructor of the class to extend.
-* `declaration` {[Object]().<string, *>} - An object that declares the methods of the new class.
+* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).<string, *>} - An object that declares the methods of the new class.
 
 
 __Returns__
