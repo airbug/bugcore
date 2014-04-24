@@ -265,24 +265,30 @@ var Class = function(constructor, interfaces, name, superclass) {
 
 __Constructor Summary__
 
-* [`constructor Class(Constructor constructor, Array.<Interface> interfaces, string name, Class superclass)`](#Class_constructor)
+Access | Signature
+--- | ---
+constructor | [Class](#Class_constructor)({[Constructor](#Constructor)} constructor, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;} interfaces, {string} name, {[Class](#Class)} superclass)
 
 
 __Getters and Setters Summary__
 
-* [`public getConstructor(): function(new:Constructor)`](#Class_getConstructor)
-* [`public getInterfaces(): Array.<Interface>`](#Class_getInterfaces)
-* [`public getName(): string`](#Class_getName)
-* [`public getSuperclass(): Class`](#Class_getSuperclass)
+Access | Signature | Return Type
+--- | --- | ---
+public | [getConstructor](#Class_getConstructor)() | function(new:[Constructor](#Constructor))
+public | [getInterfaces](#Class_getInterfaces)() | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;
+public | [getName](#Class_getName)() | string
+public | [getSuperclass](#Class_getSuperclass)() | [Class](#Class)
 
 
 __Static Method Summary__
 
-* [`static declare(Object.<string, *> declaration): function(new:Constructor)`](#Class-declare)
-* [`static doesExtend(* value, function(new:Constructor) constructor): boolean`](#Class-doesExtend)
-* [`static doesImplement(* value, function(new:Implementable) implementable): boolean`](#Class-doesImplement)
-* [`static extend(function(new:Constructor) constructor, Object.<string, *> declaration): function(new:Constructor)`](#Class-extend)
-* [`static implement(function(new:Constructor) constructor, function(new:Implementable) implementable)`](#Class-implement)
+Access | Signature | Return Type
+--- | --- | ---
+static public | [declare](#Class-declare)({[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration) | function(new:[Constructor](#Constructor))
+static public | [doesExtend](#Class-doesExtend)({*} value, {function(new:[Constructor](#Constructor))} constructor) | boolean
+static public | [doesImplement](#Class-doesImplement)({*} value, {function(new:[Implementable](#Implementable))} implementable) | boolean
+static public | [extend](#Class-extend)({function(new:[Constructor](#Constructor))} constructor, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration) | function(new:[Constructor](#Constructor))
+static public | [implement](#Class-implement)({function(new:[Constructor](#Constructor))} constructor, {function(new:[Implementable](#Implementable))} implementable) | None
 
 
 <br />
