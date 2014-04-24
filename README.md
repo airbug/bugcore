@@ -260,6 +260,8 @@ __Class__
  */
 var Class = function(constructor, interfaces, name, superclass) {
 ```
+[View code](https://github.com/airbug/bugcore/blob/v0.2.3/projects/bugcore/js/src/core/Class.js)
+
 
 __Constructor Summary__
 
@@ -324,7 +326,7 @@ var myClass = new Class(constructor, interfaces, name, superclass);
 <br />
 
 <a name="Class_getConstructor" />
-### Class#getConstructor(): function(new:Constructor)
+### Class#getConstructor()
 
 Get the classes Constructor function
 
@@ -345,7 +347,7 @@ __Parameters__
 
 __Returns__
 
-* `{function(new:Constructor)}` - The Class's Constructor function.
+* {function(new:[Constructor)} - The Class's Constructor function.
 
 
 __Examples__
@@ -366,7 +368,7 @@ console.log(MyClassConstructor === MyClass.getConstructor());   // true
 <br />
 
 <a name="Class_getInterfaces" />
-### Class#getInterfaces(): Array.<Interface>
+### Class#getInterfaces()
 
 Get the Class's implemented Interfaces
 
@@ -393,7 +395,6 @@ __Returns__
 __Examples__
 
 ```javascript
-
 var MyInterface         = Interface.declare({
     myMethod: function() {}
 });
@@ -413,7 +414,7 @@ MyClass.getInterfaces();                            // [ MyInterface ]
 <br />
 
 <a name="Class_getName" />
-### Class#getName(): string
+### Class#getName()
 
 Get the Class's name (if one was supplied)
 
@@ -454,7 +455,7 @@ MyClass.getName();                         // "MyClass"
 <br />
 
 <a name="Class_getSuperclass" />
-### Class#getSuperclass(): Class
+### Class#getSuperclass()
 
 Get the Class's superclass (if there is one)
 
@@ -475,7 +476,7 @@ __Parameters__
 
 __Returns__
 
-* `Class` - The Class's superclass.
+* {[Class](#Class)} - The Class's superclass.
 
 
 __Examples__
@@ -485,7 +486,7 @@ Extended Class
 var MyClassConstructor  = Class.extend(Obj, {});
 
 var MyClass = MyClassConstructor.getClass();
-MyClass.getSuperclass();                         // Obj
+console.log(MyClass.getSuperclass() === Obj.getClass());    // true
 ```
 
 Declared Class
@@ -493,7 +494,7 @@ Declared Class
 var MyBaseClassConstructor  = Class.declare({});
 
 var MyBaseClass = MyBaseClassConstructor.getClass();
-MyBaseClass.getSuperclass();                     // null
+MyBaseClass.getSuperclass();                                // null
 ```
 
 
@@ -502,7 +503,7 @@ MyBaseClass.getSuperclass();                     // null
 <br />
 
 <a name="Class-declare" />
-### Class.declare(declaration): function(new:Constructor)
+### Class.declare(declaration)
 
 This method is used to declare a low level base class in the bugcore system. Most of the
 time you should not use this method to declare new classes unless you are sure of what
@@ -524,12 +525,12 @@ Class.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration {Object.<string, *>}` - An object that declares the methods of the new class.
+* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).<string, *>} - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* `{function(new:Constructor)}` - The newly created class's constructor.
+* {function(new:[Constructor](#Constructor))} - The newly created class's constructor.
 
 
 __Examples__
@@ -547,8 +548,109 @@ var LowestLevelObject = Class.declare({
 ------------------------------------------------------------------------------------
 <br />
 
+<a name="Class-doesExtend" />
+### Class.doesExtend(value, constructor)
+
+This method is used to determine if a value extends a particular Constructor's Class. Instances of Classes are
+considered to extend their own Class.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @param {function(new:Constructor)} constructor
+ * @return {boolean}
+ */
+Class.doesExtend = function(value, constructor) {
+```
+
+__Parameters__
+
+* `value` {*} - The value to determine if it extends the given Constructor's Class
+* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor used to check if the value extends it's Class
+
+
+__Returns__
+
+* {boolean} - Whether or not the value extends the given Constructor's Class
+
+
+__Examples__
+
+```javascript
+var BaseBall = Class.extend(Ball, {});
+var myBaseBall = new BaseBall();
+
+Class.doesExtend(myBaseBall, Ball);         //true
+Class.doesExtend(myBaseBall, BaseBall);     //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class-doesImplement" />
+### Class.doesImplement(value, implementable)
+
+This method is used to determine if a value implements a particular Implementable's Interface.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @param {function(new:Implementable)} implementable
+ * @return {boolean}
+ */
+Class.doesImplement = function(value, implementable) {
+```
+
+__Parameters__
+
+* `value` {*} - The value to determine if it implements the given Implementable's Interface
+* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor used to check if the value extends it's Class
+
+
+__Returns__
+
+* {boolean} - Whether or not the value implements the given Implementable's Interface
+
+
+__Examples__
+
+```javascript
+var IBall   = Interface.declare({});
+var Ball    = Class.declare({});
+Class.implement(Ball, IBall);
+
+var myBall  = new Ball();
+
+Class.doesImplement(myBall, IBall);         //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Class-extend" />
-### Class.extend(constructor, declaration): function(new:Constructor)
+### Class.extend(constructor, declaration)
+
+This method is used to extend another Class. It accepts the Class's Constructor as a parameter
+and the declaration for the new Class.
+
+
+__Notes__
+
+* The declaration can include methods and default properties for the new Class.
+* If you're creating a low level Class, it is best practice to extend [Obj](#Obj)
+
 
 __Method__
 
@@ -564,13 +666,13 @@ Class.extend = function(constructor, declaration) {
 
 __Parameters__
 
-* `constructor {function(new:Constructor)}` - The constructor of the class to extend.
-* `declaration {Object.<string, *>}` - An object that declares the methods of the new class.
+* `constructor` {function(new:[Constructor](#Constructor))} - The constructor of the class to extend.
+* `declaration` {[Object]().<string, *>} - An object that declares the methods of the new class.
 
 
 __Returns__
 
-* `{function(new:Constructor)}` - The newly created class's constructor.
+* {function(new:[Constructor](#Constructor))} - The newly created class's constructor.
 
 
 __Examples__
@@ -587,6 +689,59 @@ var BaseBall = Class.extend(Ball, {
 
     }
 });
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class-implement" />
+### Class.implement(constructor, implementable)
+
+This method marks a Class as implementing an Interface. When calling this method it will add the
+Implementable's Interface to the Class's list of Interfaces. It will also validate that the
+given Class actually implements all of the methods of the Interface. If the Class does not
+this method will throw an Error.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {function(new:Constructor)} constructor
+ * @param {function(new:Implementable)} implementable
+ */
+Class.implement = function(constructor, implementable) {
+```
+
+__Parameters__
+
+* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor of the Class to implement the Interface.
+* `implementable` {function(new:[Implementable](#Implementable))} - The Implementable of the Interface to implement.
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+Implement an Interface
+```javascript
+var IBall   = Interface.declare({
+    throwBall: function() {}
+});
+
+var Ball    = Class.declare({
+    throwBall: function() {
+        // Implementation of method
+    }
+});
+
+Class.implement(Ball, IBall);
 ```
 
 
@@ -609,12 +764,12 @@ var Constructor = function() {
 
 __Getters and Setters Summary__
 
-* [`public getClass() :Class`](#Constructor_getClass)
+* [`public getClass(): Class`](#Constructor_getClass)
 
 
 __Static Getters and Setters Summary__
 
-* [`static getClass() :Class`](#Constructor-getClass)
+* [`static getClass(): Class`](#Constructor-getClass)
 
 
 <br />
