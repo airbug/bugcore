@@ -267,28 +267,28 @@ __Constructor Summary__
 
 Access | Signature
 --- | ---
-constructor | [Class](#Class_constructor)({[Constructor](#Constructor)} constructor, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;} interfaces, {string} name, {[Class](#Class)} superclass)
+constructor | <code>[Class](#Class_constructor)({[Constructor](#Constructor)} constructor, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;} interfaces, {string} name, {[Class](#Class)} superclass)</code>
 
 
 __Getters and Setters Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | [getConstructor](#Class_getConstructor)() | function(new:[Constructor](#Constructor))
-public | [getInterfaces](#Class_getInterfaces)() | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;
-public | [getName](#Class_getName)() | string
-public | [getSuperclass](#Class_getSuperclass)() | [Class](#Class)
+public | <code>[getConstructor](#Class_getConstructor)()</code> | <code>{function(new:[Constructor](#Constructor))}</code>
+public | <code>[getInterfaces](#Class_getInterfaces)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;}</code>
+public | <code>[getName](#Class_getName)()</code> | <code>{string}</code>
+public | <code>[getSuperclass](#Class_getSuperclass)()</code> | <code>{[Class](#Class)}</code>
 
 
 __Static Method Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-static public | [declare](#Class-declare)({[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration) | function(new:[Constructor](#Constructor))
-static public | [doesExtend](#Class-doesExtend)({*} value, {function(new:[Constructor](#Constructor))} constructor) | boolean
-static public | [doesImplement](#Class-doesImplement)({*} value, {function(new:[Implementable](#Implementable))} implementable) | boolean
-static public | [extend](#Class-extend)({function(new:[Constructor](#Constructor))} constructor, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration) | function(new:[Constructor](#Constructor))
-static public | [implement](#Class-implement)({function(new:[Constructor](#Constructor))} constructor, {function(new:[Implementable](#Implementable))} implementable) | None
+static public | <code>[declare](#Class-declare)({[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration)</code> | <code>{function(new:[Constructor](#Constructor))}</code>
+static public | <code>[doesExtend](#Class-doesExtend)({*} value, {function(new:[Constructor](#Constructor))} constructor)</code> | <code>{boolean}</code>
+static public | <code>[doesImplement](#Class-doesImplement)({*} value, {function(new:[Implementable](#Implementable))} implementable)</code> | <code>{boolean}</code>
+static public | <code>[extend](#Class-extend)({function(new:[Constructor](#Constructor))} constructor, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration)</code> | <code>{function(new:[Constructor](#Constructor))}</code>
+static public | <code>[implement](#Class-implement)({function(new:[Constructor](#Constructor))} constructor, {function(new:[Implementable](#Implementable))} implementable)</code> | None
 
 
 <br />
@@ -315,10 +315,12 @@ var Class = function(constructor, interfaces, name, superclass) {
 
 __Parameters__
 
-* `constructor` {function(new:[Constructor](#Constructor)} - The Constructor of this class.
-* `interfaces` {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).<[Interface](#Interface)>} - Any Interfaces that this Class implements.
-* `name` {string} - The name of this Class.
-* `superclass` {[Class](#Class)} - The superclass of this Class.
+Name | Type | Description
+--- | --- | ---
+`constructor` | <code>{function(new:[Constructor](#Constructor)}</code> | The Constructor of this class.
+`interfaces` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).<[Interface](#Interface)>}</code> | Any Interfaces that this Class implements.
+`name` | <code>{string}</code> | The name of this Class.
+`superclass` | <code>{[Class](#Class)}</code> | The superclass of this Class.
 
 
 __Examples__
@@ -353,7 +355,7 @@ __Parameters__
 
 __Returns__
 
-* {function(new:[Constructor](#Constructor))} - The Class's Constructor function.
+* <code>{function(new:[Constructor](#Constructor))}</code> - The Class's Constructor function.
 
 
 __Examples__
@@ -395,7 +397,7 @@ __Parameters__
 
 __Returns__
 
-* {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;} - The Class's implemented Interfaces.
+* <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;}</code> - The Class's implemented Interfaces.
 
 
 __Examples__
@@ -441,7 +443,7 @@ __Parameters__
 
 __Returns__
 
-* {string} - The Class's name.
+* <code>{string}</code> - The Class's name.
 
 
 __Examples__
@@ -482,7 +484,7 @@ __Parameters__
 
 __Returns__
 
-* {[Class](#Class)} - The Class's superclass.
+* <code>{[Class](#Class)}</code> - The Class's superclass.
 
 
 __Examples__
@@ -531,12 +533,14 @@ Class.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} - An object that declares the methods of the new class.
+Name | Type | Description
+--- | --- | ---
+`declaration` | <code>{[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;}</cod> | An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:[Constructor](#Constructor))} - The newly created class's constructor.
+* <code>{function(new:[Constructor](#Constructor))}</code> - The newly created class's constructor.
 
 
 __Examples__
@@ -575,13 +579,15 @@ Class.doesExtend = function(value, constructor) {
 
 __Parameters__
 
-* `value` {*} - The value to determine if it extends the given Constructor's Class
-* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor used to check if the value extends it's Class
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{*}</code> | The value to determine if it extends the given Constructor's Class
+`constructor` | <code>{function(new:[Constructor](#Constructor))}</code> | The Constructor used to check if the value extends it's Class
 
 
 __Returns__
 
-* {boolean} - Whether or not the value extends the given Constructor's Class
+* <code>{boolean}</code> - Whether or not the value extends the given Constructor's Class
 
 
 __Examples__
@@ -619,13 +625,15 @@ Class.doesImplement = function(value, implementable) {
 
 __Parameters__
 
-* `value` {*} - The value to determine if it implements the given Implementable's Interface
-* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor used to check if the value extends it's Class
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{*}</code> | The value to determine if it implements the given Implementable's Interface
+`constructor` | <code>{function(new:[Constructor](#Constructor))}</code> | The Constructor used to check if the value extends it's Class
 
 
 __Returns__
 
-* {boolean} - Whether or not the value implements the given Implementable's Interface
+* <code>{boolean}</code> - Whether or not the value implements the given Implementable's Interface
 
 
 __Examples__
@@ -672,13 +680,15 @@ Class.extend = function(constructor, declaration) {
 
 __Parameters__
 
-* `constructor` {function(new:[Constructor](#Constructor))} - The constructor of the class to extend.
-* `declaration` {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} - An object that declares the methods of the new class.
+Name | Type | Description
+--- | --- | ---
+`constructor` | <code>{function(new:[Constructor](#Constructor))}</code> | The constructor of the class to extend.
+`declaration` | <code>{[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;}</code> | An object that declares the methods of the new class.
 
 
 __Returns__
 
-* {function(new:[Constructor](#Constructor))} - The newly created class's constructor.
+* <code>{function(new:[Constructor](#Constructor))}</code> - The newly created class's constructor.
 
 
 __Examples__
@@ -724,8 +734,10 @@ Class.implement = function(constructor, implementable) {
 
 __Parameters__
 
-* `constructor` {function(new:[Constructor](#Constructor))} - The Constructor of the Class to implement the Interface.
-* `implementable` {function(new:[Implementable](#Implementable))} - The Implementable of the Interface to implement.
+Name | Type | Description
+--- | --- | ---
+`constructor` | <code>{function(new:[Constructor](#Constructor))}</code> | The Constructor of the Class to implement the Interface.
+`implementable` | <code>{function(new:[Implementable](#Implementable))}</code> | The Implementable of the Interface to implement.
 
 
 __Returns__
@@ -770,12 +782,16 @@ var Constructor = function() {
 
 __Getters and Setters Summary__
 
-* [`public getClass(): Class`](#Constructor_getClass)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getClass](#Constructor_getClass)()</code> | <code>{[Class](#Class)}</code>
 
 
 __Static Getters and Setters Summary__
 
-* [`static getClass(): Class`](#Constructor-getClass)
+Access | Signature | Return Type
+--- | --- | ---
+static public | <cod>[getClass](#Constructor-getClass)()</code> | <code>{[Class](#Class)}</code>
 
 
 <br />
@@ -805,7 +821,7 @@ __Parameters__
 
 __Returns__
 
-* {[Class](#Class)} - The Class of this instance.
+* <code>{[Class](#Class)}</code> - The Class of this instance.
 
 
 __Examples__
@@ -843,7 +859,7 @@ __Parameters__
 
 __Returns__
 
-* {[Class](#Class)} - The Class of this Constructor.
+* <code>{[Class](#Class)}</code> - The Class of this Constructor.
 
 
 __Examples__
