@@ -537,12 +537,12 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;*&gt;}</code> | An array of args to apply to the constructor.
+`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;}</code> | An array of args to apply to the constructor.
 
 
 __Returns__
 
-* <code>{[Constructor](#Constructor}</code> - The new instance
+* <code>{[Constructor](#Constructor)}</code> - The new instance
 
 
 __Examples__
@@ -839,7 +839,7 @@ __Static Getters and Setters Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-static public | <cod>[getClass](#Constructor-getClass)()</code> | <code>{[Class](#Class)}</code>
+static public | <code>[getClass](#Constructor-getClass)()</code> | <code>{[Class](#Class)}</code>
 
 
 <br />
@@ -938,7 +938,7 @@ __Static Getters and Setters Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-static public | <cod>[getInterface](#Implementable-getInterface)()</code> | <code>{[Interface](#Interface)}</code>
+static public | <code>[getInterface](#Implementable-getInterface)()</code> | <code>{[Interface](#Interface)}</code>
 
 
 <br />
