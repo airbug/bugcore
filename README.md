@@ -280,6 +280,13 @@ public | <code>[getName](#Class_getName)()</code> | <code>{string}</code>
 public | <code>[getSuperclass](#Class_getSuperclass)()</code> | <code>{[Class](#Class)}</code>
 
 
+__Method Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[newInstance](#Class_newInstance)()</code> | <code>{[Constructor](#Constructor)}</code>
+
+
 __Static Method Summary__
 
 Access | Signature | Return Type
@@ -503,6 +510,47 @@ var MyBaseClassConstructor  = Class.declare({});
 
 var MyBaseClass = MyBaseClassConstructor.getClass();
 MyBaseClass.getSuperclass();                                // null
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_newInstance" />
+### Class#newInstance()
+
+This method returns a new instance of this Class.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {Array.<*>=} args
+ * @return {Constructor}
+ */
+newInstance: function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;*&gt;}</code> | An array of args to apply to the constructor.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var BaseBallClass   = BaseBall.getClass();
+var myBaseBall      = BaseBallClass.newInstance(["arg1", "arg2"]);
 ```
 
 
@@ -869,6 +917,73 @@ __Examples__
 ```
 
 
+<br /><a name="Implementable" />
+## Implementable
+
+Represents the base function of all interfaces declared in the BugCore system
+using [Interface.declare](#Interface-declare)
+
+
+__Class__
+
+```javascript
+/**
+ * @constructor
+ */
+var Implementable = function() {};
+```
+
+
+__Static Getters and Setters Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+static public | <cod>[getInterface](#Implementable-getInterface)()</code> | <code>{[Interface](#Interface)}</code>
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Implementable-getInterface" />
+### Implementable.getInterface
+
+Get the [Interface](#Interface) for this Implementable.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @return {Interface}
+ */
+Implementable.getInterface = function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{[Interface](#Interface)}</code> - The Interface of this Implementable.
+
+
+__Examples__
+
+```js
+var MyImplementable = Interface.declare({
+    interfaceMethod: function() {
+
+    }
+});
+var MyInterface = MyImplementable.getInterface();
+```
+
+
 <br /><a name="Interface" />
 ## Interface
 
@@ -889,20 +1004,26 @@ var Interface = function(implementable, name, superinterface) {
 
 __Constructor Summary__
 
-* [`new Interface(function(new:Implementable) implementable, string name, Interface superinterface)`](#Interface_constructor)
+Access | Signature
+--- | --- | ---
+constructor | <code>[Interface](#Interface_constructor)({function(new:[Implementable](#Implementable))} implementable, {string} name, {[Interface](#Interface)} superinterface)</code>
 
 
 __Getters and Setters Summary__
 
-* [`public getImplementable() :function(new:Implementable)`](#Interface_getImplementable)
-* [`public getName() :string`](#Interface_getName)
-* [`public getSuperinterface() :Interface`](#Interface_getSuperinterface)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getImplementable](#Interface_getImplementable)()</code> | <code>{function(new:[Implementable](#Implementable))}</code>
+public | <code>[getName](#Interface_getName)()</code> | <code>{string}</code>
+public | <code>[getSuperinterface](#Interface_getSuperinterface)()</code> | <code>{[Interface](#Interface)}</code>
 
 
 __Static Method Summary__
 
-* [`static declare(Object declaration) :function(new:Implementable)`](#Interface-declare)
-* [`static extend(function(new:Implementable) implementable, Object declaration) :function(new:Implementable)`](#Implementable-extend)
+Access | Signature | Return Type
+--- | --- | ---
+static public | <code>[declare](#Interface-declare)({[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration)</code> | <code>{function(new:[Implementable](#Implementable))}</code>
+static public | <code>[extend](#Implementable-extend)({function(new:[Implementable](#Implementable))} implementable, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, *&gt;} declaration)</code> | <code>function(new:[Implementable](#Implementable))</code>
 
 
 <br />
