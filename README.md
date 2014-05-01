@@ -343,7 +343,7 @@ var myClass = new Class(constructor, interfaces, name, superclass);
 <a name="Class_getConstructor" />
 ### Class#getConstructor()
 
-Get the classes Constructor function
+Get the Class's Constructor function
 
 
 __Method__
@@ -847,7 +847,7 @@ static public | <code>[getClass](#Constructor-getClass)()</code> | <code>{[Class
 <br />
 
 <a name="Constructor_getClass" />
-### Constructor#getClass
+### Constructor#getClass()
 
 Get the [Class](#Class) for this instance.
 
@@ -884,7 +884,7 @@ __Examples__
 <br />
 
 <a name="Constructor-getClass" />
-### Constructor.getClass
+### Constructor.getClass()
 
 Get the [Class](#Class) for this Constructor.
 
@@ -946,7 +946,7 @@ static public | <code>[getInterface](#Implementable-getInterface)()</code> | <co
 <br />
 
 <a name="Implementable-getInterface" />
-### Implementable.getInterface
+### Implementable.getInterface()
 
 Get the [Interface](#Interface) for this Implementable.
 
@@ -1030,8 +1030,179 @@ static public | <code>[extend](#Implementable-extend)({function(new:[Implementab
 ------------------------------------------------------------------------------------
 <br />
 
+<a name="Interface_constructor" />
+### Interface(implementable, name, superinterface)
+
+Constructor for a new Interface. This should not be used directly. Instead, use the
+[Interface.declare](#Interface-declare) method to create a new Interface.
+
+
+__Method__
+
+```javascript
+/**
+ * @constructor
+ * @param {function(new:Implementable)} implementable
+ * @param {string} name
+ * @param {Interface} superinterface
+ */
+var Interface = function(implementable, name, superinterface) {
+```
+
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`implementable` | <code>{function(new:[Implementable](#Implementable)}</code> | The Implementable of this Interface.
+`name` | <code>{string}</code> | The name of this Interface.
+`superinterface` | <code>{[Interface](#Interface)}</code> | The superinterface of this Interface (optional).
+
+
+__Examples__
+
+```js
+var myInterface = new Interface(implementable, name, superinterface);
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface_getImplementable" />
+### Interface#getImplementable()
+
+Get the Interface's Implementable function.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {function(new:Implementable)}
+ */
+getImplementable: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{function(new:[Implementable](#Implementable))}</code> - The Interface's Implementable function.
+
+
+__Examples__
+
+```javascript
+/** @type {function(new:MyInterfaceImplementable)} */
+var MyInterfaceImplementable  = Interface.declare({});
+
+/** @type {Interface} */
+var MyInterface            = MyInterfaceImplementable.getInterface();
+
+console.log(MyInterfaceImplementable === MyInterface.getImplementable());   // true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface_getName" />
+### Interface#getName()
+
+Get the Interface's name (if one was supplied)
+
+
+__Method__
+
+```javascript
+/**
+ * @return {string}
+ */
+getName: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{string}</code> - The Interface's name.
+
+
+__Examples__
+
+```javascript
+var MyInterfaceImplementable  = Interface.declare({
+    _name: "MyInterface"
+});
+
+var MyInterface = MyInterfaceImplementable.getInterface();
+MyInterface.getName();                         // "MyInterface"
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Interface_getSuperinterface" />
+### Interface#getSuperinterface()
+
+Get the Interface's superinterface (if there is one)
+
+
+__Method__
+
+```javascript
+/**
+ * @return {Interface}
+ */
+getSuperinterface: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{[Interface](#Interface)}</code> - The Interface's superinterface.
+
+
+__Examples__
+
+Extended Interface
+```javascript
+var MyInterfaceImplementable  = Interface.extend(SomeInterfaceImplementable, {});
+
+var MyInterface = MyInterfaceImplementable.getInterface();
+console.log(MyInterface.getSuperinterface() === SomeInterfaceImplementable.getInterface());    // true
+```
+
+Declared Interface
+```javascript
+var MyBaseInterfaceImplementable  = Interface.declare({});
+
+var MyBaseInterface = MyBaseInterfaceImplementable.getInterface();
+MyBaseInterface.getSuperinterface();                                // null
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 <a name="Interface-declare" />
-### Interface.declare
+### Interface.declare(declaration)
 
 This method is used to declare a low level base Interface in the bugcore system. Unlike Class.declare
 this method should be freely used to declare basic interfaces that extend no other Interface.
@@ -1042,7 +1213,7 @@ __Method__
 ```javascript
 /**
  * @static
- * @param {Object.<string, function(..):*>} declaration
+ * @param {Object.<string, function(...):*>} declaration
  * @return {function(new:Implementable)}
  */
 Interface.declare = function(declaration) {
@@ -1050,12 +1221,14 @@ Interface.declare = function(declaration) {
 
 __Parameters__
 
-* `declaration {Object}` - An object that declares the methods of the new Interface.
+Name | Type | Description
+--- | --- | ---
+`declaration` | <code>{[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, function(...):*&gt;}</code> | An object that declares the methods of the new Interface.
 
 
 __Returns__
 
-* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+* <code>{function(new:[Implementable](#Implementable))}</code> - The newly created Interface's Implementable.
 
 
 __Examples__
@@ -1073,7 +1246,10 @@ var MyImplementable = Interface.declare({
 <br />
 
 <a name="Interface-extend" />
-### Interface.extend
+### Interface.extend(implementable, declaration)
+
+This method is used to extend and existing interface.
+
 
 __Method__
 
@@ -1089,13 +1265,16 @@ Interface.extend = function(implementable, declaration) {
 
 __Parameters__
 
-* `implementable {function(new:Implementable)}` - The Implementable of the Interface to extend.
-* `declaration {Object}` - An object that declares the methods of the new Interface.
+
+Name | Type | Description
+--- | --- | ---
+`implementable` | <code>{function(new:[Implementable](#Implementable))}</code> | The Implementable of the Interface to extend.
+`declaration` | <code>{[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object).&lt;string, function(...):*&gt;}</code> | An object that declares the methods of the new Interface.
 
 
 __Returns__
 
-* `{function(new:Implementable)}` - The newly created Interface's Implementable.
+* <code>{function(new:[Implementable](#Implementable))}</code> - The newly created Interface's Implementable.
 
 
 __Examples__
@@ -1148,26 +1327,34 @@ __Interfaces__
 
 __Constructor Summary__
 
-* [`public _constructor()`](#Obj__constructor)
+Access | Signature
+--- | ---
+constructor | <code>[_constructor](#Obj__constructor)()</code>
 
 
 __Getters and Setters Summary__
 
-* [`public getInternalId()      :number`](#Obj_getInternalId)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getInternalId](#Obj_getInternalId)()<code> | <code>{number}</code>
 
 
 __Method Summary__
 
-* [`public clone(boolean deep)  :*`](#Obj_clone)
-* [`public equals(* value)      :boolean`](#Obj_equals)
-* [`public hashCode()           :number`](#Obj_hashCode)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[clone](#Obj_clone)({boolean} deep)</code>  | <code>{*}</code>
+public | <code>[equals](#Obj_equals)({*} value)</code> | <code>{boolean}</code>
+public | <code>[hashCode](#Obj_hashCode)() | <code>{number}</code>
 
 
 __Static Method Summary__
 
-* [`static clone(A value, boolean deep)     :A`](#Obj-clone)
-* [`static equals(* value1, * value2)       :boolean`](#Obj-equals)
-* [`static hashCode(* value)                :number`](#Obj-hashCode)
+Access | Signature | Return Type
+--- | --- | ---
+static public | <code>[clone](#Obj-clone)({A} value, {boolean} deep)</code> | <code>{A}</code>
+static public | <code>[equals](#Obj-equals)({*} value1, {*} value2)</code> | <code>{boolean}</code>
+static public | <code>[hashCode](#Obj-hashCode)({*} value)</code> | <code>{number}</code>
 
 
 <br />
@@ -1226,7 +1413,7 @@ __Parameters__
 
 __Returns__
 
-* `{number}` - The unique internal id for this instance. Unique only to this JS runtime.
+* <code>{number}</code> - The unique internal id for this instance. Unique only to this JS runtime.
 
 
 __Examples__
@@ -1270,12 +1457,14 @@ clone: function(deep) {
 
 __Parameters__
 
-* `deep {boolean=}` - Whether or not to perform a deep clone. Optional - default: false
+Name | Type | Description
+--- | --- | ---
+`deep` | <code>{boolean=}</code> | Whether or not to perform a deep clone. Optional - default: false
 
 
 __Returns__
 
-* `{*}` - A clone of the instance.
+* <code>{*}</code> - A clone of the instance.
 
 
 __Examples__
@@ -1310,12 +1499,14 @@ equals: function(value) {
 
 __Parameters__
 
-* `value {*}` - The value to compare to for equality.
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{*}</code> | The value to compare to for equality.
 
 
 __Returns__
 
-* `{boolean}` - Whether or not the instance is equal to the value parameter.
+* <code>{boolean}</code> - Whether or not the instance is equal to the value parameter.
 
 
 __Examples__
@@ -1384,7 +1575,7 @@ __Parameters__
 
 __Returns__
 
-* `{number}` - The hash code of this instance.
+* <code>{number}</code> - The hash code of this instance.
 
 
 __Examples__
@@ -1434,13 +1625,15 @@ iterable property values of the original object.
 
 __Parameters__
 
-* `value {A}` - The value to clone.
-* `deep {boolean=}` - Whether or not to perform a deep clone. Optional - default: false
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{A}</code> | The value to clone.
+`deep` | <code>{boolean=}</code> | Whether or not to perform a deep clone. Optional - default: false
 
 
 __Returns__
 
-* `{A}` - A clone of the value.
+* <code>{A}</code> - A clone of the value.
 
 
 __Examples__
@@ -1494,13 +1687,15 @@ Obj.equals = function(value1, value2) {
 
 __Parameters__
 
-* `value1 {*}` - The value to compare value2 to for equality.
-* `value2 {*}` - The value to compare value1 to for equality.
+Name | Type | Description
+--- | --- | ---
+`value1` | <code>{*}</code> | The value to compare value2 to for equality.
+`value2` | <code>{*}</code> | The value to compare value1 to for equality.
 
 
 __Returns__
 
-* `{boolean}` - Whether or not the two values are equal.
+* <code>{boolean}</code> - Whether or not the two values are equal.
 
 
 __Examples__
@@ -1566,12 +1761,14 @@ Obj.hashCode = function(value) {
 
 __Parameters__
 
-* `value {*}` - The value to generate a hash code for..
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{*}</code> | The value to generate a hash code for..
 
 
 __Returns__
 
-* `{number}` - The hash code of the value.
+* <code>{number}</code> - The hash code of the value.
 
 
 __Examples__

@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
      * @constructor
      * @param {function(new:Implementable)} implementable
      * @param {string} name
-     * @param {Interface} superinterface
+     * @param {Interface=} superinterface
      */
     var Interface = function(implementable, name, superinterface) {
 

@@ -150,7 +150,7 @@ require('bugpack').context("*", function(bugpack) {
             this.observablePropertyMap.forEach(function(observable, propertyName) {
                 _this.removeObservableProperty(propertyName);
             });
-
+            this.notifyObservers(new ClearChange());
         },
 
         /**

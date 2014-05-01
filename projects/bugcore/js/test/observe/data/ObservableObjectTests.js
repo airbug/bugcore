@@ -5,6 +5,7 @@
 //@TestFile
 
 //@Require('Class')
+//@Require('ClearChange')
 //@Require('ObservableObject')
 //@Require('Observation')
 //@Require('SetPropertyChange')
@@ -25,6 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class               = bugpack.require('Class');
+    var ClearChange         = bugpack.require('ClearChange');
     var ObservableObject    = bugpack.require('ObservableObject');
     var Observation         = bugpack.require('Observation');
     var SetPropertyChange   = bugpack.require('SetPropertyChange');
@@ -146,6 +148,50 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     * This tests...
+     * 1) the ObservableObject#clearProperties
+     */
+    var observableObjectClearPropertiesTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this                   = this;
+            this.testObject             = {};
+            this.testPropertyName       = "testPropertyName";
+            this.testPropertyValue      = "testPropertyValue";
+            this.testObject[this.testPropertyName] = this.testPropertyValue;
+            this.testObservableObject   = new ObservableObject(this.testObject);
+            this.testObserver           = {
+                observeObservation: function(observation) {
+                    test.assertTrue(Class.doesExtend(observation, Observation),
+                        "Assert that observeObservation receives an Observation");
+                    var change = /** @type {ClearChange} */(observation.getChange());
+                    test.assertTrue(Class.doesExtend(change, ClearChange),
+                        "Assert that the change observed is a ClearChange");
+                }
+            };
+            this.testObserverSpy = spyOnObject(this.testObserver);
+            this.testObservableObject.observe(ClearChange.CHANGE_TYPE, "*", this.testObserver.observeObservation, this.testObserver);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(this.testObservableObject.getProperty(this.testPropertyName), this.testPropertyValue,
+                "Sanity check that property value is set correctly");
+            this.testObservableObject.clearProperties();
+            test.assertTrue(this.testObserverSpy.getSpy("observeObservation").wasCalled(),
+                "Assert that observeObservation was called");
+            test.assertEqual(this.testObservableObject.getProperty(this.testPropertyName), undefined,
+                "Assert that getProperty() returns undefined");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -159,5 +205,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.annotate(observableObjectSetPropertyTest).with(
         test().name("ObservableObject - #setProperty test")
+    );
+    bugmeta.annotate(observableObjectClearPropertiesTest).with(
+        test().name("ObservableObject - #clearProperties test")
     );
 });
