@@ -1343,8 +1343,8 @@ __Method Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | <code>[clone](#Obj_clone)({boolean} deep)</code>  | <code>{*}</code>
-public | <code>[equals](#Obj_equals)({*} value)</code> | <code>{boolean}</code>
+public | <code>[clone](#Obj_clone)({boolean} deep)</code>  | <code>{\*}</code>
+public | <code>[equals](#Obj_equals)({\*} value)</code> | <code>{boolean}</code>
 public | <code>[hashCode](#Obj_hashCode)() | <code>{number}</code>
 
 
@@ -1353,8 +1353,8 @@ __Static Method Summary__
 Access | Signature | Return Type
 --- | --- | ---
 static public | <code>[clone](#Obj-clone)({A} value, {boolean} deep)</code> | <code>{A}</code>
-static public | <code>[equals](#Obj-equals)({*} value1, {*} value2)</code> | <code>{boolean}</code>
-static public | <code>[hashCode](#Obj-hashCode)({*} value)</code> | <code>{number}</code>
+static public | <code>[equals](#Obj-equals)({\*} value1, {\*} value2)</code> | <code>{boolean}</code>
+static public | <code>[hashCode](#Obj-hashCode)({\*} value)</code> | <code>{number}</code>
 
 
 <br />
@@ -1464,7 +1464,7 @@ Name | Type | Description
 
 __Returns__
 
-* <code>{*}</code> - A clone of the instance.
+* <code>{\*}</code> - A clone of the instance.
 
 
 __Examples__
@@ -1501,7 +1501,7 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`value` | <code>{*}</code> | The value to compare to for equality.
+`value` | <code>{\*}</code> | The value to compare to for equality.
 
 
 __Returns__
@@ -1689,8 +1689,8 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`value1` | <code>{*}</code> | The value to compare value2 to for equality.
-`value2` | <code>{*}</code> | The value to compare value1 to for equality.
+`value1` | <code>{\*}</code> | The value to compare value2 to for equality.
+`value2` | <code>{\*}</code> | The value to compare value1 to for equality.
 
 
 __Returns__
@@ -1763,7 +1763,7 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`value` | <code>{*}</code> | The value to generate a hash code for..
+`value` | <code>{\*}</code> | The value to generate a hash code for..
 
 
 __Returns__
