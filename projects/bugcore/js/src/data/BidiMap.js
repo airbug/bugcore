@@ -1,9 +1,7 @@
-/**
- * Map info
- * 1) Supports null values but not undefined values. Undefined values are used to indicate something doesn't exist.
- * 2) Any value can be used as a key including null but not undefined.
- * 3) There can only be one instance of a value in this map. If a value is added again under another key, then we
- *      remove the old key/value pair before adding the new key/value mapping.
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
  */
 
 //-------------------------------------------------------------------------------
@@ -43,6 +41,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
+     * Map info
+     * 1) Supports null values but not undefined values. Undefined values are used to indicate something doesn't exist.
+     * 2) Any value can be used as a key including null but not undefined.
+     * 3) There can only be one instance of a value in this map. If a value is added again under another key, then we
+     *      remove the old key/value pair before adding the new key/value mapping.
+     *
      * @class
      * @extends {Obj}
      */

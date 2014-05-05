@@ -1,8 +1,7 @@
-/**
- * Rules for Graph
- * 1) Does not support multiple of the same Node. Each Node should be unique.
- * 2) Does not support multiple of the same Edge. Each Edge should be unique. A unique Edge is a unique fromNode and
- * toNode pair.
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
  */
 
 //-------------------------------------------------------------------------------
@@ -44,6 +43,11 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
+     * Rules for Graph
+     * 1) Does not support multiple of the same Node. Each Node should be unique.
+     * 2) Does not support multiple of the same Edge. Each Edge should be unique. A unique Edge is a unique fromNode and
+     * toNode pair.
+     *
      * @class
      * @extends {Obj}
      */

@@ -1,7 +1,7 @@
-/**
- * Map info
- * 1) Supports null values but not undefined values. Undefined values are used to indicate something doesn't exist.
- * 2) Any value can be used as a key including null but not undefined.
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
  */
 
 //-------------------------------------------------------------------------------
@@ -43,6 +43,10 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
+     * Map info
+     * 1) Supports null values but not undefined values. Undefined values are used to indicate something doesn't exist.
+     * 2) Any value can be used as a key including null but not undefined.
+     *
      * @class
      * @extends {Obj}
      * @implements {IMap.<K, V>}

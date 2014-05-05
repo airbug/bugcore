@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ */
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -12,122 +18,122 @@
 
 
 //-------------------------------------------------------------------------------
-// Common Modules
+// Context
 //-------------------------------------------------------------------------------
 
-var bugpack         = require('bugpack').context();
+require('bugpack').context("*", function(bugpack) {
 
-
-//-------------------------------------------------------------------------------
-// BugPack
-//-------------------------------------------------------------------------------
-
-var Class           = bugpack.require('Class');
-var Config          = bugpack.require('Config');
-var Properties      = bugpack.require('Properties');
-var BugMeta         = bugpack.require('bugmeta.BugMeta');
-var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
-
-
-//-------------------------------------------------------------------------------
-// Simplify References
-//-------------------------------------------------------------------------------
-
-var bugmeta         = BugMeta.context();
-var test            = TestAnnotation.test;
-
-
-//-------------------------------------------------------------------------------
-// Declare Tests
-//-------------------------------------------------------------------------------
-
-
-/**
- * This tests...
- * 1) Instantiating a Config class with no parameters
- */
-var configInstantiationTest = {
-
-    // Setup Test
+    //-------------------------------------------------------------------------------
+    // BugPack
     //-------------------------------------------------------------------------------
 
-    setup: function() {
-        this.testConfig =   new Config();
-    },
+    var Class           = bugpack.require('Class');
+    var Config          = bugpack.require('Config');
+    var Properties      = bugpack.require('Properties');
+    var BugMeta         = bugpack.require('bugmeta.BugMeta');
+    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 
 
-    // Run Test
+    //-------------------------------------------------------------------------------
+    // Simplify References
     //-------------------------------------------------------------------------------
 
-    test: function(test) {
-        var properties = this.testConfig.getProperties();
-        test.assertTrue(Class.doesExtend(properties, Properties),
-            "Assert Config#getProperties returns a Properties instance when there were no parameters passed to the constructor");
-    }
-};
-bugmeta.annotate(configInstantiationTest).with(
-    test().name("Config - instantiation test")
-);
+    var bugmeta         = BugMeta.context();
+    var test            = TestAnnotation.test;
 
-/**
- * This tests...
- * 1) Instantiating a Config class with a propertiesObject
- */
-var configInstantiationWithPropertiesObjectTest = {
 
-    // Setup Test
+    //-------------------------------------------------------------------------------
+    // Declare Tests
     //-------------------------------------------------------------------------------
 
-    setup: function() {
-        this.testValue              = "testValue";
-        this.testPropertiesObject   = {
-            testProperty: this.testValue
-        };
-        this.testConfig             =   new Config(this.testPropertiesObject);
-    },
+
+    /**
+     * This tests...
+     * 1) Instantiating a Config class with no parameters
+     */
+    var configInstantiationTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testConfig =   new Config();
+        },
 
 
-    // Run Test
-    //-------------------------------------------------------------------------------
+        // Run Test
+        //-------------------------------------------------------------------------------
 
-    test: function(test) {
-        test.assertEqual(this.testConfig.getProperties().getProperty("testProperty"), this.testValue,
-            "Assert 'testProperty' is present in the Config and returns testValue");
-        test.assertEqual(this.testConfig.getProperties().getProperty("nonProperty"), undefined,
-            "Assert 'nonProperty' does not exist and returns undefined");
-    }
-};
-bugmeta.annotate(configInstantiationWithPropertiesObjectTest).with(
-    test().name("Config - instantiation with propertiesObject test")
-);
+        test: function(test) {
+            var properties = this.testConfig.getProperties();
+            test.assertTrue(Class.doesExtend(properties, Properties),
+                "Assert Config#getProperties returns a Properties instance when there were no parameters passed to the constructor");
+        }
+    };
+    bugmeta.annotate(configInstantiationTest).with(
+        test().name("Config - instantiation test")
+    );
 
+    /**
+     * This tests...
+     * 1) Instantiating a Config class with a propertiesObject
+     */
+    var configInstantiationWithPropertiesObjectTest = {
 
-/**
- * This tests...
- * 1) Setting a property
- * 2) Getting a property
- */
-var configSetGetPropertyTest = {
+        // Setup Test
+        //-------------------------------------------------------------------------------
 
-    // Setup Test
-    //-------------------------------------------------------------------------------
-
-    setup: function() {
-        this.testValue      = "testValue";
-        this.testName       = "testName";
-        this.testConfig     = new Config();
-        this.testConfig.setProperty(this.testName, this.testValue);
-    },
+        setup: function() {
+            this.testValue              = "testValue";
+            this.testPropertiesObject   = {
+                testProperty: this.testValue
+            };
+            this.testConfig             =   new Config(this.testPropertiesObject);
+        },
 
 
-    // Run Test
-    //-------------------------------------------------------------------------------
+        // Run Test
+        //-------------------------------------------------------------------------------
 
-    test: function(test) {
-        test.assertEqual(this.testConfig.getProperty(this.testName), this.testValue,
-            "Assert 'testName' is present in the Config and returns 'testValue'");
-    }
-};
-bugmeta.annotate(configSetGetPropertyTest).with(
-    test().name("Config - set/get property test")
-);
+        test: function(test) {
+            test.assertEqual(this.testConfig.getProperties().getProperty("testProperty"), this.testValue,
+                "Assert 'testProperty' is present in the Config and returns testValue");
+            test.assertEqual(this.testConfig.getProperties().getProperty("nonProperty"), undefined,
+                "Assert 'nonProperty' does not exist and returns undefined");
+        }
+    };
+    bugmeta.annotate(configInstantiationWithPropertiesObjectTest).with(
+        test().name("Config - instantiation with propertiesObject test")
+    );
+
+
+    /**
+     * This tests...
+     * 1) Setting a property
+     * 2) Getting a property
+     */
+    var configSetGetPropertyTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testValue      = "testValue";
+            this.testName       = "testName";
+            this.testConfig     = new Config();
+            this.testConfig.setProperty(this.testName, this.testValue);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(this.testConfig.getProperty(this.testName), this.testValue,
+                "Assert 'testName' is present in the Config and returns 'testValue'");
+        }
+    };
+    bugmeta.annotate(configSetGetPropertyTest).with(
+        test().name("Config - set/get property test")
+    );
+});

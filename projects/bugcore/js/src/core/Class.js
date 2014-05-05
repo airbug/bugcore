@@ -1,4 +1,8 @@
-/**
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ *
  * This work is based on...
  * Simple JavaScript Inheritance (http://ejohn.org/blog/simple-javascript-inheritance/)
  * By John Resig http://ejohn.org/

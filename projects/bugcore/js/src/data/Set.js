@@ -1,10 +1,10 @@
-/**
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+
  * Based on the google closure library.
  * http://closure-library.googlecode.com/svn/docs/class_goog_structs_Set.html
- *
- * A Set
- * 1) Cannot contain duplicate elements.
- * 2) A 'duplicate' is considered any object where o1.equals(o2) or any primitive value where v1 === v2
  */
 
 //-------------------------------------------------------------------------------
@@ -40,6 +40,10 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
+     * A Set
+     * 1) Cannot contain duplicate elements.
+     * 2) A 'duplicate' is considered any object where o1.equals(o2) or any primitive value where v1 === v2
+     *
      * @class
      * @extends {Collection.<D>}
      * @implements {ISet.<D>}
