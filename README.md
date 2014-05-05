@@ -1843,7 +1843,7 @@ __Method Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | <code>[addCause](#Throwable_addCause)({([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))} cause)</code> | <code>{*}</code>
+public | <code>[addCause](#Throwable_addCause)({([Throwable](#Throwable) &#124; [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))} cause)</code> | <code>{*}</code>
 public | <code>[toObject](#Throwable_toObject)()</code> | <code>{causes: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) &#124; [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;, data: *, message: string, type: string}</code>
 
 
@@ -2213,7 +2213,7 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`cause` | <code>{([Throwable](#Throwable) &#124; [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)}</code> | The cause to add to the Throwable's array of causes.
+`cause` | <code>{([Throwable](#Throwable) &#124; [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))}</code> | The cause to add to the Throwable's array of causes.
 
 
 __Returns__
