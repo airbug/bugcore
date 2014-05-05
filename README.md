@@ -235,6 +235,11 @@ In the browser:
 * [`IEventPropagator`](#IEventPropagator)
 * [`IEventReceiver`](#IEventReceiver)
 
+### Concurrent Classes
+
+* [`Lock`](#Lock)
+* [`Semaphore`](#Semaphore)
+
 ### Utils
 
 * [`HashUtil`](#HashUtil)
@@ -1816,24 +1821,30 @@ __Interfaces__
 
 __Constructor Summary__
 
-* [`public _constructor(string type, *= data, string= message, Array.<(Throwable | Error)>= causes)`](#Throwable__constructor)
+Access | Signature
+--- | ---
+public | <code>[_constructor](#Throwable__constructor)({string} type, {*=} data, {string=} message, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=} causes)</code>
 
 
 __Getters and Setters Summary__
 
-* [`public getCauses() :Array.<(Throwable | Error)>`](#Throwable_getCauses)
-* [`public getData() :*`](#Throwable_getData)
-* [`public setData(* data)`](#Throwable_setData)
-* [`public getMessage() :string`](#Throwable_getMessage)
-* [`public setMessage(string message)`](#Throwable_setMessage)
-* [`public getStack() :string`](#Throwable_getStack)
-* [`public getType() :string`](#Throwable_getType)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getCauses](#Throwable_getCauses)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code>
+public | <code>[getData](#Throwable_getData)() | <code>{*}</code>
+public | <code>[setData](#Throwable_setData)({*} data)</code> | None
+public | <code>[getMessage](#Throwable_getMessage)()</code> | <code>{string}</code>
+public | <code>[setMessage](#Throwable_setMessage)({string} message)</code> | None
+public | <code>[getStack](#Throwable_getStack)()</code> | <code>{string}</code>
+public | <code>[getType](#Throwable_getType)()</code> | <code>{string}</code>
 
 
 __Method Summary__
 
-* [`public addCause((Throwable | Error) cause)  :*`](#Throwable_addCause)
-* [`public toObject() :{ causes: Array.<Throwable>, data: *, message: string, type: string}`](#Throwable_toObject)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[addCause](#Throwable_addCause)({([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))} cause)</code> | <code>{*}</code>
+public | <code>[toObject\(#Throwable_toObject)()</code> | <code>{causes: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;, data: *, message: string, type: string}</code>
 
 
 <br />
@@ -1861,10 +1872,12 @@ _constructor: function(type, data, message, causes) {
 
 __Parameters__
 
-* `type {string}` - The type of throwable.
-* `data {*=}` - Any extra data to pass along with this throwable.
-* `message {string=}` - A message to add to this throwable. (optional - default: "")
-* `causes {Array.<(Throwable | Error)>=}` - An array of other throwables or js errors that caused this throwable. (optional - default: [])
+Name | Type | Description
+--- | --- | ---
+`type` | <code>{string}</code> | The type of throwable.
+`data` | <code>{*=}</code> | Any extra data to pass along with this throwable.
+`message` | <code>{string=}</code> | A message to add to this throwable. (optional - default: "")
+`causes` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=}</code> | An array of other throwables or js errors that caused this throwable. (optional - default: [])
 
 
 __Examples__
@@ -1892,7 +1905,7 @@ try {
 
 <a name="Throwable_getCauses" />
 
-### Throwable#getCauses():Array.<(Throwable | Error)>
+### Throwable#getCauses()
 
 Get the causes of the Throwable.
 
@@ -1913,7 +1926,7 @@ __Parameters__
 
 __Returns__
 
-* `{Array.<(Throwable | Error)>}` - An array of other Throwables or JS Errors that caused this Throwable.
+* <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code> - An array of other Throwables or JS Errors that caused this Throwable.
 
 
 __Examples__
@@ -1925,6 +1938,249 @@ try {
     var myThrowable     = new Throwable("SomethingWentWrong", {}, "Something went wrong in the somethingWillGoWrong function", [error]);
     var causes          = myThrowable.getCauses();  // [error]
 }
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_getData" />
+
+### Throwable#getData()
+
+Get the data of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {*}
+ */
+getData: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{*}</code> - An array of other Throwables or JS Errors that caused this Throwable.
+
+
+__Examples__
+
+```js
+var data            = "some data";
+var myThrowable     = new Throwable("ThrowableType", data, "some message");
+
+myThrowable.getData() === data;     //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_setData" />
+
+### Throwable#setData(data)
+
+Set the data of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {*} data
+ */
+setData: function(data) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`data` | <code>{*}</code> | The data to set on the Throwable.
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+```js
+var data            = "some data";
+var myThrowable     = new Throwable("ThrowableType");
+myThrowable.setData(data);
+
+myThrowable.getData() === data;     //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_getMessage" />
+
+### Throwable#getMessage()
+
+Get the message of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {string}
+ */
+getMessage: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{string}</code> - The message included with the Throwable.
+
+
+__Examples__
+
+```js
+var message         = "some message";
+var myThrowable     = new Throwable("ThrowableType", null, message);
+
+myThrowable.getMessage() === message;     //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_setMessage" />
+
+### Throwable#setMessage(message)
+
+Set the message of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {string} message
+ */
+setMessage: function(message) {
+```
+
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`message` | <code>{string}</code> | The message to set on the Throwable.
+
+
+__Returns__
+
+* None
+
+
+__Examples__
+
+```js
+var message         = "some message";
+var myThrowable     = new Throwable("ThrowableType");
+myThrowable.setMessage(message);
+
+myThrowable.getMessage() === message;     //true
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_getStack" />
+
+### Throwable#getStack()
+
+Get the stack trace of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {string}
+ */
+getStack: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{string}</code> - The stack trace of the Throwable.
+
+
+__Examples__
+
+```js
+//TODO
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Throwable_getType" />
+
+### Throwable#getType()
+
+Get the type of the Throwable.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {string}
+ */
+getType: function() {
+```
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{string}</code> - The type of the Throwable.
+
+
+__Examples__
+
+```js
+var myThrowable     = new Throwable("ThrowableType");
+
+myThrowable.getType() === "ThrowableType";     //true
 ```
 
 
@@ -1955,7 +2211,9 @@ addCause: function(cause) {
 
 __Parameters__
 
-* `cause {(Throwable | Error)}` - The cause to add to the Throwable's array of causes.
+Name | Type | Description
+--- | --- | ---
+`cause` | <code>{([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)}</code> | The cause to add to the Throwable's array of causes.
 
 
 __Returns__
