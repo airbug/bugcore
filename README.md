@@ -203,6 +203,8 @@ In the browser:
 ### Data Classes
 
 * [`Collection`](#Collection)
+* [`HashStore`](#HashStore)
+* [`HashTable`](#HashTable)
 * [`List`](#List)
 * [`Map`](#Map)
 * [`Pair`](#Pair)
@@ -2278,33 +2280,39 @@ __Interfaces__
 
 __Constructor Summary__
 
-* [`public _constructor(items)`](#Collection__constructor)
+Access | Signature
+--- | ---
+public | <code>[_constructor](#Collection__constructor)({(ICollection.&lt;I&gt; &#124; Array.&lt;I&gt;)} items)</code>
 
 
 __Getters and Setters Summary__
 
-* [`public getHashStore()       :HashStore`](#Collection_getHashStore)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getHashStore](#Collection_getHashStore)()</code> | <code>[HashStore](#HashStore)</code>
 
 
 __Method Summary__
 
-* [`public add(I item):boolean`](#Collection_add)
-* [`public addAll((ICollection.<I> | Array.<I>) items)`](#Collection_addAll)
-* [`public clear()`](#Collection_clear)
-* [`public contains(* value):boolean`](#Collection_contains)
-* [`public containsAll((ICollection.<*> | Array.<*>) values):boolean`](#Collection_containsAll)
-* [`public containsEqual((ICollection.<*> | Array.<*>) values):boolean`](#Collection_containsAll)
-* [`public forEach(function(I) func)`](#Collection_forEach)
-* [`public getCount():number`](#Collection_getCount)
-* [`public getValueArray():Array.<I>`](#Collection_getValueArray)
-* [`public getValueCount(* value):number`](#Collection_getValueCount)
-* [`public isEmpty():boolean`](#Collection_isEmpty)
-* [`public iterator():IIterator`](#Collection_iterator)
-* [`public map(function fn, Object context):ICollection`](#Collection_map)
-* [`public remove(* value):boolean`](#Collection_remove)
-* [`public removeAll((ICollection.<*> | Array.<*>) values)`](#Collection_removeAll)
-* [`public retainAll((ICollection.<*> | Array.<*>) values)`](#Collection_retainAll)
-* [`public toArray():Array.<I>`](#Collection_retainAll)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[add](#Collection_add)({I} item)</code> | <code>{boolean}</code>
+public | <code>[addAll](#Collection_addAll)({([ICollection](#ICollection).&ltlI&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)} items)</code> | None
+public | <code>[clear](#Collection_clear)()</code> | None
+public | <code>[contains](#Collection_contains)({*} value)</code> | <code>{boolean}</code>
+public | <code>[containsAll](#Collection_containsAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
+public | <code>[containsEqual](#Collection_containsEqual)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
+public | <code>[forEach](#Collection_forEach)({function(I)} func)</code> | None
+public | <code>[getCount](#Collection_getCount)()</code> | <code>{number}</code>
+public | <code>[getValueArray](#Collection_getValueArray)()</code> | <code>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;</code>
+public | <code>[getValueCount](#Collection_getValueCount)({*} value)</code> | <code>{number}</code>
+public | <code>[isEmpty](#Collection_isEmpty)()</code> | <code>{boolean}</code>
+public | <code>[iterator](#Collection_iterator)()</code> | <code>[IIterator](#IIterator)</code>
+public | <code>[map](#Collection_map)({function} fn, {Object} context)</code> | <code>[ICollection](#ICollection)</code>
+public | <code>[remove](#Collection_remove)({*} value)</code> | <code>{boolean}</code>
+public | <code>[removeAll](#Collection_removeAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | None
+public | <code>[retainAll](#Collection_retainAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | None
+public | <code>[toArray](#Collection_toArray)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;}</code>
 
 
 <br />
@@ -2320,7 +2328,7 @@ __Method__
 ```javascript
 /**
  * @constructs
- * @param {(ICollection.<I>; | Array.<I>)=} items
+ * @param {(ICollection.<I> | Array.<I>)=} items
  */
 _constructor: function(items) {
 ```
@@ -2328,7 +2336,14 @@ _constructor: function(items) {
 
 __Parameters__
 
-* `items {(ICollection.<I> | Array.<I>)=}` - Starting items to add to the Collection (Optional)
+Name | Type | Description
+--- | --- | ----
+`items` | <code>{([ICollection](#ICollection).&lt;I&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)=}</code> | Starting items to add to the Collection (Optional)
+
+
+__Returns__
+
+* None
 
 
 __Examples__
@@ -2383,7 +2398,7 @@ __Parameters__
 
 __Returns__
 
-* `{HashStore}` - The underlying HashStore that supports this Collection
+* <code>{[HashStore](HashStore)}</code> - The underlying HashStore that supports this Collection
 
 
 __Examples__
@@ -2399,7 +2414,7 @@ var hashStore       = myCollection.getHashStore();
 <br />
 
 <a name="Collection_add" />
-### Collection#add(item):boolean
+### Collection#add(item)
 
 Adds an item to the collection
 
@@ -2417,12 +2432,14 @@ add: function(item) {
 
 __Parameters__
 
-* `item {I}` - The item to add to the collection
+Name | Type | Description
+--- | --- | ----
+`item` | <code>{I}</code> | The item to add to the collection
 
 
 __Returns__
 
-* `{boolean}` - Whether or not the item was added to the collection.
+* <code>{boolean}</code> - Whether or not the item was added to the collection.
 
 
 __Examples__
@@ -2456,7 +2473,9 @@ addAll: function(items) {
 
 __Parameters__
 
-* `items {(ICollection.<I> | Array.<I>)}` - The items to add to the collection. Can either be an Array or another Collection.
+Name | Type | Description
+--- | --- | ----
+`items` | <code>{([ICollection](#ICollection).&lt;I&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)}</code> | The items to add to the collection. Can either be an Array or another Collection.
 
 
 __Returns__
@@ -2536,7 +2555,7 @@ myCollection.getCount();    // 0
 <br />
 
 <a name="Collection_contains" />
-### Collection#contains(value):boolean
+### Collection#contains(value)
 
 Checks the Collection to see if it contains a value.
 
@@ -2554,12 +2573,14 @@ contains: function(value) {
 
 __Parameters__
 
-* `value {*}` - The value that we're checking if the collection contains.
+Name | Type | Description
+--- | --- | ----
+`value` | <code>{*}</code> | The value that we're checking if the collection contains.
 
 
 __Returns__
 
-* `{boolean}`
+* <code>{boolean}</code> - True if the value is contained by the Collection. False if not.
 
 
 __Examples__
@@ -2617,12 +2638,14 @@ containsAll: function(values) {
 
 __Parameters__
 
-* `values {(ICollection.<*> | Array.<*>)} ` - The values that we're checking to see if the collection contains all of them.
+Name | Type | Description
+--- | --- | ----
+`values` | <code>{([ICollection](#ICollection).&lt;*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;)}</code> | The values that we're checking to see if the collection contains all of them.
 
 
 __Returns__
 
-* `{boolean}`
+* <code>{boolean}</code> - True if the Collection contains all the given values. False if not.
 
 
 __Examples__
@@ -2708,12 +2731,14 @@ containsEqual: function(values) {
 
 __Parameters__
 
-* `values {(ICollection.<*> | Array.<*>)} ` - The values that we're checking to see if the collection contains exactly.
+Name | Type | Description
+--- | --- | ----
+`values` | <code>{([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)}</code> | The values that we're checking to see if the collection contains exactly.
 
 
 __Returns__
 
-* `{boolean}`
+* <code>{boolean}</code> - True if the Collection contains exactly the same values as the given values.
 
 
 __Examples__
@@ -2811,7 +2836,9 @@ forEach: function(func) {
 
 __Parameters__
 
-* `func {function(I)} ` - The function to execute for each item
+Name | Type | Description
+--- | --- | ----
+`func` | <code>{function(I)}</code> | The function to execute for each item
 
 
 __Returns__
@@ -2869,7 +2896,7 @@ __Parameters__
 
 __Returns__
 
-* `{number}` - The number of items in the Collection.
+* <code>{number}</code> - The number of items in the Collection.
 
 
 __Examples__
@@ -2897,7 +2924,7 @@ myCollection.getCount()    //2
 <br />
 
 <a name="Collection_getValueArray" />
-### Collection#getValueArray():Array.&lt;I&gt;
+### Collection#getValueArray()
 
 Returns an Array of the Collection's values.
 
@@ -2926,7 +2953,7 @@ __Parameters__
 
 __Returns__
 
-* `{Array.<I>}` - An Array of the Collection's values.
+* <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;}</code> - An Array of the Collection's values.
 
 
 __Examples__
@@ -2961,6 +2988,101 @@ myCollection.add("item3")                   // ["item1", "item2"]
 
 console.log(myCollection.getValueArray())   // ["item1", "item2", "item3"]
 console.log(myValueArray)                   // ["item1", "item2"]
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_getValueCount" />
+### Collection#getValueCount(value)
+
+Returns an the number or items in the Collection that are equal to the given value.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {*} value
+ * @return {number}
+ */
+getValueCount: function(value) {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{number}</code> - The number of items in the Collection that are equal to the given value.
+
+
+__Examples__
+
+```js
+var myCollection    = new Collection([
+    "a",
+    "a",
+    "b"
+]);
+
+myCollection.getValueCount("a");    // 2
+myCollection.getValueCount("b");    // 1
+myCollection.getValueCount("c");    // 0
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_isEmpty" />
+### Collection#isEmpty()
+
+Returns true if the Collection is empty.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {boolean}
+ */
+isEmpty: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{true}</code> - True if the Collection is empty.
+
+
+__Examples__
+
+Empty Collection
+```js
+var myCollection    = new Collection([]);
+
+myCollection.isEmpty();     // true
+```
+
+Not empty Collection
+```js
+var myCollection    = new Collection([
+    "a"
+]);
+
+myCollection.isEmpty();     // false
 ```
 
 
