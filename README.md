@@ -2282,14 +2282,14 @@ __Constructor Summary__
 
 Access | Signature
 --- | ---
-public | <code>[_constructor](#Collection__constructor)({(ICollection.&lt;I&gt; &#124; Array.&lt;I&gt;)} items)</code>
+public | <code>[_constructor](#Collection__constructor)({([ICollection](#ICollection).&lt;I&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)} items)</code>
 
 
 __Getters and Setters Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | <code>[getHashStore](#Collection_getHashStore)()</code> | <code>[HashStore](#HashStore)</code>
+public | <code>[getHashStore](#Collection_getHashStore)()</code> | <code>{[HashStore](#HashStore)}</code>
 
 
 __Method Summary__
@@ -2297,18 +2297,18 @@ __Method Summary__
 Access | Signature | Return Type
 --- | --- | ---
 public | <code>[add](#Collection_add)({I} item)</code> | <code>{boolean}</code>
-public | <code>[addAll](#Collection_addAll)({([ICollection](#ICollection).&ltlI&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)} items)</code> | None
+public | <code>[addAll](#Collection_addAll)({([ICollection](#ICollection).&lt;I&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;)} items)</code> | None
 public | <code>[clear](#Collection_clear)()</code> | None
 public | <code>[contains](#Collection_contains)({*} value)</code> | <code>{boolean}</code>
-public | <code>[containsAll](#Collection_containsAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
-public | <code>[containsEqual](#Collection_containsEqual)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
+public | <code>[containsAll](#Collection_containsAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
+public | <code>[containsEqual](#Collection_containsEqual)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
 public | <code>[forEach](#Collection_forEach)({function(I)} func)</code> | None
 public | <code>[getCount](#Collection_getCount)()</code> | <code>{number}</code>
-public | <code>[getValueArray](#Collection_getValueArray)()</code> | <code>[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;</code>
+public | <code>[getValueArray](#Collection_getValueArray)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;}</code>
 public | <code>[getValueCount](#Collection_getValueCount)({*} value)</code> | <code>{number}</code>
 public | <code>[isEmpty](#Collection_isEmpty)()</code> | <code>{boolean}</code>
-public | <code>[iterator](#Collection_iterator)()</code> | <code>[IIterator](#IIterator)</code>
-public | <code>[map](#Collection_map)({function} fn, {Object} context)</code> | <code>[ICollection](#ICollection)</code>
+public | <code>[iterator](#Collection_iterator)()</code> | <code>{[IIterator](#IIterator)}</code>
+public | <code>[map](#Collection_map)({function} fn, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)} context)</code> | <code>{[ICollection](#ICollection)}</code>
 public | <code>[remove](#Collection_remove)({*} value)</code> | <code>{boolean}</code>
 public | <code>[removeAll](#Collection_removeAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | None
 public | <code>[retainAll](#Collection_retainAll)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | None
@@ -2640,7 +2640,7 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ----
-`values` | <code>{([ICollection](#ICollection).&lt;*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;)}</code> | The values that we're checking to see if the collection contains all of them.
+`values` | <code>{([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)}</code> | The values that we're checking to see if the collection contains all of them.
 
 
 __Returns__
