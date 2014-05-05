@@ -1823,14 +1823,14 @@ __Constructor Summary__
 
 Access | Signature
 --- | ---
-public | <code>[_constructor](#Throwable__constructor)({string} type, {*=} data, {string=} message, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=} causes)</code>
+public | <code>[_constructor](#Throwable__constructor)({string} type, {*=} data, {string=} message, {[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=} causes)</code>
 
 
 __Getters and Setters Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | <code>[getCauses](#Throwable_getCauses)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code>
+public | <code>[getCauses](#Throwable_getCauses)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code>
 public | <code>[getData](#Throwable_getData)() | <code>{*}</code>
 public | <code>[setData](#Throwable_setData)({*} data)</code> | None
 public | <code>[getMessage](#Throwable_getMessage)()</code> | <code>{string}</code>
@@ -1844,7 +1844,7 @@ __Method Summary__
 Access | Signature | Return Type
 --- | --- | ---
 public | <code>[addCause](#Throwable_addCause)({([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))} cause)</code> | <code>{*}</code>
-public | <code>[toObject\(#Throwable_toObject)()</code> | <code>{causes: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;, data: *, message: string, type: string}</code>
+public | <code>[toObject](#Throwable_toObject)()</code> | <code>{causes: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;, data: *, message: string, type: string}</code>
 
 
 <br />
@@ -1877,7 +1877,7 @@ Name | Type | Description
 `type` | <code>{string}</code> | The type of throwable.
 `data` | <code>{*=}</code> | Any extra data to pass along with this throwable.
 `message` | <code>{string=}</code> | A message to add to this throwable. (optional - default: "")
-`causes` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=}</code> | An array of other throwables or js errors that caused this throwable. (optional - default: [])
+`causes` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;=}</code> | An array of other throwables or js errors that caused this throwable. (optional - default: [])
 
 
 __Examples__
@@ -1926,7 +1926,7 @@ __Parameters__
 
 __Returns__
 
-* <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code> - An array of other Throwables or JS Errors that caused this Throwable.
+* <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)&gt;}</code> - An array of other Throwables or JS Errors that caused this Throwable.
 
 
 __Examples__
@@ -2213,7 +2213,7 @@ __Parameters__
 
 Name | Type | Description
 --- | --- | ---
-`cause` | <code>{([Throwable](#Throwable) | [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)}</code> | The cause to add to the Throwable's array of causes.
+`cause` | <code>{([Throwable](#Throwable) \| [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)}</code> | The cause to add to the Throwable's array of causes.
 
 
 __Returns__
