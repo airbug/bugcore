@@ -242,6 +242,17 @@ In the browser:
 * [`Lock`](#Lock)
 * [`Semaphore`](#Semaphore)
 
+### Proxy Classes
+
+* [`Proxy`](#Proxy)
+* [`ProxyMethod`](#ProxyMethod)
+* [`ProxyObject`](#ProxyObject)
+* [`ProxyProperty`](#ProxyProperty)
+
+### Proxy Interfaces
+
+* [`IProxy`](#IProxy)
+
 ### Utils
 
 * [`HashUtil`](#HashUtil)
@@ -3083,6 +3094,78 @@ var myCollection    = new Collection([
 ]);
 
 myCollection.isEmpty();     // false
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Collection_iterator" />
+### Collection#iterator()
+
+This method generates an iterator for this Collection.
+
+
+__Notes__
+
+* Because of the way javascript works and the current lack of Iterator support across browsers. Iterators
+create a snap shot of the values in the Collection before starting the iteration process. If a value is modified
+in one iteration and then visited at a later time, its value in the loop is its value when the iteration was
+started.
+* A value that is deleted before it has been visited WILL be visited later.
+* Values added to the Collection over which iteration is occurring will be omitted from iteration.
+* Iteration order of a Collection is not guaranteed.
+
+__Method__
+
+```javascript
+/**
+ * @return {IIterator}
+ */
+iterator: function() {
+```
+
+
+__Parameters__
+
+* None
+
+
+__Returns__
+
+* <code>{[IIterator](#IIterator)}</code> - The generated IIterator instance.
+
+
+__Examples__
+
+Iterate Collection
+```js
+var myCollection    = new Collection([
+    "a",
+    "b",
+    "c"
+]);
+
+var iterator = myCollection.iterator();
+while (iterator.hasNext()) {
+    var value = iterator.next();
+}
+```
+
+Iterate past end of Collection
+```js
+var myCollection    = new Collection([
+    "a",
+    "b",
+    "c"
+]);
+
+var iterator = myCollection.iterator();
+iterator.next();    // "a"
+iterator.next();    // "b"
+iterator.next();    // "c"
+iterator.next();    // throws and Exception of type "NoSuchElement"
 ```
 
 

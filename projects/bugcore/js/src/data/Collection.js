@@ -2,11 +2,8 @@
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
  * bugcore may be freely distributed under the MIT license.
- *
- *
- * Based on the google closure library.
- * http://closure-library.googlecode.com/svn/docs/interface_goog_structs_Collection.html
  */
+
 
 //-------------------------------------------------------------------------------
 // Annotations
@@ -326,7 +323,7 @@ require('bugpack').context("*", function(bugpack) {
          * NOTE BRN: Because of the way javascript works and the current lack of Iterator support across browsers. Iterators
          * create a snap shot of the values in the Collection before starting the iteration process. If a value is modified
          * in one iteration and then visited at a later time, its value in the loop is its value when the iteration was
-         * started. A values that is deleted before it has been visited WILL be visited later.
+         * started. A value that is deleted before it has been visited WILL be visited later.
          * Values added to the Collection over which iteration is occurring will be omitted from iteration.
          *
          * @return {IIterator}

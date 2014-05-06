@@ -4,6 +4,7 @@
  * bugcore may be freely distributed under the MIT license.
  */
 
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -11,6 +12,7 @@
 //@Export('CollectionIterator')
 
 //@Require('Class')
+//@Require('Exception')
 //@Require('IIterator')
 //@Require('Obj')
 
@@ -26,6 +28,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
+    var Exception   = bugpack.require('Exception');
     var IIterator   = bugpack.require('IIterator');
     var Obj         = bugpack.require('Obj');
 
@@ -100,7 +103,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.index++;
                 return this.collectionValueArray[this.index];
             } else {
-                throw new Error("No such element. End of iteration reached.");
+                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
             }
         }
     });
