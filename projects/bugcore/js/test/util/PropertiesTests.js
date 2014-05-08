@@ -4,6 +4,7 @@
  * bugcore may be freely distributed under the MIT license.
  */
 
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -76,15 +77,11 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert a property that does exist but has no sub properties not exist will return 'undefined' if we try to access a sub property");
         }
     };
-    bugmeta.annotate(propertiesInstantiationTest).with(
-        test().name("Properties instantiation test")
-    );
-
 
     /**
      * This tests...
      */
-    var propertiesUpdateTest = {
+    var propertiesUpdatePropertiesTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -113,7 +110,52 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert index 0 of someArray is equal to '.'");
         }
     };
-    bugmeta.annotate(propertiesUpdateTest).with(
-        test().name("Properties update test")
+
+    /**
+     * This tests...
+     */
+    var propertiesUpdatePropertiesDuplicateSubNameTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testProperties = new Properties({});
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testProperties.updateProperties({
+                name: "value",
+                test: {
+                    name: "otherValue"
+                }
+            });
+
+            var nameValue       = this.testProperties.getProperty("name");
+            var testNameValue   = this.testProperties.getProperty("test.name");
+            test.assertEqual(nameValue, "value",
+                "Assert 'name' is 'value'");
+            test.assertEqual(testNameValue, "otherValue",
+                "Assert 'test.name' is 'otherValue'");
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.annotate(propertiesInstantiationTest).with(
+        test().name("Properties instantiation test")
+    );
+    bugmeta.annotate(propertiesUpdatePropertiesTest).with(
+        test().name("Properties - #updateProperties test")
+    );
+    bugmeta.annotate(propertiesUpdatePropertiesDuplicateSubNameTest).with(
+        test().name("Properties - #updateProperties duplicate sub name test")
     );
 });

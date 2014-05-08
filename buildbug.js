@@ -4,6 +4,7 @@
  * bugcore may be freely distributed under the MIT license.
  */
 
+
 //-------------------------------------------------------------------------------
 // Requires
 //-------------------------------------------------------------------------------
@@ -41,7 +42,7 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.2.3";
+var version             = "0.2.4";
 var dependencies        = {
     bugpack: "0.1.12"
 };

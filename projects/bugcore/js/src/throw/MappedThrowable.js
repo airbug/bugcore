@@ -123,8 +123,8 @@ require('bugpack').context("*", function(bugpack) {
             this.causeMap.forEach(function(cause, key) {
                 count++;
                 stack += _this.getType() + " cause mapped to '" + key + "':\n";
-                stack += cause.getMessage() + "\n";
-                stack += cause.getStack();
+                stack += cause.message + "\n";
+                stack += cause.stack;
             });
             this.stack = stack;
         }
