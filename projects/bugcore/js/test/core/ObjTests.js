@@ -302,6 +302,132 @@ require('bugpack').context("*", function(bugpack) {
     };
 
     /**
+     * This tests
+     * 1) The static doesPropertyExist method of the Obj class
+     * 2) Basic doesPropertyExist check
+     */
+    var objDoesPropertyExistBasicTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testObject = {
+                prop1: "value1"
+            }
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(Obj.doesPropertyExist(this.testObject, "prop1"), true,
+                "Assert .doesPropertyExist() check returns true for 'prop1'");
+            test.assertEqual(Obj.doesPropertyExist(this.testObject, "prop2"), false,
+                "Assert .doesPropertyExist() check returns false for 'prop2'");
+        }
+    };
+
+    /**
+     * This tests...
+     * 1) That Obj.doesPropertyExist check returns true when the property has been defined as an undefined value
+     */
+    var objDoesPropertyExistUndefinedValueTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testObject = {
+                prop1: undefined
+            }
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(Obj.doesPropertyExist(this.testObject, "prop1"), true,
+                "Assert .doesPropertyExist() check returns true for 'prop1'");
+            test.assertEqual(Obj.doesPropertyExist(this.testObject, "prop2"), false,
+                "Assert .doesPropertyExist() check returns false for 'prop2'");
+        }
+    };
+
+    /**
+     * This tests...
+     * 1) That Obj.findProperty returns expected values when they're found
+     * 2) that Obj.findProperty() returns undefined when nothing was found
+     */
+    var objFindPropertyBasicTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testObject = {
+                prop1: "value1",
+                prop2: {
+                    subProp1: "value2"
+                }
+            };
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(Obj.findProperty(this.testObject, "prop1"), "value1",
+                "Assert first level property is found");
+            test.assertEqual(Obj.findProperty(this.testObject, "prop2"), this.testObject.prop2,
+                "Assert object was returned");
+            test.assertEqual(Obj.findProperty(this.testObject, "prop2.subProp1"), "value2",
+                "Assert sub properties are correctly returned");
+        }
+    };
+
+    /**
+     * This tests...
+     * 1) That Obj.findProperty returns undefined when given a built in property
+     */
+    var objFindPropertyBuiltInPropertyIgnoredTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.builtInProperties = [
+                "eval",
+                "hasOwnProperty",
+                "isPrototypeOf",
+                "propertyIsEnumerable",
+                "toLocaleString",
+                "toSource",
+                "toString",
+                "unwatch",
+                "valueOf",
+                "watch"
+            ];
+            this.testObject = {};
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            this.builtInProperties.forEach(function(builtInProperty) {
+                test.assertEqual(Obj.findProperty(_this.testObject, builtInProperty), undefined,
+                    "Assert .findProperty() returns undefined for built in property '" + builtInProperty + "'");
+            });
+        }
+    };
+    
+    /**
      * This tests..
      * 1) That the forIn function correctly iterates over an object and sets the context correctly
      */
@@ -545,19 +671,19 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.annotate(objInstantiationTest).with(
-        test().name("Obj instantiation test")
+        test().name("Obj - instantiation test")
     );
     bugmeta.annotate(objHashCodeTest).with(
-        test().name("Obj hashCode test")
+        test().name("Obj - hashCode test")
     );
     bugmeta.annotate(objEqualsTest).with(
         test().name("Obj - #equals test")
     );
     bugmeta.annotate(objCloneObjShallowTest).with(
-        test().name("Obj - clone Obj shallow test")
+        test().name("Obj - #clone() Obj shallow test")
     );
     bugmeta.annotate(objCloneDateTest).with(
-        test().name("Obj - #clone Date test")
+        test().name("Obj - #clone() Date test")
     );
     bugmeta.annotate(objCloneObjectLiteralShallowTest).with(
         test().name("Obj - #clone object literal shallow test")
@@ -565,14 +691,26 @@ require('bugpack').context("*", function(bugpack) {
     bugmeta.annotate(objClonePassThroughTest).with(
         test().name("Obj - #clone pass through test")
     );
+    bugmeta.annotate(objDoesPropertyExistBasicTest).with(
+        test().name("Obj - .doesPropertyExist() basic test")
+    );
+    bugmeta.annotate(objDoesPropertyExistUndefinedValueTest).with(
+        test().name("Obj - .doesPropertyExist() undefined value test")
+    );
+    bugmeta.annotate(objFindPropertyBasicTest).with(
+        test().name("Obj - .findProperty() basic test")
+    );
+    bugmeta.annotate(objFindPropertyBuiltInPropertyIgnoredTest).with(
+        test().name("Obj - .findProperty() built in property ignored test")
+    );
     bugmeta.annotate(objForInIterationTest).with(
-        test().name("Obj forIn iteration test")
+        test().name("Obj - .forIn() iteration test")
     );
     bugmeta.annotate(objForInIterationDontEnumPropertiesTest).with(
-        test().name("Obj forIn iteration of don't enum properties test")
+        test().name("Obj - .forIn() iteration of don't enum properties test")
     );
     bugmeta.annotate(objEnsureInternalIdTest).with(
-        test().name("Obj internalId already defined test")
+        test().name("Obj - internalId already defined test")
     );
     bugmeta.annotate(objMergeTest).with(
         test().name("Obj - .merge Test")

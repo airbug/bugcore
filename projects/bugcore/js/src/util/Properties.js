@@ -89,7 +89,7 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Class Methods
+        // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
@@ -109,6 +109,14 @@ require('bugpack').context("*", function(bugpack) {
          */
         getProperty: function(propertyQuery) {
             return Obj.findProperty(this.propertiesObject, propertyQuery);
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @return {boolean}
+         */
+        hasProperty: function(propertyQuery) {
+            return Obj.doesPropertyExist(this.propertiesObject, propertyQuery);
         },
 
         /**

@@ -4,12 +4,12 @@
  * bugcore may be freely distributed under the MIT license.
  */
 
+
 //-------------------------------------------------------------------------------
 // Script
 //-------------------------------------------------------------------------------
 
-var bugpackApi  = require("bugpack");
-var bugpack     = bugpackApi.loadContextSync(module);
+var bugpack     = require("bugpack").loadContextSync(module);
 bugpack.loadExportSync("BugCore");
 var BugCore     = bugpack.require("BugCore");
 

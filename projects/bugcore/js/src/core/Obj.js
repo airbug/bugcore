@@ -260,6 +260,36 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {Object} object
+     * @param {string} propertyQuery
+     * @return {boolean}
+     */
+    Obj.doesPropertyExist = function(object, propertyQuery) {
+        if (!TypeUtil.isObject(object)) {
+            throw new Error("object must be an Object");
+        }
+        if (!TypeUtil.isString(propertyQuery)) {
+            throw new Error("propertyQuery must be a string");
+        }
+        var parts           = propertyQuery.split(".");
+        var propertyValue   = object;
+        for (var i = 0, size = parts.length; i < size; i++) {
+            var part = parts[i];
+            if (TypeUtil.isObject(propertyValue)) {
+                if (Obj.hasProperty(propertyValue, part)) {
+                    propertyValue = propertyValue[part];
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    /**
+     * @static
      * @param {*} value1
      * @param {*} value2
      * @return {boolean}
@@ -314,7 +344,7 @@ require('bugpack').context("*", function(bugpack) {
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
-            if (TypeUtil.isObject(propertyValue)) {
+            if (TypeUtil.isObject(propertyValue) && Obj.hasProperty(propertyValue, part)) {
                 propertyValue = propertyValue[part];
             } else {
                 return undefined;
