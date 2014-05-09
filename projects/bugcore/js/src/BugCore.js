@@ -14,20 +14,45 @@
 //@Require('Bug')
 //@Require('Class')
 //@Require('Collection')
+//@Require('Constructor')
+//@Require('Event')
+//@Require('EventDispatcher')
+//@Require('EventPropagator')
+//@Require('EventReceiver')
 //@Require('Exception')
 //@Require('Func')
+//@Require('HashStore')
+//@Require('HashTable')
+//@Require('HashUtil')
+//@Require('IArrayable')
+//@Require('IdGenerator')
 //@Require('IClone')
+//@Require('ICollection')
 //@Require('IEquals')
 //@Require('IHashCode')
+//@Require('IIterable')
+//@Require('IIterator')
+//@Require('IList')
+//@Require('IMap')
+//@Require('Implementable')
 //@Require('Interface')
+//@Require('IObjectable')
+//@Require('IProxy')
+//@Require('ISet')
 //@Require('List')
+//@Require('Lock')
 //@Require('Map')
 //@Require('Obj')
 //@Require('Pair')
 //@Require('Proxy')
+//@Require('ProxyMethod')
+//@Require('ProxyObject')
+//@Require('ProxyProperty')
 //@Require('Queue')
+//@Require('Semaphore')
 //@Require('Set')
 //@Require('Stack')
+//@Require('Striped')
 //@Require('Throwable')
 //@Require('TypeUtil')
 
@@ -42,25 +67,50 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Bug             = bugpack.require('Bug');
-    var Class           = bugpack.require('Class');
-    var Collection      = bugpack.require('Collection');
-    var Exception       = bugpack.require('Exception');
-    var Func            = bugpack.require('Func');
-    var IClone          = bugpack.require('IClone');
-    var IEquals         = bugpack.require('IEquals');
-    var IHashCode       = bugpack.require('IHashCode');
-    var Interface       = bugpack.require('Interface');
-    var List            = bugpack.require('List');
-    var Map             = bugpack.require('Map');
-    var Obj             = bugpack.require('Obj');
-    var Pair            = bugpack.require('Pair');
-    var Proxy           = bugpack.require('Proxy');
-    var Queue           = bugpack.require('Queue');
-    var Set             = bugpack.require('Set');
-    var Stack           = bugpack.require('Stack');
-    var Throwable       = bugpack.require('Throwable');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var Bug                 = bugpack.require('Bug');
+    var Class               = bugpack.require('Class');
+    var Collection          = bugpack.require('Collection');
+    var Constructor         = bugpack.require('Constructor');
+    var Event               = bugpack.require('Event');
+    var EventDispatcher     = bugpack.require('EventDispatcher');
+    var EventPropagator     = bugpack.require('EventPropagator');
+    var EventReceiver       = bugpack.require('EventReceiver');
+    var Exception           = bugpack.require('Exception');
+    var Func                = bugpack.require('Func');
+    var HashStore           = bugpack.require('HashStore');
+    var HashTable           = bugpack.require('HashTable');
+    var HashUtil            = bugpack.require('HashUtil');
+    var IArrayable          = bugpack.require('IArrayable');
+    var IClone              = bugpack.require('IClone');
+    var ICollection         = bugpack.require('ICollection');
+    var IdGenerator         = bugpack.require('IdGenerator');
+    var IEquals             = bugpack.require('IEquals');
+    var IHashCode           = bugpack.require('IHashCode');
+    var IIterable           = bugpack.require('IIterable');
+    var IIterator           = bugpack.require('IIterator');
+    var IList               = bugpack.require('IList');
+    var IMap                = bugpack.require('IMap');
+    var Implementable       = bugpack.require('Implementable');
+    var Interface           = bugpack.require('Interface');
+    var IObjectable         = bugpack.require('IObjectable');
+    var IProxy              = bugpack.require('IProxy');
+    var ISet                = bugpack.require('ISet');
+    var List                = bugpack.require('List');
+    var Lock                = bugpack.require('Lock');
+    var Map                 = bugpack.require('Map');
+    var Obj                 = bugpack.require('Obj');
+    var Pair                = bugpack.require('Pair');
+    var Proxy               = bugpack.require('Proxy');
+    var ProxyMethod         = bugpack.require('ProxyMethod');
+    var ProxyObject         = bugpack.require('ProxyObject');
+    var ProxyProperty       = bugpack.require('ProxyProperty');
+    var Queue               = bugpack.require('Queue');
+    var Semaphore           = bugpack.require('Semaphore');
+    var Set                 = bugpack.require('Set');
+    var Stack               = bugpack.require('Stack');
+    var Striped             = bugpack.require('Striped');
+    var Throwable           = bugpack.require('Throwable');
+    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -95,92 +145,222 @@ require('bugpack').context("*", function(bugpack) {
             /**
              * @type {function(new:Bug)}
              */
-            this.Bug            = Bug;
+            this.Bug                = Bug;
 
             /**
              * @type {function(new:Class)}
              */
-            this.Class          = Class;
+            this.Class              = Class;
 
             /**
              * @type {function(new:Collection)}
              */
-            this.Collection     = Collection;
+            this.Collection         = Collection;
+
+            /**
+             * @type {function(new:Constructor)}
+             */
+            this.Constructor        = Constructor;
+
+            /**
+             * @type {function(new:Event)}
+             */
+            this.Event              = Event;
+
+            /**
+             * @type {function(new:EventDispatcher)}
+             */
+            this.EventDispatcher    = EventDispatcher;
+
+            /**
+             * @type {function(new:EventPropagator)}
+             */
+            this.EventPropagator    = EventPropagator;
+
+            /**
+             * @type {function(new:EventReceiver)}
+             */
+            this.EventReceiver      = EventReceiver;
 
             /**
              * @type {function(new:Exception)}
              */
-            this.Exception       = Exception;
+            this.Exception          = Exception;
 
             /**
              * @type {function(new:Func)}
              */
-            this.Func           = Func;
+            this.Func               = Func;
+
+            /**
+             * @type {function(new:HashStore)}
+             */
+            this.HashStore          = HashStore;
+
+            /**
+             * @type {function(new:HashTable)}
+             */
+            this.HashTable          = HashTable;
+
+            /**
+             * @type {function(new:HashUtil)}
+             */
+            this.HashUtil           = HashUtil;
+
+            /**
+             * @type {function(new:IArrayable)}
+             */
+            this.IArrayable         = IArrayable;
 
             /**
              * @type {function(new:IClone)}
              */
-            this.IClone         = IClone;
+            this.IClone             = IClone;
+
+            /**
+             * @type {function(new:IdGenerator)}
+             */
+            this.IdGenerator        = IdGenerator;
+
+            /**
+             * @type {function(new:ICollection)}
+             */
+            this.ICollection        = ICollection;
 
             /**
              * @type {function(new:IEquals)}
              */
-            this.IEquals        = IEquals;
+            this.IEquals            = IEquals;
 
             /**
              * @type {function(new:IHashCode)}
              */
-            this.IHashCode      = IHashCode;
+            this.IHashCode          = IHashCode;
+
+            /**
+             * @type {function(new:IIterable)}
+             */
+            this.IIterable          = IIterable;
+
+            /**
+             * @type {function(new:IIterator)}
+             */
+            this.IIterator          = IIterator;
+
+            /**
+             * @type {function(new:IList)}
+             */
+            this.IList              = IList;
+
+            /**
+             * @type {function(new:IMap)}
+             */
+            this.IMap               = IMap;
+
+            /**
+             * @type {function(new:Implementable)}
+             */
+            this.Implementable      = Implementable;
 
             /**
              * @type {function(new:Interface)}
              */
-            this.Interface      = Interface;
+            this.Interface          = Interface;
+
+            /**
+             * @type {function(new:IObjectable)}
+             */
+            this.IObjectable        = IObjectable;
+
+            /**
+             * @type {function(new:IProxy)}
+             */
+            this.IProxy             = IProxy;
+
+            /**
+             * @type {function(new:ISet)}
+             */
+            this.ISet               = ISet;
 
             /**
              * @type {function(new:List)}
              */
-            this.List           = List;
+            this.List               = List;
+
+            /**
+             * @type {function(new:Lock)}
+             */
+            this.Lock               = Lock;
 
             /**
              * @type {function(new:Map)}
              */
-            this.Map            = Map;
+            this.Map                = Map;
 
             /**
              * @type {function(new:Obj)}
              */
-            this.Obj            = Obj;
+            this.Obj                = Obj;
 
             /**
              * @type {function(new:Pair)}
              */
-            this.Pair           = Pair;
+            this.Pair               = Pair;
+
+            /**
+             * @type {function(new:Proxy)}
+             */
+            this.Proxy              = Proxy;
+
+            /**
+             * @type {function(new:ProxyMethod)}
+             */
+            this.ProxyMethod        = ProxyMethod;
+
+            /**
+             * @type {function(new:ProxyObject)}
+             */
+            this.ProxyObject        = ProxyObject;
+
+            /**
+             * @type {function(new:ProxyProperty)}
+             */
+            this.ProxyProperty      = ProxyProperty;
 
             /**
              * @type {function(new:Queue)}
              */
-            this.Queue          = Queue;
+            this.Queue              = Queue;
+
+            /**
+             * @type {function(new:Semaphore)}
+             */
+            this.Semaphore          = Semaphore;
 
             /**
              * @type {function(new:Set)}
              */
-            this.Set            = Set;
+            this.Set                = Set;
 
             /**
              * @type {function(new:Stack)}
              */
-            this.Stack          = Stack;
+            this.Stack              = Stack;
+
+            /**
+             * @type {function(new:Striped)}
+             */
+            this.Striped            = Striped;
 
             /**
              * @type {function(new:Throwable)}
              */
-            this.Throwable      = Throwable;
+            this.Throwable          = Throwable;
 
             /**
              * @type {function(new:TypeUtil)}
              */
-            this.TypeUtil       = TypeUtil;
+            this.TypeUtil           = TypeUtil;
         },
 
 

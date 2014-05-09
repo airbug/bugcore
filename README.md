@@ -1804,6 +1804,69 @@ var hashCode    = Obj.hashCode(myString);
 ```
 
 
+<br /><a name="IClone" />
+## IClone
+
+The base interface for cloning. If your Class can be cloned, you should implement this interface.
+
+
+__Interface__
+
+```javascript
+/**
+ * @interface
+ */
+var IClone = Interface.declare({
+```
+
+__Method Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[clone](#IClone_clone)({boolean=} deep)</code>  | <code>{\*}</code>
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="IClone_clone" />
+### IClone#clone(deep)
+
+This method returns a clone of the instance that implements this interface.
+Implementations should respect the deep clone flag.
+
+
+__Notes__
+
+* Implementations should respect the deep flag.
+* Immutable values need not be cloned on a deep clone.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {boolean=} deep
+ * @return {*}
+ */
+clone: function(deep) {}
+```
+
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`deep` | <code>{boolean=}</code> | Whether or not to perform a deep clone. Optional - default: false
+
+
+__Returns__
+
+* <code>{\*}</code> - A clone of the instance.
+
+
+
 <br /><a name="Throwable" />
 ## Throwable
 
