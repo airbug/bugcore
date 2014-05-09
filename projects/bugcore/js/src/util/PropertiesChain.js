@@ -102,10 +102,26 @@ require('bugpack').context("*", function(bugpack) {
          */
         getProperty: function(propertyQuery) {
             for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
-                var properties = this.getAt(i);
-                var value = properties.getProperty(propertyQuery);
-                //if (!TypeUti)
+                var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
+                if (properties.hasProperty(propertyQuery)) {
+                    return properties.getProperty(propertyQuery);
+                }
             }
+            return undefined;
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @return {boolean}
+         */
+        hasProperty: function(propertyQuery) {
+            for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
+                var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
+                if (properties.hasProperty(propertyQuery)) {
+                    return true;
+                }
+            }
+            return false;
         }
     });
 
