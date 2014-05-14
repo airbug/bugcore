@@ -158,7 +158,6 @@ require('bugpack').context("*", function(bugpack) {
             return this.protocol;
         },
 
-
         //-------------------------------------------------------------------------------
         // Obj Methods
         //-------------------------------------------------------------------------------
@@ -264,6 +263,30 @@ require('bugpack').context("*", function(bugpack) {
          */
         hasUrlQuery: function(key) {
             return this.urlQueryMap.containsKey(key);
+        },
+
+        /**
+         * @return {string}
+         */
+        toHostString: function() {
+            var hostString  = this.getHost();
+            var port        = this.getPort();
+            if (port !== 80) {
+                hostString += ":" + port;
+            }
+            return hostString;
+        },
+
+        /**
+         * @return {string}
+         */
+        toUrlString: function() {
+            var urlString   = this.getProtocol() + "://" + this.toHostString();
+            var path        = this.getPath();
+            if (path) {
+                urlString += path;
+            }
+            return urlString;
         }
     });
 
