@@ -268,6 +268,13 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @return {string}
          */
+        toBaseUrlString: function() {
+            return this.getProtocol() + "://" + this.toHostString();
+        },
+
+        /**
+         * @return {string}
+         */
         toHostString: function() {
             var hostString  = this.getHost();
             var port        = this.getPort();
@@ -281,7 +288,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toUrlString: function() {
-            var urlString   = this.getProtocol() + "://" + this.toHostString();
+            var urlString   = this.toBaseUrlString();
             var path        = this.getPath();
             if (path) {
                 urlString += path;
