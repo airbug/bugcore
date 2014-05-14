@@ -4,6 +4,7 @@
  * bugcore may be freely distributed under the MIT license.
  */
 
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -14,7 +15,7 @@
 //@Require('Map')
 //@Require('Obj')
 //@Require('TypeUtil')
-//@Require(('UrlQuery')
+//@Require('UrlQuery')
 
 
 //-------------------------------------------------------------------------------
@@ -58,13 +59,23 @@ require('bugpack').context("*", function(bugpack) {
          *      path: ?string,
          *      port: ?number,
          *      protocol: ?string,
-         *      anchor: ?string
-         * }} options
+         *      anchor: ?string,
+         *      queryKey: Object.<string, string>
+         * }} urlParts
          */
-        _constructor: function(options) {
+        _constructor: function(urlParts) {
 
             this._super();
 
+            if (!TypeUtil.isObject(urlParts)) {
+                urlParts = {};
+            }
+            if (!TypeUtil.isString(urlParts.protocol) || urlParts.protocol === "") {
+                urlParts.protocol = "http";
+            }
+            if (!TypeUtil.isNumber(urlParts.port) || urlParts.port <= 0) {
+                urlParts.port = 80;
+            }
 
             //-------------------------------------------------------------------------------
             // Private Properties
@@ -74,59 +85,37 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {?string}
              */
-            this.anchor             = "";
+            this.anchor             = urlParts.anchor;
 
             /**
              * @private
              * @type {?string}
              */
-            this.host               = "";
+            this.host               = urlParts.host;
 
             /**
              * @private
              * @type {?string}
              */
-            this.path               = "";
+            this.path               = urlParts.path;
 
             /**
              * @private
              * @type {?number}
              */
-            this.port               = 80;
+            this.port               = urlParts.port - 0;
 
             /**
              * @private
              * @type {?string}
              */
-            this.protocol           = "http";
+            this.protocol           = urlParts.protocol;
 
             /**
              * @private
              * @type {Map.<string, UrlQuery>}
              */
-            this.urlQueryMap        = new Map();
-
-            if (TypeUtil.isObject(options)) {
-                var _this = this;
-                if (TypeUtil.isString(options.anchor)) {
-                    this.setAnchor(options.anchor);
-                }
-                if (TypeUtil.isString(options.host)) {
-                    this.setHost(options.host);
-                }
-                if (TypeUtil.isString(options.path)) {
-                    this.setPath(options.path);
-                }
-                if (TypeUtil.isNumber(options.port - 0)) {
-                    this.setPort(options.port - 0);
-                }
-                if (TypeUtil.isString(options.protocol)) {
-                    this.setProtocol(options.protocol);
-                }
-                Obj.forIn(options.queryKey, function(key, value) {
-                    _this.addUrlQuery(key, value);
-                });
-            }
+            this.urlQueryMap        = new Map(urlParts.queryKey);
         },
 
 
@@ -142,28 +131,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {?string} anchor
-         * @return {Url}
-         */
-        setAnchor: function(anchor) {
-            this.anchor = anchor;
-            return this;
-        },
-
-        /**
          * @returns {?string}
          */
         getHost: function() {
             return this.host;
-        },
-
-        /**
-         * @param {string} host
-         * @return {Url}
-         */
-        setHost: function(host) {
-            this.host = host;
-            return this;
         },
 
         /**
@@ -174,15 +145,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {string} path
-         * @return {Url}
-         */
-        setPath: function(path) {
-            this.path = path;
-            return this;
-        },
-
-        /**
          * @returns {number}
          */
         getPort: function() {
@@ -190,34 +152,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {?number} port
-         * @return {Url}
-         */
-        setPort: function(port) {
-            if (!TypeUtil.isNumber(port) || port <= 0) {
-                port = 80;
-            }
-            this.port = port;
-            return this;
-        },
-
-        /**
          * @returns {string}
          */
         getProtocol: function() {
             return this.protocol;
-        },
-
-        /**
-         * @param {?string} protocol
-         * @return {Url}
-         */
-        setProtocol: function(protocol) {
-            if (!TypeUtil.isString(protocol) || protocol === "") {
-                protocol = "http";
-            }
-            this.protocol = protocol;
-            return this;
         },
 
 
@@ -244,6 +182,31 @@ require('bugpack').context("*", function(bugpack) {
                 queryKey: urlQueryMap
             };
             return new Url(options);
+        },
+
+        /**
+         * @override
+         * @param {*} value
+         * @return {boolean}
+         */
+        equals: function(value) {
+            if (Class.doesExtend(value, Url)) {
+                return (Obj.equals(value.toString(), this.toString()));
+            }
+            return false;
+        },
+
+        /**
+         * @override
+         * @return {number}
+         */
+        hashCode: function() {
+            if (!this._hashCode) {
+                this._hashCode = Obj.hashCode("[Url]" +
+                    Obj.hashCode(this.listenerFunction) + "_" +
+                    Obj.hashCode(this.listenerContext));
+            }
+            return this._hashCode;
         },
 
         /**
@@ -285,17 +248,6 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} key
-         * @param {*} value
-         * @return {Url}
-         */
-        addUrlQuery: function(key, value) {
-            var urlQuery    = new UrlQuery(key, value);
-            this.urlQueryMap.put(key, urlQuery);
-            return this;
-        },
-
-        /**
-         * @param {string} key
          * @return {string}
          */
         getUrlQuery: function(key) {
@@ -319,6 +271,19 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @param {string} value
+     * @return {boolean}
+     */
+    Url.isUrl = function(value) {
+        var regex = /^((((([A-Za-z]{3,9}:(?:\/\/)?)|\/\/)(?:[-;:&=\+\$,A-Za-z0-9]+@)?([A-Za-z0-9-]*\.)*[A-Za-z0-9]+)|(?:(?:(?:\w*\.)+|[-;:&=\+\$,A-Za-z0-9]+@)([A-Za-z0-9-]*\.)*[A-Za-z0-9]+))(:(?:[0-9]+))?((?:\/[\+~=&$%\/.A-Za-z0-9-_]*)?(?:\?(?:[-\+=&;:%@.A-Za-z0-9_,]*))?(?:#(?:[A-Za-z0-9\/]*))?)?)$/;
+        if (TypeUtil.isString(value)) {
+            return regex.test(value);
+        }
+        return false;
+    };
 
     /**
      * @static

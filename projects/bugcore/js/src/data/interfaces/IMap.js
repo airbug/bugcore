@@ -109,7 +109,7 @@ require('bugpack').context("*", function(bugpack) {
         put: function(key, value) {},
 
         /**
-         * @param {IMap.<K, V>} map
+         * @param {(IMap.<K, V> | Object.<K, V>)} map
          */
         putAll: function(map) {},
 

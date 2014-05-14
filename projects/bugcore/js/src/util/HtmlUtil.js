@@ -65,7 +65,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     HtmlUtil.replaceUrls = function(value, replacerFunction) {
-        var regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,A-Za-z0-9]+@)?[A-Za-z0-9.-]+|(?:(?:\w*\.)+|[-;:&=\+\$,A-Za-z0-9]+@)[A-Za-z0-9.-]+)(:(?:[0-9]+))?((?:\/[\+~%\/.A-Za-z0-9-_]*)?(?:\?(?:[-\+=&;:%@.A-Za-z0-9_,]*))?(?:#(?:[A-Za-z0-9\/]*))?)?)/g;
+        var regex = /(((([A-Za-z]{3,9}:(?:\/\/)?)|\/\/)(?:[-;:&=\+\$,A-Za-z0-9]+@)?[A-Za-z0-9.-]+|(?:(?:\w*\.)+|[-;:&=\+\$,A-Za-z0-9]+@)[A-Za-z0-9.-]+)(:(?:[0-9]+))?((?:\/[\+~%\/.A-Za-z0-9-_]*)?(?:\?(?:[-\+=&;:%@.A-Za-z0-9_,]*))?(?:#(?:[A-Za-z0-9\/]*))?)?)/g;
         return value.replace(regex, function(match) {
             var url = Url.parse(match);
             return replacerFunction(match, url);

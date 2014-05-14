@@ -65,7 +65,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Map.<K, V>} map
+         * @param {(IMap.<K, V> | Object.<K, V>)} map
          */
         _constructor: function(map) {
 
@@ -223,7 +223,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {IMap.<K, V>} map
+         * @param {(IMap.<K, V> | Object.<K, V>)} map
          */
         putAll: function(map) {
             var _this = this;
@@ -231,6 +231,10 @@ require('bugpack').context("*", function(bugpack) {
                 var keys = map.getKeyArray();
                 keys.forEach(function(key) {
                     var value = map.get(key);
+                    _this.put(key, value);
+                });
+            } else if (TypeUtil.isObject(map)) {
+                Obj.forIn(map, function(key, value) {
                     _this.put(key, value);
                 });
             }
