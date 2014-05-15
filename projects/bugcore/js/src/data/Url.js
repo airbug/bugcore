@@ -77,6 +77,13 @@ require('bugpack').context("*", function(bugpack) {
                 urlParts.port = 80;
             }
 
+            if (!TypeUtil.isString(urlParts.path) || urlParts.path === "") {
+                urlParts.path = "/";
+            }
+            if (urlParts.path.substr(0, 1) !== "/") {
+                urlParts.path = "/" + urlParts.path;
+            }
+
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
