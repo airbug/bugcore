@@ -15,7 +15,6 @@
 //@Require('Map')
 //@Require('Obj')
 //@Require('TypeUtil')
-//@Require('UrlQuery')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +31,6 @@ require('bugpack').context("*", function(bugpack) {
     var Map                 = bugpack.require('Map');
     var Obj                 = bugpack.require('Obj');
     var TypeUtil            = bugpack.require('TypeUtil');
-    var UrlQuery            = bugpack.require('UrlQuery');
 
 
     //-------------------------------------------------------------------------------
@@ -84,6 +82,7 @@ require('bugpack').context("*", function(bugpack) {
                 urlParts.path = "/" + urlParts.path;
             }
 
+
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
@@ -120,7 +119,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Map.<string, UrlQuery>}
+             * @type {Map.<string, string>}
              */
             this.urlQueryMap        = new Map(urlParts.queryKey);
         },
@@ -174,18 +173,13 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Url}
          */
         clone: function(deep) {
-            var urlQueryMap = {};
-            this.urlQueryMap.forEach(function(urlQuery) {
-                urlQueryMap[urlQuery.getQueryKey()] = urlQuery.getQueryValue();
-            });
-
             var options = {
                 anchor: this.getAnchor(),
                 host: this.getHost(),
                 path: this.getPath(),
                 port: this.getPort(),
                 protocol: this.getProtocol(),
-                queryKey: urlQueryMap
+                queryKey: this.urlQueryMap.toObject()
             };
             return new Url(options);
         },
@@ -231,12 +225,12 @@ require('bugpack').context("*", function(bugpack) {
             if (!this.urlQueryMap.isEmpty()) {
                 output += "?";
                 var first = true;
-                this.urlQueryMap.forEach(function(urlQuery) {
+                this.urlQueryMap.forEach(function(value, key) {
                     if (first) {
                         first = false;
-                        output += urlQuery.getQueryKey() + "=" + encodeURIComponent(urlQuery.getQueryValue());
+                        output += key + "=" + encodeURIComponent(value);
                     } else {
-                        output += "&" +urlQuery.getQueryKey() + "=" + encodeURIComponent(urlQuery.getQueryValue());
+                        output += "&" + key + "=" + encodeURIComponent(value);
                     }
                 });
             }
@@ -257,11 +251,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         getUrlQuery: function(key) {
-            var urlQuery = this.urlQueryMap.get(key);
-            if (urlQuery) {
-                return urlQuery.getQueryValue();
-            }
-            return null;
+            return this.urlQueryMap.get(key);
         },
 
         /**
