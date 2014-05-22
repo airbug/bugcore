@@ -52,6 +52,7 @@
 //@Require('Semaphore')
 //@Require('Set')
 //@Require('Stack')
+//@Require('StringUtil')
 //@Require('Striped')
 //@Require('Throwable')
 //@Require('TypeUtil')
@@ -108,6 +109,7 @@ require('bugpack').context("*", function(bugpack) {
     var Semaphore           = bugpack.require('Semaphore');
     var Set                 = bugpack.require('Set');
     var Stack               = bugpack.require('Stack');
+    var StringUtil          = bugpack.require('StringUtil');
     var Striped             = bugpack.require('Striped');
     var Throwable           = bugpack.require('Throwable');
     var TypeUtil            = bugpack.require('TypeUtil');
@@ -346,6 +348,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Stack)}
              */
             this.Stack              = Stack;
+
+            /**
+             * @type {function(new:StringUtil)}
+             */
+            this.StringUtil         = StringUtil;
 
             /**
              * @type {function(new:Striped)}
