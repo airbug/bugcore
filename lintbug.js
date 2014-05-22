@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ */
+
+
 //-------------------------------------------------------------------------------
 // Common Modules
 //-------------------------------------------------------------------------------
@@ -34,7 +41,11 @@ lintbug.lintTask("updateCopyright", function(lintFile, callback) {
     var fileContents    = lintFile.getFileContents();
     var copyright       = getCopyright();
     var copyrightRegex  = /^(\s*)\/\*(([^.]|[.])+?)Copyright \(c\)(([^.]|[.])+?)\*\/(\s*)/;
-    fileContents = fileContents.replace(copyrightRegex, copyright + "\n\n");
+    if (copyrightRegex.test(fileContents)) {
+        fileContents = fileContents.replace(copyrightRegex, copyright + "\n\n");
+    } else {
+        fileContents = copyright + "\n\n" + fileContents;
+    }
     lintFile.setFileContents(fileContents);
     callback();
 });
