@@ -12,8 +12,8 @@
 //@Export('ProxyObject')
 
 //@Require('Class')
-//@Require('Interface')
 //@Require('IProxy')
+//@Require('Interface')
 //@Require('Obj')
 
 
@@ -28,8 +28,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Interface   = bugpack.require('Interface');
     var IProxy      = bugpack.require('IProxy');
+    var Interface   = bugpack.require('Interface');
     var Obj         = bugpack.require('Obj');
 
 

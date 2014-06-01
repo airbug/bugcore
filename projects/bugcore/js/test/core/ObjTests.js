@@ -11,8 +11,8 @@
 
 //@TestFile
 
-//@Require('IdGenerator')
 //@Require('Class')
+//@Require('IdGenerator')
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')

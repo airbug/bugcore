@@ -12,8 +12,8 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('RejectedHandler')
 //@Require('Promise')
+//@Require('RejectedHandler')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestAnnotation')
 
@@ -29,8 +29,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class               = bugpack.require('Class');
-    var RejectedHandler     = bugpack.require('RejectedHandler');
     var Promise             = bugpack.require('Promise');
+    var RejectedHandler     = bugpack.require('RejectedHandler');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
     var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
 

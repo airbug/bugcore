@@ -27,8 +27,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var TypeUtil        = bugpack.require('TypeUtil');
     var HashTableNode   = bugpack.require('HashTableNode');
+    var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
 

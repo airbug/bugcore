@@ -28,7 +28,6 @@
 //@Require('HashTable')
 //@Require('HashUtil')
 //@Require('IArrayable')
-//@Require('IdGenerator')
 //@Require('IClone')
 //@Require('ICollection')
 //@Require('IEquals')
@@ -37,11 +36,12 @@
 //@Require('IIterator')
 //@Require('IList')
 //@Require('IMap')
-//@Require('Implementable')
-//@Require('Interface')
 //@Require('IObjectable')
 //@Require('IProxy')
 //@Require('ISet')
+//@Require('IdGenerator')
+//@Require('Implementable')
+//@Require('Interface')
 //@Require('List')
 //@Require('Lock')
 //@Require('Map')
@@ -91,18 +91,18 @@ require('bugpack').context("*", function(bugpack) {
     var IArrayable          = bugpack.require('IArrayable');
     var IClone              = bugpack.require('IClone');
     var ICollection         = bugpack.require('ICollection');
-    var IdGenerator         = bugpack.require('IdGenerator');
     var IEquals             = bugpack.require('IEquals');
     var IHashCode           = bugpack.require('IHashCode');
     var IIterable           = bugpack.require('IIterable');
     var IIterator           = bugpack.require('IIterator');
     var IList               = bugpack.require('IList');
     var IMap                = bugpack.require('IMap');
-    var Implementable       = bugpack.require('Implementable');
-    var Interface           = bugpack.require('Interface');
     var IObjectable         = bugpack.require('IObjectable');
     var IProxy              = bugpack.require('IProxy');
     var ISet                = bugpack.require('ISet');
+    var IdGenerator         = bugpack.require('IdGenerator');
+    var Implementable       = bugpack.require('Implementable');
+    var Interface           = bugpack.require('Interface');
     var List                = bugpack.require('List');
     var Lock                = bugpack.require('Lock');
     var Map                 = bugpack.require('Map');

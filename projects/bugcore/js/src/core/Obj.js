@@ -14,9 +14,9 @@
 //@Require('Class')
 //@Require('HashUtil')
 //@Require('IClone')
-//@Require('IdGenerator')
 //@Require('IEquals')
 //@Require('IHashCode')
+//@Require('IdGenerator')
 //@Require('TypeUtil')
 
 
@@ -33,9 +33,9 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var HashUtil        = bugpack.require('HashUtil');
     var IClone          = bugpack.require('IClone');
-    var IdGenerator     = bugpack.require('IdGenerator');
     var IEquals         = bugpack.require('IEquals');
     var IHashCode       = bugpack.require('IHashCode');
+    var IdGenerator     = bugpack.require('IdGenerator');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 

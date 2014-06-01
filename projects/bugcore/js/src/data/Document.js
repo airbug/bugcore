@@ -16,8 +16,8 @@
 //@Require('Class')
 //@Require('IClone')
 //@Require('IDocument')
-//@Require('IMap')
 //@Require('IList')
+//@Require('IMap')
 //@Require('IObjectable')
 //@Require('ISet')
 //@Require('Obj')
@@ -39,8 +39,8 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var IClone              = bugpack.require('IClone');
     var IDocument           = bugpack.require('IDocument');
-    var IMap                = bugpack.require('IMap');
     var IList               = bugpack.require('IList');
+    var IMap                = bugpack.require('IMap');
     var IObjectable         = bugpack.require('IObjectable');
     var ISet                = bugpack.require('ISet');
     var Obj                 = bugpack.require('Obj');
