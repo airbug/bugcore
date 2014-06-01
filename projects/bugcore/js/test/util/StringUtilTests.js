@@ -47,9 +47,35 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
+     * 1) left padding a string
+     */
+    var stringUtilLpadTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = "ABC";
+            this.testPadChar = "+";
+            this.testLength = 10;
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var result = StringUtil.lpad(this.testString, this.testPadChar, this.testLength);
+            test.assertEqual(result, "+++++++ABC",
+                "Assert the string has been left padded correctly");
+        }
+    };
+
+    /**
+     * This tests
      * 1) padding a string
      */
-    var stringPadTest = {
+    var stringUtilPadTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -66,20 +92,42 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.pad(this.testString, this.testPadChar, this.testLength);
-            test.assertEqual(result, "+++++++ABC",
+            test.assertEqual(result, "++++ABC++++",
                 "Assert the string has been padded correctly");
         }
     };
-    bugmeta.annotate(stringPadTest).with(
-        test().name("String - #pad test")
-    );
 
+    /**
+     * This tests
+     * 1) right padding a string
+     */
+    var stringUtilRpadTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = "ABC";
+            this.testPadChar = "+";
+            this.testLength = 10;
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var result = StringUtil.rpad(this.testString, this.testPadChar, this.testLength);
+            test.assertEqual(result, "ABC+++++++",
+                "Assert the string has been right padded correctly");
+        }
+    };
 
     /**
      * This tests
      * 1) Escape a string
      */
-    var stringEscapeStringTest = {
+    var stringUtilEscapeStringTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -98,15 +146,12 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the string has been escaped correctly");
         }
     };
-    bugmeta.annotate(stringEscapeStringTest).with(
-        test().name("String - #escapeString test")
-    );
 
     /**
      * This tests
      * 1) Splitting a string with a lineProcessor
      */
-    var stringSplitWithLineProcessorTest = {
+    var stringUtilSplitWithLineProcessorTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -131,22 +176,66 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that line 2 was set correctly");
         }
     };
-    bugmeta.annotate(stringSplitWithLineProcessorTest).with(
-        test().name("String - #split with lineProcessor test")
-    );
 
     /**
      * This tests
-     * 1) Trimming a string
+     * 1) Left trimming a string
      */
-    var stringTrimTest = {
+    var stringUtilLtrimTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
             this.testString = "  ABC  ";
-            this.testString.trim = null;
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var result = StringUtil.ltrim(this.testString);
+            test.assertEqual(result, "ABC  ",
+                "Assert the string has been left trimmed correctly");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) Right trimming a string
+     */
+    var stringUtilRtrimTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = "  ABC  ";
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var result = StringUtil.rtrim(this.testString);
+            test.assertEqual(result, "  ABC",
+                "Assert the string has been right trimmed correctly");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) Trimming a string
+     */
+    var stringUtilTrimTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = "  ABC  ";
         },
 
 
@@ -159,22 +248,18 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the string has been trimmed correctly");
         }
     };
-    bugmeta.annotate(stringTrimTest).with(
-        test().name("String - #trim test")
-    );
 
     /**
      * This tests
      * 1) Trimming a string with new lines at the end/beginning
      */
-    var stringTrimNewLineTest = {
+    var stringUtilTrimNewLineTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
             this.testString = "\nABC\n";
-            this.testString.trim = null;
         },
 
 
@@ -187,7 +272,37 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the string has been trimmed correctly");
         }
     };
-    bugmeta.annotate(stringTrimNewLineTest).with(
-        test().name("String - #trim new line test")
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.annotate(stringUtilLpadTest).with(
+        test().name("StringUtil - #lpad test")
+    );
+    bugmeta.annotate(stringUtilPadTest).with(
+        test().name("StringUtil - #pad test")
+    );
+    bugmeta.annotate(stringUtilRpadTest).with(
+        test().name("StringUtil - #rpad test")
+    );
+    bugmeta.annotate(stringUtilEscapeStringTest).with(
+        test().name("StringUtil - #escapeString test")
+    );
+    bugmeta.annotate(stringUtilSplitWithLineProcessorTest).with(
+        test().name("StringUtil - #split with lineProcessor test")
+    );
+    bugmeta.annotate(stringUtilLtrimTest).with(
+        test().name("StringUtil - #ltrim test")
+    );
+    bugmeta.annotate(stringUtilRtrimTest).with(
+        test().name("StringUtil - #rtrim test")
+    );
+    bugmeta.annotate(stringUtilTrimTest).with(
+        test().name("StringUtil - #trim test")
+    );
+    bugmeta.annotate(stringUtilTrimNewLineTest).with(
+        test().name("StringUtil - #trim new line test")
     );
 });

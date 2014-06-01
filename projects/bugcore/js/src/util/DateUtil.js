@@ -176,16 +176,16 @@ require('bugpack').context("*", function(bugpack) {
             // Did this message occur on the same day and month?
             if (nowDate.getDate() === timestampDate.getDate() && nowDate.getMonth() === timestampDate.getMonth()) {
                 howLongAgo += DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.pad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
             }
             // Did this message occur yesterday?
             else if (yesterdayDate.getDate() === timestampDate.getDate() && yesterdayDate.getMonth() === timestampDate.getMonth()) {
                 howLongAgo += "yesterday " + DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.pad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
             }
             else {
                 howLongAgo += DateUtil.getMonthName(timestampDate) + " " + timestampDate.getDate() + ", " +
-                    DateUtil.getHour12HourClock(timestampDate) + ":" + StringUtil.pad(timestampDate.getMinutes(), "0", 2) + " " +
+                    DateUtil.getHour12HourClock(timestampDate) + ":" + StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " +
                     DateUtil.getAMPM(timestampDate);
             }
         }
@@ -193,7 +193,7 @@ require('bugpack').context("*", function(bugpack) {
         else {
             howLongAgo += DateUtil.getMonthName(timestampDate) + " " + timestampDate.getDate() + ", " +
                 timestampDate.getFullYear() + " " + DateUtil.getHour12HourClock(timestampDate) + ":" +
-                StringUtil.pad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
         }
 
         return howLongAgo;
@@ -214,7 +214,7 @@ require('bugpack').context("*", function(bugpack) {
             //same day?
             if (nowDate.getDate() === timestampDate.getDate() && nowDate.getMonth() === timestampDate.getMonth()) {
                 stamp += DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.pad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
             } else {
                 stamp += DateUtil.getMonthShortName(timestampDate) + " " + timestampDate.getDate();
             }

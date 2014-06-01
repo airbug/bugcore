@@ -78,11 +78,37 @@ require('bugpack').context("*", function(bugpack) {
      * @param {number} size
      * @return {string}
      */
+    StringUtil.lpad = function(value, pad, size) {
+        var result = value + "";
+        while (result.length < size) {
+            result = pad + result;
+        }
+        return result;
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @param {string=} chars
+     * @return {string}
+     */
+    StringUtil.ltrim = function(value, chars) {
+        chars = chars || "\\s";
+        return value.replace(new RegExp("^[" + chars + "]+", "g"), "");
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @param {string} pad
+     * @param {number} size
+     * @return {string}
+     */
     StringUtil.pad = function(value, pad, size) {
         // Ensure string
         var result = value + "";
         while (result.length < size) {
-            result = pad + result;
+            result = pad + result + pad;
         }
         return result;
     };
@@ -107,6 +133,32 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {string} value
+     * @param {string} pad
+     * @param {number} size
+     * @return {string}
+     */
+    StringUtil.rpad = function(value, pad, size) {
+        var result = value + "";
+        while (result.length < size) {
+            result = result + pad;
+        }
+        return result;
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @param {string=} chars
+     * @return {string}
+     */
+    StringUtil.rtrim = function(value, chars) {
+        chars = chars || "\\s";
+        return value.replace(new RegExp("[" + chars + "]+$", "g"), "");
+    };
+
+    /**
+     * @static
+     * @param {string} value
      * @param {string} separator
      * @param {(function(string, number, Array.<string>):*)=} lineProcessor
      * @return {Array.<string>}
@@ -122,16 +174,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {string} value
+     * @param {string=} chars
      * @return {string}
      */
-    StringUtil.trim = function(value) {
-        var result = "";
-        if (TypeUtil.isFunction(value.trim)) {
-            result = value.trim();
-        } else {
-            result = value.replace(/^\s+|\s+$/g, '');
-        }
-        return result;
+    StringUtil.trim = function(value, chars) {
+        chars = chars || "\\s";
+        return value.replace(new RegExp("^[" + chars + "]+|[" + chars + "]+$", "g"), "");
     };
 
     /**
