@@ -52,6 +52,46 @@ lintbug.lintTask("ensureNewLineEnding", function(lintFile, callback) {
     callback();
 });
 
+lintbug.lintTask("indentEqualSignsForPreClassVars", function(lintFile, callback) {
+    var indentSpacing   = 4;
+    var fileContents    = lintFile.getFileContents();
+    var lines           = fileContents.split("\n");
+    var startIndex      = bugcore.ArrayUtil.indexOf(lines, /^\s*\/\/ Context\s*$/);
+    var endIndex        = bugcore.ArrayUtil.indexOf(lines, /^\s*\/\/ (Declare Class|Declare Interface)\s*$/);
+    var varRegex        = /^(\s*)var (\w+)\s*=(.*)$/;
+    var varObjects      = [];
+    var longestIndent   = 0;
+    if (startIndex > -1 && endIndex > -1) {
+        for (var i = startIndex; i < endIndex; i++) {
+            var line        = lines[i];
+            var results     = line.match(varRegex);
+            if (results) {
+                var indent  = results[1];
+                var varName = results[2];
+                varObjects.push({
+                    index: i,
+                    indent: indent,
+                    name: varName,
+                    afterEqualsContent: results[3]
+                });
+
+                //NOTE BRN: Add 2 at the end so that we are at least two spaces away from the variable name
+                var indentLength = Math.ceil((indent.length + ("var ").length + varName.length + 2) / indentSpacing);
+                if (indentLength > longestIndent) {
+                    longestIndent = indentLength;
+                }
+            }
+        }
+        varObjects.forEach(function(varObject) {
+            var numberCharsBeforeEquals = longestIndent * indentSpacing;
+            var preEqualsText = bugcore.StringUtil.rpad(varObject.indent + "var " + varObject.name, " ", numberCharsBeforeEquals);
+            lines[varObject.index] = preEqualsText + "=" + varObject.afterEqualsContent;
+        });
+    }
+    lintFile.setFileContents(lines.join("\n"));
+    callback();
+});
+
 lintbug.lintTask("orderBugpackRequires", function(lintFile, callback) {
     var fileContents    = lintFile.getFileContents();
     fileContents = sortBugpackRequires(fileContents);

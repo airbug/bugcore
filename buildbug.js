@@ -160,6 +160,7 @@ buildTarget('local').buildFlow(
                 ignores: buildProject.getProperty("lint.ignorePatterns"),
                 lintTasks: [
                     "ensureNewLineEnding",
+                    "indentEqualSignsForPreClassVars",
                     "orderBugpackRequires",
                     "orderRequireAnnotations",
                     "updateCopyright"
@@ -306,6 +307,7 @@ buildTarget('prod').buildFlow(
                 ignores: buildProject.getProperty("lint.ignorePatterns"),
                 lintTasks: [
                     "ensureNewLineEnding",
+                    "indentEqualSignsForPreClassVars",
                     "orderBugpackRequires",
                     "orderRequireAnnotations",
                     "updateCopyright"
