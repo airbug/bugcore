@@ -44,11 +44,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {*} value1
-         * @param {*} value2
+         * @param {*} value
          * @return {boolean}
          */
-        equals: function(value1, value2) {}
+        equals: function(value) {}
     });
 
 

@@ -107,6 +107,21 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {string} value
+     * @param {string} separator
+     * @param {(function(string, number, Array.<string>):*)=} lineProcessor
+     * @return {Array.<string>}
+     */
+    StringUtil.split = function(value, separator, lineProcessor) {
+        var lines = value.split(separator);
+        if (lineProcessor) {
+            lines = lines.map(lineProcessor);
+        }
+        return lines;
+    };
+
+    /**
+     * @static
+     * @param {string} value
      * @return {string}
      */
     StringUtil.trim = function(value) {

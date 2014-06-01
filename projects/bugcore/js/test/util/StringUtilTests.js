@@ -104,6 +104,39 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
+     * 1) Splitting a string with a lineProcessor
+     */
+    var stringSplitWithLineProcessorTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = "ABC\n123\nEFG";
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var results = StringUtil.split(this.testString, "\n", function(line, index) {
+                return line + index;
+            });
+            test.assertEqual(results[0], "ABC0",
+                "Assert that line 0 was set correctly");
+            test.assertEqual(results[1], "1231",
+                "Assert that line 1 was set correctly");
+            test.assertEqual(results[2], "EFG2",
+                "Assert that line 2 was set correctly");
+        }
+    };
+    bugmeta.annotate(stringSplitWithLineProcessorTest).with(
+        test().name("String - #split with lineProcessor test")
+    );
+
+    /**
+     * This tests
      * 1) Trimming a string
      */
     var stringTrimTest = {

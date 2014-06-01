@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.2.5`
+Latest Version `0.2.6`
 
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been
@@ -135,8 +135,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.5.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.5.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.6.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.6.min.js
 
 
 ## Install
@@ -149,7 +149,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.5.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.6.min.js"></script>
 ```
 
 
@@ -169,7 +169,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.12.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.5.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.6.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -278,7 +278,7 @@ __Class__
  */
 var Class = function(constructor, interfaces, name, superclass) {
 ```
-[View code](https://github.com/airbug/bugcore/blob/v0.2.5/projects/bugcore/js/src/core/Class.js)
+[View code](https://github.com/airbug/bugcore/blob/v0.2.6/projects/bugcore/js/src/core/Class.js)
 
 
 __Constructor Summary__
@@ -1504,6 +1504,11 @@ var deepCloneObj        = myObj.clone(true); //deep clone
 By default, the equality check will compare this instances _internalId to the value parameter.
 
 
+__Notes__
+
+* If two instances are equal, they should return the same hash code.
+
+
 __Method__
 
 ```javascript
@@ -1865,6 +1870,139 @@ __Returns__
 
 * <code>{\*}</code> - A clone of the instance.
 
+
+<br /><a name="IEquals" />
+## IEquals
+
+The base interface for equality checks. If your Class can be compared for equality against
+another, you should implement this interface.
+
+
+__Notes__
+* This interfaces must be implemented along with the the IHashCode interface if you want your
+Class to work properly with the bugcore data classes.
+* If two instances are equal, they should return the same hash code.
+
+
+__Interface__
+
+```javascript
+/**
+ * @interface
+ */
+var IEquals = Interface.declare({
+```
+
+__Method Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[equals](#IEquals_equals)({\*} value)</code>  | <code>{boolean}</code>
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="IEquals_equals" />
+### IEquals#equals(value)
+
+This method returns true if the instance that implements this interface is equal to the given value.
+Returns false if the given value does not equal the instance.
+
+__Notes__
+
+* Implementations should handle any value passed in as a parameter.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {*} value
+ * @return {boolean}
+ */
+equals: function(value) {}
+```
+
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`value` | <code>{\*}</code> | The value to compare the instance against for equality.
+
+
+__Returns__
+
+* <code>{boolean}</code> - Returns true if the instance is equal to the given value. False if not.
+
+
+<br /><a name="IHashCode" />
+## IHashCode
+
+The base interface for generating a hash code for an instance. Used in tandem with the IEquals interface
+for storing values in [HashStore](#HashStore) and [HashTable](#HashTable).
+
+
+__Notes__
+* This interfaces must be implemented along with the the IEquals interface if you want your
+Class to work properly with the bugcore data classes.
+* If two instances are equal, they should return the same hash code.
+* If two instances are not they can still return the same hash code. However, this should be avoided
+to a degree as it will hurt the performance of HashTable and HashStore
+* Equal hash codes does not guarantee equality.
+
+
+__Interface__
+
+```javascript
+/**
+ * @interface
+ */
+var IHashCode = Interface.declare({
+```
+
+__Method Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[hashCode](#IHashCode_hashCode)()</code>  | <code>{number}</code>
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="IHashCode_hashCode" />
+### IHashCode#hashCode()
+
+This method returns a hash code for the current instance.
+
+
+__Notes__
+
+* Implementations should try to generate a relatively unique hash code for the given instance.
+* If two instances are equal, they should return the same hash code.
+
+
+__Method__
+
+```javascript
+/**
+ * @return {number}
+ */
+hashCode: function() {}
+```
+
+
+__Parameters__
+
+* None
+
+__Returns__
+
+* <code>{number}</code> - The hash code for the instance.
 
 
 <br /><a name="Throwable" />
