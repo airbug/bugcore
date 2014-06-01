@@ -26,9 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Handler         = bugpack.require('Handler');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var Class       = bugpack.require('Class');
+    var Handler     = bugpack.require('Handler');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

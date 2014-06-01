@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ICollection         = bugpack.require('ICollection');
-    var Interface           = bugpack.require('Interface');
+    var ICollection     = bugpack.require('ICollection');
+    var Interface       = bugpack.require('Interface');
 
 
     //-------------------------------------------------------------------------------

@@ -29,12 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var Exception           = bugpack.require('Exception');
-    var IArrayable          = bugpack.require('IArrayable');
-    var IObjectable         = bugpack.require('IObjectable');
-    var Obj                 = bugpack.require('Obj');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
+    var IArrayable      = bugpack.require('IArrayable');
+    var IObjectable     = bugpack.require('IObjectable');
+    var Obj             = bugpack.require('Obj');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

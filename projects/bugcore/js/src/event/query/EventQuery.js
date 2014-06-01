@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Query       = bugpack.require('Query');
+    var Class   = bugpack.require('Class');
+    var Query   = bugpack.require('Query');
 
 
     //-------------------------------------------------------------------------------

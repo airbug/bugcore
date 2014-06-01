@@ -31,14 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgumentBug         = bugpack.require('ArgumentBug');
-    var Class               = bugpack.require('Class');
-    var Command             = bugpack.require('Command');
-    var CommandBatch        = bugpack.require('CommandBatch');
-    var IList               = bugpack.require('IList');
-    var Obj                 = bugpack.require('Obj');
-    var Queue               = bugpack.require('Queue');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var ArgumentBug     = bugpack.require('ArgumentBug');
+    var Class           = bugpack.require('Class');
+    var Command         = bugpack.require('Command');
+    var CommandBatch    = bugpack.require('CommandBatch');
+    var IList           = bugpack.require('IList');
+    var Obj             = bugpack.require('Obj');
+    var Queue           = bugpack.require('Queue');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

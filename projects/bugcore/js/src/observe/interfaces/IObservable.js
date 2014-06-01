@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var IObservationPropagator      = bugpack.require('IObservationPropagator');
-    var Interface                   = bugpack.require('Interface');
+    var IObservationPropagator  = bugpack.require('IObservationPropagator');
+    var Interface               = bugpack.require('Interface');
 
 
     //-------------------------------------------------------------------------------

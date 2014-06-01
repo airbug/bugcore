@@ -34,17 +34,17 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil             = bugpack.require('ArgUtil');
-    var Bug                 = bugpack.require('Bug');
-    var Class               = bugpack.require('Class');
-    var IClone              = bugpack.require('IClone');
-    var IDocument           = bugpack.require('IDocument');
-    var IList               = bugpack.require('IList');
-    var IMap                = bugpack.require('IMap');
-    var IObjectable         = bugpack.require('IObjectable');
-    var ISet                = bugpack.require('ISet');
-    var Obj                 = bugpack.require('Obj');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var ArgUtil         = bugpack.require('ArgUtil');
+    var Bug             = bugpack.require('Bug');
+    var Class           = bugpack.require('Class');
+    var IClone          = bugpack.require('IClone');
+    var IDocument       = bugpack.require('IDocument');
+    var IList           = bugpack.require('IList');
+    var IMap            = bugpack.require('IMap');
+    var IObjectable     = bugpack.require('IObjectable');
+    var ISet            = bugpack.require('ISet');
+    var Obj             = bugpack.require('Obj');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

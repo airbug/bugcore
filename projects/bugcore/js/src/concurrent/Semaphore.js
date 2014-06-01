@@ -26,9 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Obj         = bugpack.require('Obj');
-    var Queue       = bugpack.require('Queue');
+    var Class   = bugpack.require('Class');
+    var Obj     = bugpack.require('Obj');
+    var Queue   = bugpack.require('Queue');
 
 
     //-------------------------------------------------------------------------------

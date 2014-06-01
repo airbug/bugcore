@@ -32,15 +32,15 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var AddAtChange                     = bugpack.require('AddAtChange');
-    var Class                           = bugpack.require('Class');
-    var ICollection                     = bugpack.require('ICollection');
-    var IList                           = bugpack.require('IList');
-    var List                            = bugpack.require('List');
-    var Obj                             = bugpack.require('Obj');
-    var ObservableCollection            = bugpack.require('ObservableCollection');
-    var RemoveAtChange                  = bugpack.require('RemoveAtChange');
-    var TypeUtil                        = bugpack.require('TypeUtil');
+    var AddAtChange             = bugpack.require('AddAtChange');
+    var Class                   = bugpack.require('Class');
+    var ICollection             = bugpack.require('ICollection');
+    var IList                   = bugpack.require('IList');
+    var List                    = bugpack.require('List');
+    var Obj                     = bugpack.require('Obj');
+    var ObservableCollection    = bugpack.require('ObservableCollection');
+    var RemoveAtChange          = bugpack.require('RemoveAtChange');
+    var TypeUtil                = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Throwable       = bugpack.require('Throwable');
+    var Class       = bugpack.require('Class');
+    var Throwable   = bugpack.require('Throwable');
 
 
     //-------------------------------------------------------------------------------

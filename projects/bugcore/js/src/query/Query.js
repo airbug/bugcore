@@ -28,11 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgumentBug = bugpack.require('ArgumentBug');
-    var Class       = bugpack.require('Class');
-    var ICondition  = bugpack.require('ICondition');
-    var Obj         = bugpack.require('Obj');
-    var Set         = bugpack.require('Set');
+    var ArgumentBug     = bugpack.require('ArgumentBug');
+    var Class           = bugpack.require('Class');
+    var ICondition      = bugpack.require('ICondition');
+    var Obj             = bugpack.require('Obj');
+    var Set             = bugpack.require('Set');
 
 
     //-------------------------------------------------------------------------------

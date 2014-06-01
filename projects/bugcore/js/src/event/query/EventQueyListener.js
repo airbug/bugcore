@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var EventListener       = bugpack.require('EventListener');
+    var Class           = bugpack.require('Class');
+    var EventListener   = bugpack.require('EventListener');
 
 
     //-------------------------------------------------------------------------------

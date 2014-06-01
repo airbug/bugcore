@@ -24,7 +24,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var TypeUtil = bugpack.require('TypeUtil');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

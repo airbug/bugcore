@@ -31,14 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Graph           = bugpack.require('Graph');
-    var GraphEdge       = bugpack.require('GraphEdge');
-    var GraphNode       = bugpack.require('GraphNode');
-    var List            = bugpack.require('List');
-    var Map             = bugpack.require('Map');
-    var Obj             = bugpack.require('Obj');
-    var Set             = bugpack.require('Set');
+    var Class       = bugpack.require('Class');
+    var Graph       = bugpack.require('Graph');
+    var GraphEdge   = bugpack.require('GraphEdge');
+    var GraphNode   = bugpack.require('GraphNode');
+    var List        = bugpack.require('List');
+    var Map         = bugpack.require('Map');
+    var Obj         = bugpack.require('Obj');
+    var Set         = bugpack.require('Set');
 
 
     //-------------------------------------------------------------------------------

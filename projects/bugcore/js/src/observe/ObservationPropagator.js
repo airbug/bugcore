@@ -27,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                       = bugpack.require('Class');
-    var IObservationPropagator      = bugpack.require('IObservationPropagator');
-    var List                        = bugpack.require('List');
-    var Obj                         = bugpack.require('Obj');
+    var Class                   = bugpack.require('Class');
+    var IObservationPropagator  = bugpack.require('IObservationPropagator');
+    var List                    = bugpack.require('List');
+    var Obj                     = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------

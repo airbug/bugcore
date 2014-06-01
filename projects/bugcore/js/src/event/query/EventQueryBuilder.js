@@ -28,11 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                   = bugpack.require('Class');
-    var EventQuery              = bugpack.require('EventQuery');
-    var EventQueryListener      = bugpack.require('EventQueryListener');
-    var Obj                     = bugpack.require('Obj');
-    var QueryBuilder            = bugpack.require('QueryBuilder');
+    var Class               = bugpack.require('Class');
+    var EventQuery          = bugpack.require('EventQuery');
+    var EventQueryListener  = bugpack.require('EventQueryListener');
+    var Obj                 = bugpack.require('Obj');
+    var QueryBuilder        = bugpack.require('QueryBuilder');
 
 
     //-------------------------------------------------------------------------------

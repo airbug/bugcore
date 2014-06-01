@@ -27,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Lock            = bugpack.require('Lock');
-    var Obj             = bugpack.require('Obj');
-    var Striped         = bugpack.require('Striped');
+    var Class       = bugpack.require('Class');
+    var Lock        = bugpack.require('Lock');
+    var Obj         = bugpack.require('Obj');
+    var Striped     = bugpack.require('Striped');
 
 
     //-------------------------------------------------------------------------------

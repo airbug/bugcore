@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var IMap                = bugpack.require('IMap');
-    var Interface           = bugpack.require('Interface');
+    var IMap        = bugpack.require('IMap');
+    var Interface   = bugpack.require('Interface');
 
 
     //-------------------------------------------------------------------------------
