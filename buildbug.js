@@ -364,7 +364,7 @@ buildTarget('prod').buildFlow(
                     properties: {
                         packageJson: buildProject.getProperty("node.packageJson"),
                         packagePaths: {
-                            ".": buildProject.getProperty("node.readmePath"),
+                            ".": [buildProject.getProperty("node.readmePath")],
                             "./lib": buildProject.getProperty("node.sourcePaths"),
                             "./scripts": buildProject.getProperty("node.scriptPaths")
                         }
