@@ -36,7 +36,36 @@ var lintbug             = enableModule("lintbug");
 // Script
 //-------------------------------------------------------------------------------
 
-//NOTE BRN: This only works for JS files
+//-------------------------------------------------------------------------------
+// Lint Tasks
+//-------------------------------------------------------------------------------
+
+lintbug.lintTask("ensureNewLineEnding", function(lintFile, callback) {
+    var fileContents    = lintFile.getFileContents();
+    var lines           = fileContents.split("\n");
+    var lastLine        = lines.pop();
+    lines.push(lastLine);
+    if (lastLine !== "") {
+        lines.push("");
+    }
+    lintFile.setFileContents(lines.join("\n"));
+    callback();
+});
+
+lintbug.lintTask("orderBugpackRequires", function(lintFile, callback) {
+    var fileContents    = lintFile.getFileContents();
+    fileContents = sortBugpackRequires(fileContents);
+    lintFile.setFileContents(fileContents);
+    callback();
+});
+
+lintbug.lintTask("orderRequireAnnotations", function(lintFile, callback) {
+    var fileContents    = lintFile.getFileContents();
+    fileContents = sortRequireAnnotations(fileContents);
+    lintFile.setFileContents(fileContents);
+    callback();
+});
+
 lintbug.lintTask("updateCopyright", function(lintFile, callback) {
     var fileContents    = lintFile.getFileContents();
     var copyright       = getCopyright();
@@ -55,7 +84,25 @@ lintbug.lintTask("updateCopyright", function(lintFile, callback) {
 // Helper Methods
 //-------------------------------------------------------------------------------
 
+/**
+ * @private
+ * @param {string} fileContents
+ * @returns {Array.<{index: number, line: string}>}
+ */
+var generateLines = function(fileContents) {
+    return bugcore.StringUtil.split(fileContents, "\n", function(line, index) {
+        return {
+            index: index,
+            line: line
+        };
+    });
+};
+
 var copyright = null;
+/**
+ * @private
+ * @return {string}
+ */
 var getCopyright = function() {
     if (copyright === null) {
         var copyrightText   = bugcore.StringUtil.trim(bugfs.readFileSync(__dirname + "/COPYRIGHT", 'utf8'));
@@ -72,4 +119,101 @@ var getCopyright = function() {
         copyright += " */\n";
     }
     return copyright;
+};
+
+/**
+ * @private
+ * @param {Array.<{index: number, line: string}>} lines
+ * @return {string}
+ */
+var mergeLines = function(lines) {
+    var result = "";
+    var first = true;
+    lines.forEach(function(line) {
+        if (first) {
+            result += line.line;
+            first = false;
+        } else {
+            result += "\n" + line.line;
+        }
+    });
+    return result;
+};
+
+/**
+ * @private
+ * @param {string} fileContents
+ * @return {string}
+ */
+var sortRequireAnnotations = function(fileContents) {
+    var lines   = generateLines(fileContents);
+    lines.sort(function(a, b) {
+        var resultsA = a.line.match(/^\s*\/\/\s*@Require\(('|")((?:\w|\.)*)\1\)\s*$/);
+        var resultsB = b.line.match(/^\s*\/\/\s*@Require\(('|")((?:\w|\.)*)\1\)\s*$/);
+
+        if (resultsA && resultsB) {
+            var partsA = resultsA[2].split(".");
+            var partsB = resultsB[2].split(".");
+            var classNameA = partsA.pop();
+            var classNameB = partsB.pop();
+            var packageNameA = partsA.join(".");
+            var packageNameB = partsB.join(".");
+            if (packageNameA < packageNameB) {
+                return -1;
+            }
+            if (packageNameA > packageNameB) {
+                return 1;
+            }
+            if (classNameA < classNameB) {
+                return -1;
+            }
+            if (classNameA > classNameB) {
+                return 1;
+            }
+        }
+        if (a.index < b.index) {
+            return -1;
+        }
+        return 1;
+    });
+    return mergeLines(lines);
+};
+
+/**
+ * @private
+ * @param {string} fileContents
+ * @return {string}
+ */
+var sortBugpackRequires = function(fileContents) {
+    var lines   = generateLines(fileContents);
+    lines.sort(function(a, b) {
+        var resultsA = a.line.match(/^\s*var \w+\s+=\s+bugpack\.require\(('|")((?:\w|\.)*)\1\);\s*$/);
+        var resultsB = b.line.match(/^\s*var \w+\s+=\s+bugpack\.require\(('|")((?:\w|\.)*)\1\);\s*$/);
+
+        if (resultsA && resultsB) {
+            var partsA = resultsA[2].split(".");
+            var partsB = resultsB[2].split(".");
+            var classNameA = partsA.pop();
+            var classNameB = partsB.pop();
+            var packageNameA = partsA.join(".");
+            var packageNameB = partsB.join(".");
+            if (packageNameA < packageNameB) {
+                return -1;
+            }
+            if (packageNameA > packageNameB) {
+                return 1;
+            }
+            if (classNameA < classNameB) {
+                return -1;
+            }
+            if (classNameA > classNameB) {
+                return 1;
+            }
+        }
+        if (a.index < b.index) {
+            return -1;
+        }
+        return 1;
+    });
+    return mergeLines(lines);
 };

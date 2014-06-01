@@ -255,8 +255,13 @@ In the browser:
 
 ### Utils
 
+* [`ArgUtil`](#ArgUtil)
+* [`ArrayUtil`](#ArrayUtil)
+* [`DateUtil`](#DateUtil)
 * [`HashUtil`](#HashUtil)
 * [`IdGenerator`](#IdGenerator)
+* [`MathUtil`](#MathUtil)
+* [`StringUtil`](#StringUtil)
 * [`TypeUtil`](#TypeUtil)
 
 

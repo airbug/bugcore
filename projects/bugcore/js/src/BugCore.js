@@ -11,10 +11,13 @@
 
 //@Export('BugCore')
 
+//@Require('ArgUtil')
+//@Require('ArrayUtil')
 //@Require('Bug')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Constructor')
+//@Require('DateUtil')
 //@Require('Event')
 //@Require('EventDispatcher')
 //@Require('EventPropagator')
@@ -42,6 +45,7 @@
 //@Require('List')
 //@Require('Lock')
 //@Require('Map')
+//@Require('MathUtil')
 //@Require('Obj')
 //@Require('Pair')
 //@Require('Proxy')
@@ -68,10 +72,13 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgUtil             = bugpack.require('ArgUtil');
+    var ArrayUtil           = bugpack.require('ArrayUtil');
     var Bug                 = bugpack.require('Bug');
     var Class               = bugpack.require('Class');
     var Collection          = bugpack.require('Collection');
     var Constructor         = bugpack.require('Constructor');
+    var DateUtil            = bugpack.require('DateUtil');
     var Event               = bugpack.require('Event');
     var EventDispatcher     = bugpack.require('EventDispatcher');
     var EventPropagator     = bugpack.require('EventPropagator');
@@ -99,6 +106,7 @@ require('bugpack').context("*", function(bugpack) {
     var List                = bugpack.require('List');
     var Lock                = bugpack.require('Lock');
     var Map                 = bugpack.require('Map');
+    var MathUtil            = bugpack.require('MathUtil');
     var Obj                 = bugpack.require('Obj');
     var Pair                = bugpack.require('Pair');
     var Proxy               = bugpack.require('Proxy');
@@ -145,6 +153,16 @@ require('bugpack').context("*", function(bugpack) {
             //-------------------------------------------------------------------------------
 
             /**
+             * @type {function(new:ArgUtil)}
+             */
+            this.ArgUtil            = ArgUtil;
+
+            /**
+             * @type {function(new:ArrayUtil)}
+             */
+            this.ArrayUtil          = ArrayUtil;
+
+            /**
              * @type {function(new:Bug)}
              */
             this.Bug                = Bug;
@@ -163,6 +181,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Constructor)}
              */
             this.Constructor        = Constructor;
+
+            /**
+             * @type {function(new:DateUtil)}
+             */
+            this.DateUtil           = DateUtil;
 
             /**
              * @type {function(new:Event)}
@@ -298,6 +321,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Map)}
              */
             this.Map                = Map;
+
+            /**
+             * @type {function(new:MathUtil)}
+             */
+            this.MathUtil           = MathUtil;
 
             /**
              * @type {function(new:Obj)}
