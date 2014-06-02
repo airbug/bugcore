@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('Set')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var Set             = bugpack.require('Set');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testSet extends Set");
         }
     };
-    bugmeta.annotate(setInstantiationTest).with(
+    bugmeta.tag(setInstantiationTest).with(
         test().name("Set instantiation test")
     );
 
@@ -102,7 +102,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the cloned Set contains the testObject");
         }
     };
-    bugmeta.annotate(setShallowCloneTest).with(
+    bugmeta.tag(setShallowCloneTest).with(
         test().name("Set shallow clone test")
     );
 
@@ -142,7 +142,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the cloned object has key:'value'");
         }
     };
-    bugmeta.annotate(setDeepCloneTest).with(
+    bugmeta.tag(setDeepCloneTest).with(
         test().name("Set - deep clone test")
     );
 
@@ -186,7 +186,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that true was returned when adding value2");
         }
     };
-    bugmeta.annotate(setAddTest).with(
+    bugmeta.tag(setAddTest).with(
         test().name("Set add test")
     );
 
@@ -225,7 +225,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that false was returned when adding value1 again");
         }
     };
-    bugmeta.annotate(setAddRepeatTest).with(
+    bugmeta.tag(setAddRepeatTest).with(
         test().name("Set add repeat test")
     );
 
@@ -275,7 +275,7 @@ require('bugpack').context("*", function(bugpack) {
             test.assertEqual(this.set.getCount(), 1, 'Assert count is still 1 after adding instance 2.');
         }
     };
-    bugmeta.annotate(setAddEqualObjectsTest).with(
+    bugmeta.tag(setAddEqualObjectsTest).with(
         test().name("Set add equal objects test")
     );
 
@@ -335,7 +335,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert set contains instance2");
         }
     };
-    bugmeta.annotate(setContainsNonEqualObjectsWithSameHashCodesTest).with(
+    bugmeta.tag(setContainsNonEqualObjectsWithSameHashCodesTest).with(
         test().name("Set contains non equal objects that have the same hashCodes test")
     );
 });

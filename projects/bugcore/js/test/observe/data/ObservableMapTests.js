@@ -18,7 +18,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil            = bugpack.require('TypeUtil');
     var BugDouble           = bugpack.require('bugdouble.BugDouble');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta             = BugMeta.context();
     var spyOnObject         = BugDouble.spyOnObject;
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert ObservableMap.observed defaults to a Map")
         }
     };
-    bugmeta.annotate(observableMapInstantiationTest).with(
+    bugmeta.tag(observableMapInstantiationTest).with(
         test().name("ObservableMap - instantiation test")
     );
 
@@ -108,7 +108,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert ObservableMap.observed was set correctly");
         }
     };
-    bugmeta.annotate(observableMapInstantiationWithParametersTest).with(
+    bugmeta.tag(observableMapInstantiationWithParametersTest).with(
         test().name("ObservableMap - instantiation with parameters test")
     );
 });

@@ -18,7 +18,7 @@
 //@Require('Set')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     var Set             = bugpack.require('Set');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the converted Set's array is empty");
         }
     };
-    bugmeta.annotate(literalUtilConvertEmptySetToLiteral).with(
+    bugmeta.tag(literalUtilConvertEmptySetToLiteral).with(
         test().name("LiteralUtil - #convertToLiteral empty Set test")
     );
 
@@ -102,7 +102,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the convertedPair.b is undefined");
         }
     };
-    bugmeta.annotate(literalUtilConvertEmptyPairToLiteral).with(
+    bugmeta.tag(literalUtilConvertEmptyPairToLiteral).with(
         test().name("LiteralUtil - #convertToLiteral empty Pair test")
     );
 
@@ -144,7 +144,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert testConvertedList[1].b is testB2");
         }
     };
-    bugmeta.annotate(literalUtilConvertListWithPairsToLiteral).with(
+    bugmeta.tag(literalUtilConvertListWithPairsToLiteral).with(
         test().name("LiteralUtil - #convertToLiteral List with Pairs test")
     );
 });

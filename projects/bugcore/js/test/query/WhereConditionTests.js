@@ -17,7 +17,7 @@
 //@Require('Set')
 //@Require('WhereCondition')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var Set             = bugpack.require('Set');
     var WhereCondition  = bugpack.require('WhereCondition');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert #getPropertyQuery returns the testPropertyQuery");
         }
     };
-    bugmeta.annotate(whereConditionInstantiationTest).with(
+    bugmeta.tag(whereConditionInstantiationTest).with(
         test().name("WhereCondition - instantiation test")
     );
 });

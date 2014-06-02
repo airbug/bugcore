@@ -13,7 +13,7 @@
 
 //@Require('PublisherSubscription')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var PublisherSubscription   = bugpack.require('PublisherSubscription');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation          = bugpack.require('bugunit.TestAnnotation');
+    var TestTag          = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta                 = BugMeta.context();
-    var test                    = TestAnnotation.test;
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert subscriptions with the same function, context, and topic are equal");
         }
     };
-    bugmeta.annotate(subscriptionEqualityTest).with(
+    bugmeta.tag(subscriptionEqualityTest).with(
         test().name("Subscription equality test")
     );
 
@@ -106,7 +106,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert subscriptions with the same function, context, and topic have equal hash codes");
         }
     };
-    bugmeta.annotate(subscriptionHashCodeEqualityTest).with(
+    bugmeta.tag(subscriptionHashCodeEqualityTest).with(
         test().name("Subscription hash code equality test")
     );
 });

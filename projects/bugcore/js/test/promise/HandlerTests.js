@@ -15,7 +15,7 @@
 //@Require('Handler')
 //@Require('Promise')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Handler         = bugpack.require('Handler');
     var Promise         = bugpack.require('Promise');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that #getForwardPromise returns the Promise passed in during instantiation");
         }
     };
-    bugmeta.annotate(handlerInstantiationTest).with(
+    bugmeta.tag(handlerInstantiationTest).with(
         test().name("Handler - instantiation test")
     );
 
@@ -114,7 +114,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(handlerDoHandleMethodWithThrowTest).with(
+    bugmeta.tag(handlerDoHandleMethodWithThrowTest).with(
         test().name("Handler - #doHandleMethod with throw test")
     );
 
@@ -154,7 +154,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(handlerDoHandleMethodWithReturnTest).with(
+    bugmeta.tag(handlerDoHandleMethodWithReturnTest).with(
         test().name("Handler - #doHandleMethod with method that returns value test")
     );
 });

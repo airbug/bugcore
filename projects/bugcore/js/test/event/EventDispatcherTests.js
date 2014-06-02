@@ -14,7 +14,7 @@
 //@Require('Event')
 //@Require('EventDispatcher')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Event           = bugpack.require('Event');
     var EventDispatcher = bugpack.require('EventDispatcher');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -439,31 +439,31 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(eventDispatcherInstantiationTest).with(
+    bugmeta.tag(eventDispatcherInstantiationTest).with(
         test().name("EventDispatcher instantiation test")
     );
-    bugmeta.annotate(eventDispatcherSimpleAddEventListenerDispatchEventTest).with(
+    bugmeta.tag(eventDispatcherSimpleAddEventListenerDispatchEventTest).with(
         test().name("EventDispatcher simple add event listener and dispatch event test")
     );
-    bugmeta.annotate(eventDispatcherAddAnonymousEventListenerDispatchEventTest).with(
+    bugmeta.tag(eventDispatcherAddAnonymousEventListenerDispatchEventTest).with(
         test().name("EventDispatcher add anonymous event listener and dispatch event test")
     );
-    bugmeta.annotate(eventDispatcherDispatchEventBubblesFalseTest).with(
+    bugmeta.tag(eventDispatcherDispatchEventBubblesFalseTest).with(
         test().name("EventDispatcher dispatch event with bubbles false test")
     );
-    bugmeta.annotate(eventDispatcherDispatchEventBubblesTrueTest).with(
+    bugmeta.tag(eventDispatcherDispatchEventBubblesTrueTest).with(
         test().name("EventDispatcher dispatch event with bubbles true test")
     );
-    bugmeta.annotate(eventDispatcherDispatchEventStopPropagationTest).with(
+    bugmeta.tag(eventDispatcherDispatchEventStopPropagationTest).with(
         test().name("EventDispatcher dispatch event stopPropagation test")
     );
-    bugmeta.annotate(eventDispatcherSimpleAddAndRemoveEventListenerTest).with(
+    bugmeta.tag(eventDispatcherSimpleAddAndRemoveEventListenerTest).with(
         test().name("EventDispatcher simple add and remove event listener test")
     );
-    bugmeta.annotate(eventDispatcherOnceOnTest).with(
+    bugmeta.tag(eventDispatcherOnceOnTest).with(
         test().name("EventDispatcher #onceOn test")
     );
-    bugmeta.annotate(eventDispatcherSimpleEventQueryListenerAddAndRemoveTest).with(
+    bugmeta.tag(eventDispatcherSimpleEventQueryListenerAddAndRemoveTest).with(
         test().name("EventDispatcher - EventQueryListener add and remove test")
     );
 });

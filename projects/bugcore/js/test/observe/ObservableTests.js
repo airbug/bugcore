@@ -17,7 +17,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil            = bugpack.require('TypeUtil');
     var BugDouble           = bugpack.require('bugdouble.BugDouble');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta             = BugMeta.context();
     var spyOnObject         = BugDouble.spyOnObject;
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testObservable.changeTypeObserverMap is empty on instantiation");
         }
     };
-    bugmeta.annotate(observableInstantiationTest).with(
+    bugmeta.tag(observableInstantiationTest).with(
         test().name("Observable - instantiation test")
     );
 
@@ -119,7 +119,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the observer has the testObserverFunction");
         }
     };
-    bugmeta.annotate(observableAddObserverTest).with(
+    bugmeta.tag(observableAddObserverTest).with(
         test().name("Observable - #addObserver test")
     );
 
@@ -155,7 +155,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testObservable does NOT have the observer after removing it");
         }
     };
-    bugmeta.annotate(observableRemoveObserverTest).with(
+    bugmeta.tag(observableRemoveObserverTest).with(
         test().name("Observable - #removeObserver test")
     );
 });

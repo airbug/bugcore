@@ -15,7 +15,7 @@
 //@Require('ObjectPathMatcher')
 //@Require('Observer')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var ObjectPathMatcher   = bugpack.require('ObjectPathMatcher');
     var Observer            = bugpack.require('Observer');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that passing undefined for observerContext does NOT throw an error");
         }
     };
-    bugmeta.annotate(observerInstantiationBadParametersTest).with(
+    bugmeta.tag(observerInstantiationBadParametersTest).with(
         test().name("Observer - instantiation with bad parameters test")
     );
 
@@ -118,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that objectPathMatcher is an instance of ObjectPathMatcher");
         }
     };
-    bugmeta.annotate(observerInstantiationWithParametersTest).with(
+    bugmeta.tag(observerInstantiationWithParametersTest).with(
         test().name("Observer - instantiation with parameters test")
     );
 });

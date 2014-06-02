@@ -18,7 +18,7 @@
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -682,40 +682,40 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(classNewInstanceTest).with(
+    bugmeta.tag(classNewInstanceTest).with(
         test().name("Class - #newInstance test")
     );
-    bugmeta.annotate(classAdaptTest).with(
+    bugmeta.tag(classAdaptTest).with(
         test().name("Class - #adapt test")
     );
-    bugmeta.annotate(classDeclareTest).with(
+    bugmeta.tag(classDeclareTest).with(
         test().name("Class - #declare test")
     );
-    bugmeta.annotate(classExtendObjTest).with(
+    bugmeta.tag(classExtendObjTest).with(
         test().name("Class - #extend Obj test")
     );
-    bugmeta.annotate(classExtendTest).with(
+    bugmeta.tag(classExtendTest).with(
         test().name("Class - #extend test")
     );
-    bugmeta.annotate(classImplementTest).with(
+    bugmeta.tag(classImplementTest).with(
         test().name("Class - #implement test")
     );
-    bugmeta.annotate(classNonImplementErrorTest).with(
+    bugmeta.tag(classNonImplementErrorTest).with(
         test().name("Class - non implement Error test")
     );
-    bugmeta.annotate(classImplementTwiceErrorTest).with(
+    bugmeta.tag(classImplementTwiceErrorTest).with(
         test().name("Class - implement twice Error test")
     );
-    bugmeta.annotate(classImplementExtendedInterfaceNoErrorTest).with(
+    bugmeta.tag(classImplementExtendedInterfaceNoErrorTest).with(
         test().name("Class - implement extended interface of already implemented interfaces does not error test")
     );
-    bugmeta.annotate(classDoesImplementTest).with(
+    bugmeta.tag(classDoesImplementTest).with(
         test().name("Class - #doesImplement test")
     );
-    bugmeta.annotate(classDoesImplementExtendedInterfaceTest).with(
+    bugmeta.tag(classDoesImplementExtendedInterfaceTest).with(
         test().name("Class - #doesImplement extended Interface test")
     );
-    bugmeta.annotate(classConstructorTest).with(
+    bugmeta.tag(classConstructorTest).with(
         test().name("Class - #_constructor test")
     );
 });

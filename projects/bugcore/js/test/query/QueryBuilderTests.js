@@ -19,7 +19,7 @@
 //@Require('WhereCondition')
 //@Require('WhereConditionBuilder')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     var WhereCondition          = bugpack.require('WhereCondition');
     var WhereConditionBuilder   = bugpack.require('WhereConditionBuilder');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation          = bugpack.require('bugunit.TestAnnotation');
+    var TestTag          = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta                 = BugMeta.context();
-    var test                    = TestAnnotation.test;
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert conditionBuilderSet is empty");
         }
     };
-    bugmeta.annotate(queryBuilderInstantiationTest).with(
+    bugmeta.tag(queryBuilderInstantiationTest).with(
         test().name("QueryBuilder - instantiation test")
     );
 
@@ -114,7 +114,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert conditionBuilderSet contains WhereConditionBuilder");
         }
     };
-    bugmeta.annotate(queryBuilderWhereTest).with(
+    bugmeta.tag(queryBuilderWhereTest).with(
         test().name("QueryBuilder - #where test")
     );
 
@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert query extends Query");
         }
     };
-    bugmeta.annotate(queryBuilderBuildTest).with(
+    bugmeta.tag(queryBuilderBuildTest).with(
         test().name("QueryBuilder - #build test")
     );
 });

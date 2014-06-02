@@ -18,7 +18,7 @@
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                     = bugpack.require('Obj');
     var TypeUtil                = bugpack.require('TypeUtil');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation          = bugpack.require('bugunit.TestAnnotation');
+    var TestTag          = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta                 = BugMeta.context();
-    var test                    = TestAnnotation.test;
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilToArrayTest).with(
+    bugmeta.tag(argUtilToArrayTest).with(
         test().name("ArgUtil - toArray test")
     );
 
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilToArrayNoArgumentsTest).with(
+    bugmeta.tag(argUtilToArrayNoArgumentsTest).with(
         test().name("ArgUtil - toArray no arguments test")
     );
 
@@ -149,7 +149,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessNoArgumentsTest).with(
+    bugmeta.tag(argUtilProcessNoArgumentsTest).with(
         test().name("ArgUtil - #process no arguments test")
     );
 
@@ -180,7 +180,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessNoDescriptionsThrowsBugTest).with(
+    bugmeta.tag(argUtilProcessNoDescriptionsThrowsBugTest).with(
         test().name("ArgUtil - #process no descriptions throws Bug test")
     );
 
@@ -220,7 +220,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessOneArgumentSuccessTest).with(
+    bugmeta.tag(argUtilProcessOneArgumentSuccessTest).with(
         test().name("ArgUtil - #process one argument success test")
     );
 
@@ -270,7 +270,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsSuccessTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsSuccessTest).with(
         test().name("ArgUtil - #process multiple argument success test")
     );
 
@@ -310,7 +310,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessTooFewDescriptionsBugTest).with(
+    bugmeta.tag(argUtilProcessTooFewDescriptionsBugTest).with(
         test().name("ArgUtil - #process too few descriptions test")
     );
 
@@ -358,7 +358,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsOptionalArgSuccessTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsOptionalArgSuccessTest).with(
         test().name("ArgUtil - #process multiple arguments with optional arg success test")
     );
 
@@ -397,7 +397,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsOptionalArgArgMissingTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsOptionalArgArgMissingTest).with(
         test().name("ArgUtil - #process multiple arguments with optional arg and one missing arg test")
     );
 
@@ -446,7 +446,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsOptionalArgWitDefaultSuccessTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsOptionalArgWitDefaultSuccessTest).with(
         test().name("ArgUtil - #process multiple arguments with optional arg and default success test")
     );
 
@@ -493,7 +493,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsNotOptionalOneArgUndefinedTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsNotOptionalOneArgUndefinedTest).with(
         test().name("ArgUtil - #process multiple arguments with non optional args and one undefined arg test")
     );
 
@@ -539,7 +539,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(argUtilProcessMultipleArgumentsOneOptionalOneArgUndefinedTest).with(
+    bugmeta.tag(argUtilProcessMultipleArgumentsOneOptionalOneArgUndefinedTest).with(
         test().name("ArgUtil - #process multiple arguments with one optional arg and one undefined arg test")
     );
 
@@ -581,7 +581,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that argsObject.testArgName2 is testValue2");
         }
     };
-    bugmeta.annotate(argUtilRealWorldTest).with(
+    bugmeta.tag(argUtilRealWorldTest).with(
         test().name("ArgUtil - #process real world test")
     );
 
@@ -629,7 +629,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that argsObject.testArgName3 is testValue3");
         }
     };
-    bugmeta.annotate(argUtilRealWorld2Test).with(
+    bugmeta.tag(argUtilRealWorld2Test).with(
         test().name("ArgUtil - #process real world 2 test")
     );
 
@@ -677,7 +677,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that argsObject.testArgName3 is testValue1");
         }
     };
-    bugmeta.annotate(argUtilRealWorld3Test).with(
+    bugmeta.tag(argUtilRealWorld3Test).with(
         test().name("ArgUtil - #process real world 3 test")
     );
 
@@ -728,7 +728,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that argsObject.testArgName3 is testValue1");
         }
     };
-    bugmeta.annotate(argUtilRealWorld4Test).with(
+    bugmeta.tag(argUtilRealWorld4Test).with(
         test().name("ArgUtil - #process real world 4 test")
     );
 });

@@ -19,7 +19,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil            = bugpack.require('TypeUtil');
     var BugDouble           = bugpack.require('bugdouble.BugDouble');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta             = BugMeta.context();
     var spyOnObject         = BugDouble.spyOnObject;
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -204,16 +204,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(observableObjectInstantiationTest).with(
+    bugmeta.tag(observableObjectInstantiationTest).with(
         test().name("ObservableObject - instantiation test")
     );
-    bugmeta.annotate(observableObjectInstantiationWithParametersTest).with(
+    bugmeta.tag(observableObjectInstantiationWithParametersTest).with(
         test().name("ObservableObject - instantiation with parameters test")
     );
-    bugmeta.annotate(observableObjectSetPropertyTest).with(
+    bugmeta.tag(observableObjectSetPropertyTest).with(
         test().name("ObservableObject - #setProperty test")
     );
-    bugmeta.annotate(observableObjectClearPropertiesTest).with(
+    bugmeta.tag(observableObjectClearPropertiesTest).with(
         test().name("ObservableObject - #clearProperties test")
     );
 });

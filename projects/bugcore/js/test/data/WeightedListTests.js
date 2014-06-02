@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('WeightedList')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var WeightedList    = bugpack.require('WeightedList');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert third item added to the weightedList is at index 2.");
         }
     };
-    bugmeta.annotate(weightedListAddTest).with(
+    bugmeta.tag(weightedListAddTest).with(
         test().name("WeightedList add test")
     );
 
@@ -122,7 +122,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert first item in the weightedList is now value2.");
         }
     };
-    bugmeta.annotate(weightedListClearTest).with(
+    bugmeta.tag(weightedListClearTest).with(
         test().name("WeightedList clear test")
     );
 
@@ -151,7 +151,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert weightedList contains function reports added value is contained.");
         }
     };
-    bugmeta.annotate(weightedListContainsTest).with(
+    bugmeta.tag(weightedListContainsTest).with(
         test().name("WeightedList contains test")
     );
 
@@ -204,7 +204,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert indexOfFirst item 3 is 2 after adding a duplicate of item 3");
         }
     };
-    bugmeta.annotate(weightedListIndexOfFirstTest).with(
+    bugmeta.tag(weightedListIndexOfFirstTest).with(
         test().name("WeightedList indexOfFirst test")
     );
 
@@ -257,7 +257,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert indexOfLast item 3 is 5 after adding a duplicate of item 3");
         }
     };
-    bugmeta.annotate(weightedListIndexOfLastTest).with(
+    bugmeta.tag(weightedListIndexOfLastTest).with(
         test().name("WeightedList indexOfLast test")
     );
 
@@ -324,7 +324,7 @@ require('bugpack').context("*", function(bugpack) {
                 "WeightedList count reports 0 after removing item 3 from weightedList.");
         }
     };
-    bugmeta.annotate(weightedListRemoveTest).with(
+    bugmeta.tag(weightedListRemoveTest).with(
         test().name("WeightedList remove test")
     );
 
@@ -372,7 +372,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert count is 2");
         }
     };
-    bugmeta.annotate(weightedListRemoveAtTest).with(
+    bugmeta.tag(weightedListRemoveAtTest).with(
         test().name("WeightedList removeAt test")
     );
 
@@ -434,7 +434,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert weightedList count is 2 after adding instance2");
         }
     };
-    bugmeta.annotate(weightedListAddEqualObjectsTest).with(
+    bugmeta.tag(weightedListAddEqualObjectsTest).with(
         test().name("WeightedList add equal objects test")
     );
 
@@ -486,7 +486,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert weightedList does not contain instance2 since instance1 and instance2 are not equal");
         }
     };
-    bugmeta.annotate(weightedListAddNonEqualObjectsWithSameHashCodesTest).with(
+    bugmeta.tag(weightedListAddNonEqualObjectsWithSameHashCodesTest).with(
         test().name("WeightedList add non equal objects that have the same hashCodes test")
     );
 
@@ -564,7 +564,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert weightedList count is 0 after removing instance2");
         }
     };
-    bugmeta.annotate(weightedListRemoveEqualObjectsTest).with(
+    bugmeta.tag(weightedListRemoveEqualObjectsTest).with(
         test().name("WeightedList add equal objects test")
     );
 
@@ -599,7 +599,7 @@ require('bugpack').context("*", function(bugpack) {
             test.assertEqual(this.weightedList.getAtWeight(5), this.value2, "Assert value at weight 5 is value2.");
         }
     };
-    bugmeta.annotate(weightedListGetAtWeightTest).with(
+    bugmeta.tag(weightedListGetAtWeightTest).with(
         test().name("WeightedList get at weight test")
     );
 });

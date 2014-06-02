@@ -15,7 +15,7 @@
 //@Require('Collection')
 //@Require('Obj')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Collection          = bugpack.require('Collection');
     var Obj                 = bugpack.require('Obj');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection accepts a Collection as an argument at construction time and adds the collction values to the new collection");
         }
     };
-    bugmeta.annotate(collectionConstructorTest).with(
+    bugmeta.tag(collectionConstructorTest).with(
         test().name("Collection constructor test")
     );
 
@@ -134,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert Collection#add returned true");
         }
     };
-    bugmeta.annotate(collectionAddTest).with(
+    bugmeta.tag(collectionAddTest).with(
         test().name("Collection add test")
     );
 
@@ -167,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert contains function indicates that the collection contains the added value.");
         }
     };
-    bugmeta.annotate(collectionAddAllTest).with(
+    bugmeta.tag(collectionAddAllTest).with(
         test().name("Collection - #addAll test")
     );
 
@@ -199,7 +199,7 @@ require('bugpack').context("*", function(bugpack) {
             test.assertEqual(valuesArray[2], 'value3', "Assert value[2] from getValueArray call is value3");
         }
     };
-    bugmeta.annotate(collectionGetValueArrayTest).with(
+    bugmeta.tag(collectionGetValueArrayTest).with(
         test().name("Collection getValueArray test")
     );
 
@@ -261,7 +261,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection count is 2 after adding instance2");
         }
     };
-    bugmeta.annotate(collectionAddEqualObjectsTest).with(
+    bugmeta.tag(collectionAddEqualObjectsTest).with(
         test().name("Collection add equal objects test")
     );
 
@@ -313,7 +313,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection does not contain instance2 since instance1 and instance2 are not equal");
         }
     };
-    bugmeta.annotate(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
+    bugmeta.tag(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
         test().name("Collection add non equal objects that have the same hashCodes test")
     );
 
@@ -390,7 +390,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert return value from second remove() call was false");
         }
     };
-    bugmeta.annotate(collectionAddAndRemoveDifferentValuesTest).with(
+    bugmeta.tag(collectionAddAndRemoveDifferentValuesTest).with(
         test().name("Collection add and remove different values test")
     );
 
@@ -451,7 +451,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert return value from second remove() call was false");
         }
     };
-    bugmeta.annotate(collectionAddAndRemoveSameValuesTest).with(
+    bugmeta.tag(collectionAddAndRemoveSameValuesTest).with(
         test().name("Collection add and remove same values test")
     );
 
@@ -504,7 +504,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert a collection that only contains some of the values of another collection is not considered to contain all the values of the other collection");
         }
     };
-    bugmeta.annotate(collectionContainsAllTest).with(
+    bugmeta.tag(collectionContainsAllTest).with(
         test().name("Collection contains all test")
     );
 
@@ -557,7 +557,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Inverse assertion: Assert a collection with all of the values of another collection is containsEqual with that collection");
         }
     };
-    bugmeta.annotate(collectionContainsEqualTest).with(
+    bugmeta.tag(collectionContainsEqualTest).with(
         test().name("Collection contains equal test")
     );
 });

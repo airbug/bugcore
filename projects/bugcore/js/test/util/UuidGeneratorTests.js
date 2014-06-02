@@ -14,7 +14,7 @@
 //@Require('TypeUtil')
 //@Require('UuidGenerator')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil        = bugpack.require('TypeUtil');
     var UuidGenerator   = bugpack.require('UuidGenerator');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert uuid1 and uuid2 are not equal");
         }
     };
-    bugmeta.annotate(generateTwoUuidsTest).with(
+    bugmeta.tag(generateTwoUuidsTest).with(
         test().name("UuidGenerator - generate two uuids test")
     );
 });

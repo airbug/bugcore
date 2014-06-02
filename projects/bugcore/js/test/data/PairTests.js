@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('Pair')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var Pair            = bugpack.require('Pair');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testPair extends Pair");
         }
     };
-    bugmeta.annotate(pairInstantiationTest).with(
+    bugmeta.tag(pairInstantiationTest).with(
         test().name("Pair - instantiation test")
     );
 
@@ -104,7 +104,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that testPair.b and testNewPair.b are equal");
         }
     };
-    bugmeta.annotate(pairInstantiationWithPairTest).with(
+    bugmeta.tag(pairInstantiationWithPairTest).with(
         test().name("Pair - instantiation with Pair test")
     );
 
@@ -135,7 +135,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that Pair.b is testB");
         }
     };
-    bugmeta.annotate(pairInstantiationWithValuesTest).with(
+    bugmeta.tag(pairInstantiationWithValuesTest).with(
         test().name("Pair - instantiation with values test")
     );
 
@@ -170,7 +170,7 @@ require('bugpack').context("*", function(bugpack) {
 
         }
     };
-    bugmeta.annotate(pairContainsTest).with(
+    bugmeta.tag(pairContainsTest).with(
         test().name("Pair - #contains test")
     );
 
@@ -207,7 +207,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert calling getOther with a value that does not exist in the pair throws an Exception");
         }
     };
-    bugmeta.annotate(pairGetOtherTest).with(
+    bugmeta.tag(pairGetOtherTest).with(
         test().name("Pair - #getOther test")
     );
 });

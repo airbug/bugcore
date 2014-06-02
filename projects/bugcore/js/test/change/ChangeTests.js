@@ -14,7 +14,7 @@
 //@Require('Change')
 //@Require('Class')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Change          = bugpack.require('Change');
     var Class           = bugpack.require('Class');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(changeInstantiationTest).with(
+    bugmeta.tag(changeInstantiationTest).with(
         test().name("Change - instantiation test")
     );
 });

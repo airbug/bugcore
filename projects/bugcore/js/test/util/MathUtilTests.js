@@ -15,7 +15,7 @@
 //@Require('MathUtil')
 //@Require('Obj')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var MathUtil        = bugpack.require('MathUtil');
     var Obj             = bugpack.require('Obj');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert random number is either equal to 3 or equal to 4");
         }
     };
-    bugmeta.annotate(randomBetweenTest).with(
+    bugmeta.tag(randomBetweenTest).with(
         test().name("Random between test")
     );
 });

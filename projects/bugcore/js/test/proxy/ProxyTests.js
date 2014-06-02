@@ -15,7 +15,7 @@
 //@Require('Proxy')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Proxy               = bugpack.require('Proxy');
     var BugDouble           = bugpack.require('bugdouble.BugDouble');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
     var spyOnObject         = BugDouble.spyOnObject;
 
 
@@ -95,7 +95,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the proxiedFunctionObject method's return value was successfully returned");
         }
     };
-    bugmeta.annotate(proxyDefaultsTest).with(
+    bugmeta.tag(proxyDefaultsTest).with(
         test().name("Proxy defaults test")
     );
 
@@ -156,7 +156,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the proxiedBasicFunction.property method's return value was successfully returned");
         }
     };
-    bugmeta.annotate(proxyPropertyTest).with(
+    bugmeta.tag(proxyPropertyTest).with(
         test().name("Proxy property test")
     );
 

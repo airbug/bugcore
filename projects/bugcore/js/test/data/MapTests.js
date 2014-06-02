@@ -15,7 +15,7 @@
 //@Require('Collection')
 //@Require('Map')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Collection      = bugpack.require('Collection');
     var Map             = bugpack.require('Map');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -382,31 +382,31 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(mapSimplePutContainsValueTest).with(
+    bugmeta.tag(mapSimplePutContainsValueTest).with(
         test().name("Map - simple put/containsValue test")
     );
-    bugmeta.annotate(mapSimplePutGetTest).with(
+    bugmeta.tag(mapSimplePutGetTest).with(
         test().name("Map - simple put/get test")
     );
-    bugmeta.annotate(mapGetKeyCollectionOnEmptyMapTest).with(
+    bugmeta.tag(mapGetKeyCollectionOnEmptyMapTest).with(
         test().name("Map - getKeyCollection called on an empty Map test")
     );
-    bugmeta.annotate(mapGetKeyCollectionTest).with(
+    bugmeta.tag(mapGetKeyCollectionTest).with(
         test().name("Map - getKeyCollection test")
     );
-    bugmeta.annotate(mapDataTypeKeyTest).with(
+    bugmeta.tag(mapDataTypeKeyTest).with(
         test().name("Map - data type key test")
     );
-    bugmeta.annotate(mapGetNativeJavascriptObjectNamesOfEmptyMapTest).with(
+    bugmeta.tag(mapGetNativeJavascriptObjectNamesOfEmptyMapTest).with(
         test().name("Map - get() native javascript object names on empty map test")
     );
-    bugmeta.annotate(mapNativeJavascriptObjectNamesPutGetTest).with(
+    bugmeta.tag(mapNativeJavascriptObjectNamesPutGetTest).with(
         test().name("Map - native javascript object names put/get test")
     );
-    bugmeta.annotate(mapForEachTest).with(
+    bugmeta.tag(mapForEachTest).with(
         test().name("Map - forEach test")
     );
-    bugmeta.annotate(mapSimplePutAllContainsValueTest).with(
+    bugmeta.tag(mapSimplePutAllContainsValueTest).with(
         test().name("Map - simple putAll/containsValue test")
     );
 });

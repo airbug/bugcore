@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('Graph')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var Graph           = bugpack.require('Graph');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -201,16 +201,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(graphInstantiationTest).with(
+    bugmeta.tag(graphInstantiationTest).with(
         test().name("Graph - instantiation test")
     );
-    bugmeta.annotate(graphAddValueRemoveValueTest).with(
+    bugmeta.tag(graphAddValueRemoveValueTest).with(
         test().name("Graph - add value and remove value for test")
     );
-    bugmeta.annotate(graphAddEdgeFromValueToValueTest).with(
+    bugmeta.tag(graphAddEdgeFromValueToValueTest).with(
         test().name("Graph - add edge from value to value")
     );
-    bugmeta.annotate(graphRemoveEdgeFromValueToValueTest).with(
+    bugmeta.tag(graphRemoveEdgeFromValueToValueTest).with(
         test().name("Graph - remove edge from value to value")
     );
 });

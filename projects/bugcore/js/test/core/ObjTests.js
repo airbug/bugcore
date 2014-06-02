@@ -16,7 +16,7 @@
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var TypeUtil            = bugpack.require('TypeUtil');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -671,55 +671,55 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(objInstantiationTest).with(
+    bugmeta.tag(objInstantiationTest).with(
         test().name("Obj - instantiation test")
     );
-    bugmeta.annotate(objHashCodeTest).with(
+    bugmeta.tag(objHashCodeTest).with(
         test().name("Obj - hashCode test")
     );
-    bugmeta.annotate(objEqualsTest).with(
+    bugmeta.tag(objEqualsTest).with(
         test().name("Obj - #equals test")
     );
-    bugmeta.annotate(objCloneObjShallowTest).with(
+    bugmeta.tag(objCloneObjShallowTest).with(
         test().name("Obj - #clone() Obj shallow test")
     );
-    bugmeta.annotate(objCloneDateTest).with(
+    bugmeta.tag(objCloneDateTest).with(
         test().name("Obj - #clone() Date test")
     );
-    bugmeta.annotate(objCloneObjectLiteralShallowTest).with(
+    bugmeta.tag(objCloneObjectLiteralShallowTest).with(
         test().name("Obj - #clone object literal shallow test")
     );
-    bugmeta.annotate(objClonePassThroughTest).with(
+    bugmeta.tag(objClonePassThroughTest).with(
         test().name("Obj - #clone pass through test")
     );
-    bugmeta.annotate(objDoesPropertyExistBasicTest).with(
+    bugmeta.tag(objDoesPropertyExistBasicTest).with(
         test().name("Obj - .doesPropertyExist() basic test")
     );
-    bugmeta.annotate(objDoesPropertyExistUndefinedValueTest).with(
+    bugmeta.tag(objDoesPropertyExistUndefinedValueTest).with(
         test().name("Obj - .doesPropertyExist() undefined value test")
     );
-    bugmeta.annotate(objFindPropertyBasicTest).with(
+    bugmeta.tag(objFindPropertyBasicTest).with(
         test().name("Obj - .findProperty() basic test")
     );
-    bugmeta.annotate(objFindPropertyBuiltInPropertyIgnoredTest).with(
+    bugmeta.tag(objFindPropertyBuiltInPropertyIgnoredTest).with(
         test().name("Obj - .findProperty() built in property ignored test")
     );
-    bugmeta.annotate(objForInIterationTest).with(
+    bugmeta.tag(objForInIterationTest).with(
         test().name("Obj - .forIn() iteration test")
     );
-    bugmeta.annotate(objForInIterationDontEnumPropertiesTest).with(
+    bugmeta.tag(objForInIterationDontEnumPropertiesTest).with(
         test().name("Obj - .forIn() iteration of don't enum properties test")
     );
-    bugmeta.annotate(objEnsureInternalIdTest).with(
+    bugmeta.tag(objEnsureInternalIdTest).with(
         test().name("Obj - internalId already defined test")
     );
-    bugmeta.annotate(objMergeTest).with(
+    bugmeta.tag(objMergeTest).with(
         test().name("Obj - .merge Test")
     );
-    bugmeta.annotate(objSetPropertyTest).with(
+    bugmeta.tag(objSetPropertyTest).with(
         test().name("Obj - .setProperty() Test")
     );
-    bugmeta.annotate(objPropertyIterationTest).with(
+    bugmeta.tag(objPropertyIterationTest).with(
         test().name("Obj - property iteration Test")
     );
 });

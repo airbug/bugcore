@@ -17,7 +17,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta         = BugMeta.context();
     var spyOnFunction   = BugDouble.spyOnFunction;
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that testDeferred has a promise");
         }
     };
-    bugmeta.annotate(deferredInstantiationTest).with(
+    bugmeta.tag(deferredInstantiationTest).with(
         test().name("Deferred - instantiation test")
     );
 
@@ -127,7 +127,7 @@ require('bugpack').context("*", function(bugpack) {
             }, 0);
         }
     };
-    bugmeta.annotate(deferredThenAndResolveTest).with(
+    bugmeta.tag(deferredThenAndResolveTest).with(
         test().name("Deferred - #then and #resolve test")
     );
 
@@ -174,7 +174,7 @@ require('bugpack').context("*", function(bugpack) {
             }, 0);
         }
     };
-    bugmeta.annotate(deferredResolveAndThenTest).with(
+    bugmeta.tag(deferredResolveAndThenTest).with(
         test().name("Deferred - #resolve and #then test")
     );
 
@@ -227,7 +227,7 @@ require('bugpack').context("*", function(bugpack) {
             }, 0);
         }
     };
-    bugmeta.annotate(deferredResolveWithAPromiseTest).with(
+    bugmeta.tag(deferredResolveWithAPromiseTest).with(
         test().name("Deferred - #resolve with a promise test")
     );
 });

@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('EventListener')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var EventListener   = bugpack.require('EventListener');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert EventListener instance extends EventListener ");
         }
     };
-    bugmeta.annotate(eventListenerInstantiationTest).with(
+    bugmeta.tag(eventListenerInstantiationTest).with(
         test().name("EventListener instantiation test")
     );
 
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert EventListeners with different functions and different contexts are not equal.");
         }
     };
-    bugmeta.annotate(eventListenerEqualityTest).with(
+    bugmeta.tag(eventListenerEqualityTest).with(
         test().name("EventListener equality test")
     );
 
@@ -146,7 +146,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert EventListeners with the same function and context have equal hash codes");
         }
     };
-    bugmeta.annotate(eventListenerHashCodeEqualityTest).with(
+    bugmeta.tag(eventListenerHashCodeEqualityTest).with(
         test().name("EventListener hash code equality test")
     );
 
@@ -174,7 +174,7 @@ require('bugpack').context("*", function(bugpack) {
 
         }
     };
-    bugmeta.annotate(eventListenerIsOnceTest).with(
+    bugmeta.tag(eventListenerIsOnceTest).with(
         test().name("EventListener isOnce test")
     );
 

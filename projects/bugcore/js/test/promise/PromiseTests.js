@@ -16,7 +16,7 @@
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta         = BugMeta.context();
     var spyOnObject     = BugDouble.spyOnObject;
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the handler list is empty");
         }
     };
-    bugmeta.annotate(promiseInstantiationTest).with(
+    bugmeta.tag(promiseInstantiationTest).with(
         test().name("Promise - instantiation test")
     );
 
@@ -106,7 +106,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the handlerList has 2 handlers");
         }
     };
-    bugmeta.annotate(promiseThenNoArgumentsTest).with(
+    bugmeta.tag(promiseThenNoArgumentsTest).with(
         test().name("Promise - #then no arguments test")
     );
 
@@ -137,7 +137,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the handlerList has 2 handlers");
         }
     };
-    bugmeta.annotate(promiseThenFulfilledFunctionArgumentOnlyTest).with(
+    bugmeta.tag(promiseThenFulfilledFunctionArgumentOnlyTest).with(
         test().name("Promise - #then fulfilledArgument only test")
     );
 
@@ -168,7 +168,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the handlerList has 2 handlers");
         }
     };
-    bugmeta.annotate(promiseThenRejectedFunctionArgumentOnlyTest).with(
+    bugmeta.tag(promiseThenRejectedFunctionArgumentOnlyTest).with(
         test().name("Promise - #then rejectedArgument only test")
     );
 
@@ -198,7 +198,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #resolvePromise again throws a Bug");
         }
     };
-    bugmeta.annotate(promiseResolvePromiseTwiceBugTest).with(
+    bugmeta.tag(promiseResolvePromiseTwiceBugTest).with(
         test().name("Promise - #resolvePromise twice should throw a Bug test")
     );
 
@@ -228,7 +228,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #rejectPromise again throws a Bug");
         }
     };
-    bugmeta.annotate(promiseRejectPromiseTwiceBugTest).with(
+    bugmeta.tag(promiseRejectPromiseTwiceBugTest).with(
         test().name("Promise - #rejectProcess twice should throw a Bug test")
     );
 
@@ -257,7 +257,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #resolvePromise after rejectPromise has already been called throws a Bug");
         }
     };
-    bugmeta.annotate(promiseRejectPromiseAndResolvePromiseBugTest).with(
+    bugmeta.tag(promiseRejectPromiseAndResolvePromiseBugTest).with(
         test().name("Promise - #rejectProcess and resolvePromise should throw a Bug test")
     );
 
@@ -291,7 +291,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(promiseResolvePromiseWithSelfShouldRejectPromiseTest).with(
+    bugmeta.tag(promiseResolvePromiseWithSelfShouldRejectPromiseTest).with(
         test().name("Promise - #resolvePromise with self as arg should reject the promise with a TypeError Bug test")
     );
 
@@ -326,7 +326,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest).with(
+    bugmeta.tag(promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest).with(
         test().name("Promise - #resolvePromise and passing two references of the promises self as args should reject promise once")
     );
 
@@ -355,7 +355,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testPromise's valueList is empty");
         }
     };
-    bugmeta.annotate(promiseResolvePromiseWithEmptyValuesTest).with(
+    bugmeta.tag(promiseResolvePromiseWithEmptyValuesTest).with(
         test().name("Promise - #resolvePromise with empty values")
     );
 });

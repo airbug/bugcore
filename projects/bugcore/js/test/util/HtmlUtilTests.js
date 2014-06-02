@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('HtmlUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var HtmlUtil        = bugpack.require('HtmlUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
             })
         }
     };
-    bugmeta.annotate(htmlUtilEscapeHtmlTest).with(
+    bugmeta.tag(htmlUtilEscapeHtmlTest).with(
         test().name("HtmlUtil - #escapeHtml test")
     );
 
@@ -152,7 +152,7 @@ require('bugpack').context("*", function(bugpack) {
             })
         }
     };
-    bugmeta.annotate(htmlUtilReplaceUrlsTest).with(
+    bugmeta.tag(htmlUtilReplaceUrlsTest).with(
         test().name("HtmlUtil - #replaceUrls test")
     );
 });

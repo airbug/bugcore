@@ -14,7 +14,7 @@
 //@Require('Interface')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Interface       = bugpack.require('Interface');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert second function added to interface is function and is present in interface prototype");
         }
     };
-    bugmeta.annotate(interfaceDeclareTest).with(
+    bugmeta.tag(interfaceDeclareTest).with(
         test().name("Interface declare test")
     );
 
@@ -123,7 +123,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert third function added to sub interface is function and is present in interface prototype");
         }
     };
-    bugmeta.annotate(interfaceExtendTest).with(
+    bugmeta.tag(interfaceExtendTest).with(
         test().name("Interface extend test")
     );
 });

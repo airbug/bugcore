@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('GraphNode')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var GraphNode       = bugpack.require('GraphNode');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert value was set correctly during instantiation");
         }
     };
-    bugmeta.annotate(graphNodeInstantiationTest).with(
+    bugmeta.tag(graphNodeInstantiationTest).with(
         test().name("GraphNode instantiation test")
     );
 
@@ -105,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert GraphNodes with different values are not equal.");
         }
     };
-    bugmeta.annotate(graphNodeEqualityTest).with(
+    bugmeta.tag(graphNodeEqualityTest).with(
         test().name("GraphNode equality test")
     );
 
@@ -134,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert GraphNodes with the same value have equal hash codes");
         }
     };
-    bugmeta.annotate(graphNodeHashCodeEqualityTest).with(
+    bugmeta.tag(graphNodeHashCodeEqualityTest).with(
         test().name("GraphNode hash code equality test")
     );
 });

@@ -15,7 +15,7 @@
 //@Require('Config')
 //@Require('Properties')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Config          = bugpack.require('Config');
     var Properties      = bugpack.require('Properties');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert Config#getProperties returns a Properties instance when there were no parameters passed to the constructor");
         }
     };
-    bugmeta.annotate(configInstantiationTest).with(
+    bugmeta.tag(configInstantiationTest).with(
         test().name("Config - instantiation test")
     );
 
@@ -103,7 +103,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert 'nonProperty' does not exist and returns undefined");
         }
     };
-    bugmeta.annotate(configInstantiationWithPropertiesObjectTest).with(
+    bugmeta.tag(configInstantiationWithPropertiesObjectTest).with(
         test().name("Config - instantiation with propertiesObject test")
     );
 
@@ -134,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert 'testName' is present in the Config and returns 'testValue'");
         }
     };
-    bugmeta.annotate(configSetGetPropertyTest).with(
+    bugmeta.tag(configSetGetPropertyTest).with(
         test().name("Config - set/get property test")
     );
 });

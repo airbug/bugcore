@@ -15,7 +15,7 @@
 //@Require('CollectionIterator')
 //@Require('Obj')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var CollectionIterator  = bugpack.require('CollectionIterator');
     var Obj                 = bugpack.require('Obj');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert hasNext is false on an empty ")
         }
     };
-    bugmeta.annotate(collectionIteratorHasNextEmptyTest).with(
+    bugmeta.tag(collectionIteratorHasNextEmptyTest).with(
         test().name("CollectionIterator - hasNext on empty collection test")
     );
 
@@ -130,7 +130,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert hasNext() is false AFTER the third iteration");
         }
     };
-    bugmeta.annotate(collectionIteratorHasNextEmptyTest).with(
+    bugmeta.tag(collectionIteratorHasNextEmptyTest).with(
         test().name("CollectionIterator - iteration test")
     );
 });

@@ -15,7 +15,7 @@
 //@Require('Promise')
 //@Require('RejectedHandler')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Promise             = bugpack.require('Promise');
     var RejectedHandler     = bugpack.require('RejectedHandler');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that #getForwardPromise returns the Promise passed in during instantiation");
         }
     };
-    bugmeta.annotate(rejectedHandlerInstantiationTest).with(
+    bugmeta.tag(rejectedHandlerInstantiationTest).with(
         test().name("RejectedHandler - instantiation test")
     );
 
@@ -120,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
             }, 0);
         }
     };
-    bugmeta.annotate(rejectedHandlerHandleNoMethodTest).with(
+    bugmeta.tag(rejectedHandlerHandleNoMethodTest).with(
         test().name("RejectedHandler - #handle no method test")
     );
 });

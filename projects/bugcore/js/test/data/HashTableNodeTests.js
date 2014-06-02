@@ -14,7 +14,7 @@
 //@Require('HashTableNode')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var HashTableNode   = bugpack.require('HashTableNode');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert HashTableNode count is 0 after instantiation");
         }
     };
-    bugmeta.annotate(hashTableNodeInstantiationTest).with(
+    bugmeta.tag(hashTableNodeInstantiationTest).with(
         test().name("HashTableNode - instantiation test")
     );
 
@@ -107,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert key3 is in the key array");
         }
     };
-    bugmeta.annotate(hashTableNodeGetKeyArrayTest).with(
+    bugmeta.tag(hashTableNodeGetKeyArrayTest).with(
         test().name("HashTableNode - getKeyArray test")
     );
 });

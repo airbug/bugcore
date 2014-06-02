@@ -14,7 +14,7 @@
 //@Require('Event')
 //@Require('EventReceiver')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Event           = bugpack.require('Event');
     var EventReceiver   = bugpack.require('EventReceiver');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert eventReceiver target is set to the target passed in during instantiation");
         }
     };
-    bugmeta.annotate(eventReceiverInstantiationTest).with(
+    bugmeta.tag(eventReceiverInstantiationTest).with(
         test().name("EventReceiver - instantiation test")
     );
 
@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert eventReceiver no longer has the event listener after using the #off function");
         }
     };
-    bugmeta.annotate(eventReceiverOnOffTest).with(
+    bugmeta.tag(eventReceiverOnOffTest).with(
         test().name("EventReceiver - #on #off test")
     );
 });

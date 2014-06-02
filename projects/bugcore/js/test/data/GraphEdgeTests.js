@@ -15,7 +15,7 @@
 //@Require('GraphEdge')
 //@Require('GraphNode')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var GraphEdge       = bugpack.require('GraphEdge');
     var GraphNode       = bugpack.require('GraphNode');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert toNode was set correct during instantiation");
         }
     };
-    bugmeta.annotate(graphEdgeInstantiationWithGoodArgumentsTest).with(
+    bugmeta.tag(graphEdgeInstantiationWithGoodArgumentsTest).with(
         test().name("GraphEdge instantiation test")
     );
 
@@ -120,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert GraphEdges with different fromNodes and different toNodes are not equal");
         }
     };
-    bugmeta.annotate(graphEdgeEqualityTest).with(
+    bugmeta.tag(graphEdgeEqualityTest).with(
         test().name("GraphEdge equality test")
     );
 
@@ -150,7 +150,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert GraphNodes with the same value have equal hash codes");
         }
     };
-    bugmeta.annotate(graphNodeHashCodeEqualityTest).with(
+    bugmeta.tag(graphNodeHashCodeEqualityTest).with(
         test().name("GraphEdge hash code equality test")
     );
 });

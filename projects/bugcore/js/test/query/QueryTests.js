@@ -18,7 +18,7 @@
 //@Require('Set')
 //@Require('WhereCondition')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     var Set             = bugpack.require('Set');
     var WhereCondition  = bugpack.require('WhereCondition');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert conditionSet is empty");
         }
     };
-    bugmeta.annotate(queryInstantiationTest).with(
+    bugmeta.tag(queryInstantiationTest).with(
         test().name("Query - instantiation test")
     );
 
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert conditionSet contains the testCondition");
         }
     };
-    bugmeta.annotate(queryAddConditionTest).with(
+    bugmeta.tag(queryAddConditionTest).with(
         test().name("Query - #addCondition test")
     );
 
@@ -148,7 +148,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert adding a non condition throws an error")
         }
     };
-    bugmeta.annotate(queryAddNonConditionTest).with(
+    bugmeta.tag(queryAddNonConditionTest).with(
         test().name("Query - #addCondition non Condition test")
     );
 
@@ -188,7 +188,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert #run returns a true result for matching WhereCondition Query");
         }
     };
-    bugmeta.annotate(queryRunMatchingWhereConditionTest).with(
+    bugmeta.tag(queryRunMatchingWhereConditionTest).with(
         test().name("Query - #run matching WhereCondition test")
     );
 
@@ -223,7 +223,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert #run returns a false result for matching WhereCondition Query");
         }
     };
-    bugmeta.annotate(queryRunEmptyObjectWhereConditionTest).with(
+    bugmeta.tag(queryRunEmptyObjectWhereConditionTest).with(
         test().name("Query - #run WhereCondition Query against an empty Object test")
     );
 
@@ -263,7 +263,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert #run returns a false result for non matching WhereCondition Query");
         }
     };
-    bugmeta.annotate(queryRunNonMatchingWhereConditionQueryTest).with(
+    bugmeta.tag(queryRunNonMatchingWhereConditionQueryTest).with(
         test().name("Query - #run non matching WhereCondition Query test")
     );
 });

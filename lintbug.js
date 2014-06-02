@@ -57,7 +57,7 @@ lintbug.lintTask("indentEqualSignsForPreClassVars", function(lintFile, callback)
     var fileContents    = lintFile.getFileContents();
     var lines           = fileContents.split("\n");
     var startIndex      = bugcore.ArrayUtil.indexOf(lines, /^\s*\/\/ Context\s*$/);
-    var endIndex        = bugcore.ArrayUtil.indexOf(lines, /^\s*\/\/ (Declare Class|Declare Interface)\s*$/);
+    var endIndex        = bugcore.ArrayUtil.indexOf(lines, /^\s*\/\/ (Declare Class|Declare Interface|Declare Tests)\s*$/);
     var varRegex        = /^(\s*)var (\w+)\s*=(.*)$/;
     var varObjects      = [];
     var longestIndent   = 0;

@@ -13,7 +13,7 @@
 
 //@Require('TreeNode')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var TreeNode        = bugpack.require('TreeNode');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert TreeNode childNodes is empty after instantiation");
         }
     };
-    bugmeta.annotate(instantiateTreeNodeTest).with(
+    bugmeta.tag(instantiateTreeNodeTest).with(
         test().name("TreeNode instantiation test")
     );
 });

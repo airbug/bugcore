@@ -14,7 +14,7 @@
 //@Require('Set')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 //@Require('tests.TypeValueSetsHelper')
 
 
@@ -31,7 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     var Set                     = bugpack.require('Set');
     var TypeUtil                = bugpack.require('TypeUtil');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation          = bugpack.require('bugunit.TestAnnotation');
+    var TestTag          = bugpack.require('bugunit.TestTag');
     var TypeValueSetsHelper     = bugpack.require('tests.TypeValueSetsHelper');
 
 
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta                 = BugMeta.context();
-    var test                    = TestAnnotation.test;
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(typeComparisonTest).with(
+    bugmeta.tag(typeComparisonTest).with(
         test().name("TypeUtil Comparison Test")
     );
 
@@ -203,7 +203,7 @@ require('bugpack').context("*", function(bugpack) {
         }
 
     };
-    bugmeta.annotate(typeUtilToTypeTest).with(
+    bugmeta.tag(typeUtilToTypeTest).with(
         test().name("TypeUtil - toType Test")
     );
 });

@@ -15,7 +15,7 @@
 //@Require('List')
 //@Require('Obj')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var List            = bugpack.require('List');
     var Obj             = bugpack.require('Obj');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection accepts a List as an argument at construction time and adds the List values to the new List");
         }
     };
-    bugmeta.annotate(listConstructorTest).with(
+    bugmeta.tag(listConstructorTest).with(
         test().name("List constructor test")
     );
 
@@ -124,7 +124,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert third item added to the list is at index 2.");
         }
     };
-    bugmeta.annotate(listAddTest).with(
+    bugmeta.tag(listAddTest).with(
         test().name("List add test")
     );
 
@@ -179,7 +179,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert item at index 3 is value2");
         }
     };
-    bugmeta.annotate(listAddAtTest).with(
+    bugmeta.tag(listAddAtTest).with(
         test().name("List - #addAt test")
     );
 
@@ -215,7 +215,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert first item in the list is now value2.");
         }
     };
-    bugmeta.annotate(listClearTest).with(
+    bugmeta.tag(listClearTest).with(
         test().name("List clear test")
     );
 
@@ -244,7 +244,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert list contains function reports added value is contained.");
         }
     };
-    bugmeta.annotate(listContainsTest).with(
+    bugmeta.tag(listContainsTest).with(
         test().name("List contains test")
     );
 
@@ -297,7 +297,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert indexOfFirst item 3 is 2 after adding a duplicate of item 3");
         }
     };
-    bugmeta.annotate(listIndexOfFirstTest).with(
+    bugmeta.tag(listIndexOfFirstTest).with(
         test().name("List indexOfFirst test")
     );
 
@@ -350,7 +350,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert indexOfLast item 3 is 5 after adding a duplicate of item 3");
         }
     };
-    bugmeta.annotate(listIndexOfLastTest).with(
+    bugmeta.tag(listIndexOfLastTest).with(
         test().name("List indexOfLast test")
     );
 
@@ -417,7 +417,7 @@ require('bugpack').context("*", function(bugpack) {
                 "List count reports 0 after removing item 3 from list.");
         }
     };
-    bugmeta.annotate(listRemoveTest).with(
+    bugmeta.tag(listRemoveTest).with(
         test().name("List remove test")
     );
 
@@ -465,7 +465,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert count is 2");
         }
     };
-    bugmeta.annotate(listRemoveAtTest).with(
+    bugmeta.tag(listRemoveAtTest).with(
         test().name("List removeAt test")
     );
 
@@ -501,7 +501,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert value2 is at index 1");
         }
     };
-    bugmeta.annotate(listSetTest).with(
+    bugmeta.tag(listSetTest).with(
         test().name("List - #set test")
     );
 
@@ -562,7 +562,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert list count is 2 after adding instance2");
         }
     };
-    bugmeta.annotate(listAddEqualObjectsTest).with(
+    bugmeta.tag(listAddEqualObjectsTest).with(
         test().name("List add equal objects test")
     );
 
@@ -615,7 +615,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert list does not contain instance2 since instance1 and instance2 are not equal");
         }
     };
-    bugmeta.annotate(listAddNonEqualObjectsWithSameHashCodesTest).with(
+    bugmeta.tag(listAddNonEqualObjectsWithSameHashCodesTest).with(
         test().name("List add non equal objects that have the same hashCodes test")
     );
 
@@ -693,7 +693,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert list count is 0 after removing instance2");
         }
     };
-    bugmeta.annotate(listRemoveEqualObjectsTest).with(
+    bugmeta.tag(listRemoveEqualObjectsTest).with(
         test().name("List add equal objects test")
     );
 });

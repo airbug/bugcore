@@ -13,7 +13,7 @@
 
 //@Require('HashUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 //@Require('tests.TypeValueSetsHelper')
 
 
@@ -29,7 +29,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var HashUtil            = bugpack.require('HashUtil');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
     var TypeValueSetsHelper = bugpack.require('tests.TypeValueSetsHelper');
 
 
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.annotate(hashRepeatTest).with(
+    bugmeta.tag(hashRepeatTest).with(
         test().name("Hash repeat test")
     );
 
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the same hash is given for rehash");
         }
     };
-    bugmeta.annotate(hashNativeTypesTest).with(
+    bugmeta.tag(hashNativeTypesTest).with(
         test().name("Hash - native types test")
     );
 });

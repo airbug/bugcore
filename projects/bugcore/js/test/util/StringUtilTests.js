@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('StringUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var StringUtil      = bugpack.require('StringUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -278,31 +278,31 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(stringUtilLpadTest).with(
+    bugmeta.tag(stringUtilLpadTest).with(
         test().name("StringUtil - #lpad test")
     );
-    bugmeta.annotate(stringUtilPadTest).with(
+    bugmeta.tag(stringUtilPadTest).with(
         test().name("StringUtil - #pad test")
     );
-    bugmeta.annotate(stringUtilRpadTest).with(
+    bugmeta.tag(stringUtilRpadTest).with(
         test().name("StringUtil - #rpad test")
     );
-    bugmeta.annotate(stringUtilEscapeStringTest).with(
+    bugmeta.tag(stringUtilEscapeStringTest).with(
         test().name("StringUtil - #escapeString test")
     );
-    bugmeta.annotate(stringUtilSplitWithLineProcessorTest).with(
+    bugmeta.tag(stringUtilSplitWithLineProcessorTest).with(
         test().name("StringUtil - #split with lineProcessor test")
     );
-    bugmeta.annotate(stringUtilLtrimTest).with(
+    bugmeta.tag(stringUtilLtrimTest).with(
         test().name("StringUtil - #ltrim test")
     );
-    bugmeta.annotate(stringUtilRtrimTest).with(
+    bugmeta.tag(stringUtilRtrimTest).with(
         test().name("StringUtil - #rtrim test")
     );
-    bugmeta.annotate(stringUtilTrimTest).with(
+    bugmeta.tag(stringUtilTrimTest).with(
         test().name("StringUtil - #trim test")
     );
-    bugmeta.annotate(stringUtilTrimNewLineTest).with(
+    bugmeta.tag(stringUtilTrimNewLineTest).with(
         test().name("StringUtil - #trim new line test")
     );
 });

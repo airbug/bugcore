@@ -17,7 +17,7 @@
 //@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert data is undefined");
         }
     };
-    bugmeta.annotate(documentInstantiationTest).with(
+    bugmeta.tag(documentInstantiationTest).with(
         test().name("Document - instantiation test")
     );
 
@@ -96,7 +96,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert data is testData");
         }
     };
-    bugmeta.annotate(documentInstantiationWithParamsTest).with(
+    bugmeta.tag(documentInstantiationWithParamsTest).with(
         test().name("Document - instantiation with params test")
     );
 
@@ -134,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert getPath with boolean throws ArgumentBug");
         }
     };
-    bugmeta.annotate(documentGetPathNoStringThrowsTest).with(
+    bugmeta.tag(documentGetPathNoStringThrowsTest).with(
         test().name("Document - getPath with non string test")
     );
 
@@ -162,7 +162,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert triple path path is undefined");
         }
     };
-    bugmeta.annotate(documentGetPathUndefinedDocTest).with(
+    bugmeta.tag(documentGetPathUndefinedDocTest).with(
         test().name("Document - #getPath with undefined doc test")
     );
 
@@ -213,7 +213,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert triple path path is undefined");
         }
     };
-    bugmeta.annotate(documentGetPathSimpleTest).with(
+    bugmeta.tag(documentGetPathSimpleTest).with(
         test().name("Document - #getPath simple test")
     );
 
@@ -238,7 +238,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert value was set correctly at base path");
         }
     };
-    bugmeta.annotate(documentSetPathUndefinedDocTest).with(
+    bugmeta.tag(documentSetPathUndefinedDocTest).with(
         test().name("Document - #setPath undefined doc test")
     );
 
@@ -267,7 +267,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert object was created at path 'abc.def'");
         }
     };
-    bugmeta.annotate(documentSetPathSimpleTest).with(
+    bugmeta.tag(documentSetPathSimpleTest).with(
         test().name("Document - #setPath simple test")
     );
 
@@ -300,7 +300,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert value was updated correctly at path");
         }
     };
-    bugmeta.annotate(documentSetPathExistingPathTest).with(
+    bugmeta.tag(documentSetPathExistingPathTest).with(
         test().name("Document - #setPath existing path test")
     );
 });

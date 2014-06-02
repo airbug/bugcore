@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('WeightedRandomizer')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var WeightedRandomizer  = bugpack.require('WeightedRandomizer');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation      = bugpack.require('bugunit.TestAnnotation');
+    var TestTag      = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta             = BugMeta.context();
-    var test                = TestAnnotation.test;
+    var test                = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert getRandom respected the weights. Actual ratio:" + ratio);
         }
     };
-    bugmeta.annotate(weightedRandomizerGetRandomTest).with(
+    bugmeta.tag(weightedRandomizerGetRandomTest).with(
         test().name("WeightedRandomizer get random test")
     );
 });

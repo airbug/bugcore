@@ -15,7 +15,7 @@
 //@Require('Lock')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Lock            = bugpack.require('Lock');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
     var spyOnFunction   = BugDouble.spyOnFunction;
 
 
@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
             this.testLock.waitLock(this.testMethod3Spy);
         }
     };
-    bugmeta.annotate(lockWaitLockTest).with(
+    bugmeta.tag(lockWaitLockTest).with(
         test().name("Lock - #waitLock test")
     );
 

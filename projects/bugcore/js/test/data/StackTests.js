@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('Stack')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var Stack           = bugpack.require('Stack');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -183,16 +183,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.annotate(stackInstantiationTest).with(
+    bugmeta.tag(stackInstantiationTest).with(
         test().name("Stack - instantiation test")
     );
-    bugmeta.annotate(stackShallowCloneTest).with(
+    bugmeta.tag(stackShallowCloneTest).with(
         test().name("Stack - shallow clone test")
     );
-    bugmeta.annotate(stackDeepCloneTest).with(
+    bugmeta.tag(stackDeepCloneTest).with(
         test().name("Stack - deep clone test")
     );
-    bugmeta.annotate(stackAddTest).with(
+    bugmeta.tag(stackAddTest).with(
         test().name("Stack - add test")
     );
 });

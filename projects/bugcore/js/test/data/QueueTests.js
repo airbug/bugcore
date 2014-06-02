@@ -15,7 +15,7 @@
 //@Require('Obj')
 //@Require('Queue')
 //@Require('bugmeta.BugMeta')
-//@Require('bugunit.TestAnnotation')
+//@Require('bugunit.TestTag')
 
 
 //-------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var Queue           = bugpack.require('Queue');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestAnnotation  = bugpack.require('bugunit.TestAnnotation');
+    var TestTag  = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var test            = TestAnnotation.test;
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection accepts a Queue as an argument at construction time and adds the Queue values to the new Queue");
         }
     };
-    bugmeta.annotate(queueConstructorTest).with(
+    bugmeta.tag(queueConstructorTest).with(
         test().name("Queue constructor test")
     );
 
@@ -120,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert the third value dequeued from the queue is 'value3'");
         }
     };
-    bugmeta.annotate(enqueueDequeueTest).with(
+    bugmeta.tag(enqueueDequeueTest).with(
         test().name("Queue enqueue and dequeue test")
     );
 });
