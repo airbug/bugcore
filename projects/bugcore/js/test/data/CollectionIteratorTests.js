@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var CollectionIterator  = bugpack.require('CollectionIterator');
     var Obj                 = bugpack.require('Obj');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag      = bugpack.require('bugunit.TestTag');
+    var TestTag             = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

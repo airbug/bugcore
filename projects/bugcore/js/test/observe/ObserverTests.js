@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var ObjectPathMatcher   = bugpack.require('ObjectPathMatcher');
     var Observer            = bugpack.require('Observer');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag      = bugpack.require('bugunit.TestTag');
+    var TestTag             = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

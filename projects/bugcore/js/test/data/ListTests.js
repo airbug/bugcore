@@ -28,19 +28,19 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var List            = bugpack.require('List');
-    var Obj             = bugpack.require('Obj');
-    var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var Class       = bugpack.require('Class');
+    var List        = bugpack.require('List');
+    var Obj         = bugpack.require('Obj');
+    var BugMeta     = bugpack.require('bugmeta.BugMeta');
+    var TestTag     = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta         = BugMeta.context();
-    var test            = TestTag.test;
+    var bugmeta     = BugMeta.context();
+    var test        = TestTag.test;
 
 
     //-------------------------------------------------------------------------------

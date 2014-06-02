@@ -27,18 +27,18 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var HashUtil            = bugpack.require('HashUtil');
-    var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag      = bugpack.require('bugunit.TestTag');
-    var TypeValueSetsHelper = bugpack.require('tests.TypeValueSetsHelper');
+    var HashUtil                = bugpack.require('HashUtil');
+    var BugMeta                 = bugpack.require('bugmeta.BugMeta');
+    var TestTag                 = bugpack.require('bugunit.TestTag');
+    var TypeValueSetsHelper     = bugpack.require('tests.TypeValueSetsHelper');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta             = BugMeta.context();
-    var test                = TestTag.test;
+    var bugmeta                 = BugMeta.context();
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------

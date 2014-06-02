@@ -27,18 +27,18 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Tree            = bugpack.require('Tree');
-    var TreeNode        = bugpack.require('TreeNode');
-    var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var Tree        = bugpack.require('Tree');
+    var TreeNode    = bugpack.require('TreeNode');
+    var BugMeta     = bugpack.require('bugmeta.BugMeta');
+    var TestTag     = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta         = BugMeta.context();
-    var test            = TestTag.test;
+    var bugmeta     = BugMeta.context();
+    var test        = TestTag.test;
 
 
     //-------------------------------------------------------------------------------

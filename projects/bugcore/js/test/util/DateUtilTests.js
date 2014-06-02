@@ -26,17 +26,17 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var DateUtil        = bugpack.require('DateUtil');
-    var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var DateUtil    = bugpack.require('DateUtil');
+    var BugMeta     = bugpack.require('bugmeta.BugMeta');
+    var TestTag     = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta         = BugMeta.context();
-    var test            = TestTag.test;
+    var bugmeta     = BugMeta.context();
+    var test        = TestTag.test;
 
 
     //-------------------------------------------------------------------------------

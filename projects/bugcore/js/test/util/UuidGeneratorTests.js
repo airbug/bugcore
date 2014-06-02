@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var TypeUtil        = bugpack.require('TypeUtil');
     var UuidGenerator   = bugpack.require('UuidGenerator');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var TestTag         = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

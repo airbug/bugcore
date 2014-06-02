@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var FulfilledHandler    = bugpack.require('FulfilledHandler');
     var Promise             = bugpack.require('Promise');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag      = bugpack.require('bugunit.TestTag');
+    var TestTag             = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

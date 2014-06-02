@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var Set             = bugpack.require('Set');
     var WhereCondition  = bugpack.require('WhereCondition');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var TestTag         = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

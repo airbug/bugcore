@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
     var WhereCondition          = bugpack.require('WhereCondition');
     var WhereConditionBuilder   = bugpack.require('WhereConditionBuilder');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var TestTag          = bugpack.require('bugunit.TestTag');
+    var TestTag                 = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

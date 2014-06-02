@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var PublisherMessage    = bugpack.require('PublisherMessage');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag      = bugpack.require('bugunit.TestTag');
+    var TestTag             = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------

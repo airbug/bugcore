@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Lock            = bugpack.require('Lock');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
-    var TestTag  = bugpack.require('bugunit.TestTag');
+    var TestTag         = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
