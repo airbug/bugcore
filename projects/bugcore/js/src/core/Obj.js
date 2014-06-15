@@ -54,6 +54,7 @@ require('bugpack').context("*", function(bugpack) {
 
         _name: "Obj",
 
+
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
@@ -61,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          */
-        _constructor: function Obj() {
+        _constructor: function() {
 
             this._super();
 
@@ -76,7 +77,7 @@ require('bugpack').context("*", function(bugpack) {
              */
             this._hashCode      = null;
 
-            // NOTE BRN: This value is set during the call to IdGenerator.injectId(). We just put this here for clarity's sake.
+            // NOTE BRN: This value is set during the call to IdGenerator.ensureId(). We just put this here for clarity's sake.
 
             /**
              * @private
