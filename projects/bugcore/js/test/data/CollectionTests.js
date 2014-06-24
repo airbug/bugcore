@@ -81,9 +81,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection accepts a Collection as an argument at construction time and adds the collction values to the new collection");
         }
     };
-    bugmeta.tag(collectionConstructorTest).with(
-        test().name("Collection constructor test")
-    );
 
     /**
      *
@@ -134,9 +131,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert Collection#add returned true");
         }
     };
-    bugmeta.tag(collectionAddTest).with(
-        test().name("Collection add test")
-    );
 
     /**
      *
@@ -167,9 +161,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert contains function indicates that the collection contains the added value.");
         }
     };
-    bugmeta.tag(collectionAddAllTest).with(
-        test().name("Collection - #addAll test")
-    );
 
     /**
      *
@@ -199,10 +190,6 @@ require('bugpack').context("*", function(bugpack) {
             test.assertEqual(valuesArray[2], 'value3', "Assert value[2] from getValueArray call is value3");
         }
     };
-    bugmeta.tag(collectionGetValueArrayTest).with(
-        test().name("Collection getValueArray test")
-    );
-
 
     /**
      *
@@ -261,10 +248,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection count is 2 after adding instance2");
         }
     };
-    bugmeta.tag(collectionAddEqualObjectsTest).with(
-        test().name("Collection add equal objects test")
-    );
-
 
     /**
      *
@@ -313,9 +296,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert collection does not contain instance2 since instance1 and instance2 are not equal");
         }
     };
-    bugmeta.tag(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
-        test().name("Collection add non equal objects that have the same hashCodes test")
-    );
 
     /**
      *
@@ -390,10 +370,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert return value from second remove() call was false");
         }
     };
-    bugmeta.tag(collectionAddAndRemoveDifferentValuesTest).with(
-        test().name("Collection add and remove different values test")
-    );
-
 
     /**
      *
@@ -451,10 +427,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert return value from second remove() call was false");
         }
     };
-    bugmeta.tag(collectionAddAndRemoveSameValuesTest).with(
-        test().name("Collection add and remove same values test")
-    );
-
 
     /**
      *
@@ -504,10 +476,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert a collection that only contains some of the values of another collection is not considered to contain all the values of the other collection");
         }
     };
-    bugmeta.tag(collectionContainsAllTest).with(
-        test().name("Collection contains all test")
-    );
-
 
     /**
      *
@@ -557,6 +525,82 @@ require('bugpack').context("*", function(bugpack) {
                 "Inverse assertion: Assert a collection with all of the values of another collection is containsEqual with that collection");
         }
     };
+
+    /**
+     *
+     */
+    var collectionStreamFilterTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.collection = new Collection([
+                "testValueA",
+                "testValueB",
+                "testValueC"
+            ]);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var resultCollection = this.collection
+                .stream()
+                .filter(function(item) {
+                    return (item === "testValueB");
+                })
+                .collectSync(Collection);
+            test.assertTrue(Class.doesExtend(resultCollection, Collection),
+                "Assert result is a Collection");
+            if (Class.doesExtend(resultCollection, Collection)) {
+                test.assertTrue(resultCollection.contains("testValueB"),
+                    "Assert 'testValueB' is contained");
+                test.assertFalse(resultCollection.contains("testValueA"),
+                    "Assert 'testValueA' is NOT contained");
+                test.assertFalse(resultCollection.contains("testValueC"),
+                    "Assert 'testValueC' is NOT contained");
+            }
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(collectionStreamFilterTest).with(
+        test().name("Collection - stream, filter, and collect test")
+    );
+    bugmeta.tag(collectionConstructorTest).with(
+        test().name("Collection constructor test")
+    );
+    bugmeta.tag(collectionAddTest).with(
+        test().name("Collection add test")
+    );
+    bugmeta.tag(collectionAddAllTest).with(
+        test().name("Collection - #addAll test")
+    );
+    bugmeta.tag(collectionGetValueArrayTest).with(
+        test().name("Collection getValueArray test")
+    );
+    bugmeta.tag(collectionAddEqualObjectsTest).with(
+        test().name("Collection add equal objects test")
+    );
+    bugmeta.tag(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
+        test().name("Collection add non equal objects that have the same hashCodes test")
+    );
+    bugmeta.tag(collectionAddAndRemoveDifferentValuesTest).with(
+        test().name("Collection add and remove different values test")
+    );
+    bugmeta.tag(collectionAddAndRemoveSameValuesTest).with(
+        test().name("Collection add and remove same values test")
+    );
+    bugmeta.tag(collectionContainsAllTest).with(
+        test().name("Collection contains all test")
+    );
     bugmeta.tag(collectionContainsEqualTest).with(
         test().name("Collection contains equal test")
     );

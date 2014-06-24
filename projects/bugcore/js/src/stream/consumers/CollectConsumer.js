@@ -9,12 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectionIterator')
+//@Export('CollectConsumer')
 
 //@Require('Class')
-//@Require('Exception')
-//@Require('IIterator')
-//@Require('Obj')
+//@Require('Consumer')
 
 
 //-------------------------------------------------------------------------------
@@ -28,9 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
-    var IIterator   = bugpack.require('IIterator');
-    var Obj         = bugpack.require('Obj');
+    var Consumer    = bugpack.require('Consumer');
 
 
     //-------------------------------------------------------------------------------
@@ -39,13 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
-     * @implements {IIterator.<I>}
+     * @extends {Consumer.<I>}
      * @template I
      */
-    var CollectionIterator = Class.extend(Obj, {
+    var CollectConsumer = Class.extend(Consumer, {
 
-        _name: "CollectionIterator",
+        _name: "CollectConsumer",
 
 
         //-------------------------------------------------------------------------------
@@ -54,11 +49,12 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Collection.<I>} collection
+         * @param {ISupplier.<I>} supplier
+         * @param {function(new:Collection)} constructor
          */
-        _constructor: function(collection) {
+        _constructor: function(supplier, constructor) {
 
-            this._super();
+            this._super(supplier);
 
 
             //-------------------------------------------------------------------------------
@@ -67,59 +63,63 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {number}
+             * @type {Collection.<I>}
              */
-            this.collectionSize = collection.getCount();
+            this.collection     = null;
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {function(new:Collection)}
              */
-            this.collectionValueArray = collection.getValueArray();
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.index = -1;
+            this.constructor    = constructor;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Getters and Setters
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {Collection.<I>}
          */
-        hasNext: function() {
-            return (this.index < (this.collectionSize - 1));
+        getCollection: function() {
+            return this.collection;
         },
 
         /**
-         * @return {I}
+         * @return {function(new:Collection)}
          */
-        next: function() {
-            if (this.hasNext()) {
-                this.index++;
-                return this.collectionValueArray[this.index];
-            } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+        getConstructor: function() {
+            return this.constructor;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Consumer Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {I} item
+         */
+        doAccept: function(item) {
+            if (!this.collection) {
+                this.collection = this.constructor.getClass().newInstance();
             }
+            this.collection.add(item);
+        },
+
+        /**
+         * @return {*}
+         */
+        doConsume: function() {
+            return this.collection;
         }
     });
-
-
-    //-------------------------------------------------------------------------------
-    // Interfaces
-    //-------------------------------------------------------------------------------
-
-    Class.implement(CollectionIterator, IIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectionIterator', CollectionIterator);
+    bugpack.export('CollectConsumer', CollectConsumer);
 });

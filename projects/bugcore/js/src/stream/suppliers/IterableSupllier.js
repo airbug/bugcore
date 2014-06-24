@@ -9,12 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectionIterator')
+//@Export('IterableSupplier')
 
 //@Require('Class')
-//@Require('Exception')
-//@Require('IIterator')
-//@Require('Obj')
+//@Require('Supplier')
 
 
 //-------------------------------------------------------------------------------
@@ -28,9 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
-    var IIterator   = bugpack.require('IIterator');
-    var Obj         = bugpack.require('Obj');
+    var Supplier    = bugpack.require('Supplier');
 
 
     //-------------------------------------------------------------------------------
@@ -39,13 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
-     * @implements {IIterator.<I>}
+     * @extends {Supplier}
      * @template I
      */
-    var CollectionIterator = Class.extend(Obj, {
+    var IterableSupplier = Class.extend(Supplier, {
 
-        _name: "CollectionIterator",
+        _name: "IterableSupplier",
 
 
         //-------------------------------------------------------------------------------
@@ -54,9 +49,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Collection.<I>} collection
+         * @param {IIterable.<I>} iterable
          */
-        _constructor: function(collection) {
+        _constructor: function(iterable) {
 
             this._super();
 
@@ -67,59 +62,57 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {number}
+             * @type {IIterable.<I>}
              */
-            this.collectionSize = collection.getCount();
+            this.iterable   = iterable;
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {IIterator.<I>}
              */
-            this.collectionValueArray = collection.getValueArray();
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.index = -1;
+            this.iterator   = iterable.iterator();
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Getters and Setters
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {IIterable.<I>}
          */
-        hasNext: function() {
-            return (this.index < (this.collectionSize - 1));
+        getIterable: function() {
+            return this.iterable;
         },
 
         /**
-         * @return {I}
+         * @return {IIterator.<I>}
          */
-        next: function() {
-            if (this.hasNext()) {
-                this.index++;
-                return this.collectionValueArray[this.index];
-            } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+        getIterator: function() {
+            return this.iterator;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Supplier Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         *
+         */
+        doStart: function() {
+            while (this.iterator.hasNext()) {
+                var next = this.iterator.next();
+                this.push(next);
             }
+            this.doEnd();
         }
     });
-
-
-    //-------------------------------------------------------------------------------
-    // Interfaces
-    //-------------------------------------------------------------------------------
-
-    Class.implement(CollectionIterator, IIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectionIterator', CollectionIterator);
+    bugpack.export('IterableSupplier', IterableSupplier);
 });

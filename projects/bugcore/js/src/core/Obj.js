@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
             this._internalId    = null;
 
             IdGenerator.ensureId(this);
-            Object.defineProperty(this, "_hashCode", {
+            Obj.defineProperty(this, "_hashCode", {
                 value : null,
                 writable : true,
                 enumerable : false,
@@ -258,6 +258,15 @@ require('bugpack').context("*", function(bugpack) {
             clone = value;
         }
         return clone;
+    };
+
+    /**
+     * @param {Object} object
+     * @param {string} propertyName
+     * @param {{}} description
+     */
+    Obj.defineProperty = function(object, propertyName, description) {
+        Object.defineProperty(object, propertyName, description);
     };
 
     /**

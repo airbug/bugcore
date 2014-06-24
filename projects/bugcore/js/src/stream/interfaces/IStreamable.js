@@ -9,7 +9,7 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IIterable')
+//@Export('IStreamable')
 
 //@Require('Interface')
 
@@ -33,10 +33,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
+     * @template I
      */
-    var IIterable = Interface.declare({
+    var IStreamable = Interface.declare({
 
-        _name: "IIterable",
+        _name: "IStreamable",
 
 
         //-------------------------------------------------------------------------------
@@ -44,9 +45,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterator}
+         * @return {Stream.<I>}
          */
-        iterator: function() {}
+        stream: function() {}
     });
 
 
@@ -54,5 +55,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IIterable', IIterable);
+    bugpack.export('IStreamable', IStreamable);
 });

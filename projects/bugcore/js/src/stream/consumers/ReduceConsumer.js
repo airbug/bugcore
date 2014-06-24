@@ -9,12 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectionIterator')
+//@Export('ReduceConsumer')
 
 //@Require('Class')
-//@Require('Exception')
-//@Require('IIterator')
-//@Require('Obj')
+//@Require('Consumer')
 
 
 //-------------------------------------------------------------------------------
@@ -28,9 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
-    var IIterator   = bugpack.require('IIterator');
-    var Obj         = bugpack.require('Obj');
+    var Consumer    = bugpack.require('Consumer');
 
 
     //-------------------------------------------------------------------------------
@@ -39,13 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
-     * @implements {IIterator.<I>}
+     * @extends {Consumer.<I>}
      * @template I
      */
-    var CollectionIterator = Class.extend(Obj, {
+    var ReduceConsumer = Class.extend(Consumer, {
 
-        _name: "CollectionIterator",
+        _name: "ReduceConsumer",
 
 
         //-------------------------------------------------------------------------------
@@ -54,11 +49,13 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Collection.<I>} collection
+         * @param {ISupplier.<I>} supplier
+         * @param {*} memo
+         * @param {function(*, I):*} reduceMethod
          */
-        _constructor: function(collection) {
+        _constructor: function(supplier, memo, reduceMethod) {
 
-            this._super();
+            this._super(supplier);
 
 
             //-------------------------------------------------------------------------------
@@ -67,59 +64,60 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {number}
+             * @type {*}
              */
-            this.collectionSize = collection.getCount();
+            this.memo           = memo;
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {function(*, I): *}
              */
-            this.collectionValueArray = collection.getValueArray();
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.index = -1;
+            this.reduceMethod   = reduceMethod;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Getters and Setters
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {*}
          */
-        hasNext: function() {
-            return (this.index < (this.collectionSize - 1));
+        getMemo: function() {
+            return this.memo;
         },
 
         /**
-         * @return {I}
+         * @return {function(*, I): *}
          */
-        next: function() {
-            if (this.hasNext()) {
-                this.index++;
-                return this.collectionValueArray[this.index];
-            } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
-            }
+        getReduceMethod: function() {
+            return this.reduceMethod;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Consumer Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {I} item
+         */
+        doAccept: function(item) {
+            this.memo = this.reduceMethod(this.memo, item);
+        },
+
+        /**
+         * @return {*}
+         */
+        doConsume: function() {
+            return this.memo;
         }
     });
-
-
-    //-------------------------------------------------------------------------------
-    // Interfaces
-    //-------------------------------------------------------------------------------
-
-    Class.implement(CollectionIterator, IIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectionIterator', CollectionIterator);
+    bugpack.export('ReduceConsumer', ReduceConsumer);
 });

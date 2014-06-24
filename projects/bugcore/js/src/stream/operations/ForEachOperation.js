@@ -9,11 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectionIterator')
+//@Export('ForEachOperation')
 
 //@Require('Class')
-//@Require('Exception')
-//@Require('IIterator')
+//@Require('IStreamOperation')
 //@Require('Obj')
 
 
@@ -27,10 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
-    var IIterator   = bugpack.require('IIterator');
-    var Obj         = bugpack.require('Obj');
+    var Class               = bugpack.require('Class');
+    var IStreamOperation    = bugpack.require('IStreamOperation');
+    var Obj                 = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -40,12 +38,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @implements {IIterator.<I>}
+     * @implements {IStreamOperation.<I>}
      * @template I
      */
-    var CollectionIterator = Class.extend(Obj, {
+    var ForEachOperation = Class.extend(Obj, {
 
-        _name: "CollectionIterator",
+        _name: "ForEachOperation",
 
 
         //-------------------------------------------------------------------------------
@@ -54,9 +52,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Collection.<I>} collection
+         * @param {function(I):*} iteratorMethod
          */
-        _constructor: function(collection) {
+        _constructor: function(iteratorMethod) {
 
             this._super();
 
@@ -67,59 +65,50 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {number}
+             * @type {function(I)}
              */
-            this.collectionSize = collection.getCount();
-
-            /**
-             * @private
-             * @type {Array.<I>}
-             */
-            this.collectionValueArray = collection.getValueArray();
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.index = -1;
+            this.iteratorMethod     = iteratorMethod;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Getters and Setters
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {function(I)}
          */
-        hasNext: function() {
-            return (this.index < (this.collectionSize - 1));
+        getIteratorMethod: function() {
+            return this.iteratorMethod;
         },
 
+
+        //-------------------------------------------------------------------------------
+        // IStreamOperation Methods
+        //-------------------------------------------------------------------------------
+
         /**
-         * @return {I}
+         * @param {Stream.<I>} stream
+         * @param {I} item
          */
-        next: function() {
-            if (this.hasNext()) {
-                this.index++;
-                return this.collectionValueArray[this.index];
-            } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
-            }
+        execute: function(stream, item) {
+            this.iteratorMethod(item);
+            stream.push(item);
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Interfaces
+    // Implement Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(CollectionIterator, IIterator);
+    Class.implement(ForEachOperation, IStreamOperation);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectionIterator', CollectionIterator);
+    bugpack.export('ForEachOperation', ForEachOperation);
 });
+

@@ -248,7 +248,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @override
          * @param {function(I):*} fn
-         * @param {*} context
+         * @param {*=} context
          * @return {List.<*>}
          */
         map: function(fn, context) {
