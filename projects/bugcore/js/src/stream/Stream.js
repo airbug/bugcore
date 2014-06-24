@@ -152,7 +152,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {Constructor} constructor
-         * @param {function(Throwable, Collection.<*>=)} callback
+         * @param {function(Throwable, Collection.<T>=)} callback
+         * @template T
          */
         collect: function(constructor, callback) {
             var consumer = new CollectConsumer(this, constructor);
@@ -167,7 +168,8 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @param {Constructor} constructor
          * @param {boolean=} autoConsume
-         * @return {(Collection.<*> | Consumer.<*>)}
+         * @return {(Collection.<T> | Consumer.<T>)}
+         * @template T
          */
         collectSync: function(constructor, autoConsume) {
             var args = ArgUtil.process(arguments, [
@@ -210,9 +212,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} memo
-         * @param {function(*, I):*} reduceMethod
-         * @param {function(Throwable, *=)} callback
+         * @param {T} memo
+         * @param {function(T, I):T} reduceMethod
+         * @param {function(Throwable, T=)} callback
+         * @template T
          */
         reduce: function(memo, reduceMethod, callback) {
             var consumer = new ReduceConsumer(this, memo, reduceMethod);
@@ -225,13 +228,28 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} memo
-         * @param {function(*, I):*} reduceMethod
+         * @param {T} memo
+         * @param {function(T, I):T} reduceMethod
          * @param {boolean=} autoConsume
-         * @return {(Collection.<*> | Stream.<*>)}
+         * @return {(Collection.<T> | Consumer.<T>)}
+         * @template T
          */
         reduceSync: function(memo, reduceMethod, autoConsume) {
-
+            var args = ArgUtil.process(arguments, [
+                {name: "memo", optional: false},
+                {name: "reduceMethod", optional: false, type: "function"},
+                {name: "autoConsume", optional: true, type: "boolean", 'default': true}
+            ]);
+            memo            = args.memo;
+            reduceMethod    = args.reduceMethod;
+            autoConsume     = args.autoConsume;
+            var consumer = new ReduceConsumer(this, memo, reduceMethod);
+            this.addConsumer(consumer);
+            if (autoConsume) {
+                return consumer.consumeSync();
+            } else {
+                return consumer;
+            }
         }
     });
 
