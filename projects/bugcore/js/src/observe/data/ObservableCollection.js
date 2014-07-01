@@ -180,13 +180,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {function(A)} func
-         */
-        forEach: function(func) {
-            this.observed.forEach(func);
-        },
-
-        /**
          * @return {number}
          */
         getCount: function() {
@@ -213,15 +206,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         isEmpty: function() {
             return this.observed.isEmpty();
-        },
-
-        /**
-         * @param {function(I):*} fn
-         * @param {*} context
-         * @return {ICollection.<*>}
-         */
-        map: function(fn, context) {
-            return this.observed.map(fn, context);
         },
 
         /**
@@ -254,6 +238,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
         // IIterable Implementation
         //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(A)} func
+         */
+        forEach: function(func) {
+            this.observed.forEach(func);
+        },
 
         /**
          * NOTE BRN: Because of the way javascript works and the current lack of Iterator support across browsers. Iterators

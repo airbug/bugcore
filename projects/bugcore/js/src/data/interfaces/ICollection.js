@@ -105,13 +105,6 @@ require('bugpack').context("*", function(bugpack) {
         isEmpty: function() {},
 
         /**
-         * @param {function(I):*} fn
-         * @param {*} context
-         * @return {ICollection.<*>}
-         */
-        map: function(fn, context) {},
-
-        /**
          * @param {*} value
          * @return {boolean}
          */

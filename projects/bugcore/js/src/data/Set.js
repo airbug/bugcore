@@ -88,17 +88,6 @@ require('bugpack').context("*", function(bugpack) {
                 return true;
             }
             return false;
-        },
-
-        /**
-         * @override
-         * @param {function(I):*} fn
-         * @param {*} context
-         * @return {Set.<*>}
-         */
-        map: function(fn, context) {
-            var newArray    = this.getValueArray().map(fn, context);
-            return new Set(newArray);
         }
     });
 

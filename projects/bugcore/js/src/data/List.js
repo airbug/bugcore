@@ -246,17 +246,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @override
-         * @param {function(I):*} fn
-         * @param {*=} context
-         * @return {List.<*>}
-         */
-        map: function(fn, context) {
-            var newArray    = this.getValueArray().map(fn, context);
-            return new List(newArray);
-        },
-
-        /**
          * @return {I} The removed item
          */
         pop: function() {

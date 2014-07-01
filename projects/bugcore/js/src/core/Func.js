@@ -205,8 +205,14 @@ require('bugpack').context("*", function(bugpack) {
 
     };
 
+    /**
+     * @static
+     * @param {function(...):*} method
+     * @param {Object=} context
+     * @param {Array.<*>} args
+     */
     Func.deferApply = function(method, context, args) {
-
+        Func.func(method, context).deferApply(args);
     };
 
     /**
