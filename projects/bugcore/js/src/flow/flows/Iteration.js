@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,10 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('Iteration')
 
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Flow')
 
 
 //-------------------------------------------------------------------------------
@@ -25,22 +25,23 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Class   = bugpack.require('Class');
+    var Flow    = bugpack.require('Flow');
 
 
     //-------------------------------------------------------------------------------
     // Declare Class
     //-------------------------------------------------------------------------------
 
+    //NOTE BRN: An instance of this class is designed to be used only once.
+
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Flow}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var Iteration = Class.extend(Flow, {
 
-        _name: "IterableSupplier",
+        _name: "Iteration",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +50,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {function(Flow, *)} iteratorMethod
          */
-        _constructor: function(iterable) {
+        _constructor: function(iteratorMethod) {
 
             this._super();
 
@@ -62,44 +63,29 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {function(Flow, *)}
              */
-            this.iterable   = iterable;
+            this.iteratorMethod = iteratorMethod;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Getters and Setters
+        // Flow Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @param {Array<*>} args
          */
-        getIterable: function() {
-            return this.iterable;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Supplier Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         *
-         */
-        doStart: function() {
-            var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+        executeFlow: function(args) {
+            this._super(args);
+            this.iteratorMethod.apply(null, ([this]).concat(args));
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('Iteration', Iteration);
 });

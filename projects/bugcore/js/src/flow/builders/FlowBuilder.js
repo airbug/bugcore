@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,10 +9,11 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('FlowBuilder')
 
+//@Require('ArgUtil')
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +37,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Obj}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var FlowBuilder = Class.extend(Obj, {
 
-        _name: "IterableSupplier",
+        _name: "FlowBuilder",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +50,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {function(new:Constructor)} flowConstructor
+         * @param {Array.<*>} flowConstructorArgs
          */
-        _constructor: function(iterable) {
+        _constructor: function(flowConstructor, flowConstructorArgs) {
 
             this._super();
 
@@ -62,9 +64,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {function(new:Constructor)}
              */
-            this.iterable   = iterable;
+            this.flowConstructor        = flowConstructor;
+
+            /**
+             * @private
+             * @type {Array.<*>}
+             */
+            this.flowConstructorArgs    = flowConstructorArgs;
         },
 
 
@@ -73,33 +81,44 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @return {Array.<*>}
          */
-        getIterable: function() {
-            return this.iterable;
+        getFlowConstructorArgs: function() {
+            return this.flowConstructorArgs;
+        },
+
+        /**
+         * @return {function(new:Constructor)}
+         */
+        getFlowConstructor: function() {
+            return this.flowConstructor;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Supplier Methods
+        // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
-         *
+         * @param {(Array.<*> | function(Throwable=))} flowArgs
+         * @param {function(Throwable=)=} callback
          */
-        doStart: function() {
-            var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+        execute: function(flowArgs, callback) {
+            var args = ArgUtil.process(arguments, [
+                {name: "flowArgs", optional: true, type: "array", default: []},
+                {name: "callback", optional: false, type: "function"}
+            ]);
+            flowArgs    = args.flowArgs;
+            callback    = args.callback;
+            var flow    = this.flowConstructor.getClass().newInstance(this.flowConstructorArgs);
+            flow.execute(flowArgs, callback);
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('FlowBuilder', FlowBuilder);
 });

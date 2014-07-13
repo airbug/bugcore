@@ -64,9 +64,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         _constructor: function() {
 
-            this._super();
-
-
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
@@ -85,13 +82,24 @@ require('bugpack').context("*", function(bugpack) {
              */
             this._internalId    = null;
 
-            IdGenerator.ensureId(this);
             Obj.defineProperty(this, "_hashCode", {
                 value : null,
                 writable : true,
                 enumerable : false,
                 configurable : false
             });
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Initializer
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @private
+         */
+        _initializer: function() {
+            IdGenerator.ensureId(this);
         },
 
 

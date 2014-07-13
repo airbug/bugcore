@@ -15,7 +15,9 @@
 //@Require('Collection')
 //@Require('List')
 //@Require('Map')
+//@Require('MultiListMap')
 //@Require('Obj')
+//@Require('Queue')
 //@Require('Set')
 
 
@@ -29,12 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Collection  = bugpack.require('Collection');
-    var List        = bugpack.require('List');
-    var Map         = bugpack.require('Map');
-    var Obj         = bugpack.require('Obj');
-    var Set         = bugpack.require('Set');
+    var Class           = bugpack.require('Class');
+    var Collection      = bugpack.require('Collection');
+    var List            = bugpack.require('List');
+    var Map             = bugpack.require('Map');
+    var MultiListMap    = bugpack.require('MultiListMap');
+    var Obj             = bugpack.require('Obj');
+    var Queue           = bugpack.require('Queue');
+    var Set             = bugpack.require('Set');
 
 
     //-------------------------------------------------------------------------------
@@ -79,6 +83,23 @@ require('bugpack').context("*", function(bugpack) {
      */
     Collections.map = function(map) {
         return new Map(map);
+    };
+
+    /**
+     * @param {?(IMap.<K, V> | Object.<K, V>)=} map
+     * @returns {MultiListMap.<K, V>}
+     */
+    Collections.multiListMap = function(map) {
+        return new MultiListMap(map);
+    };
+
+    /**
+     * @param {?(ICollection.<I> | Array.<I>)=} items
+     * @returns {Queue}
+     * @template I
+     */
+    Collections.queue = function(items) {
+        return new Queue(items);
     };
 
     /**

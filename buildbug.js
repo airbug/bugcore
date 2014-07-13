@@ -96,10 +96,8 @@ buildProperties({
             },
             sourcePaths: [
                 "../buganno/projects/buganno/js/src",
-                "../bugflow/projects/bugflow/js/src",
                 "../bugfs/projects/bugfs/js/src",
                 "../bugmeta/projects/bugmeta/js/src",
-                "../bugtrace/projects/bugtrace/js/src",
                 "../bugunit/projects/bugdouble/js/src",
                 "../bugunit/projects/bugunit/js/src"
             ],

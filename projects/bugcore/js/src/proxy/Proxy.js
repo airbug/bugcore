@@ -12,6 +12,7 @@
 //@Export('Proxy')
 
 //@Require('Class')
+//@Require('Exception')
 //@Require('IProxy')
 //@Require('Obj')
 //@Require('ProxyMethod')
@@ -31,6 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
     var IProxy          = bugpack.require('IProxy');
     var Obj             = bugpack.require('Obj');
     var ProxyMethod     = bugpack.require('ProxyMethod');
@@ -68,6 +70,8 @@ require('bugpack').context("*", function(bugpack) {
                 proxy = Proxy.object(proxy);
             } else if (TypeUtil.isFunction(proxy)) {
                 proxy = Proxy.object(proxy);
+            } else {
+                throw new Exception("IllegalArgument", {}, "'proxy' must implement IProxy or be and object or a function.");
             }
         }
         for (var i = 0, size = functionNameArray.length; i < size; i++) {
@@ -108,7 +112,8 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {IProxy} proxy
-     * @return {function()}
+     * @param {string} functionName
+     * @return {function(...):*}
      */
     Proxy.generateProxyFunction = function(proxy, functionName) {
         if (Class.doesImplement(proxy, IProxy)) {
@@ -116,7 +121,7 @@ require('bugpack').context("*", function(bugpack) {
                 return proxy.proxy(functionName, arguments);
             };
         } else {
-            throw new Error("Proxied entities must be objects or functions.");
+            throw new Exception("IllegalArgument", {}, "'proxy' must implement IProxy.");
         }
     };
 

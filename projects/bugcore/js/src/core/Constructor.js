@@ -42,13 +42,6 @@ require('bugpack').context("*", function(bugpack) {
     Constructor.prototype = {
 
         /**
-         * @constructs
-         */
-        _constructor: function() {
-
-        },
-
-        /**
          * @return {Class}
          */
         getClass: function() {

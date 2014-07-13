@@ -233,6 +233,9 @@ require('bugpack').context("*", function(bugpack) {
                 if (this._constructor) {
                     this._constructor.apply(this, arguments);
                 }
+                if (this._initializer) {
+                    this._initializer.apply(this, arguments);
+                }
             }
         };
         newConstructor.prototype = prototype;

@@ -1,18 +1,11 @@
-/*
- * Copyright (c) 2014 airbug inc. http://airbug.com
- *
- * bugcore may be freely distributed under the MIT license.
- */
-
-
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('Trace')
 
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +18,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Class               = bugpack.require('Class');
+    var Obj                 = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +28,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Obj}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var Trace = Class.extend(Obj, {
 
-        _name: "IterableSupplier",
+        _name: "Trace",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +41,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {string} stack
+         * @param {string} name
          */
-        _constructor: function(iterable) {
+        _constructor: function(stack, name) {
 
             this._super();
 
@@ -62,9 +55,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {string}
              */
-            this.iterable   = iterable;
+            this.name       = name;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.stack      = stack;
         },
 
 
@@ -73,33 +72,38 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @return {string}
          */
-        getIterable: function() {
-            return this.iterable;
+        getName: function() {
+            return this.name;
         },
 
-
-        //-------------------------------------------------------------------------------
-        // Supplier Methods
-        //-------------------------------------------------------------------------------
+        /**
+         * @param {string} name
+         */
+        setName: function(name) {
+            this.name = name;
+        },
 
         /**
-         *
+         * @return {string}
          */
-        doStart: function() {
-            var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+        getStack: function() {
+            return this.stack;
+        },
+
+        /**
+         * @param {string} stack
+         */
+        setStack: function(stack) {
+            this.stack = stack;
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('Trace', Trace);
 });

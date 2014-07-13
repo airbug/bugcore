@@ -9,13 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('StateMachine')
+//@Export('ValidatorGroup')
 
 //@Require('Class')
-//@Require('EventDispatcher')
-//@Require('Exception')
-//@Require('Set')
-//@Require('StateEvent')
+//@Require('Collections')
+//@Require('Obj')
+//@Require('ValidatorProcessor')
 
 
 //-------------------------------------------------------------------------------
@@ -29,10 +28,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class               = bugpack.require('Class');
-    var EventDispatcher     = bugpack.require('EventDispatcher');
-    var Exception           = bugpack.require('Exception');
-    var Set                 = bugpack.require('Set');
-    var StateEvent          = bugpack.require('StateEvent');
+    var Collections         = bugpack.require('Collections');
+    var Obj                 = bugpack.require('Obj');
+    var ValidatorProcessor  = bugpack.require('ValidatorProcessor');
 
 
     //-------------------------------------------------------------------------------
@@ -41,11 +39,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {EventDispatcher}
+     * @extends {Obj}
      */
-    var StateMachine = Class.extend(EventDispatcher, /** @lends {StateMachine.prototype} */{
+    var ValidatorGroup = Class.extend(Obj, /** @lends {ValidatorGroup.prototype} */{
 
-        _name: "StateMachine",
+        _name: "ValidatorGroup",
 
 
         //-------------------------------------------------------------------------------
@@ -54,12 +52,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {{
-         *      states: Array.<string>,
-         *      initialState: string
-         * }} stateMachineConfig
          */
-        _constructor: function(stateMachineConfig) {
+        _constructor: function() {
 
             this._super();
 
@@ -70,21 +64,27 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Set.<string>}
+             * @type {ValidatorProcessor}
              */
-            this.availableStateSet  = new Set(stateMachineConfig.states);
+            this.buildingValidatorProcessor     = null;
 
             /**
              * @private
-             * @type {string}
+             * @type {boolean}
              */
-            this.currentState       = stateMachineConfig.initialState;
+            this.valid                          = true;
 
             /**
              * @private
-             * @type {string}
+             * @type {boolean}
              */
-            this.movingToState      = stateMachineConfig.initialState;
+            this.validating                     = false;
+
+            /**
+             * @private
+             * @type {List.<Validator>}
+             */
+            this.validatorList                  = Collections.list();
         },
 
 
@@ -93,21 +93,43 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Set.<string>}
+         * @return {boolean}
          */
-        getAvailableStateSet: function() {
-            return this.availableStateSet;
+        getValid: function() {
+            return this.valid;
         },
 
         /**
-         * @return {string}
+         * @return {boolean}
          */
-        getCurrentState: function() {
-            return this.currentState;
+        getValidating: function() {
+            return this.validating;
         },
 
-        getMovingToState: function() {
-            return this.mv
+        /**
+         * @return {List.<Validator>}
+         */
+        getValidatorList: function() {
+            return this.validatorList;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {boolean}
+         */
+        isValid: function() {
+            return this.getValid();
+        },
+
+        /**
+         * @return {boolean}
+         */
+        isValidating: function() {
+            return this.getValidating();
         },
 
 
@@ -116,37 +138,43 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {string} state
+         * @param {Validator} validator
          */
-        changeState: function(state) {
-            if (!this.availableStateSet.contains(state)) {
-                throw new Exception("StateDoesNotExist", {}, "state '" + state + "' does not exist in the StateMachine");
-            }
-            if (this.currentState !== state) {
-                var previousState = this.currentState;
-                this.dispatchStateChanged(previousState);
+        addValidator: function(validator) {
+            if (!this.validatorList.contains(validator)) {
+                this.validatorList.add(validator);
             }
         },
 
         /**
-         * @param {string} state
-         * @return {boolean}
+         * @param {function(Throwable=)=} callback
          */
-        isState: function(state) {
-            return this.currentState === state;
+        invalidate: function(callback) {
+            if (this.isValid()) {
+                this.valid = false;
+                this.buildingValidatorProcessor = new ValidatorProcessor(this);
+            }
+            if (callback) {
+                this.buildingValidatorProcessor.addCallback(callback);
+            }
         },
 
-
-        //-------------------------------------------------------------------------------
-        // Private Methods
-        //-------------------------------------------------------------------------------
+        /**
+         * @param {Validator} validator
+         */
+        removeValidator: function(validator) {
+            this.validatorList.remove(validator);
+        },
 
         /**
-         * @private
-         * @param {string} previousState
+         * @param {function(Throwable=)} callback
          */
-        dispatchStateChanged: function(previousState) {
-            this.dispatchEvent(new StateEvent(StateEvent.EventTypes.STATE_CHANGED, previousState, this.currentState));
+        validate: function(callback) {
+            if (!this.isValid()) {
+
+            } else {
+                callback();
+            }
         }
     });
 
@@ -155,5 +183,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('StateMachine', StateMachine);
+    bugpack.export('ValidatorGroup', ValidatorGroup);
 });

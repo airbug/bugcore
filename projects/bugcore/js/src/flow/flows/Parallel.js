@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,13 +9,11 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('StateMachine')
+//@Export('Parallel')
 
 //@Require('Class')
-//@Require('EventDispatcher')
-//@Require('Exception')
-//@Require('Set')
-//@Require('StateEvent')
+//@Require('Flow')
+//@Require('ParallelException')
 
 
 //-------------------------------------------------------------------------------
@@ -29,10 +27,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class               = bugpack.require('Class');
-    var EventDispatcher     = bugpack.require('EventDispatcher');
-    var Exception           = bugpack.require('Exception');
-    var Set                 = bugpack.require('Set');
-    var StateEvent          = bugpack.require('StateEvent');
+    var Flow                = bugpack.require('Flow');
+    var ParallelException   = bugpack.require('ParallelException');
 
 
     //-------------------------------------------------------------------------------
@@ -41,11 +37,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {EventDispatcher}
+     * @extends {Flow}
      */
-    var StateMachine = Class.extend(EventDispatcher, /** @lends {StateMachine.prototype} */{
+    var Parallel = Class.extend(Flow, {
 
-        _name: "StateMachine",
+        _name: "Parallel",
 
 
         //-------------------------------------------------------------------------------
@@ -54,12 +50,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {{
-         *      states: Array.<string>,
-         *      initialState: string
-         * }} stateMachineConfig
+         * @param {Array.<Flow>} flowArray
          */
-        _constructor: function(stateMachineConfig) {
+        _constructor: function(flowArray) {
 
             this._super();
 
@@ -70,70 +63,44 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Set.<string>}
+             * @type {ParallelException}
              */
-            this.availableStateSet  = new Set(stateMachineConfig.states);
+            this.exception          = null;
 
             /**
              * @private
-             * @type {string}
+             * @type {Array.<Flow>}
              */
-            this.currentState       = stateMachineConfig.initialState;
+            this.flowArray          = flowArray;
 
             /**
              * @private
-             * @type {string}
+             * @type {number}
              */
-            this.movingToState      = stateMachineConfig.initialState;
+            this.numberComplete     = 0;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Getters and Setters
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {Set.<string>}
-         */
-        getAvailableStateSet: function() {
-            return this.availableStateSet;
-        },
-
-        /**
-         * @return {string}
-         */
-        getCurrentState: function() {
-            return this.currentState;
-        },
-
-        getMovingToState: function() {
-            return this.mv
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Public Methods
+        // Flow Extensions
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {string} state
+         * @protected
+         * @param {Array.<*>} args
          */
-        changeState: function(state) {
-            if (!this.availableStateSet.contains(state)) {
-                throw new Exception("StateDoesNotExist", {}, "state '" + state + "' does not exist in the StateMachine");
+        executeFlow: function(args) {
+            this._super(args);
+            var _this = this;
+            if (this.flowArray.length > 0) {
+                this.flowArray.forEach(function(flow) {
+                    flow.execute(args, function(error) {
+                        _this.flowCallback(error);
+                    });
+                });
+            } else {
+                this.complete();
             }
-            if (this.currentState !== state) {
-                var previousState = this.currentState;
-                this.dispatchStateChanged(previousState);
-            }
-        },
-
-        /**
-         * @param {string} state
-         * @return {boolean}
-         */
-        isState: function(state) {
-            return this.currentState === state;
         },
 
 
@@ -143,17 +110,43 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {string} previousState
+         * @param {Throwable} throwable
          */
-        dispatchStateChanged: function(previousState) {
-            this.dispatchEvent(new StateEvent(StateEvent.EventTypes.STATE_CHANGED, previousState, this.currentState));
+        processThrowable: function(throwable) {
+            if (!this.exception) {
+                this.exception = new ParallelException();
+            }
+            this.exception.addCause(throwable);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Event Listeners
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @private
+         * @param {Throwable=} throwable
+         */
+        flowCallback: function(throwable) {
+            this.numberComplete++;
+            if (throwable) {
+                this.processThrowable(throwable);
+            }
+            if (this.numberComplete >= this.flowArray.length) {
+                if (!this.exception) {
+                    this.complete();
+                } else {
+                    this.error(this.exception);
+                }
+            }
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('StateMachine', StateMachine);
+    bugpack.export('Parallel', Parallel);
 });

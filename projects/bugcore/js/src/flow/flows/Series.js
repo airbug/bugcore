@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,10 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('Series')
 
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Flow')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Class   = bugpack.require('Class');
+    var Flow    = bugpack.require('Flow');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +35,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Flow}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var Series = Class.extend(Flow, {
 
-        _name: "IterableSupplier",
+        _name: "Series",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +48,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {Array.<Flow>} flowArray
          */
-        _constructor: function(iterable) {
+        _constructor: function(flowArray) {
 
             this._super();
 
@@ -62,44 +61,76 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {Array.<*>}
              */
-            this.iterable   = iterable;
+            this.execArgs    = null;
+
+            /**
+             * @private
+             * @type {Array.<Flow>}
+             */
+            this.flowArray  = flowArray;
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.index      = -1;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Getters and Setters
+        // Flow Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @protected
+         * @param {Array.<*>} args
          */
-        getIterable: function() {
-            return this.iterable;
+        executeFlow: function(args) {
+            this._super(args);
+            this.execArgs = args;
+            this.startNextFlow();
+        },
+
+        /**
+         * @private
+         * @param {Error} error
+         */
+        flowCallback: function(error) {
+            if (error) {
+                this.error(error);
+            } else  {
+                this.startNextFlow();
+            }
         },
 
 
         //-------------------------------------------------------------------------------
-        // Supplier Methods
+        // Private Methods
         //-------------------------------------------------------------------------------
 
         /**
-         *
+         * @private
          */
-        doStart: function() {
+        startNextFlow: function() {
             var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+            this.index++;
+            if (this.index < this.flowArray.length) {
+                var nextFlow = this.flowArray[this.index];
+                nextFlow.execute(this.execArgs, function(error) {
+                    _this.flowCallback(error);
+                });
+            } else {
+                this.complete();
+            }
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('Series', Series);
 });

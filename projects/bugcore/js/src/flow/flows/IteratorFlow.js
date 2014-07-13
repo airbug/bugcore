@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,10 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('IteratorFlow')
 
+//@Require('Bug')
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Flow')
+//@Require('Iteration')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Flow        = bugpack.require('Flow');
+    var Iteration   = bugpack.require('Iteration');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +39,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Flow}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var IteratorFlow = Class.extend(Flow, {
 
-        _name: "IterableSupplier",
+        _name: "IteratorFlow",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +52,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {*} data
+         * @param {function(Flow, *)} iteratorMethod
          */
-        _constructor: function(iterable) {
+        _constructor: function(data, iteratorMethod) {
 
             this._super();
 
@@ -60,11 +64,19 @@ require('bugpack').context("*", function(bugpack) {
             // Private Properties
             //-------------------------------------------------------------------------------
 
+            // TODO BRN: Add support for BugJs data objects that implement the IIterate interface
+
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {*}
              */
-            this.iterable   = iterable;
+            this.data               = data;
+
+            /**
+             * @private
+             * @type {function(Flow, *)}
+             */
+            this.iteratorMethod     = iteratorMethod;
         },
 
 
@@ -73,33 +85,55 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @return {*}
          */
-        getIterable: function() {
-            return this.iterable;
+        getData: function() {
+            return this.data;
+        },
+
+        /**
+         * @return {function(Flow, *)}
+         */
+        getIteratorMethod: function() {
+            return this.iteratorMethod;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Supplier Methods
+        // Protected Methods
         //-------------------------------------------------------------------------------
 
         /**
-         *
+         * @protected
+         * @param {Array.<*>} args
          */
-        doStart: function() {
+        executeIteration: function(args) {
             var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+            var iteration = new Iteration(this.getIteratorMethod());
+            iteration.execute(args, function(throwable) {
+                _this.iterationCallback(args, throwable);
+            })
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Abstract Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @abstract
+         * @param {Array.<*>} args
+         * @param {Throwable} throwable
+         */
+        iterationCallback: function(args, throwable) {
+            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement iterationCallback");
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('IteratorFlow', IteratorFlow);
 });

@@ -48,8 +48,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
+         * @param {function(*)} validatorMethod
+         * @param {Object=} validatorContext
          */
-        _constructor: function() {
+        _constructor: function(validatorMethod, validatorContext) {
 
             this._super();
 
@@ -60,11 +62,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
+             * @type {Object}
              */
-            this.valid  = true;
+            this.validatorContext   = validatorContext || {};
 
-            this.
+            /**
+             * @private
+             * @type {function(function(Throwable=))}
+             */
+            this.validatorMethod    = validatorMethod;
         },
 
 
@@ -73,22 +79,17 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {Object}
          */
-        getValid: function() {
-            return this.valid;
+        getValidatorContext: function() {
+            return this.validatorContext;
         },
 
-
-        //-------------------------------------------------------------------------------
-        // Convenience Methods
-        //-------------------------------------------------------------------------------
-
         /**
-         * @return {boolean}
+         * @return {function(function(Throwable=))}
          */
-        isValid: function() {
-            return this.getValid();
+        getValidatorMethod: function() {
+            return this.validatorMethod;
         },
 
 
@@ -96,25 +97,11 @@ require('bugpack').context("*", function(bugpack) {
         // Public Methods
         //-------------------------------------------------------------------------------
 
-        invalidate: function(callback) {
-
-        },
-
-        validate: function(callback) {
-
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Private Methods
-        //-------------------------------------------------------------------------------
-
         /**
-         * @private
-         * @param {string} previousState
+         * @param {function(Throwable=)} callback
          */
-        dispatchStateChanged: function(previousState) {
-            this.dispatchEvent(new StateEvent(StateEvent.EventTypes.STATE_CHANGED, previousState, this.currentState));
+        validate: function(callback) {
+            this.validatorMethod.call(this.validatorContext, callback);
         }
     });
 

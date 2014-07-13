@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugcore may be freely distributed under the MIT license.
+ * bugflow may be freely distributed under the MIT license.
  */
 
 
@@ -9,10 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IterableSupplier')
+//@Export('Task')
 
 //@Require('Class')
-//@Require('Supplier')
+//@Require('Flow')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Supplier    = bugpack.require('Supplier');
+    var Class   = bugpack.require('Class');
+    var Flow    = bugpack.require('Flow');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +35,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Supplier}
-     * @template I
+     * @extends {Flow}
      */
-    var IterableSupplier = Class.extend(Supplier, {
+    var Task = Class.extend(Flow, {
 
-        _name: "IterableSupplier",
+        _name: "Task",
 
 
         //-------------------------------------------------------------------------------
@@ -49,9 +48,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {IIterable.<I>} iterable
+         * @param {function(Flow)} taskMethod
+         * @param {Object} taskContext
          */
-        _constructor: function(iterable) {
+        _constructor: function(taskMethod, taskContext) {
 
             this._super();
 
@@ -62,9 +62,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IIterable.<I>}
+             * @type {Object}
              */
-            this.iterable   = iterable;
+            this.taskContext    = taskContext;
+
+            /**
+             * @private
+             * @type {function(Flow)}
+             */
+            this.taskMethod     = taskMethod;
         },
 
 
@@ -73,33 +79,37 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IIterable.<I>}
+         * @return {Object}
          */
-        getIterable: function() {
-            return this.iterable;
+        getTaskContext: function() {
+            return this.taskContext;
+        },
+
+        /**
+         * @return {function(Flow)}
+         */
+        getTaskMethod: function() {
+            return this.taskMethod;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Supplier Methods
+        // Flow Methods
         //-------------------------------------------------------------------------------
 
         /**
-         *
+         * @param {Array<*>} args
          */
-        doStart: function() {
-            var _this = this;
-            this.iterable.forEach(function(item) {
-                _this.push(item);
-            });
-            this.doEnd();
+        executeFlow: function(args) {
+            this._super(args);
+            this.taskMethod.apply(this.taskContext, ([this]).concat(args));
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IterableSupplier', IterableSupplier);
+    bugpack.export('Task', Task);
 });

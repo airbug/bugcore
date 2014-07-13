@@ -12,7 +12,11 @@
 //@Export('ValidationMachine')
 
 //@Require('Class')
+//@Require('Collections')
 //@Require('Obj')
+//@Require('Validator')
+//@Require('ValidatorGroup')
+//@Require('ValidatorProcessor')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class   = bugpack.require('Class');
-    var Obj     = bugpack.require('Obj');
+    var Class               = bugpack.require('Class');
+    var Collections         = bugpack.require('Collections');
+    var Obj                 = bugpack.require('Obj');
+    var Validator           = bugpack.require('Validator');
+    var ValidatorGroup      = bugpack.require('ValidatorGroup');
+    var ValidatorProcessor  = bugpack.require('ValidatorProcessor');
 
 
     //-------------------------------------------------------------------------------
@@ -37,9 +45,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      */
-    var Validator = Class.extend(Obj, /** @lends {Validator.prototype} */{
+    var ValidationMachine = Class.extend(Obj, /** @lends {ValidationMachine.prototype} */{
 
-        _name: "Validator",
+        _name: "ValidationMachine",
 
 
         //-------------------------------------------------------------------------------
@@ -60,11 +68,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
+             * @type {Map.<string, ValidatorGroup>}
              */
-            this.valid  = true;
-
-            this.
+            this.typeToValidatorGroupMap    = Collections.map()
         },
 
 
@@ -73,22 +79,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {boolean}
+         * @return {Map.<string, ValidatorGroup>}
          */
-        getValid: function() {
-            return this.valid;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Convenience Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {boolean}
-         */
-        isValid: function() {
-            return this.getValid();
+        getTypeToValidatorGroupMap: function() {
+            return this.typeToValidatorGroupMap;
         },
 
 
@@ -96,12 +90,55 @@ require('bugpack').context("*", function(bugpack) {
         // Public Methods
         //-------------------------------------------------------------------------------
 
-        invalidate: function(callback) {
-
+        /**
+         * @param {string} type
+         * @param {function(function(Throwable=))} validatorMethod
+         * @param {Object=} validatorContext
+         */
+        addValidator: function(type, validatorMethod, validatorContext) {
+            var validator = new Validator(validatorMethod, validatorContext);
+            var validatorGroup = this.generateValidatorGroup(type);
+            validatorGroup.addValidator(validator);
         },
 
-        validate: function(callback) {
+        /**
+         * @param {string} type
+         * @param {function(Throwable=)=} callback
+         */
+        invalidate: function(type, callback) {
+            var validatorGroup = this.generateValidatorGroup(type);
+            validatorGroup.invalidate(callback);
+        },
 
+        /**
+         * @param {string} type
+         * @return {boolean}
+         */
+        isTypeValid: function(type) {
+            var validatorGroup = this.typeToValidatorGroupMap.get(type);
+            return validatorGroup ? validatorGroup.isValid() : true;
+        },
+
+        /**
+         * @param {string} type
+         * @param {function(function(Throwable=))} validatorMethod
+         * @param {Object=} validatorContext
+         */
+        removeValidator: function(type, validatorMethod, validatorContext) {
+            var validatorGroup = this.typeToValidatorGroupMap.get(type);
+            if (validatorGroup) {
+                var validator = new Validator(validatorMethod, validatorContext);
+                validatorGroup.removeValidator(validator);
+            }
+        },
+
+        /**
+         * @param {string} type
+         * @param {function(Throwable=)=} callback
+         */
+        validate: function(type, callback) {
+            var validatorGroup = this.generateValidatorGroup(type);
+            validatorGroup.validate(callback);
         },
 
 
@@ -111,10 +148,16 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {string} previousState
+         * @param {string} type
+         * @return {ValidatorGroup}
          */
-        dispatchStateChanged: function(previousState) {
-            this.dispatchEvent(new StateEvent(StateEvent.EventTypes.STATE_CHANGED, previousState, this.currentState));
+        generateValidatorGroup: function(type) {
+            var validatorGroup = this.typeToValidatorGroupMap.get(type);
+            if (!validatorGroup) {
+                validatorGroup = new ValidatorGroup();
+                this.typeToValidatorGroupMap.put(type, validatorGroup);
+            }
+            return validatorGroup;
         }
     });
 
@@ -123,5 +166,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Validator', Validator);
+    bugpack.export('ValidationMachine', ValidationMachine);
 });
