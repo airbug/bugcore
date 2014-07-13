@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ */
+
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -5,8 +12,8 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('bugmeta.BugMeta')
 //@Require('Trace')
+//@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 //@Require('bugyarn.BugYarn')
 
@@ -21,20 +28,20 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                   = bugpack.require('Class');
-    var BugMeta                 = bugpack.require('bugmeta.BugMeta');
-    var Trace                   = bugpack.require('Trace');
-    var TestTag          = bugpack.require('bugunit.TestTag');
-    var BugYarn                 = bugpack.require('bugyarn.BugYarn');
+    var Class       = bugpack.require('Class');
+    var Trace       = bugpack.require('Trace');
+    var BugMeta     = bugpack.require('bugmeta.BugMeta');
+    var TestTag     = bugpack.require('bugunit.TestTag');
+    var BugYarn     = bugpack.require('bugyarn.BugYarn');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta                 = BugMeta.context();
-    var bugyarn                 = BugYarn.context();
-    var test                    = TestTag.test;
+    var bugmeta     = BugMeta.context();
+    var bugyarn     = BugYarn.context();
+    var test        = TestTag.test;
 
 
     //-------------------------------------------------------------------------------

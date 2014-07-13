@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -32,7 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var IIterable                   = bugpack.require('IIterable');
     var IteratorFlow                = bugpack.require('IteratorFlow');
     var MappedParallelException     = bugpack.require('MappedParallelException');
-    var Tracer                    = bugpack.require('Tracer');
+    var Tracer                      = bugpack.require('Tracer');
 
 
     //-------------------------------------------------------------------------------

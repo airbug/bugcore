@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 

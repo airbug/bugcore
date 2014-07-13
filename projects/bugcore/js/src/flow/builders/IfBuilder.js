@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -14,9 +14,9 @@
 //@Require('ArgUtil')
 //@Require('Bug')
 //@Require('Class')
-//@Require('List')
 //@Require('FlowBuilder')
 //@Require('If')
+//@Require('List')
 
 
 //-------------------------------------------------------------------------------
@@ -32,9 +32,9 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil         = bugpack.require('ArgUtil');
     var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
-    var List            = bugpack.require('List');
     var FlowBuilder     = bugpack.require('FlowBuilder');
     var If              = bugpack.require('If');
+    var List            = bugpack.require('List');
 
 
     //-------------------------------------------------------------------------------

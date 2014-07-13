@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -12,8 +12,8 @@
 //@Export('ForInSeries')
 
 //@Require('Class')
-//@Require('Obj')
 //@Require('IteratorFlow')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -27,8 +27,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
-    var Obj             = bugpack.require('Obj');
     var IteratorFlow    = bugpack.require('IteratorFlow');
+    var Obj             = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------

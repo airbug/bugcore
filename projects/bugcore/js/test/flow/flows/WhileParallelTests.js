@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Flows     = bugpack.require('Flows');
+    var Flows       = bugpack.require('Flows');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 

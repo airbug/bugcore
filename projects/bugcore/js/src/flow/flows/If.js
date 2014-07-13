@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -12,8 +12,8 @@
 //@Export('If')
 
 //@Require('Class')
-//@Require('List')
 //@Require('Flow')
+//@Require('List')
 
 
 //-------------------------------------------------------------------------------
@@ -27,8 +27,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class   = bugpack.require('Class');
-    var List    = bugpack.require('List');
     var Flow    = bugpack.require('Flow');
+    var List    = bugpack.require('List');
 
 
     //-------------------------------------------------------------------------------

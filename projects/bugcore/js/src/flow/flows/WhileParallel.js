@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -13,8 +13,8 @@
 
 //@Require('Bug')
 //@Require('Class')
-//@Require('List')
 //@Require('Flow')
+//@Require('List')
 //@Require('ParallelException')
 
 
@@ -30,8 +30,8 @@ require('bugpack').context("*", function(bugpack) {
 
     var Bug                 = bugpack.require('Bug');
     var Class               = bugpack.require('Class');
-    var List                = bugpack.require('List');
     var Flow                = bugpack.require('Flow');
+    var List                = bugpack.require('List');
     var ParallelException   = bugpack.require('ParallelException');
 
 

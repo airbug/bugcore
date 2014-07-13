@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 airbug inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ */
+
+
 //-------------------------------------------------------------------------------
 // Annotations
 //-------------------------------------------------------------------------------
@@ -10,9 +17,9 @@
 //@Require('Proxy')
 //@Require('StackTraceUtil')
 //@Require('StringUtil')
+//@Require('Trace')
 //@Require('Tree')
 //@Require('TreeNode')
-//@Require('Trace')
 
 
 //-------------------------------------------------------------------------------
@@ -25,15 +32,15 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil             = bugpack.require('ArgUtil');
-    var Class               = bugpack.require('Class');
-    var Obj                 = bugpack.require('Obj');
-    var Proxy               = bugpack.require('Proxy');
-    var StackTraceUtil      = bugpack.require('StackTraceUtil');
-    var StringUtil          = bugpack.require('StringUtil');
-    var Tree                = bugpack.require('Tree');
-    var TreeNode            = bugpack.require('TreeNode');
-    var Trace               = bugpack.require('Trace');
+    var ArgUtil         = bugpack.require('ArgUtil');
+    var Class           = bugpack.require('Class');
+    var Obj             = bugpack.require('Obj');
+    var Proxy           = bugpack.require('Proxy');
+    var StackTraceUtil  = bugpack.require('StackTraceUtil');
+    var StringUtil      = bugpack.require('StringUtil');
+    var Trace           = bugpack.require('Trace');
+    var Tree            = bugpack.require('Tree');
+    var TreeNode        = bugpack.require('TreeNode');
 
 
     //-------------------------------------------------------------------------------

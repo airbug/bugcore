@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -15,8 +15,8 @@
 //@Require('Bug')
 //@Require('Class')
 //@Require('Obj')
-//@Require('TypeUtil')
 //@Require('Tracer')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -33,8 +33,8 @@ require('bugpack').context("*", function(bugpack) {
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Tracer      = bugpack.require('Tracer');
     var TypeUtil    = bugpack.require('TypeUtil');
-    var Tracer    = bugpack.require('Tracer');
 
 
     //-------------------------------------------------------------------------------

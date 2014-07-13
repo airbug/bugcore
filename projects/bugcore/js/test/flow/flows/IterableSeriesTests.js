@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -12,8 +12,8 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('List')
 //@Require('IterableSeries')
+//@Require('List')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -29,8 +29,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
-    var List            = bugpack.require('List');
     var IterableSeries  = bugpack.require('IterableSeries');
+    var List            = bugpack.require('List');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
 

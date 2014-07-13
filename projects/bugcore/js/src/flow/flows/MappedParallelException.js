@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 airbug inc. http://airbug.com
  *
- * bugflow may be freely distributed under the MIT license.
+ * bugcore may be freely distributed under the MIT license.
  */
 
 
@@ -13,8 +13,8 @@
 
 //@Require('Class')
 //@Require('Map')
-//@Require('StackTraceUtil')
 //@Require('ParallelException')
+//@Require('StackTraceUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -29,8 +29,8 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class               = bugpack.require('Class');
     var Map                 = bugpack.require('Map');
-    var StackTraceUtil      = bugpack.require('StackTraceUtil');
     var ParallelException   = bugpack.require('ParallelException');
+    var StackTraceUtil      = bugpack.require('StackTraceUtil');
 
 
     //-------------------------------------------------------------------------------
