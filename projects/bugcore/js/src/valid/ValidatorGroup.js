@@ -66,25 +66,31 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {ValidatorProcessor}
              */
-            this.buildingValidatorProcessor     = null;
+            this.buildingValidatorProcessor         = null;
+
+            /**
+             * @private
+             * @type {List.<ValidatorProcessor>}
+             */
+            this.executingValidatorProcessorList    = Collections.list();
 
             /**
              * @private
              * @type {boolean}
              */
-            this.valid                          = true;
+            this.valid                              = true;
 
             /**
              * @private
              * @type {boolean}
              */
-            this.validating                     = false;
+            this.validating                         = false;
 
             /**
              * @private
              * @type {List.<Validator>}
              */
-            this.validatorList                  = Collections.list();
+            this.validatorList                      = Collections.list();
         },
 
 
@@ -97,13 +103,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         getValid: function() {
             return this.valid;
-        },
-
-        /**
-         * @return {boolean}
-         */
-        getValidating: function() {
-            return this.validating;
         },
 
         /**
@@ -125,13 +124,6 @@ require('bugpack').context("*", function(bugpack) {
             return this.getValid();
         },
 
-        /**
-         * @return {boolean}
-         */
-        isValidating: function() {
-            return this.getValidating();
-        },
-
 
         //-------------------------------------------------------------------------------
         // Public Methods
@@ -150,8 +142,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(Throwable=)=} callback
          */
         invalidate: function(callback) {
-            if (this.isValid()) {
-                this.valid = false;
+            this.valid = false;
+            if (!this.buildingValidatorProcessor) {
                 this.buildingValidatorProcessor = new ValidatorProcessor(this);
             }
             if (callback) {
@@ -170,8 +162,18 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(Throwable=)} callback
          */
         validate: function(callback) {
+            var _this = this;
             if (!this.isValid()) {
-
+                var validatorProcessor = this.buildingValidatorProcessor;
+                this.buildingValidatorProcessor = null;
+                this.executingValidatorProcessorList.add(validatorProcessor);
+                validatorProcessor.validate(function(throwable) {
+                    _this.executingValidatorProcessorList.remove(validatorProcessor);
+                    if (_this.executingValidatorProcessorList.isEmpty()) {
+                        _this.valid = true;
+                    }
+                    callback(throwable);
+                });
             } else {
                 callback();
             }

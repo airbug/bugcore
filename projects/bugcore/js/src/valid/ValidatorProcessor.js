@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('Collections')
 //@Require('Exception')
+//@require('Flows')
 //@Require('Obj')
 
 
@@ -30,7 +31,17 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var Collections     = bugpack.require('Collections');
     var Exception       = bugpack.require('Exception');
+    var Flows           = bugpack.require('Flows');
     var Obj             = bugpack.require('Obj');
+
+
+    //-------------------------------------------------------------------------------
+    // Simplify References
+    //-------------------------------------------------------------------------------
+
+    var $iterableSeries = Flows.$iterableSeries;
+    var $series         = Flows.$series;
+    var $task           = Flows.$task;
 
 
     //-------------------------------------------------------------------------------
@@ -167,29 +178,26 @@ require('bugpack').context("*", function(bugpack) {
         // Private Methods
         //-------------------------------------------------------------------------------
 
-        completeCallback: function() {
-
-        },
-
-        /**
-         * @private
-         * @param {function(Throwable=)} callback
-         */
-        completeValidators: function(callback) {
-
-        },
-
         /**
          * @private
          * @param {function(Throwable=)} callback
          */
         executeValidators: function(callback) {
-            this.validatorIterator = this.validatorGroup.getValidatorList().iterator();
-            if (this.validatorIterator.hasNext()) {
-                this.nextValidator();
-            } else {
-                this.completeValidators();
-            }
+            $iterableSeries(this.validatorGroup.getValidatorList(), function(flow, validator) {
+                validator.validate(function(throwable) {
+                    flow.complete(throwable);
+                });
+            }).execute(callback);
+        },
+
+        /**
+         * @private
+         * @param {Throwable=} throwable
+         */
+        executeCallbacks: function(throwable) {
+            this.callbackList.forEach(function(callback) {
+                callback(throwable);
+            });
         },
 
         /**
@@ -197,23 +205,15 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(Throwable=)} callback
          */
         doValidation: function(callback) {
-
-            // TODO BRN: Eww, this is ugly! Would be best to move the core of bugflow in to the bugcore framework so that
-            // we can use it in situations like these.
-
-            this.executeValidators()
-        },
-
-        nextCallback: function() {
-
-        },
-
-        /**
-         * @private
-         */
-        nextValidator: function() {
-            var validator = this.validatorIterator.next();
-            validator.validate()
+            var _this = this;
+            $task(function(flow) {
+                _this.executeValidators(function(throwable) {
+                    flow.complete(throwable);
+                });
+            }).execute(function(throwable) {
+                _this.executeCallbacks(throwable);
+                callback(throwable);
+            });
         }
     });
 
