@@ -28,20 +28,20 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Collections     = bugpack.require('Collections');
-    var Exception       = bugpack.require('Exception');
-    var Flows           = bugpack.require('Flows');
-    var Obj             = bugpack.require('Obj');
+    var Class               = bugpack.require('Class');
+    var Collections         = bugpack.require('Collections');
+    var Exception           = bugpack.require('Exception');
+    var Flows               = bugpack.require('Flows');
+    var Obj                 = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var $iterableSeries = Flows.$iterableSeries;
-    var $series         = Flows.$series;
-    var $task           = Flows.$task;
+    var $iterableSeries     = Flows.$iterableSeries;
+    var $series             = Flows.$series;
+    var $task               = Flows.$task;
 
 
     //-------------------------------------------------------------------------------
