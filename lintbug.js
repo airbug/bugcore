@@ -36,6 +36,16 @@ var lintbug             = enableModule("lintbug");
 // Lint Tasks
 //-------------------------------------------------------------------------------
 
+lintbug.lintTask("cleanupExtraSpacingAtEndOfLines", function(lintFile, callback) {
+    var fileContents    = lintFile.getFileContents();
+    var lines           = fileContents.split("\n");
+    lines.forEach(function(line, index) {
+        lines[index] = bugcore.StringUtil.rtrim(line);
+    });
+    lintFile.setFileContents(lines.join("\n"));
+    callback();
+});
+
 lintbug.lintTask("ensureNewLineEnding", function(lintFile, callback) {
     var fileContents    = lintFile.getFileContents();
     var lines           = fileContents.split("\n");

@@ -44,9 +44,9 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.2.10";
+var version             = "0.2.11";
 var dependencies        = {
-    bugpack: "0.1.12"
+    bugpack: "0.1.14"
 };
 
 
@@ -158,6 +158,7 @@ buildTarget('local').buildFlow(
                 targetPaths: buildProject.getProperty("lint.targetPaths"),
                 ignores: buildProject.getProperty("lint.ignorePatterns"),
                 lintTasks: [
+                    "cleanupExtraSpacingAtEndOfLines",
                     "ensureNewLineEnding",
                     "indentEqualSignsForPreClassVars",
                     "orderBugpackRequires",
@@ -305,6 +306,7 @@ buildTarget('prod').buildFlow(
                 targetPaths: buildProject.getProperty("lint.targetPaths"),
                 ignores: buildProject.getProperty("lint.ignorePatterns"),
                 lintTasks: [
+                    "cleanupExtraSpacingAtEndOfLines",
                     "ensureNewLineEnding",
                     "indentEqualSignsForPreClassVars",
                     "orderBugpackRequires",
