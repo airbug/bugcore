@@ -427,7 +427,7 @@ require('bugpack').context("*", function(bugpack) {
             });
         }
     };
-    
+
     /**
      * This tests..
      * 1) That the forIn function correctly iterates over an object and sets the context correctly

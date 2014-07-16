@@ -31,7 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
-    
+
     var ArgumentBug                 = bugpack.require('ArgumentBug');
     var Class                       = bugpack.require('Class');
     var IObservable                 = bugpack.require('IObservable');
@@ -41,12 +41,12 @@ require('bugpack').context("*", function(bugpack) {
     var Observer                    = bugpack.require('Observer');
     var Set                         = bugpack.require('Set');
     var TypeUtil                    = bugpack.require('TypeUtil');
-    
-    
+
+
     //-------------------------------------------------------------------------------
     // Class
     //-------------------------------------------------------------------------------
-    
+
     /**
      * @class
      * @extends {ObservationPropagator}
@@ -60,43 +60,43 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
         // Constructor
         //-------------------------------------------------------------------------------
-    
+
         /**
          * @constructs
          */
         _constructor: function() {
-    
+
             this._super();
-    
-    
+
+
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
-    
+
             /**
              * @private
              * @type {MultiListMap.<string, Observer>}
              */
             this.changeTypeObserverMap      = new MultiListMap();
         },
-    
-    
+
+
         //-------------------------------------------------------------------------------
         // Getters and Setters
         //-------------------------------------------------------------------------------
-    
+
         /**
          * @return {MultiListMap.<string, Observer>}
          */
         getChangeTypeObserverMap: function() {
             return this.changeTypeObserverMap;
         },
-    
-    
+
+
         //-------------------------------------------------------------------------------
         // IObservable Implementation
         //-------------------------------------------------------------------------------
-            
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {(string | Array.<string>)} pathPatterns
@@ -112,7 +112,7 @@ require('bugpack').context("*", function(bugpack) {
             }
             this.buildObservers(changeTypes, pathPatterns, observerFunction, observerContext);
         },
-    
+
         /**
          * @param {string} changeType
          * @param {string} pathPattern
@@ -128,7 +128,7 @@ require('bugpack').context("*", function(bugpack) {
             }
             return false;
         },
-    
+
         /**
          * @param {string} changeType
          * @param {string} observationPath
@@ -147,7 +147,7 @@ require('bugpack').context("*", function(bugpack) {
             }
             return false;
         },
-    
+
         /**
          * @param {Change} change
          * @param {string=} observationPath
@@ -160,7 +160,7 @@ require('bugpack').context("*", function(bugpack) {
             this.propagateObservationToObservers(observation);
             this.propagateObservationToPropagators(observation);
         },
-    
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {(string | Array.<string>)} pathPatterns
@@ -176,19 +176,19 @@ require('bugpack').context("*", function(bugpack) {
                 this.detachObserverFromTypes(changeTypes, observer);
             }
         },
-    
+
         /**
          *
          */
         removeAllObservers: function() {
             this.changeTypeObserverMap.clear();
         },
-    
-    
+
+
         //-------------------------------------------------------------------------------
         // ObservationPropagator Methods
         //-------------------------------------------------------------------------------
-    
+
         /**
          * @override
          * @param {Observation} change
@@ -198,12 +198,12 @@ require('bugpack').context("*", function(bugpack) {
             this.propagateObservationToObservers(change);
             this.propagateObservationToPropagators(change);
         },
-    
-    
+
+
         //-------------------------------------------------------------------------------
         // Public Methods
         //-------------------------------------------------------------------------------
-    
+
         /**
          * @param {string} changeType
          * @param {Observer} observer
@@ -216,7 +216,7 @@ require('bugpack').context("*", function(bugpack) {
                 changeTypeObserverList.add(observer);
             }
         },
-    
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {Observer} observer
@@ -231,7 +231,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.attachObserver(changeTypes, observer);
             }
         },
-    
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {Set.<Observer>} observerSet
@@ -257,7 +257,7 @@ require('bugpack').context("*", function(bugpack) {
         detachObserver: function(changeType, observer) {
             this.changeTypeObserverMap.removeKeyValuePair(changeType, observer);
         },
-    
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {Observer} observer
@@ -272,7 +272,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.detachObserver(changeTypes, observer);
             }
         },
-    
+
         /**
          * @param {(string | Array.<string>)} changeTypes
          * @param {Set.<Observer>} observerSet
@@ -283,7 +283,7 @@ require('bugpack').context("*", function(bugpack) {
                 _this.detachObserverFromTypes(changeTypes, observer);
             });
         },
-    
+
         /**
          *
          */
@@ -304,12 +304,12 @@ require('bugpack').context("*", function(bugpack) {
         observe: function() {
             this.addObserver.apply(this, arguments);
         },
-    
-    
+
+
         //-------------------------------------------------------------------------------
         // Private Methods
         //-------------------------------------------------------------------------------
-    
+
         /**
          * @private
          * @param {(string | Array.<string>)} changeTypes
@@ -336,7 +336,7 @@ require('bugpack').context("*", function(bugpack) {
         factoryObservation: function(change, observationPath) {
             return new Observation(change, observationPath);
         },
-        
+
         /**
          * @private
          * @param {string} pathPattern
@@ -346,7 +346,7 @@ require('bugpack').context("*", function(bugpack) {
         factoryObserver: function(pathPattern, observerFunction, observerContext) {
             return new Observer(pathPattern, observerFunction, observerContext);
         },
-    
+
         /**
          * @private
          * @param {Array.<string>} pathPatterns
@@ -362,7 +362,7 @@ require('bugpack').context("*", function(bugpack) {
             });
             return observerSet;
         },
-    
+
         /**
          * @private
          * @param {Observation} observation
@@ -380,7 +380,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
             }
         },
-    
+
         /**
          * @private
          * @param {Observation} observation
@@ -392,18 +392,18 @@ require('bugpack').context("*", function(bugpack) {
             });
         }
     });
-    
-    
+
+
     //-------------------------------------------------------------------------------
     // Interfaces
     //-------------------------------------------------------------------------------
-    
+
     Class.implement(Observable, IObservable);
-    
-    
+
+
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
-    
+
     bugpack.export('Observable', Observable);
 });
