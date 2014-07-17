@@ -203,8 +203,7 @@ require('bugpack').context("*", function(bugpack) {
         hashCode: function() {
             if (!this._hashCode) {
                 this._hashCode = Obj.hashCode("[Url]" +
-                    Obj.hashCode(this.listenerFunction) + "_" +
-                    Obj.hashCode(this.listenerContext));
+                    Obj.hashCode(this.toString()));
             }
             return this._hashCode;
         },
