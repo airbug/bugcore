@@ -56,20 +56,19 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
+            TypeUtilTests.runTypeTest("arguments", test);
             TypeUtilTests.runTypeTest("array", test);
             TypeUtilTests.runTypeTest("boolean", test);
             TypeUtilTests.runTypeTest("function", test);
             TypeUtilTests.runTypeTest("null", test);
             TypeUtilTests.runTypeTest("number", test);
             TypeUtilTests.runTypeTest("object", test);
+            TypeUtilTests.runTypeTest("regexp", test);
             TypeUtilTests.runTypeTest("string", test);
             TypeUtilTests.runTypeTest("undefined", test);
         }
 
     };
-    bugmeta.tag(typeComparisonTest).with(
-        test().name("TypeUtil Comparison Test")
-    );
 
     var TypeUtilTests = {
         runTypeTest: function(typeToTest, runningTest) {
@@ -87,7 +86,9 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         testIsType: function(type, value) {
-            if (type === "array") {
+            if (type === "arguments") {
+                return TypeUtil.isArguments(value);
+            } else if (type === "array") {
                 return TypeUtil.isArray(value);
             } else if (type === "boolean") {
                 return TypeUtil.isBoolean(value);
@@ -99,6 +100,8 @@ require('bugpack').context("*", function(bugpack) {
                 return TypeUtil.isNumber(value);
             } else if (type === "object") {
                 return TypeUtil.isObject(value);
+            } else if (type === "regexp") {
+                return TypeUtil.isRegExp(value);
             } else if (type === "string") {
                 return TypeUtil.isString(value);
             } else if (type === "undefined") {
@@ -106,7 +109,6 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-
 
     /**
      *
@@ -117,6 +119,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
+            this.testArguments  = [
+                arguments
+            ];
             this.testArrays     = [
                 [],
                 new Array()
@@ -152,6 +157,10 @@ require('bugpack').context("*", function(bugpack) {
 
                 new Set()
             ];
+            this.testRegExps    = [
+                /./,
+                new RegExp(".")
+            ];
             this.testStrings    = [
                 "test",
                 new String("test2"),
@@ -168,6 +177,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
+            this.testArguments.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "arguments",
+                        "Assert toType returns 'arguments' for value - value:" + value);
+            });
             this.testArrays.forEach(function(value) {
                 test.assertEqual(TypeUtil.toType(value), "array",
                     "Assert toType returns 'array' for value - value:" + value);
@@ -188,22 +201,77 @@ require('bugpack').context("*", function(bugpack) {
                 test.assertEqual(TypeUtil.toType(value), "number",
                     "Assert toType returns 'number' for value - value:" + value);
             });
+            this.testObjects.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "object",
+                        "Assert toType returns 'object' for value:" + value);
+            });
+            this.testRegExps.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "regexp",
+                        "Assert toType returns 'regexp' for value:" + value);
+            });
             this.testStrings.forEach(function(value) {
                 test.assertEqual(TypeUtil.toType(value), "string",
                     "Assert toType returns 'string' for value - value:" + value);
             });
-            this.testObjects.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "object",
-                    "Assert toType returns 'object' for value:" + value);
-            });
+
             test.assertEqual(TypeUtil.toType(this.testNull), "null",
                 "Assert null returns type 'null'");
             test.assertEqual(TypeUtil.toType(this.testUndefined), "undefined",
                 "Assert null returns type 'undefined'");
         }
-
     };
+
+    /**
+     *
+     */
+    var typeUtilIsNaNTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+
+            this.testNotNaN = [
+                null,
+                undefined,
+                "some string",
+                123,
+                0,
+                -123,
+                123.1,
+                -123.1,
+                new Number(0),
+                new Number(123)
+            ];
+            this.testNaN    = NaN;
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testNotNaN.forEach(function(notNaN) {
+                test.assertFalse(TypeUtil.isNaN(notNaN),
+                    "Assert non NaN value '" + notNaN + "' is not NaN");
+            });
+            test.assertTrue(TypeUtil.isNaN(this.testNaN),
+                "Assert isNaN returns true for NaN");
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(typeComparisonTest).with(
+        test().name("TypeUtil - comparison test")
+    );
     bugmeta.tag(typeUtilToTypeTest).with(
-        test().name("TypeUtil - toType Test")
+        test().name("TypeUtil - #toType test")
+    );
+    bugmeta.tag(typeUtilIsNaNTest).with(
+        test().name("TypeUtil - #isNaN test")
     );
 });

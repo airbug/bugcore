@@ -3573,16 +3573,69 @@ var TypeUtil = function() {
 
 __Static Method Summary__
 
-* [`static isArray(* value) :boolean`](#TypeUtil-isArray)
-* [`static isBoolean(* value) :boolean`](#TypeUtil-isBoolean)
-* [`static isDate(* value) :boolean`](#TypeUtil-isDate)
-* [`static isFunction(* value) :boolean`](#TypeUtil-isFunction)
-* [`static isNull(* value) :boolean`](#TypeUtil-isNull)
-* [`static isNumber(* value) :boolean`](#TypeUtil-isNumber)
-* [`static isObject(* value) :boolean`](#TypeUtil-isObject)
-* [`static isString(* value) :boolean`](#TypeUtil-isString)
-* [`static isUndefined(* value) :boolean`](#TypeUtil-isUndefined)
-* [`static toType(* value) :string`](#TypeUtil-toType)
+Access | Signature | Return Type
+--- | --- | ---
+static | <code>[isArguments](#TypeUtil-isArguments)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isArray](#TypeUtil-isArray)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isBoolean](#TypeUtil-isBoolean)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isDate](#TypeUtil-isDate)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isFunction](#TypeUtil-isFunction)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isNan](#TypeUtil-isNan)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isNull](#TypeUtil-isNull)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isNumber](#TypeUtil-isNumber)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isObject](#TypeUtil-isObject)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isRegExp](#TypeUtil-isRegExp)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isString](#TypeUtil-isString)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[isUndefined](#TypeUtil-isUndefined)({\*} value)</code> | <code>{boolean}</code>
+static | <code>[toType](#TypeUtil-toType)({string} value)</code> | <code>{boolean}</code>
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="TypeUtil-isArguments" />
+### TypeUtil.isArguments(value):boolean
+
+Determines if the given value is a native js arguments list.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @return {boolean}
+ */
+TypeUtil.isArguments = function(value) {
+```
+
+
+__Parameters__
+
+* `value {*}` - The value to check for the type of arguments
+
+
+__Returns__
+
+* `{boolean}` - Whether or not the value is an arguments.
+
+
+__Examples__
+
+Arguments literal is an arguments
+```js
+var myFunction = function() {
+    TypeUtil.isArguments(arguments);    //true
+}
+```
+
+Instance of Array is not an arguments
+```js
+var myArray = [];
+TypeUtil.isArguments(myArray);          //false
+```
 
 
 <br />
@@ -3641,6 +3694,71 @@ number is NOT an array
 ```js
 var myNumber = 123;
 TypeUtil.isArray(myNumber);     //false
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="TypeUtil-isBoolean" />
+### TypeUtil.isBoolean(value):boolean
+
+Determines if the given value is a boolean.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*} value
+ * @return {boolean}
+ */
+TypeUtil.isBoolean = function(value) {
+```
+
+
+__Parameters__
+
+* `value {*}` - The value to check for the type of boolean
+
+
+__Returns__
+
+* `{boolean}` - Whether or not the value is a boolean.
+
+
+__Examples__
+
+Boolean literal true is a boolean
+```js
+var myTrueBoolean = true;
+TypeUtil.isBoolean(myTrueBoolean);      //true
+```
+
+Boolean literal false is a boolean
+```js
+var myFalseBoolean = false;
+TypeUtil.isBoolean(myFalseBoolean);     //true
+```
+
+Instance of a true Boolean is a boolean
+```js
+var myTrueBoolean = new Boolean(true);
+TypeUtil.isBoolean(myTrueBoolean);      //true
+```
+
+Instance of a true Boolean is a boolean
+```js
+var myFalseBoolean = new Boolean(false);
+TypeUtil.isBoolean(myFalseBoolean);      //true
+```
+
+the number 0 is NOT a boolean
+```js
+var myNumber =  0;
+TypeUtil.isBoolean(myNumber);           //false
 ```
 
 

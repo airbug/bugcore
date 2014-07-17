@@ -55,6 +55,11 @@ require('bugpack').context("*", function(bugpack) {
         var key     = "";
         var type    = TypeUtil.toType(value);
         switch (type) {
+            case "arguments":
+                IdGenerator.ensureId(value);
+                key += "ar_" + value._internalId;
+                break;
+                break;
             case "array":
                 IdGenerator.ensureId(value);
                 key += "a_" + value._internalId;
@@ -83,6 +88,10 @@ require('bugpack').context("*", function(bugpack) {
             case "object":
                 IdGenerator.ensureId(value);
                 key += "o_" + value._internalId;
+                break;
+            case "regexp":
+                IdGenerator.ensureId(value);
+                key += "r_" + value._internalId;
                 break;
             case "string":
                 key += "s_" + value;

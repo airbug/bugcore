@@ -31,6 +31,9 @@ require('bugpack').context("*", function(bugpack) {
 
         getTypeValueSets: function() {
             var typeValueSets = {
+                arguments: [
+                    {name: "arguments literal", value: arguments}
+                ],
                 array: [
                     {name: "array literal", value: []},
                     {name: "Array object", value: new Array()}
@@ -52,6 +55,7 @@ require('bugpack').context("*", function(bugpack) {
                     {name: "null", value: null}
                 ],
                 number: [
+                    {name: "NaN", value: NaN},
                     {name: "number literal 0", value: 0},
                     {name: "number literal", value: 123},
                     {name: "negative number literal", value: -123},
@@ -67,9 +71,13 @@ require('bugpack').context("*", function(bugpack) {
                     {name: "positive infinity property", value: Number.POSITIVE_INFINITY},
                     {name: "negative infinity property", value: Number.NEGATIVE_INFINITY}
                 ],
-                object:[
+                object: [
                     {name: "object literal", value: {}},
                     {name: "Object object", value: new Object()}
+                ],
+                regexp: [
+                    {name: "regexp literal .", value: /./},
+                    {name: "RegExp object .", value: new RegExp("")}
                 ],
                 string: [
                     {name: "empty string literal", value: ""},
@@ -80,7 +88,7 @@ require('bugpack').context("*", function(bugpack) {
                     {name: "numeric String object", value: new String("123")}
                 ],
                 undefined: [
-                    {name: "undefined", value: undefined}
+                    {name: "undefined", value: void 0}
                 ]
             };
             return typeValueSets;
