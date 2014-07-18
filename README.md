@@ -3587,7 +3587,7 @@ static | <code>[isObject](#TypeUtil-isObject)({\*} value)</code> | <code>{boolea
 static | <code>[isRegExp](#TypeUtil-isRegExp)({\*} value)</code> | <code>{boolean}</code>
 static | <code>[isString](#TypeUtil-isString)({\*} value)</code> | <code>{boolean}</code>
 static | <code>[isUndefined](#TypeUtil-isUndefined)({\*} value)</code> | <code>{boolean}</code>
-static | <code>[toType](#TypeUtil-toType)({string} value)</code> | <code>{boolean}</code>
+static | <code>[toType](#TypeUtil-toType)({*} value)</code> | <code>{string}</code>
 
 
 <br />
