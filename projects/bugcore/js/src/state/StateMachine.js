@@ -106,8 +106,11 @@ require('bugpack').context("*", function(bugpack) {
             return this.currentState;
         },
 
+        /**
+         * @return {string}
+         */
         getMovingToState: function() {
-            return this.mv
+            return this.movingToState;
         },
 
 
@@ -125,6 +128,7 @@ require('bugpack').context("*", function(bugpack) {
             if (this.currentState !== state) {
                 var previousState = this.currentState;
                 this.dispatchStateChanged(previousState);
+                this.currentState = state;
             }
         },
 

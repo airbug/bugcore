@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Collections')
+//@Require('Func')
 //@Require('Obj')
 //@Require('ValidatorProcessor')
 
@@ -29,6 +30,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class               = bugpack.require('Class');
     var Collections         = bugpack.require('Collections');
+    var Func                = bugpack.require('Func');
     var Obj                 = bugpack.require('Obj');
     var ValidatorProcessor  = bugpack.require('ValidatorProcessor');
 
@@ -73,6 +75,12 @@ require('bugpack').context("*", function(bugpack) {
              * @type {List.<ValidatorProcessor>}
              */
             this.executingValidatorProcessorList    = Collections.list();
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.timeoutSetup                       = false;
 
             /**
              * @private
@@ -149,6 +157,7 @@ require('bugpack').context("*", function(bugpack) {
             if (callback) {
                 this.buildingValidatorProcessor.addCallback(callback);
             }
+            this.setupTimeout();
         },
 
         /**
@@ -159,7 +168,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {function(Throwable=)} callback
+         * @param {function(Throwable=)=} callback
          */
         validate: function(callback) {
             var _this = this;
@@ -172,10 +181,39 @@ require('bugpack').context("*", function(bugpack) {
                     if (_this.executingValidatorProcessorList.isEmpty()) {
                         _this.valid = true;
                     }
-                    callback(throwable);
+                    if (callback) {
+                        callback(throwable);
+                    }
                 });
             } else {
-                callback();
+                if (callback) {
+                    callback();
+                }
+            }
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Private Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @private
+         */
+        runValidation: function() {
+            var _this = this;
+            this.validate(function(throwable) {
+                _this.timeoutSetup = false;
+            });
+        },
+
+        /**
+         * @private
+         */
+        setupTimeout: function() {
+            if (!this.timeoutSetup) {
+                this.timeoutSetup = true;
+                Func.deferCall(this.runValidation, this);
             }
         }
     });
