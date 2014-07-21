@@ -281,6 +281,22 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {*} value
+     */
+    Class.isConstructor = function(value) {
+        if (TypeUtil.isFunction(value)) {
+
+            //TODO BRN: Test this and make sure it works....
+
+            if (value.prototype instanceof Constructor) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /**
+     * @static
      * @param {function(new:Constructor)} constructor
      * @param {Object} declaration
      */

@@ -9,12 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectConsumer')
+//@Export('ArraySupplier')
 
 //@Require('Class')
-//@Require('Consumer')
-//@Require('Exception')
-//@require('ICollection')
+//@Require('Supplier')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Consumer        = bugpack.require('Consumer');
-    var Exception       = bugpack.require('Exception');
-    var ICollection     = bugpack.require('ICollection');
+    var Class       = bugpack.require('Class');
+    var Supplier    = bugpack.require('Supplier');
 
 
     //-------------------------------------------------------------------------------
@@ -39,12 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Consumer.<I>}
+     * @extends {Supplier}
      * @template I
      */
-    var CollectConsumer = Class.extend(Consumer, {
+    var ArraySupplier = Class.extend(Supplier, {
 
-        _name: "CollectConsumer",
+        _name: "ArraySupplier",
 
 
         //-------------------------------------------------------------------------------
@@ -53,12 +49,11 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {ISupplier.<I>} supplier
-         * @param {ICollection.<I>} collection
+         * @param {Array.<I>} array
          */
-        _constructor: function(supplier, collection) {
+        _constructor: function(array) {
 
-            this._super(supplier);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
@@ -67,20 +62,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ICollection.<I>}
+             * @type {Array.<I>}
              */
-            this.collection     = collection;
-        },
-
-        /**
-         * @private
-         * @param {ISupplier.<I>} supplier
-         * @param {ICollection.<I>} collection
-         */
-        _initializer: function(supplier, collection) {
-            if (!Class.doesImplement(this.collection, ICollection)) {
-                throw new Exception("IllegalArgument", {}, "'collection' must implement ICollection");
-            }
+            this.array  = array;
         },
 
 
@@ -89,29 +73,26 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ICollection.<I>}
+         * @return {Array.<I>}
          */
-        getCollection: function() {
-            return this.collection;
+        getArray: function() {
+            return this.array;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Consumer Methods
+        // Supplier Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {I} item
+         *
          */
-        doAccept: function(item) {
-            this.collection.add(item);
-        },
-
-        /**
-         * @return {*}
-         */
-        doConsume: function() {
-            return this.collection;
+        doStart: function() {
+            var _this = this;
+            this.array.forEach(function(item) {
+                _this.push(item);
+            });
+            this.doEnd();
         }
     });
 
@@ -120,5 +101,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectConsumer', CollectConsumer);
+    bugpack.export('ArraySupplier', ArraySupplier);
 });

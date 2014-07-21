@@ -72,14 +72,20 @@ require('bugpack').context("*", function(bugpack) {
 
             test.assertEqual(this.queueTwo.containsAll(this.array), true,
                 "Assert Queue accepts an Array as an argument at construction time and adds the array values to the List");
+            test.assertEqual(this.queueTwo.getCount(), 3,
+                "Assert queueTwo contains 3 items");
 
             test.assertEqual(this.queueOne.contains("hello"), true,
                 "Assert Queue added value from array in to Queue");
             test.assertEqual(this.queueOne.contains("Brian"), true,
                 "Assert Queue added value from array in to Queue");
+            test.assertEqual(this.queueOne.getCount(), 2,
+                "Assert queueOne contains 2 items");
 
             test.assertEqual(this.queueThree.containsAll(this.queueOne), true,
                 "Assert collection accepts a Queue as an argument at construction time and adds the Queue values to the new Queue");
+            test.assertEqual(this.queueThree.getCount(), 2,
+                "Assert queueThree contains 2 items");
         }
     };
     bugmeta.tag(queueConstructorTest).with(

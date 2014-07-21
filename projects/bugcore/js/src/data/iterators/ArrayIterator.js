@@ -9,12 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectConsumer')
+//@Export('ArrayIterator')
 
 //@Require('Class')
-//@Require('Consumer')
 //@Require('Exception')
-//@require('ICollection')
+//@Require('IIterator')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Consumer        = bugpack.require('Consumer');
-    var Exception       = bugpack.require('Exception');
-    var ICollection     = bugpack.require('ICollection');
+    var Class       = bugpack.require('Class');
+    var Exception   = bugpack.require('Exception');
+    var IIterator   = bugpack.require('IIterator');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -39,12 +39,13 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Consumer.<I>}
+     * @extends {Obj}
+     * @implements {IIterator.<I>}
      * @template I
      */
-    var CollectConsumer = Class.extend(Consumer, {
+    var ArrayIterator = Class.extend(Obj, {
 
-        _name: "CollectConsumer",
+        _name: "ArrayIterator",
 
 
         //-------------------------------------------------------------------------------
@@ -53,12 +54,11 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {ISupplier.<I>} supplier
-         * @param {ICollection.<I>} collection
+         * @param {Array.<I>} array
          */
-        _constructor: function(supplier, collection) {
+        _constructor: function(array) {
 
-            this._super(supplier);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
@@ -67,58 +67,53 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ICollection.<I>}
+             * @type {Array.<I>}
              */
-            this.collection     = collection;
+            this.array      = array;
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.index      = -1;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {boolean}
+         */
+        hasNext: function() {
+            return (this.index < (this.array.length - 1));
         },
 
         /**
-         * @private
-         * @param {ISupplier.<I>} supplier
-         * @param {ICollection.<I>} collection
+         * @return {I}
          */
-        _initializer: function(supplier, collection) {
-            if (!Class.doesImplement(this.collection, ICollection)) {
-                throw new Exception("IllegalArgument", {}, "'collection' must implement ICollection");
+        next: function() {
+            if (this.hasNext()) {
+                this.index++;
+                return this.array[this.index];
+            } else {
+                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
             }
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Getters and Setters
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {ICollection.<I>}
-         */
-        getCollection: function() {
-            return this.collection;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Consumer Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @param {I} item
-         */
-        doAccept: function(item) {
-            this.collection.add(item);
-        },
-
-        /**
-         * @return {*}
-         */
-        doConsume: function() {
-            return this.collection;
         }
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(ArrayIterator, IIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectConsumer', CollectConsumer);
+    bugpack.export('ArrayIterator', ArrayIterator);
 });

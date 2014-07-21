@@ -68,10 +68,6 @@ require('bugpack').context("*", function(bugpack) {
              * @type {Array.<*>}
              */
             this.valueArray = [];
-
-            if (items) {
-                this.addAll(items);
-            }
         },
 
 

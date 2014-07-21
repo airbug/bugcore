@@ -71,18 +71,24 @@ require('bugpack').context("*", function(bugpack) {
 
             test.assertEqual(this.listTwo.containsAll(this.array), true,
                 "Assert List accepts an Array as an argument at construction time and adds the array values to the List");
+            test.assertEqual(this.listTwo.getCount(), 3,
+                "Assert listTwo contains 3 items");
 
             test.assertEqual(this.listOne.contains("hello"), true,
                 "Assert List added value from array in to List");
             test.assertEqual(this.listOne.contains("Brian"), true,
                 "Assert List added value from array in to List");
+            test.assertEqual(this.listOne.getCount(), 2,
+                "Assert listOne contains 2 items");
 
             test.assertEqual(this.listThree.containsAll(this.listOne), true,
                 "Assert collection accepts a List as an argument at construction time and adds the List values to the new List");
+            test.assertEqual(this.listThree.getCount(), 2,
+                "Assert listThree contains 2 items");
         }
     };
     bugmeta.tag(listConstructorTest).with(
-        test().name("List constructor test")
+        test().name("List - constructor test")
     );
 
     /**
@@ -125,7 +131,7 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
     bugmeta.tag(listAddTest).with(
-        test().name("List add test")
+        test().name("List - add test")
     );
 
     /**

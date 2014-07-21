@@ -19,9 +19,9 @@
 //@Require('ICollection')
 //@Require('IIterable')
 //@Require('IStreamable')
-//@Require('IterableSupplier')
 //@Require('Obj')
 //@Require('Stream')
+//@Require('Suppliers')
 //@Require('TypeUtil')
 
 
@@ -43,9 +43,9 @@ require('bugpack').context("*", function(bugpack) {
     var ICollection         = bugpack.require('ICollection');
     var IIterable           = bugpack.require('IIterable');
     var IStreamable         = bugpack.require('IStreamable');
-    var IterableSupplier    = bugpack.require('IterableSupplier');
     var Obj                 = bugpack.require('Obj');
     var Stream              = bugpack.require('Stream');
+    var Suppliers           = bugpack.require('Suppliers');
     var TypeUtil            = bugpack.require('TypeUtil');
 
 
@@ -89,11 +89,15 @@ require('bugpack').context("*", function(bugpack) {
              * @type {HashStore}
              */
             this.hashStore = new HashStore();
+        },
 
+        /**
+         * @private
+         * @param {(ICollection.<I> | Array.<I>)=} items
+         */
+        _initializer: function(items) {
 
-            //-------------------------------------------------------------------------------
-            // Add Arguments to HashStore
-            //-------------------------------------------------------------------------------
+            this._super();
 
             if (items) {
                 this.addAll(items);
@@ -338,7 +342,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Stream.<I>}
          */
         stream: function() {
-            return Stream.generate(new IterableSupplier(this));
+            return Stream.newStream(Suppliers.iterable(this));
         },
 
 

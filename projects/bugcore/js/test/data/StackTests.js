@@ -47,6 +47,47 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Tests
     //-------------------------------------------------------------------------------
 
+    var stackConstructorTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.array = ["how's", "it", "going?"];
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.stackZero     = new Stack();
+            this.stackOne      = new Stack(["hello", "Brian"]);
+            this.stackTwo      = new Stack(this.array);
+            this.stackThree    = new Stack(this.stackOne);
+
+            test.assertEqual(this.stackZero.getCount(), 0,
+                "Assert Stack does not add arguments when none are given at construction time");
+
+            test.assertEqual(this.stackTwo.containsAll(this.array), true,
+                "Assert Stack accepts an Array as an argument at construction time and adds the array values to the Stack");
+            test.assertEqual(this.stackTwo.getCount(), 3,
+                "Assert stackTwo contains 3 items");
+
+            test.assertEqual(this.stackOne.contains("hello"), true,
+                "Assert Stack added value from array in to Stack");
+            test.assertEqual(this.stackOne.contains("Brian"), true,
+                "Assert Stack added value from array in to Stack");
+            test.assertEqual(this.stackOne.getCount(), 2,
+                "Assert stackOne contains 2 items");
+
+            test.assertEqual(this.stackThree.containsAll(this.stackOne), true,
+                "Assert collection accepts a Stack as an argument at construction time and adds the Stack values to the new Stack");
+            test.assertEqual(this.stackThree.getCount(), 2,
+                "Assert stackThree contains 2 items");
+        }
+    };
+    
     /**
      * This tests
      * 1) Instantiate a simple Stack
@@ -183,6 +224,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
+    bugmeta.tag(stackConstructorTest).with(
+        test().name("Stack - constructor test")
+    );
     bugmeta.tag(stackInstantiationTest).with(
         test().name("Stack - instantiation test")
     );

@@ -14,10 +14,13 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('CollectConsumer')
+//@Require('Exception')
 //@Require('FilterOperation')
 //@Require('ForEachOperation')
 //@Require('Func')
 //@Require('IConsumer')
+//@Require('IStreamable')
+//@Require('ISupplier')
 //@Require('MapOperation')
 //@Require('ReduceConsumer')
 //@Require('Supplier')
@@ -36,10 +39,13 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil             = bugpack.require('ArgUtil');
     var Class               = bugpack.require('Class');
     var CollectConsumer     = bugpack.require('CollectConsumer');
+    var Exception           = bugpack.require('Exception');
     var FilterOperation     = bugpack.require('FilterOperation');
     var ForEachOperation    = bugpack.require('ForEachOperation');
     var Func                = bugpack.require('Func');
     var IConsumer           = bugpack.require('IConsumer');
+    var IStreamable         = bugpack.require('IStreamable');
+    var ISupplier           = bugpack.require('ISupplier');
     var MapOperation        = bugpack.require('MapOperation');
     var ReduceConsumer      = bugpack.require('ReduceConsumer');
     var Supplier            = bugpack.require('Supplier');
@@ -151,12 +157,15 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Constructor} constructor
+         * @param {(function(new:ICollection.<T>) | ICollection.<T>)} collection
          * @param {function(Throwable, Collection.<T>=)} callback
          * @template T
          */
-        collect: function(constructor, callback) {
-            var consumer = new CollectConsumer(this, constructor);
+        collect: function(collection, callback) {
+            if (Class.isConstructor(collection)) {
+                collection = collection.getClass().newInstance();
+            }
+            var consumer = new CollectConsumer(this, collection);
             this.addConsumer(consumer);
 
             // NOTE BRN: We defer this call here so that other stream consumers can have a chance to wire up before the
@@ -166,19 +175,22 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {Constructor} constructor
+         * @param {(function(new:ICollection.<T>) | ICollection.<T>)} collection
          * @param {boolean=} autoConsume
          * @return {(Collection.<T> | Consumer.<T>)}
          * @template T
          */
-        collectSync: function(constructor, autoConsume) {
+        collectSync: function(collection, autoConsume) {
             var args = ArgUtil.process(arguments, [
-                {name: "constructor", optional: false, type: "function"},
+                {name: "collection", optional: false},
                 {name: "autoConsume", optional: true, type: "boolean", 'default': true}
             ]);
-            constructor     = args.constructor;
-            autoConsume       = args.autoConsume;
-            var consumer = new CollectConsumer(this, constructor);
+            collection     = args.collection;
+            autoConsume     = args.autoConsume;
+            if (Class.isConstructor(collection)) {
+                collection = collection.getClass().newInstance();
+            }
+            var consumer = new CollectConsumer(this, collection);
             this.addConsumer(consumer);
             if (autoConsume) {
                 return consumer.consumeSync();
@@ -192,7 +204,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Stream.<I>}
          */
         filter: function(filterMethod) {
-            return Stream.generate(this, new FilterOperation(filterMethod));
+            return Stream.newStream(this, new FilterOperation(filterMethod));
         },
 
         /**
@@ -200,7 +212,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Stream.<I>}
          */
         forEach: function(iteratorMethod) {
-            return Stream.generate(this, new ForEachOperation(iteratorMethod));
+            return Stream.newStream(this, new ForEachOperation(iteratorMethod));
         },
 
         /**
@@ -208,7 +220,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Stream.<*>}
          */
         map: function(mapMethod) {
-            return Stream.generate(this, new MapOperation(mapMethod));
+            return Stream.newStream(this, new MapOperation(mapMethod));
         },
 
         /**
@@ -271,10 +283,25 @@ require('bugpack').context("*", function(bugpack) {
      * @param {IStreamOperation=} operation
      * @returns {Stream.<I>}
      */
-    Stream.generate = function(supplier, operation) {
+    Stream.newStream = function(supplier, operation) {
         var stream = new Stream(supplier, operation);
         supplier.addConsumer(stream);
         return stream;
+    };
+
+    /**
+     * @static
+     * @param {(IStreamable.<I> | ISupplier.<I>)} streamable
+     * @returns {Stream.<I>}
+     */
+    Stream.stream = function(streamable) {
+        if (Class.doesImplement(streamable, IStreamable)) {
+            return streamable.stream();
+        } else if (Class.doesImplement(streamable, ISupplier)){
+            return Stream.newStream(streamable)
+        } else {
+            throw new Exception("IllegalArgument", {}, "streamable does not implement IStreamable or does not implement ISupplier");
+        }
     };
 
 

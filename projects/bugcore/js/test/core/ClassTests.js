@@ -677,6 +677,24 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    var classIsConstructorTest = {
+        setup: function() {
+            this.TestConstructor = Class.extend(Obj, {});
+            this.TestNonConstructor = function() {};
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(Class.isConstructor(this.TestConstructor), true,
+                "Assert that Class.isConstructor returns true for the Constructor function");
+            test.assertEqual(Class.isConstructor(this.TestNonConstructor), false,
+                "Assert that Class.isConstructor returns false for the regular function");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -717,5 +735,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(classConstructorTest).with(
         test().name("Class - #_constructor test")
+    );
+    bugmeta.tag(classIsConstructorTest).with(
+        test().name("Class - #isConstructor test")
     );
 });
