@@ -16,6 +16,7 @@
 //@Require('Bug')
 //@Require('Class')
 //@Require('Collection')
+//@Require('Collections')
 //@Require('Constructor')
 //@Require('DateUtil')
 //@Require('Event')
@@ -77,6 +78,7 @@ require('bugpack').context("*", function(bugpack) {
     var Bug                 = bugpack.require('Bug');
     var Class               = bugpack.require('Class');
     var Collection          = bugpack.require('Collection');
+    var Collections         = bugpack.require('Collections');
     var Constructor         = bugpack.require('Constructor');
     var DateUtil            = bugpack.require('DateUtil');
     var Event               = bugpack.require('Event');
@@ -176,6 +178,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Collection)}
              */
             this.Collection         = Collection;
+
+            /**
+             * @type {function(new:Collections)}
+             */
+            this.Collections        = Collections;
 
             /**
              * @type {function(new:Constructor)}
