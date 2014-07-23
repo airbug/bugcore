@@ -87,7 +87,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert stackThree contains 2 items");
         }
     };
-    
+
     /**
      * This tests
      * 1) Instantiate a simple Stack

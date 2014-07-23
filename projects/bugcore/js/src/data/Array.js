@@ -33,16 +33,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator       = bugpack.require('ArrayIterator');
-    var Class               = bugpack.require('Class');
-    var Exception           = bugpack.require('Exception');
-    var ICollection         = bugpack.require('ICollection');
-    var IIterable           = bugpack.require('IIterable');
-    var IStreamable         = bugpack.require('IStreamable');
-    var Obj                 = bugpack.require('Obj');
-    var Stream              = bugpack.require('Stream');
-    var Suppliers           = bugpack.require('Suppliers');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var ArrayIterator   = bugpack.require('ArrayIterator');
+    var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
+    var ICollection     = bugpack.require('ICollection');
+    var IIterable       = bugpack.require('IIterable');
+    var IStreamable     = bugpack.require('IStreamable');
+    var Obj             = bugpack.require('Obj');
+    var Stream          = bugpack.require('Stream');
+    var Suppliers       = bugpack.require('Suppliers');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
