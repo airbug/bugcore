@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('Consumer')
 //@Require('Exception')
-//@require('ICollection')
+//@Require('ICollection')
 
 
 //-------------------------------------------------------------------------------
