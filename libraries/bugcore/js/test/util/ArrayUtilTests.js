@@ -79,6 +79,91 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     * This tests
+     * 1) That the static method .indexOf correctly works with a Function parameter
+     */
+    var arrayUtilIndexOfFunctionTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testArray = ["abc", "123", "def"];
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var index = ArrayUtil.indexOf(this.testArray, function(value) {
+                return value === "def";
+            });
+            test.assertEqual(index, 2,
+                "Assert .indexOf returned index 2 for the Function test");
+            var nonExistIndex = ArrayUtil.indexOf(this.testArray, function(value) {
+                return value === "456";
+            });
+            test.assertEqual(nonExistIndex, -1,
+                "Assert indexOf returns -1 for a Function value that does not exist");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) That the static method .indexOf correctly works with a RegExp parameter
+     */
+    var arrayUtilIndexOfRegexTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testArray = ["abc", "123", "def"];
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var index = ArrayUtil.indexOf(this.testArray, /2/);
+            test.assertEqual(index, 1,
+                "Assert .indexOf returned index 1 for the RegExp test");
+            var nonExistIndex = ArrayUtil.indexOf(this.testArray, /4/);
+            test.assertEqual(nonExistIndex, -1,
+                "Assert indexOf returns -1 for a RegExp value that does not exist");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) That the static method .indexOf correctly works with a String parameter
+     */
+    var arrayUtilIndexOfStringTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testArray = ["abc", "123", "def"];
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var index = ArrayUtil.indexOf(this.testArray, "abc");
+            test.assertEqual(index, 0,
+                "Assert .indexOf returned index 0 for the Regex test");
+            var nonExistIndex = ArrayUtil.indexOf(this.testArray, "456");
+            test.assertEqual(nonExistIndex, -1,
+                "Assert indexOf returns -1 for a String value that does not exist");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -86,5 +171,14 @@ require('bugpack').context("*", function(bugpack) {
 
     bugmeta.tag(arrayUtilIsEqualBasicTest).with(
         test().name("ArrayUtil - .isEqual() basic test")
+    );
+    bugmeta.tag(arrayUtilIndexOfFunctionTest).with(
+        test().name("ArrayUtil - .indexOf() Function test")
+    );
+    bugmeta.tag(arrayUtilIndexOfRegexTest).with(
+        test().name("ArrayUtil - .indexOf() Regex test")
+    );
+    bugmeta.tag(arrayUtilIndexOfStringTest).with(
+        test().name("ArrayUtil - .indexOf() String test")
     );
 });

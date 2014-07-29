@@ -60,7 +60,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {Array.<*>} array
      * @param {(* | RegExp | function(*, number))} search
-     * @param {number} fromIndex
+     * @param {number=} fromIndex
      * @return {number}
      */
     ArrayUtil.indexOf = function(array, search, fromIndex) {
@@ -84,19 +84,19 @@ require('bugpack').context("*", function(bugpack) {
         var i = fromIndex;
         if (TypeUtil.isFunction(search)) {
             for (; i < length; i++) {
-                if (search(value[i])) {
+                if (search(array[i])) {
                     return i;
                 }
             }
         } else if (TypeUtil.isRegExp(search)) {
             for (; i < length; i++) {
-                if (search.test(value[i])) {
+                if (search.test(array[i])) {
                     return i;
                 }
             }
         } else {
             for (; i < length; i++) {
-                if (value[i] === search) {
+                if (array[i] === search) {
                     return i;
                 }
             }

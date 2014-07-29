@@ -44,7 +44,7 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.2.15";
+var version             = "0.2.16";
 var dependencies        = {
     bugpack: "0.1.14"
 };
@@ -78,7 +78,7 @@ buildProperties({
             ]
         },
         sourcePaths: [
-            "./projects/bugcore/js/src"
+            "./libraries/bugcore/js/src"
         ],
         scriptPaths: [
             "./projects/bugcore-node/js/scripts"
@@ -107,7 +107,7 @@ buildProperties({
                 "../bugunit/projects/bugunit/js/scripts"
             ],
             testPaths: [
-                "./projects/bugcore/js/test"
+                "./libraries/bugcore/js/test"
             ]
         }
     },
@@ -116,7 +116,7 @@ buildProperties({
         name: name,
         version: version,
         sourcePaths: [
-            "./projects/bugcore/js/src"
+            "./libraries/bugcore/js/src"
         ],
         outputFile: "{{distPath}}/{{web.name}}-{{web.version}}.js",
         outputMinFile: "{{distPath}}/{{web.name}}-{{web.version}}.min.js"
