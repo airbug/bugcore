@@ -15,6 +15,7 @@
 //@Require('IArrayable')
 //@Require('IObjectable')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     var IArrayable      = bugpack.require('IArrayable');
     var IObjectable     = bugpack.require('IObjectable');
     var Obj             = bugpack.require('Obj');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -67,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
 
         if (TypeUtil.isObject(value)) {
             literal = {};
-            Obj.forIn(value, function(propertyName, propertyValue) {
+            ObjectUtil.forIn(value, function(propertyName, propertyValue) {
                 if (!TypeUtil.isFunction(propertyValue)) {
                     literal[propertyName] = LiteralUtil.convertToLiteral(propertyValue);
                 }

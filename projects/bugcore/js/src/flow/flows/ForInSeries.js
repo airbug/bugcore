@@ -13,7 +13,7 @@
 
 //@Require('Class')
 //@Require('IteratorFlow')
-//@Require('Obj')
+//@Require('ObjectUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var IteratorFlow    = bugpack.require('IteratorFlow');
-    var Obj             = bugpack.require('Obj');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Array.<string>}
              */
-            this.dataProperties     = Obj.getProperties(data);
+            this.dataProperties     = ObjectUtil.getProperties(data);
 
             /**
              * @private

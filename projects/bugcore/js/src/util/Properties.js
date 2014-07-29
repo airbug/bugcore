@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -28,6 +29,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
     var TypeUtil    = bugpack.require('TypeUtil');
 
 
@@ -108,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         getProperty: function(propertyQuery) {
-            return Obj.findProperty(this.propertiesObject, propertyQuery);
+            return ObjectUtil.findProperty(this.propertiesObject, propertyQuery);
         },
 
         /**
@@ -116,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasProperty: function(propertyQuery) {
-            return Obj.doesPropertyExist(this.propertiesObject, propertyQuery);
+            return ObjectUtil.doesPropertyExist(this.propertiesObject, propertyQuery);
         },
 
         /**
@@ -134,7 +136,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         updateProperties: function(propertiesObject) {
             var _this = this;
-            Obj.forIn(propertiesObject, function(propertyName, propertyValue) {
+            ObjectUtil.forIn(propertiesObject, function(propertyName, propertyValue) {
                 _this.updateProperty(propertyName, propertyValue);
             });
         },

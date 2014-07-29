@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('IteratorFlow')
 //@Require('MappedParallelException')
-//@Require('Obj')
+//@Require('ObjectUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class                       = bugpack.require('Class');
     var IteratorFlow                = bugpack.require('IteratorFlow');
     var MappedParallelException     = bugpack.require('MappedParallelException');
-    var Obj                         = bugpack.require('Obj');
+    var ObjectUtil                  = bugpack.require('ObjectUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ require('bugpack').context("*", function(bugpack) {
         executeFlow: function(args) {
             this._super(args);
             var _this = this;
-            Obj.forIn(this.getData(), function(key, value) {
+            ObjectUtil.forIn(this.getData(), function(key, value) {
                 _this.totalIterationCount++;
                 _this.executeIteration([key, value]);
             });

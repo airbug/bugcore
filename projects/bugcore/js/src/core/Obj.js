@@ -17,6 +17,7 @@
 //@Require('IEquals')
 //@Require('IHashCode')
 //@Require('IdGenerator')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -36,6 +37,7 @@ require('bugpack').context("*", function(bugpack) {
     var IEquals         = bugpack.require('IEquals');
     var IHashCode       = bugpack.require('IHashCode');
     var IdGenerator     = bugpack.require('IdGenerator');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -82,7 +84,7 @@ require('bugpack').context("*", function(bugpack) {
              */
             this._internalId    = null;
 
-            Obj.defineProperty(this, "_hashCode", {
+            ObjectUtil.defineProperty(this, "_hashCode", {
                 value : null,
                 writable : true,
                 enumerable : false,
@@ -127,7 +129,7 @@ require('bugpack').context("*", function(bugpack) {
             var _class          = this.getClass();
             var constructor     = _class.getConstructor();
             var cloneObject     = new constructor();
-            Obj.forIn(this, function(key, value) {
+            ObjectUtil.forIn(this, function(key, value) {
                 if (!TypeUtil.isFunction(value)) {
                     if (deep) {
                         cloneObject[key] = Obj.clone(value, deep);
@@ -184,45 +186,6 @@ require('bugpack').context("*", function(bugpack) {
 
 
     //-------------------------------------------------------------------------------
-    // Static Private Variables
-    //-------------------------------------------------------------------------------
-
-    /**
-     * @static
-     * @private
-     * @type {boolean}
-     */
-    Obj.isDontEnumSkipped = true;
-
-    // test if properties that shadow DontEnum ones are enumerated
-    for (var prop in { toString: true }) {
-        Obj.isDontEnumSkipped = false;
-    }
-
-    /**
-     * @static
-     * @private
-     * @type {Array}
-     */
-    Obj.dontEnumProperties = [
-        'toString',
-        'toLocaleString',
-        'valueOf',
-        'hasOwnProperty',
-        'isPrototypeOf',
-        'propertyIsEnumerable',
-        'constructor'
-    ];
-
-    /**
-     * @static
-     * @private
-     * @type {function(Object, string):boolean}
-     */
-    Obj.hasOwnProperty = Object.prototype.hasOwnProperty;
-
-
-    //-------------------------------------------------------------------------------
     // Static Public Methods
     //-------------------------------------------------------------------------------
 
@@ -243,7 +206,7 @@ require('bugpack').context("*", function(bugpack) {
                 clone = value.clone(deep);
             } else {
                 clone = {};
-                Obj.forIn(value, function(propertyName, propertyValue) {
+                ObjectUtil.forIn(value, function(propertyName, propertyValue) {
                     if (deep) {
                         clone[propertyName] = Obj.clone(propertyValue, deep);
                     } else {
@@ -266,45 +229,6 @@ require('bugpack').context("*", function(bugpack) {
             clone = value;
         }
         return clone;
-    };
-
-    /**
-     * @param {Object} object
-     * @param {string} propertyName
-     * @param {{}} description
-     */
-    Obj.defineProperty = function(object, propertyName, description) {
-        Object.defineProperty(object, propertyName, description);
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @param {string} propertyQuery
-     * @return {boolean}
-     */
-    Obj.doesPropertyExist = function(object, propertyQuery) {
-        if (!TypeUtil.isObject(object)) {
-            throw new Error("object must be an Object");
-        }
-        if (!TypeUtil.isString(propertyQuery)) {
-            throw new Error("propertyQuery must be a string");
-        }
-        var parts           = propertyQuery.split(".");
-        var propertyValue   = object;
-        for (var i = 0, size = parts.length; i < size; i++) {
-            var part = parts[i];
-            if (TypeUtil.isObject(propertyValue)) {
-                if (Obj.hasProperty(propertyValue, part)) {
-                    propertyValue = propertyValue[part];
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
     };
 
     /**
@@ -344,87 +268,6 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {Object} object
-     * @param {string} propertyQuery
-     * @return {*}
-     */
-    Obj.findProperty = function(object, propertyQuery) {
-
-        // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
-        // {
-        //     name: {
-        //         subName: "someValue"
-        //     }
-        // }
-        // and we request a property named "name.subName", then "someValue" should be returned. If we request the property
-        // "name" then the object {subName: "someValue"} will be returned.
-
-        var parts           = propertyQuery.split(".");
-        var propertyValue   = object;
-        for (var i = 0, size = parts.length; i < size; i++) {
-            var part = parts[i];
-            if (TypeUtil.isObject(propertyValue) && Obj.hasProperty(propertyValue, part)) {
-                propertyValue = propertyValue[part];
-            } else {
-                return undefined;
-            }
-        }
-        return propertyValue;
-    };
-
-    /**
-     * @license MIT License
-     * This work is based on the code found here
-     * https://github.com/kangax/protolicious/blob/master/experimental/object.for_in.js#L18
-     *
-     * NOTE BRN: If a property is modified in one iteration and then visited at a later time, its value in the loop is
-     * its value at that later time. A property that is deleted before it has been visited will not be visited later.
-     * Properties added to the object over which iteration is occurring may either be visited or omitted from iteration.
-     * In general it is best not to add, modify or remove properties from the object during iteration, other than the
-     * property currently being visited. There is no guarantee whether or not an added property will be visited, whether
-     * a modified property (other than the current one) will be visited before or after it is modified, or whether a
-     * deleted property will be visited before it is deleted.
-     *
-     * @static
-     * @param {Object} object
-     * @param {function(string, *)} func
-     * @param {Object=} context
-     */
-    Obj.forIn = function(object, func, context) {
-        if (!func || (func && !func.call)) {
-            throw new Error('Iterator function is required');
-        }
-
-        for (var propertyName in object) {
-            if (Obj.hasProperty(object, propertyName)) {
-                func.call(context || func, propertyName, object[propertyName]);
-            }
-        }
-
-        if (Obj.isDontEnumSkipped) {
-            for (var i = 0, size = Obj.dontEnumProperties.length; i < size; i++) {
-                var dontEnumPropertyName = Obj.dontEnumProperties[i];
-                if (Obj.hasProperty(object, dontEnumPropertyName)) {
-                    func.call(context || func, dontEnumPropertyName, object[dontEnumPropertyName]);
-                }
-            }
-        }
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @param {string} propertyName
-     */
-    Obj.getProperty = function(object, propertyName) {
-        if (Obj.hasProperty(object, propertyName)) {
-            return object[propertyName];
-        }
-        return undefined;
-    };
-
-    /**
-     * @static
      * @param {*} value
      * @return {number}
      */
@@ -433,105 +276,6 @@ require('bugpack').context("*", function(bugpack) {
             return value.hashCode();
         } else {
             return HashUtil.hash(value);
-        }
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @param {string} propertyName
-     */
-    Obj.hasProperty = function(object, propertyName) {
-        return Obj.hasOwnProperty.call(object, propertyName)
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @returns {Array.<string>}
-     */
-    Obj.getProperties = function(object) {
-        var propertyArray = [];
-        Obj.forIn(object, function(propertyName) {
-            propertyArray.push(propertyName);
-        });
-        return propertyArray;
-    };
-
-    /**
-     * @static
-     * @param {*} value
-     * @return {Iterator}
-     */
-    Obj.iterator = function(value) {
-        //TODO BRN: return the correct iterator for the given value. If not an iterable type, then throw an error
-    };
-
-    //TODO BRN: Think through this function a bit. Should the from object be cloned?
-    /**
-     * @static
-     * @param {*} from
-     * @param {*} into
-     * @return {*} into
-     */
-    Obj.merge = function(from, into) {
-        if (TypeUtil.isObject(from) && TypeUtil.isObject(into)) {
-            Obj.forIn(from, function(prop, value) {
-                into[prop] = from[prop];
-            });
-            return into;
-        } else {
-            throw new Error("both from and into parameters must be objects");
-        }
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @param {Array.<string>} properties
-     * @return {Object}
-     */
-    Obj.pick = function(object, properties) {
-        if (!TypeUtil.isObject(object)) {
-            throw new Error("parameter 'object' must be an object");
-        }
-        if (!TypeUtil.isArray(properties)) {
-            throw new Error("parameter 'properties' must be an array");
-        }
-        var picked = {};
-        properties.forEach(function(property) {
-            if (Obj.hasProperty(object, property)) {
-                picked[property] = object[property];
-            }
-        });
-        return picked;
-    };
-
-    /**
-     * @static
-     * @param {Object} object
-     * @param {string} propertyQuery
-     * @param {*} value
-     */
-    Obj.setProperty = function(object, propertyQuery, value) {
-        if (!TypeUtil.isObject(object)) {
-            throw new Error("parameter 'object' must be an object");
-        }
-        if (!TypeUtil.isString(propertyQuery)) {
-            throw new Error("parameter 'propertyQuery' must be an string");
-        }
-        var parts           = propertyQuery.split(".");
-        var propertyValue   = object;
-        for (var i = 0, size = parts.length; i < size; i++) {
-            var part = parts[i];
-            if (i === size - 1) {
-                propertyValue[part] = value;
-            } else {
-                if (!TypeUtil.isObject(propertyValue[part])) {
-                    propertyValue[part] = {};
-                }
-                propertyValue = propertyValue[part];
-            }
         }
     };
 

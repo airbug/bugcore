@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('ICondition')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('Set')
 
 
@@ -30,6 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var ICondition  = bugpack.require('ICondition');
     var Obj         = bugpack.require('Obj');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
     var Set         = bugpack.require('Set');
 
 
@@ -107,11 +109,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         check: function(value) {
-            var propertyValue = Obj.findProperty(value, this.propertyQuery);
-            if (this.inSet.contains(propertyValue)) {
-                return true;
-            }
-            return false;
+            var propertyValue = ObjectUtil.findProperty(value, this.propertyQuery);
+            return this.inSet.contains(propertyValue);
         }
     });
 

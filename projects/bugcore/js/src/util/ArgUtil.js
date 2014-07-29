@@ -15,6 +15,7 @@
 //@Require('Bug')
 //@Require('Class')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
     var Obj             = bugpack.require('Obj');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -279,7 +281,7 @@ require('bugpack').context("*", function(bugpack) {
      * }>} descriptionArgMap
      */
     ArgUtil.processDescriptionArgMap = function(args, argsObject, descriptionArgMap) {
-        Obj.forIn(descriptionArgMap, function(name, value) {
+        ObjectUtil.forIn(descriptionArgMap, function(name, value) {
             ArgUtil.setArgOnArgsObject(value.arg, argsObject, value.description);
         });
 

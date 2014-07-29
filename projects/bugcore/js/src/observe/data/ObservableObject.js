@@ -17,6 +17,7 @@
 //@Require('IObjectable')
 //@Require('IObservable')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('Observable')
 //@Require('RemovePropertyChange')
 //@Require('SetPropertyChange')
@@ -38,6 +39,7 @@ require('bugpack').context("*", function(bugpack) {
     var IObjectable             = bugpack.require('IObjectable');
     var IObservable             = bugpack.require('IObservable');
     var Obj                     = bugpack.require('Obj');
+    var ObjectUtil              = bugpack.require('ObjectUtil');
     var Observable              = bugpack.require('Observable');
     var RemovePropertyChange    = bugpack.require('RemovePropertyChange');
     var SetPropertyChange       = bugpack.require('SetPropertyChange');
@@ -164,7 +166,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(string, *)} func
          */
         forIn: function(func) {
-            Obj.forIn(this.observedObject, func);
+            ObjectUtil.forIn(this.observedObject, func);
         },
 
         /**
@@ -172,7 +174,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         getProperty: function(propertyName) {
-            return Obj.getProperty(this.observedObject, propertyName);
+            return ObjectUtil.getProperty(this.observedObject, propertyName);
         },
 
         /**
@@ -180,14 +182,14 @@ require('bugpack').context("*", function(bugpack) {
          * @returns {*}
          */
         hasProperty: function(propertyName) {
-            return Obj.hasProperty(this.observedObject, propertyName);
+            return ObjectUtil.hasProperty(this.observedObject, propertyName);
         },
 
         /**
          * @param {string} propertyName
          */
         removeProperty: function(propertyName) {
-            if (Obj.hasProperty(this.observedObject, propertyName)) {
+            if (ObjectUtil.hasProperty(this.observedObject, propertyName)) {
                 var previousValue = this.getProperty(propertyName);
                 if (this.hasObservableProperty(propertyName)) {
                     this.removeObservableProperty(propertyName);
@@ -220,7 +222,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         setProperties: function(propertiesObject) {
             var _this = this;
-            Obj.forIn(propertiesObject, function(propertyName, propertyValue) {
+            ObjectUtil.forIn(propertiesObject, function(propertyName, propertyValue) {
                 _this.setProperty(propertyName, propertyValue);
             });
         },

@@ -17,6 +17,7 @@
 //@Require('IMap')
 //@Require('IObjectable')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -36,6 +37,7 @@ require('bugpack').context("*", function(bugpack) {
     var IMap            = bugpack.require('IMap');
     var IObjectable     = bugpack.require('IObjectable');
     var Obj             = bugpack.require('Obj');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -234,7 +236,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.put(key, value);
                 });
             } else if (TypeUtil.isObject(map)) {
-                Obj.forIn(map, function(key, value) {
+                ObjectUtil.forIn(map, function(key, value) {
                     _this.put(key, value);
                 });
             }

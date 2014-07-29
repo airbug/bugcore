@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('Map')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -30,6 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var Map         = bugpack.require('Map');
     var Obj         = bugpack.require('Obj');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
     var TypeUtil    = bugpack.require('TypeUtil');
 
 
@@ -333,7 +335,7 @@ require('bugpack').context("*", function(bugpack) {
                 loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
             }
         };
-        Obj.merge(options, finalOptions);
+        ObjectUtil.merge(options, finalOptions);
         var m = finalOptions.parser[finalOptions.strictMode ? "strict" : "loose"].exec(urlString);
         var uri = {};
         var i   = 14;

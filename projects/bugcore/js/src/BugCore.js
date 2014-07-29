@@ -48,6 +48,7 @@
 //@Require('Map')
 //@Require('MathUtil')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('Pair')
 //@Require('Proxy')
 //@Require('ProxyMethod')
@@ -110,6 +111,7 @@ require('bugpack').context("*", function(bugpack) {
     var Map                 = bugpack.require('Map');
     var MathUtil            = bugpack.require('MathUtil');
     var Obj                 = bugpack.require('Obj');
+    var ObjectUtil          = bugpack.require('ObjectUtil');
     var Pair                = bugpack.require('Pair');
     var Proxy               = bugpack.require('Proxy');
     var ProxyMethod         = bugpack.require('ProxyMethod');
@@ -338,6 +340,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Obj)}
              */
             this.Obj                = Obj;
+
+            /**
+             * @type {function(new:ObjectUtil)}
+             */
+            this.ObjectUtil         = ObjectUtil;
 
             /**
              * @type {function(new:Pair)}

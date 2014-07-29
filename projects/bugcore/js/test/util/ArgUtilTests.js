@@ -15,7 +15,7 @@
 //@Require('ArgumentBug')
 //@Require('Bug')
 //@Require('Class')
-//@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -35,7 +35,7 @@ require('bugpack').context("*", function(bugpack) {
     var ArgumentBug     = bugpack.require('ArgumentBug');
     var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
-    var Obj             = bugpack.require('Obj');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
@@ -141,7 +141,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction();
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 0,
@@ -210,7 +210,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 1,
@@ -256,7 +256,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue2, this.testValue3);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 3,
@@ -344,7 +344,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue3);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 3,
@@ -432,7 +432,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue3);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 3,
@@ -570,7 +570,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue2);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 2,
@@ -616,7 +616,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue2, this.testValue3);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 3,
@@ -664,7 +664,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue2, this.testValue3);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 3,
@@ -715,7 +715,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var argsObject = this.testFunction(this.testValue1, this.testValue2, this.testValue3, this.testValue4);
-            var properties = Obj.getProperties(argsObject);
+            var properties = ObjectUtil.getProperties(argsObject);
             test.assertTrue(TypeUtil.isObject(argsObject),
                 "Assert that ArgUtil returned an object");
             test.assertEqual(properties.length, 4,

@@ -105,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
         getValueCount: function(value) {
             var valueHashCode = Obj.hashCode(value);
 
-            // NOTE BRN: We don't need to use Obj.getProperty here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 
@@ -127,7 +127,7 @@ require('bugpack').context("*", function(bugpack) {
         addValue: function(value) {
             var valueHashCode = Obj.hashCode(value);
 
-            // NOTE BRN: We don't need to use Obj.getProperty here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 
@@ -153,7 +153,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         forEach: function(func) {
 
-            // NOTE BRN: We don't need to use Obj.forIn here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 
@@ -171,7 +171,7 @@ require('bugpack').context("*", function(bugpack) {
         getValueArray: function() {
             var valueArray = [];
 
-            // NOTE BRN: We don't need to use Obj.forIn here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 
@@ -189,7 +189,7 @@ require('bugpack').context("*", function(bugpack) {
         hasValue: function(value) {
             var valueHashCode = Obj.hashCode(value);
 
-            // NOTE BRN: We don't need to use Obj.getProperty here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 
@@ -214,7 +214,7 @@ require('bugpack').context("*", function(bugpack) {
         removeValue: function(value) {
             var valueHashCode = Obj.hashCode(value);
 
-            // NOTE BRN: We don't need to use Obj.getProperty here because we only use numbers (hashcodes) as properties on the
+            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
             // hashStoreNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
             // the hashStoreNodeObject object. So we shouldn't run in to conflicts with prototype values.
 

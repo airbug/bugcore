@@ -14,7 +14,7 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.2.14`
+Latest Version `0.2.15`
 
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been
@@ -135,8 +135,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.14.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.14.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.15.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.15.min.js
 
 
 ## Install
@@ -149,7 +149,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.14.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.14.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.15.min.js"></script>
 ```
 
 
@@ -169,7 +169,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.14.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.14.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.15.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -283,7 +283,7 @@ __Class__
  */
 var Class = function(constructor, interfaces, name, superclass) {
 ```
-[View code](https://github.com/airbug/bugcore/blob/v0.2.14/projects/bugcore/js/src/core/Class.js)
+[View code](https://github.com/airbug/bugcore/blob/v0.2.15/projects/bugcore/js/src/core/Class.js)
 
 
 __Constructor Summary__

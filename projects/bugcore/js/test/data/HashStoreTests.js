@@ -13,7 +13,7 @@
 
 //@Require('Class')
 //@Require('HashStore')
-//@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -31,7 +31,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var HashStore   = bugpack.require('HashStore');
-    var Obj         = bugpack.require('Obj');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
     var TypeUtil    = bugpack.require('TypeUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -96,7 +96,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.hashStore.addValue(this.testValue1);
             this.hashStore.addValue(this.testValue2);
-            test.assertEqual(Obj.getProperties(this.hashStore.getHashStoreNodeObject()).length, 2,
+            test.assertEqual(ObjectUtil.getProperties(this.hashStore.getHashStoreNodeObject()).length, 2,
                 "Assert that there are two different node objects");
         }
     };
