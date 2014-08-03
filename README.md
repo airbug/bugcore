@@ -283,7 +283,7 @@ __Class__
  */
 var Class = function(constructor, interfaces, name, superclass) {
 ```
-[View code](https://github.com/airbug/bugcore/blob/v0.2.16/projects/bugcore/js/src/core/Class.js)
+[View code](https://github.com/airbug/bugcore/blob/v0.2.16/libraries/bugcore/js/src/core/Class.js)
 
 
 __Constructor Summary__

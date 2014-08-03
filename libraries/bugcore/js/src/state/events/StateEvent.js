@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         _constructor: function(type, previousState, currentState) {
 
-            this._super();
+            this._super(type);
 
 
             //-------------------------------------------------------------------------------

@@ -127,8 +127,8 @@ require('bugpack').context("*", function(bugpack) {
             }
             if (this.currentState !== state) {
                 var previousState = this.currentState;
-                this.dispatchStateChanged(previousState);
                 this.currentState = state;
+                this.dispatchStateChanged(previousState);
             }
         },
 
