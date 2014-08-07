@@ -95,7 +95,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this               = this;
-            this.testDeferred       = Deferred.$defer();
+            this.testDeferred       = new Deferred();
             this.testValue          = "testValue";
             this.testFunction       = function(value) {
                 test.assertEqual(value, _this.testValue,
@@ -146,7 +146,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this               = this;
-            this.testDeferred       = Deferred.$defer();
+            this.testDeferred       = new Deferred();
             this.testValue          = "testValue";
             this.testFunction       = function(value) {
                 test.assertEqual(value, _this.testValue,
@@ -192,7 +192,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this               = this;
-            this.testDeferred       = Deferred.$defer();
+            this.testDeferred       = new Deferred();
             this.testValue          = "testValue";
             this.testPromise        = new Promise();
             this.testFunction       = function(value) {

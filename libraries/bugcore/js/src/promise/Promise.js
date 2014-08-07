@@ -89,12 +89,6 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
-             */
-            this.processing            = false;
-
-            /**
-             * @private
              * @type {List.<*>}
              */
             this.reasonList             = new List();
@@ -186,13 +180,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @returns {boolean}
-         */
-        isProcessing: function() {
-            return this.processing;
-        },
-
-        /**
          * @return {boolean}
          */
         isRejected: function() {
@@ -215,7 +202,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(...):*=} catchFunction
          * @return {Promise}
          */
-        catch: function(catchFunction) {
+        'catch': function(catchFunction) {
             var forwardPromise = new Promise();
             this.generateRejectedHandler(catchFunction, forwardPromise);
             this.processHandlers();
@@ -226,7 +213,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function():*=} finallyFunction
          * @return {Promise}
          */
-        finally: function(finallyFunction) {
+        'finally': function(finallyFunction) {
             var forwardPromise = new Promise();
             this.generateFinallyHandler(finallyFunction, forwardPromise);
             this.processHandlers();
@@ -243,6 +230,18 @@ require('bugpack').context("*", function(bugpack) {
             this.generateFulfilledHandler(fulfilledFunction, forwardPromise);
             this.generateRejectedHandler(rejectedFunction, forwardPromise);
             this.processHandlers();
+
+            // NOTE BRN: If onFulfilled is not a function and promise1 is fulfilled, promise2 must be fulfilled with the same value as promise1
+
+            if (!TypeUtil.isFunction(fulfilledFunction) && this.isFulfilled()) {
+                forwardPromise.resolvePromise(this.valueList.toArray());
+            }
+
+            // NOTE BRN: If onRejected is not a function and promise1 is rejected, promise2 must be rejected with the same reason as promise1.
+
+            if (!TypeUtil.isFunction(rejectedFunction) && this.isRejected()) {
+                forwardPromise.rejectPromise(this.reasonList.toArray());
+            }
             return forwardPromise;
         },
 
@@ -319,14 +318,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         doProcessHandlers: function() {
             var _this       = this;
-            this.processing = true;
-            setTimeout(function() {
-                while (_this.processIndex < _this.handlerList.getCount()) {
-                    _this.processHandler(_this.processIndex);
-                    _this.processIndex++;
-                }
-                _this.processing = false;
-            }, 0);
+            while (_this.processIndex < _this.handlerList.getCount()) {
+                _this.processHandler(_this.processIndex);
+                _this.processIndex++;
+            }
         },
 
         /**
@@ -385,8 +380,10 @@ require('bugpack').context("*", function(bugpack) {
          * @param {Promise} forwardPromise
          */
         generateFulfilledHandler: function(fulfilledFunction, forwardPromise) {
-            var fulfilledHandler = this.factoryFulfilledHandler(fulfilledFunction, forwardPromise);
-            this.handlerList.add(fulfilledHandler);
+            if (TypeUtil.isFunction(fulfilledFunction)) {
+                var fulfilledHandler = this.factoryFulfilledHandler(fulfilledFunction, forwardPromise);
+                this.handlerList.add(fulfilledHandler);
+            }
         },
 
         /**
@@ -395,8 +392,10 @@ require('bugpack').context("*", function(bugpack) {
          * @param {Promise} forwardPromise
          */
         generateRejectedHandler: function(rejectedFunction, forwardPromise) {
-            var rejectedHandler = this.factoryRejectedHandler(rejectedFunction, forwardPromise);
-            this.handlerList.add(rejectedHandler);
+            if (TypeUtil.isFunction(rejectedFunction)) {
+                var rejectedHandler = this.factoryRejectedHandler(rejectedFunction, forwardPromise);
+                this.handlerList.add(rejectedHandler);
+            }
         },
 
         /**
@@ -424,7 +423,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         processHandlers: function() {
-            if (!this.isPending() && !this.isProcessing()) {
+            if (!this.isPending()) {
                 this.doProcessHandlers();
             }
         }

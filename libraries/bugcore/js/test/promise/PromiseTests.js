@@ -42,6 +42,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
+    var spyOnFunction   = BugDouble.spyOnFunction;
     var spyOnObject     = BugDouble.spyOnObject;
     var test            = TestTag.test;
 
@@ -76,10 +77,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the handler list is empty");
         }
     };
-    bugmeta.tag(promiseInstantiationTest).with(
-        test().name("Promise - instantiation test")
-    );
-
 
     /**
      * This tests
@@ -102,14 +99,10 @@ require('bugpack').context("*", function(bugpack) {
             var resultPromise = this.testPromise.then();
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
-            test.assertEqual(this.testPromise.getHandlerList().getCount(), 2,
-                "Assert that the handlerList has 2 handlers");
+            test.assertEqual(this.testPromise.getHandlerList().getCount(), 0,
+                "Assert that the handlerList has 0 handlers");
         }
     };
-    bugmeta.tag(promiseThenNoArgumentsTest).with(
-        test().name("Promise - #then no arguments test")
-    );
-
 
     /**
      * This tests
@@ -133,14 +126,10 @@ require('bugpack').context("*", function(bugpack) {
             var resultPromise = this.testPromise.then(this.testFulfilledFunction);
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
-            test.assertEqual(this.testPromise.getHandlerList().getCount(), 2,
-                "Assert that the handlerList has 2 handlers");
+            test.assertEqual(this.testPromise.getHandlerList().getCount(), 1,
+                "Assert that the handlerList has 1 handlers");
         }
     };
-    bugmeta.tag(promiseThenFulfilledFunctionArgumentOnlyTest).with(
-        test().name("Promise - #then fulfilledArgument only test")
-    );
-
 
     /**
      * This tests
@@ -164,14 +153,10 @@ require('bugpack').context("*", function(bugpack) {
             var resultPromise = this.testPromise.then(null, this.testRejectedFunction);
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
-            test.assertEqual(this.testPromise.getHandlerList().getCount(), 2,
-                "Assert that the handlerList has 2 handlers");
+            test.assertEqual(this.testPromise.getHandlerList().getCount(), 1,
+                "Assert that the handlerList has 1 handlers");
         }
     };
-    bugmeta.tag(promiseThenRejectedFunctionArgumentOnlyTest).with(
-        test().name("Promise - #then rejectedArgument only test")
-    );
-
 
     /**
      * This tests
@@ -198,10 +183,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #resolvePromise again throws a Bug");
         }
     };
-    bugmeta.tag(promiseResolvePromiseTwiceBugTest).with(
-        test().name("Promise - #resolvePromise twice should throw a Bug test")
-    );
-
 
     /**
      * This tests
@@ -228,9 +209,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #rejectPromise again throws a Bug");
         }
     };
-    bugmeta.tag(promiseRejectPromiseTwiceBugTest).with(
-        test().name("Promise - #rejectProcess twice should throw a Bug test")
-    );
 
     /**
      * This tests
@@ -257,9 +235,6 @@ require('bugpack').context("*", function(bugpack) {
             }, "Assert that calling #resolvePromise after rejectPromise has already been called throws a Bug");
         }
     };
-    bugmeta.tag(promiseRejectPromiseAndResolvePromiseBugTest).with(
-        test().name("Promise - #rejectProcess and resolvePromise should throw a Bug test")
-    );
 
     /**
      * This tests
@@ -291,10 +266,6 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.tag(promiseResolvePromiseWithSelfShouldRejectPromiseTest).with(
-        test().name("Promise - #resolvePromise with self as arg should reject the promise with a TypeError Bug test")
-    );
-
 
     /**
      * This tests
@@ -326,9 +297,6 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
     };
-    bugmeta.tag(promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest).with(
-        test().name("Promise - #resolvePromise and passing two references of the promises self as args should reject promise once")
-    );
 
     /**
      * This tests
@@ -355,7 +323,151 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testPromise's valueList is empty");
         }
     };
+
+    /**
+     * This tests
+     * 1) calling #resolvePromise with a single value test
+     */
+    var promiseResolvePromiseWithSingleValueTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testPromise        = new Promise();
+            this.testValueA         = "ValueA";
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testPromise.resolvePromise([this.testValueA]);
+            test.assertTrue(this.testPromise.isFulfilled(),
+                "Assert that the promise has been fulfilled");
+            test.assertEqual(this.testPromise.getValueList().getCount(), 1,
+                "Assert that the testPromise's valueList contains 1 value");
+            test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
+                "Assert that the testPromise's valueList[0] is testValueA");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) calling #then with a fulfilled function after promise has been fulfilled
+     */
+    var promiseThenWithFulfilledFunctionAfterPromiseIsFulfilledTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            var _this                       = this;
+            this.testPromise                = new Promise();
+            this.testValueA                 = "ValueA";
+            this.testFulfilledFunction      = function(value1) {
+                test.assertEqual(value1, _this.testValueA,
+                    "Assert that value1 is testValueA")
+            };
+            this.testFulfilledFunctionSpy   = spyOnFunction(this.testFulfilledFunction);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testPromise.resolvePromise([this.testValueA]);
+            test.assertTrue(this.testPromise.isFulfilled(),
+                "Assert that the promise has been fulfilled");
+            test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
+                "Assert that the testPromise's valueList[0] is testValueA");
+            var forwardPromise = this.testPromise.then(this.testFulfilledFunctionSpy);
+            test.assertFalse(forwardPromise.isFulfilled(),
+                "Assert that the forwardPromise has NOT been fulfilled");
+            test.assertTrue(forwardPromise.getValueList().isEmpty(),
+                "Assert that the forwardPromise's valueList is empty");
+            test.assertTrue(this.testFulfilledFunctionSpy.wasCalled(),
+                "Assert that the fulfilledFunction was called");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) calling #then without a fulfilled function after promise has been fulfilled
+     * 2) Promises A+ - 2.2.7.3: If onFulfilled is not a function and promise1 is fulfilled, promise2 must be fulfilled with the same value as promise1.
+     */
+    var promiseThenWithoutFulfilledFunctionAfterPromiseIsFulfilledTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testPromise        = new Promise();
+            this.testValueA         = "ValueA";
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testPromise.resolvePromise([this.testValueA]);
+            test.assertTrue(this.testPromise.isFulfilled(),
+                "Assert that the promise has been fulfilled");
+            test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
+                "Assert that the testPromise's valueList[0] is testValueA");
+            var forwardPromise = this.testPromise.then(this.testFulfilledFunctionSpy);
+            test.assertTrue(forwardPromise.isFulfilled(),
+                "Assert that the forwardPromise has been fulfilled");
+            test.assertEqual(forwardPromise.getValueList().getAt(0), this.testValueA,
+                "Assert that the forwardPromise's valueList[0] is testValueA");
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(promiseInstantiationTest).with(
+        test().name("Promise - instantiation test")
+    );
+    bugmeta.tag(promiseThenNoArgumentsTest).with(
+        test().name("Promise - #then no arguments test")
+    );
+    bugmeta.tag(promiseThenFulfilledFunctionArgumentOnlyTest).with(
+        test().name("Promise - #then fulfilledArgument only test")
+    );
+    bugmeta.tag(promiseThenRejectedFunctionArgumentOnlyTest).with(
+        test().name("Promise - #then rejectedArgument only test")
+    );
+    bugmeta.tag(promiseResolvePromiseTwiceBugTest).with(
+        test().name("Promise - #resolvePromise twice should throw a Bug test")
+    );
+    bugmeta.tag(promiseRejectPromiseTwiceBugTest).with(
+        test().name("Promise - #rejectProcess twice should throw a Bug test")
+    );
+    bugmeta.tag(promiseRejectPromiseAndResolvePromiseBugTest).with(
+        test().name("Promise - #rejectProcess and resolvePromise should throw a Bug test")
+    );
+    bugmeta.tag(promiseResolvePromiseWithSelfShouldRejectPromiseTest).with(
+        test().name("Promise - #resolvePromise with self as arg should reject the promise with a TypeError Bug test")
+    );
+    bugmeta.tag(promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest).with(
+        test().name("Promise - #resolvePromise and passing two references of the promises self as args should reject promise once")
+    );
     bugmeta.tag(promiseResolvePromiseWithEmptyValuesTest).with(
         test().name("Promise - #resolvePromise with empty values")
+    );
+    bugmeta.tag(promiseResolvePromiseWithSingleValueTest).with(
+        test().name("Promise - #resolvePromise with a single value")
+    );
+    bugmeta.tag(promiseThenWithFulfilledFunctionAfterPromiseIsFulfilledTest).with(
+        test().name("Promise - #then with fulfilledFunction after promise is fulfilled test")
+    );
+    bugmeta.tag(promiseThenWithoutFulfilledFunctionAfterPromiseIsFulfilledTest).with(
+        test().name("Promise - #then with fulfilledFunction after promise is fulfilled test")
     );
 });

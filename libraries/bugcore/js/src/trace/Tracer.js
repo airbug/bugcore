@@ -80,15 +80,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {TreeNode}
-             */
-            this.rootNode       = new TreeNode(new Trace("", "ROOT_NODE"));
-
-            /**
-             * @private
              * @type {Tree}
              */
-            this.traceTree      = new Tree();
+            this.traceTree      = new Tree(new TreeNode(new Trace("", "ROOT_NODE")));
 
             /**
              * @private
@@ -106,8 +100,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         _initializer: function() {
-            this.traceTree.setRootNode(this.rootNode);
-            this.currentNode = this.rootNode;
+            this.currentNode = this.traceTree.getRootNode();
         },
 
 
@@ -188,7 +181,7 @@ require('bugpack').context("*", function(bugpack) {
                     //we do not want any new nodes that the thread creates to attach to the previous current node (since they
                     //are unrelated). So, we reset the current node to the root node after the completion of every callback.
 
-                    _this.currentNode = _this.rootNode;
+                    _this.currentNode = _this.traceTree.getRootNode();
                     _this.checkTraceNodeForRemoval(newNode);
                 };
                 return newCallback;
@@ -221,7 +214,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
                     _this.currentNode = newNode;
                     callback.apply(null, args);
-                    _this.currentNode = _this.rootNode;
+                    _this.currentNode = _this.traceTree.getRootNode();
                     _this.checkTraceNodeForRemoval(newNode);
                 };
                 return newCallback;
@@ -244,7 +237,7 @@ require('bugpack').context("*", function(bugpack) {
         generateNodeStack: function(traceNode) {
             var nodeStack   = [];
             var currentNode = traceNode;
-            while (!Obj.equals(currentNode, this.rootNode)) {
+            while (!Obj.equals(currentNode, this.traceTree.getRootNode())) {
                 var trace   = currentNode.getValue();
                 var stack   = trace.getStack();
                 var stackParts = stack.split("\n");
@@ -309,8 +302,8 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         checkTraceNodeForRemoval: function(node) {
-            //console.log("check trace node - numberChildren:" + node.numberChildNodes() + " Obj.equals(node, this.rootNode):" + Obj.equals(node, this.rootNode) + " value:" + node.getValue());
-            if (node.numberChildNodes() === 0 && !Obj.equals(node, this.rootNode)) {
+            //console.log("check trace node - numberChildren:" + node.numberChildNodes() + " Obj.equals(node, this.traceTree.getRootNode()):" + Obj.equals(node, this.traceTree.getRootNode()) + " value:" + node.getValue());
+            if (node.numberChildNodes() === 0 && !Obj.equals(node, this.traceTree.getRootNode())) {
 
                 //console.log("removing trace node - value:" + node.getValue());
                 if (node.removed) {

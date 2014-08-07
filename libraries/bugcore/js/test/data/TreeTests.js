@@ -56,8 +56,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.tree = new Tree();
             this.rootTreeNode = new TreeNode("rootNode");
+            this.tree = new Tree(this.rootTreeNode);
             this.child1ofRootNode = new TreeNode("child1ofRootNode");
             this.child2ofRootNode =  new TreeNode("child2ofRootNode");
             this.child1ofChild1ofRootNode = new TreeNode("child1ofChild1ofRootNode");
@@ -65,7 +65,6 @@ require('bugpack').context("*", function(bugpack) {
             this.child3ofChild1ofRootNode = new TreeNode("child3ofChild1ofRootNode");
             this.child1ofChild2ofChild1ofRootNode = new TreeNode("child1ofChild2ofChild1ofRootNode");
 
-            this.tree.setRootNode(this.rootTreeNode);
             this.rootTreeNode.addChildNode(this.child1ofRootNode);
             this.rootTreeNode.addChildNode(this.child2ofRootNode);
             this.child1ofRootNode.addChildNode(this.child1ofChild1ofRootNode);

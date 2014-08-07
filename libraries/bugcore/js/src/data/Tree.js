@@ -48,8 +48,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
+         * @param {TreeNode} rootNode
          */
-        _constructor: function() {
+        _constructor: function(rootNode) {
 
             this._super();
 
@@ -62,7 +63,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {TreeNode}
              */
-            this.rootNode = null;
+            this.rootNode = rootNode;
         },
 
 
