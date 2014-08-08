@@ -182,6 +182,8 @@ require('bugpack').context("*", function(bugpack) {
      * This tests
      * 1) Resolving a Deferred that has no then methods.
      * 2) Calling #then on a Deferred that has already been resolved. Make sure that the
+     * 3) That Promises A+ 2.2.4 is fulfilled: onFulfilled or onRejected must not be called until the execution context stack contains only platform code.
+
      */
     var deferredResolveWithAPromiseTest = {
 

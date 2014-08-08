@@ -356,6 +356,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * This tests
      * 1) calling #then with a fulfilled function after promise has been fulfilled
+     * 2) Promises A+ 2.2.4 is fulfilled: onFulfilled or onRejected must not be called until the execution context stack contains only platform code.
      */
     var promiseThenWithFulfilledFunctionAfterPromiseIsFulfilledTest = {
 
@@ -388,6 +389,14 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the forwardPromise has NOT been fulfilled");
             test.assertTrue(forwardPromise.getValueList().isEmpty(),
                 "Assert that the forwardPromise's valueList is empty");
+
+            //NOTE BRN: This validates that Promises A+ 2.2.4 is met
+
+            test.assertTrue(this.testFulfilledFunctionSpy.wasNotCalled(),
+                "Assert that the fulfilledFunction is not immediately called")
+        },
+
+        final: function(test) {
             test.assertTrue(this.testFulfilledFunctionSpy.wasCalled(),
                 "Assert that the fulfilledFunction was called");
         }

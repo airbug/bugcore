@@ -89,6 +89,12 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
+             * @type {boolean}
+             */
+            this.processing            = false;
+
+            /**
+             * @private
              * @type {List.<*>}
              */
             this.reasonList             = new List();
@@ -177,6 +183,13 @@ require('bugpack').context("*", function(bugpack) {
          */
         isPending: function() {
             return this.state === Promise.State.PENDING;
+        },
+
+        /**
+         * @returns {boolean}
+         */
+        isProcessing: function() {
+            return this.processing;
         },
 
         /**
@@ -318,10 +331,18 @@ require('bugpack').context("*", function(bugpack) {
          */
         doProcessHandlers: function() {
             var _this       = this;
-            while (_this.processIndex < _this.handlerList.getCount()) {
-                _this.processHandler(_this.processIndex);
-                _this.processIndex++;
-            }
+            this.processing = true;
+
+            //NOTE BRN: This setTimeout fulfills the 2.2.4 portion of the Promises A+ spec
+            //2.2.4: onFulfilled or onRejected must not be called until the execution context stack contains only platform code.
+
+            setTimeout(function() {
+                while (_this.processIndex < _this.handlerList.getCount()) {
+                    _this.processHandler(_this.processIndex);
+                    _this.processIndex++;
+                }
+                _this.processing = false;
+            }, 0);
         },
 
         /**
@@ -423,7 +444,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         processHandlers: function() {
-            if (!this.isPending()) {
+            if (!this.isPending() && !this.isProcessing()) {
                 this.doProcessHandlers();
             }
         }
