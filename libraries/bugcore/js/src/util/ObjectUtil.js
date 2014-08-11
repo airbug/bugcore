@@ -11,6 +11,7 @@
 
 //@Export('ObjectUtil')
 
+//@Require('FunctionUtil')
 //@Require('TypeUtil')
 
 
@@ -24,7 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var TypeUtil    = bugpack.require('TypeUtil');
+    var FunctionUtil    = bugpack.require('FunctionUtil');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -269,10 +271,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.pick = function(object, properties) {
         if (!TypeUtil.isObject(object)) {
-            throw new Error("parameter 'object' must be an Object");
+            throw new TypeError("parameter 'object' must be an Object");
         }
         if (!TypeUtil.isArray(properties)) {
-            throw new Error("parameter 'properties' must be an Array");
+            throw new TypeError("parameter 'properties' must be an Array");
         }
         var picked = {};
         properties.forEach(function(property) {
@@ -291,10 +293,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.setProperty = function(object, propertyQuery, value) {
         if (!TypeUtil.isObject(object)) {
-            throw new Error("parameter 'object' must be an object");
+            throw new TypeError("parameter 'object' must be an object");
         }
         if (!TypeUtil.isString(propertyQuery)) {
-            throw new Error("parameter 'propertyQuery' must be an string");
+            throw new TypeError("parameter 'propertyQuery' must be an string");
         }
         var parts           = propertyQuery.split(".");
         var propertyValue   = object;
@@ -309,6 +311,18 @@ require('bugpack').context("*", function(bugpack) {
                 propertyValue = propertyValue[part];
             }
         }
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @return {string}
+     */
+    ObjectUtil.toConstructorName = function(object) {
+        if (!TypeUtil.isObject(object)) {
+            throw new TypeError("parameter 'object' must be an object");
+        }
+        return FunctionUtil.toName(object.constructor);
     };
 
 
