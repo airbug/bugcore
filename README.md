@@ -22,7 +22,7 @@ free to ask!
 
 ## Build Status
 
-Latest Version `0.2.17`
+Latest Version `0.2.17`<br />
 [![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)
 
 
