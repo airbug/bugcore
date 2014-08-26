@@ -14,12 +14,16 @@ for [airbug](http://airbug.com) so check out the docs for an overview of the
 full power of what the code has to offer. If the library is missing something
 you need, please let us know!
 
-Latest Version `0.2.17`
-
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been
 written yet. If there are parts of the docs you'd like us to focus on, feel
 free to ask!
+
+
+## Build Status
+
+Latest Version `0.2.17`<br />
+[![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)
 
 
 ## Quick Examples
@@ -3911,25 +3915,31 @@ __Extends__
 
 __Constructor Summary__
 
-* [`public _constructor(string type, * data)`](#Event__constructor)
+Access | Signature
+--- | ---
+constructor | <code>[Event](#Event__constructor)({string} type, {*} data)</code>
 
 
 __Getters and Setters Summary__
 
-* [`public getBubbles() :boolean`](#Event_getBubbles)
-* [`public setBubbles(boolean bubbles)`](#Event_setBubbles)
-* [`public getCurrentTarget() :*`](#Event_getCurrentTarget)
-* [`public setCurrentTarget(* currentTarget)`](#Event_setCurrentTarget)
-* [`public getData() :*`](#Event_getData)
-* [`public getTarget(): *`](#Event_getTarget)
-* [`public setTarget(* target)`](#Event_setTarget)
-* [`public getType() :string`](#Event_getType)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[getBubbles](#Event_getBubbles)()</code> | <code>{boolean}</code>
+public | <code>[setBubbles](#Event_setBubbles)({boolean})</code> | None
+public | <code>[getCurrentTarget](#Event_getCurrentTarget)()</code> | <code>{*}</code>
+public | <code>[setCurrentTarget](#Event_setCurrentTarget)({*} currentTarget)</code> | None
+public | <code>[getData](#Event_getData)()</code> | <code>{*}</code>
+public | <code>[getTarget](#Event_getTarget)()</code> | <code>{*}</code>]
+public | <code>[setTarget](#Event_setTarget)({*} target)</code> | None
+public | <code>[getType](#Event_getType)()</code> | <code>{string}</code>
 
 
 __Method Summary__
 
-* [`public isPropagationStopped() :boolean`](#Event_isPropagationStopped)
-* [`public stopPropagation()`](#Event_stopPropagation)
+Access | Signature | Return Type
+--- | --- | ---
+public | <code>[isPropagationStopped](#Event_isPropagationStopped)()</code> | <code>{boolean}</code>
+public | <code>[stopPropagation(#Event_stopPropagation)()</code> | None
 
 
 <br />
