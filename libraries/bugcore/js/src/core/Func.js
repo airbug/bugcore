@@ -151,7 +151,28 @@ require('bugpack').context("*", function(bugpack) {
          * @param {...} arguments
          */
         deferCall: function() {
-            this.deferApply(arguments);
+            var args = Array.prototype.slice.call(arguments, 0);
+            this.deferApply(args);
+        },
+
+        /**
+         * @param {number} wait
+         * @param {Array.<*>} args
+         */
+        delayApply: function(wait, args) {
+            var _this = this;
+            setTimeout(function() {
+                _this.apply(args);
+            }, wait);
+        },
+
+        /**
+         * @param {number} wait
+         * @param {...} arguments
+         */
+        delayCall: function(wait) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            this.delayApply(wait, args);
         },
 
         wrap: function(wrapper) {
@@ -208,7 +229,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {function(...):*} method
-     * @param {Object=} context
+     * @param {Object} context
      * @param {Array.<*>} args
      */
     Func.deferApply = function(method, context, args) {
@@ -218,18 +239,33 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {function(...):*} method
-     * @param {Object=} context
+     * @param {Object} context
      * @param {...} arguments
      */
     Func.deferCall = function(method, context) {
-        Func.func(method, context).deferApply(arguments);
+        var args = Array.prototype.slice.call(arguments, 2);
+        Func.func(method, context).deferApply(args);
     };
 
-    Func.delayApply = function(wait, method, context, args) {
-
+    /**
+     * @static
+     * @param {function(...):*} method
+     * @param {Object} context
+     * @param {number} wait
+     * @param {Array.<*>} args
+     */
+    Func.delayApply = function(method, context, wait, args) {
+        Func.func(method, context).delayApply(wait, args);
     };
 
-    Func.delayCall = function(wait, method, context) {
+    /**
+     * @static
+     * @param {function(...):*} method
+     * @param {Object} context
+     * @param {number} wait
+     * @param {...} arguments
+     */
+    Func.delayCall = function(method, context, wait) {
 
     };
 

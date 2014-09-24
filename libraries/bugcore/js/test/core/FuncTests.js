@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('Func')
 //@Require('TypeUtil')
+//@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -28,19 +29,21 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Func        = bugpack.require('Func');
-    var TypeUtil    = bugpack.require('TypeUtil');
-    var BugMeta     = bugpack.require('bugmeta.BugMeta');
-    var TestTag     = bugpack.require('bugunit.TestTag');
+    var Class           = bugpack.require('Class');
+    var Func            = bugpack.require('Func');
+    var TypeUtil        = bugpack.require('TypeUtil');
+    var BugDouble       = bugpack.require('bugdouble.BugDouble');
+    var BugMeta         = bugpack.require('bugmeta.BugMeta');
+    var TestTag         = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta     = BugMeta.context();
-    var test        = TestTag.test;
+    var bugmeta         = BugMeta.context();
+    var test            = TestTag.test;
+    var spyOnFunction   = BugDouble.spyOnFunction;
 
 
     //-------------------------------------------------------------------------------
@@ -81,7 +84,63 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testReturn value was correctly returned");
         }
     };
+
+    /**
+     * This tests
+     * 1) Func#deferCall static method
+     */
+    var funcStaticDeferCallTest = {
+
+        async: true,
+
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this           = this;
+            this.testObject     = {};
+            this.testArgument   = "testArgument";
+            this.testFunction   = function(testParam) {
+                test.assertEqual(this, _this.testObject,
+                    "Assert that 'this' matches the testObject");
+                test.assertEqual(testParam, _this.testArgument,
+                    "Assert that the testParam was set correctly");
+                test.completeTest();
+            };
+            this.testFunctionSpy = spyOnFunction(this.testFunction);
+            test.completeSetup();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            test.assertTrue(_this.testFunctionSpy.wasNotCalled(),
+                "Assert testFunction was not called");
+            Func.deferCall(this.testFunctionSpy, this.testObject, this.testArgument);
+            test.assertTrue(this.testFunctionSpy.wasNotCalled(),
+                "Assert testFunction was not called");
+        },
+
+        final: function(test) {
+            test.assertTrue(this.testFunctionSpy.wasCalled(),
+                "Assert testFunction was called");
+            test.completeFinalize();
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
     bugmeta.tag(funcStaticBindTest).with(
         test().name("Func - #bind test")
+    );
+    bugmeta.tag(funcStaticDeferCallTest).with(
+        test().name("Func - #deferCall test")
     );
 });
