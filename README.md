@@ -22,7 +22,7 @@ free to ask!
 
 ## Build Status
 
-Latest Version `0.2.17`<br />
+Latest Version `0.2.19`<br />
 [![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)
 
 
@@ -139,8 +139,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.17.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.2.17.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.19.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.2.19.min.js
 
 
 ## Install
@@ -152,8 +152,8 @@ For node js, you can install using Node Package Manager [npm](https://www.npmjs.
 For the web, simply include these scripts in your application
 
 ```html
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.14.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.17.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.0.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.19.min.js"></script>
 ```
 
 
@@ -172,8 +172,8 @@ var map     = new bugcore.Map();
 In the browser:
 
 ```html
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.1.14.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.17.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.0.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.2.19.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -555,7 +555,7 @@ __Class__
  */
 var Class = function(constructor, interfaces, name, superclass) {
 ```
-[View code](https://github.com/airbug/bugcore/blob/v0.2.17/libraries/bugcore/js/src/core/Class.js)
+[View code](https://github.com/airbug/bugcore/blob/v0.2.19/libraries/bugcore/js/src/core/Class.js)
 
 
 __Constructor Summary__

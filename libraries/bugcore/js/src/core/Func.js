@@ -266,7 +266,8 @@ require('bugpack').context("*", function(bugpack) {
      * @param {...} arguments
      */
     Func.delayCall = function(method, context, wait) {
-
+        var args = Array.prototype.slice.call(arguments, 3);
+        Func.func(method, context).delayApply(wait, args);
     };
 
     /**

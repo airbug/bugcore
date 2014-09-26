@@ -111,6 +111,12 @@ require('bugpack').context("*", function(bugpack) {
             this.testLock.waitLock(this.testMethod3Spy);
         }
     };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
     bugmeta.tag(lockWaitLockTest).with(
         test().name("Lock - #waitLock test")
     );

@@ -67,19 +67,25 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Queue.<function()>}
              */
-            this.acquisitionQueue       = new Queue();
+            this.acquisitionQueue           = new Queue();
 
             /**
              * @private
              * @type {number}
              */
-            this.lastAcqusitionTime     = null;
+            this.lastAcqusitionTime         = null;
 
             /**
              * @private
              * @type {number}
              */
-            this.permitsPerSecond       = permitsPerSecond;
+            this.permitsPerSecond           = permitsPerSecond;
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.queueProcessingDelayed     = false;
         },
 
 
@@ -137,12 +143,36 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         acquirePermit: function(method) {
-            this.numberPermitsAcquired++;
+            this.lastAcqusitionTime = Date.now();
             method();
         },
 
-        processQueue: function() {
+        /**
+         * @private
+         * @param {number} wait
+         */
+        delayQueueProcessing: function(wait) {
+            if (!this.queueProcessingDelayed) {
+                this.queueProcessingDelayed = true;
+                Func.delayCall(this.delayQueueProcessingComplete, this, wait);
+            }
+        },
 
+        /**
+         * @private
+         */
+        delayQueueProcessingComplete: function() {
+            this.queueProcessingDelayed = false;
+            this.tryProcessQueue();
+        },
+
+        /**
+         * @private
+         */
+        processQueue: function() {
+            var method = this.acquisitionQueue.dequeue();
+            this.acquirePermit(method);
+            this.tryProcessQueue();
         },
 
         /**
@@ -164,7 +194,7 @@ require('bugpack').context("*", function(bugpack) {
                     if (elapsed >= rate) {
                         this.processQueue();
                     } else {
-                        Func.deferCall(this.tryProcessQueue, this);
+                        this.delayQueueProcessing(rate - elapsed);
                     }
                 } else {
                     this.processQueue();
