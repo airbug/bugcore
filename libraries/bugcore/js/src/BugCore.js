@@ -24,6 +24,7 @@
 //@Require('EventPropagator')
 //@Require('EventReceiver')
 //@Require('Exception')
+//@Require('Flows')
 //@Require('Func')
 //@Require('HashStore')
 //@Require('HashTable')
@@ -88,6 +89,7 @@ require('bugpack').context("*", function(bugpack) {
     var EventPropagator     = bugpack.require('EventPropagator');
     var EventReceiver       = bugpack.require('EventReceiver');
     var Exception           = bugpack.require('Exception');
+    var Flows               = bugpack.require('Flows');
     var Func                = bugpack.require('Func');
     var HashStore           = bugpack.require('HashStore');
     var HashTable           = bugpack.require('HashTable');
@@ -222,6 +224,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Exception)}
              */
             this.Exception          = Exception;
+
+            /**
+             * @type {function(new:Flows)}
+             */
+            this.Flows              = Flows;
 
             /**
              * @type {function(new:Func)}
