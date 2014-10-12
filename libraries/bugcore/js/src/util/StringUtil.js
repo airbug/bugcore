@@ -89,6 +89,19 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {string} value
+     * @param {string} separator
+     * @return {string}
+     */
+    StringUtil.lowerCamelToSeparator = function(value, separator) {
+        return value
+            .replace(/([A-Z])([A-Z])/g, "$1" + separator + ("$2"))
+            .replace(/([a-z\d])([A-Z])/g, "$1" + separator + ("$2"))
+            .toLowerCase();
+    };
+
+    /**
+     * @static
+     * @param {string} value
      * @param {string=} chars
      * @return {string}
      */
