@@ -14,9 +14,9 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('CollectConsumer')
+//@Require('EachOperation')
 //@Require('Exception')
 //@Require('FilterOperation')
-//@Require('EachOperation')
 //@Require('Func')
 //@Require('IConsumer')
 //@Require('IStreamable')
@@ -39,8 +39,8 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil             = bugpack.require('ArgUtil');
     var Class               = bugpack.require('Class');
     var CollectConsumer     = bugpack.require('CollectConsumer');
-    var Exception           = bugpack.require('Exception');
     var EachOperation       = bugpack.require('EachOperation');
+    var Exception           = bugpack.require('Exception');
     var FilterOperation     = bugpack.require('FilterOperation');
     var Func                = bugpack.require('Func');
     var IConsumer           = bugpack.require('IConsumer');
