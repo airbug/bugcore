@@ -16,7 +16,7 @@
 //@Require('CollectConsumer')
 //@Require('Exception')
 //@Require('FilterOperation')
-//@Require('ForEachOperation')
+//@Require('EachOperation')
 //@Require('Func')
 //@Require('IConsumer')
 //@Require('IStreamable')
@@ -40,8 +40,8 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var CollectConsumer     = bugpack.require('CollectConsumer');
     var Exception           = bugpack.require('Exception');
+    var EachOperation       = bugpack.require('EachOperation');
     var FilterOperation     = bugpack.require('FilterOperation');
-    var ForEachOperation    = bugpack.require('ForEachOperation');
     var Func                = bugpack.require('Func');
     var IConsumer           = bugpack.require('IConsumer');
     var IStreamable         = bugpack.require('IStreamable');
@@ -200,19 +200,27 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @param {function(I, Stream)} iteratorMethod
+         * @return {Stream.<I>}
+         */
+        each: function(iteratorMethod) {
+            return Stream.newStream(this, new EachOperation(iteratorMethod, false));
+        },
+
+        /**
+         * @param {function(I, Stream)} iteratorMethod
+         * @return {Stream.<I>}
+         */
+        eachBlocking: function(iteratorMethod) {
+            return Stream.newStream(this, new EachOperation(iteratorMethod, true));
+        },
+
+        /**
          * @param {function(I):boolean} filterMethod
          * @return {Stream.<I>}
          */
         filter: function(filterMethod) {
             return Stream.newStream(this, new FilterOperation(filterMethod));
-        },
-
-        /**
-         * @param {function(I)} iteratorMethod
-         * @return {Stream.<I>}
-         */
-        forEach: function(iteratorMethod) {
-            return Stream.newStream(this, new ForEachOperation(iteratorMethod));
         },
 
         /**

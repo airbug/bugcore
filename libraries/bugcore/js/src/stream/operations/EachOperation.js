@@ -9,11 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ForEachOperation')
+//@Export('EachOperation')
 
 //@Require('Class')
 //@Require('IStreamOperation')
 //@Require('Obj')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -29,6 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var IStreamOperation    = bugpack.require('IStreamOperation');
     var Obj                 = bugpack.require('Obj');
+    var TypeUtil            = bugpack.require('TypeUtil')
 
 
     //-------------------------------------------------------------------------------
@@ -41,9 +43,9 @@ require('bugpack').context("*", function(bugpack) {
      * @implements {IStreamOperation.<I>}
      * @template I
      */
-    var ForEachOperation = Class.extend(Obj, {
+    var EachOperation = Class.extend(Obj, {
 
-        _name: "ForEachOperation",
+        _name: "EachOperation",
 
 
         //-------------------------------------------------------------------------------
@@ -52,9 +54,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(I):*} iteratorMethod
+         * @param {function(I, Stream.<I>):*} iteratorMethod
+         * @param {boolean=} blocking
          */
-        _constructor: function(iteratorMethod) {
+        _constructor: function(iteratorMethod, blocking) {
 
             this._super();
 
@@ -65,7 +68,13 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(I)}
+             * @type {boolean}
+             */
+            this.blocking           = TypeUtil.isBoolean(blocking) ? blocking : false;
+
+            /**
+             * @private
+             * @type {function(I, Stream.<I>)}
              */
             this.iteratorMethod     = iteratorMethod;
         },
@@ -76,7 +85,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {function(I)}
+         * @return {boolean}
+         */
+        getBlocking: function() {
+            return this.blocking;
+        },
+
+        /**
+         * @return {function(I, Stream.<I>)}
          */
         getIteratorMethod: function() {
             return this.iteratorMethod;
@@ -92,8 +108,10 @@ require('bugpack').context("*", function(bugpack) {
          * @param {I} item
          */
         execute: function(stream, item) {
-            this.iteratorMethod(item);
-            stream.push(item);
+            this.iteratorMethod(item, stream);
+            if (!this.blocking) {
+                stream.push(item);
+            }
         }
     });
 
@@ -102,13 +120,13 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(ForEachOperation, IStreamOperation);
+    Class.implement(EachOperation, IStreamOperation);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ForEachOperation', ForEachOperation);
+    bugpack.export('EachOperation', EachOperation);
 });
 
