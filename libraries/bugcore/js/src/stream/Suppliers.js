@@ -14,6 +14,7 @@
 //@Require('ArraySupplier')
 //@Require('Class')
 //@Require('IterableSupplier')
+//@Require('MethodSupplier')
 //@Require('Obj')
 
 
@@ -30,6 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     var ArraySupplier       = bugpack.require('ArraySupplier');
     var Class               = bugpack.require('Class');
     var IterableSupplier    = bugpack.require('IterableSupplier');
+    var MethodSupplier      = bugpack.require('MethodSupplier');
     var Obj                 = bugpack.require('Obj');
 
 
@@ -66,6 +68,15 @@ require('bugpack').context("*", function(bugpack) {
      */
     Suppliers.iterable = function(iterable) {
         return new IterableSupplier(iterable);
+    };
+
+    /**
+     * @param {function(Supplier)} method
+     * @return {MethodSupplier}
+     * @template I
+     */
+    Suppliers.method = function(method) {
+        return new MethodSupplier(method);
     };
 
 
