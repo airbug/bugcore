@@ -14,8 +14,8 @@
 //@Require('Bug')
 //@Require('Class')
 //@Require('Exception')
-//@Require('ParallelException')
 //@Require('Obj')
+//@Require('ParallelException')
 
 
 //-------------------------------------------------------------------------------
@@ -28,11 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Bug             = bugpack.require('Bug');
-    var Class           = bugpack.require('Class');
-    var Exception       = bugpack.require('Exception');
-    var ParallelException     = bugpack.require('ParallelException');
-    var Obj             = bugpack.require('Obj');
+    var Bug                 = bugpack.require('Bug');
+    var Class               = bugpack.require('Class');
+    var Exception           = bugpack.require('Exception');
+    var Obj                 = bugpack.require('Obj');
+    var ParallelException   = bugpack.require('ParallelException');
 
 
     //-------------------------------------------------------------------------------
