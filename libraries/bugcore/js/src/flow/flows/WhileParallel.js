@@ -11,11 +11,9 @@
 
 //@Export('WhileParallel')
 
-//@Require('Bug')
 //@Require('Class')
 //@Require('Flow')
-//@Require('List')
-//@Require('ParallelException')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -28,11 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Bug                 = bugpack.require('Bug');
     var Class               = bugpack.require('Class');
     var Flow                = bugpack.require('Flow');
-    var List                = bugpack.require('List');
-    var ParallelException   = bugpack.require('ParallelException');
+    var Throwables   = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -139,7 +135,7 @@ require('bugpack').context("*", function(bugpack) {
                     this.whileCheckFailed();
                 }
             } else {
-                throw new Bug("UnexpectedCall", {}, "Unexpected assert() call. assert might have been called twice in the same check.");
+                throw Throwables.bug("UnexpectedCall", {}, "Unexpected assert() call. assert might have been called twice in the same check.");
             }
         },
 
@@ -169,7 +165,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         processThrowable: function(throwable) {
             if (!this.exception) {
-                this.exception = new ParallelException();
+                this.exception = Throwables.parallelException();
             }
             this.exception.addCause(throwable);
         },

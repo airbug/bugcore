@@ -13,7 +13,7 @@
 
 //@Require('Class')
 //@Require('Flow')
-//@Require('ParallelException')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class               = bugpack.require('Class');
     var Flow                = bugpack.require('Flow');
-    var ParallelException   = bugpack.require('ParallelException');
+    var Throwables   = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         processThrowable: function(throwable) {
             if (!this.exception) {
-                this.exception = new ParallelException();
+                this.exception = Throwables.parallelException();
             }
             this.exception.addCause(throwable);
         },
