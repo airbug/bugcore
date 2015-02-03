@@ -34,12 +34,21 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {number} digitLength
+     * @return {string}
+     */
+    UuidGenerator.generateHex = function(digitLength) {
+        return Math.floor((1 + Math.random()) * Math.pow(16, digitLength))
+            .toString(16)
+            .substring(1);
+    };
+
+    /**
+     * @static
      * @return {string}
      */
     UuidGenerator.generateHex4 = function() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
+        return UuidGenerator.generateHex(4);
     };
 
     /**
