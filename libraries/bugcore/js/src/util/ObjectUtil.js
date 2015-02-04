@@ -248,6 +248,42 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {Object} object1
+     * @param {Object} object2
+     * @param {boolean=} deep
+     * @return {boolean}
+     */
+    ObjectUtil.isEqual = function(object1, object2, deep) {
+        //TODO BRN: Implement deep parameter
+
+        if (!TypeUtil.isObject(object1)) {
+            throw new TypeError( "'object1' must be an Object");
+        }
+        if (!TypeUtil.isObject(object2)) {
+            throw new TypeError( "'object2' must be an Object");
+        }
+        if (object1 === object2) {
+            return true;
+        }
+        var object1Properties = ObjectUtil.getProperties(object1);
+        var object2Properties = ObjectUtil.getProperties(object2);
+
+        if (object1Properties.length !== object2Properties.length) {
+            return false;
+        }
+        for (var i = 0, size = object1Properties.length; i < size; i++) {
+            if (object1Properties[i] !== object2Properties[i])  {
+                return false;
+            }
+            if (object1[object1Properties[i]] !== object2[object2Properties[i]]) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    /**
+     * @static
      * @param {Object} from
      * @param {Object} into
      * @return {Object}

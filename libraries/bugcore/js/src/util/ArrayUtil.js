@@ -132,7 +132,7 @@ require('bugpack').context("*", function(bugpack) {
         if (array1 === array2) {
             return true;
         }
-        if(array1.length !== array2.length) {
+        if (array1.length !== array2.length) {
             return false;
         }
         for (var i = 0, size = array1.length; i < size; i++) {

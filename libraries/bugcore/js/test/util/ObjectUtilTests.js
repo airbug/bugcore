@@ -304,6 +304,89 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    var objectUtilIsEmptyTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.emptyObject = {};
+            this.notEmptyObject = {
+                propertyx: "x"
+            };
+            this.notEmptyObjectNull = {
+                null: ""
+            };
+            this.notEmptyObjectString = {
+                "": null
+            };
+        },
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(ObjectUtil.isEmpty(this.emptyObject), true,
+                "Assert isEmpty returns true for an empty object");
+            test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObject), false,
+                "Assert isEmpty returns false for a non empty object");
+            test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObjectNull), false,
+                "Assert isEmpty returns false for a non empty object with a null only key");
+            test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObjectString), false,
+                "Assert isEmpty returns false for a non empty object with an empty string only key");
+        }
+    };
+
+    var objectUtilIsEqualTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.baseObject = {
+                a: "value1",
+                null: "value2",
+                "": "value3"
+            };
+            this.equalObject = {
+                a: "value1",
+                null: "value2",
+                "": "value3"
+            };
+            this.notEqualObjectMissingKey = {
+                a: "value1",
+                null: "value2"
+            };
+            this.notEqualObjectExtraKey = {
+                a: "value1",
+                b: "value1",
+                null: "value2",
+                "": "value3"
+            };
+            this.notEqualObjectDifferentValue = {
+                a: "value4",
+                null: "value2",
+                "": "value3"
+            };
+        },
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.equalObject), true,
+                "Assert isEqual returns true for an equal object");
+            test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.baseObject), true,
+                "Assert isEqual returns true for the same object object");
+            test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectMissingKey), false,
+                "Assert isEqual returns false for an object that is missing a key");
+            test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectExtraKey), false,
+                "Assert isEqual returns false for an object that has an extra key");
+            test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectDifferentValue), false,
+                "Assert isEqual returns false for an object with a different value");
+        }
+    };
+
     var objectUtilMergeTest = {
 
         // Setup Test
@@ -407,6 +490,12 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(objectUtilForInIterationDontEnumPropertiesTest).with(
         test().name("ObjectUtil - .forIn() iteration of don't enum properties test")
+    );
+    bugmeta.tag(objectUtilIsEmptyTest).with(
+        test().name("ObjectUtil - .isEmpty Test")
+    );
+    bugmeta.tag(objectUtilIsEqualTest).with(
+        test().name("ObjectUtil - .isEqual Test")
     );
     bugmeta.tag(objectUtilMergeTest).with(
         test().name("ObjectUtil - .merge Test")
