@@ -65,6 +65,22 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {string} value
+     * @param {string} string
+     * @return {boolean}
+     */
+    StringUtil.contains = function(value, string) {
+        if (!TypeUtil.isString(value)) {
+            throw new TypeError( "'value' must be an String");
+        }
+        if (!TypeUtil.isString(string)) {
+            throw new TypeError( "'string' must be an String");
+        }
+        return value.indexOf(string) > -1;
+    };
+
+    /**
+     * @static
+     * @param {string} value
      * @return {string}
      */
     StringUtil.escapeString = function(value) {
