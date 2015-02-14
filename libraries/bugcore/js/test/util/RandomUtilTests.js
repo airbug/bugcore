@@ -29,8 +29,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var RandomUtil    = bugpack.require('RandomUtil');
     var Obj         = bugpack.require('Obj');
+    var RandomUtil  = bugpack.require('RandomUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -117,13 +117,13 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert random hex of length 0 is empty");
 
             var randomHex1 = RandomUtil.randomHex(1);
-            test.assertTrue(randomHex1.length === 1,
+            test.assertEqual(randomHex1.length, 1,
                 "Assert random hex length is 1");
             test.assertTrue(this.isValidHexString(randomHex1),
                     "Assert value hex value '" + randomHex1 + "' is a valid hex value");
 
             var randomHex4 = RandomUtil.randomHex(4);
-            test.assertTrue(randomHex1.length === 4,
+            test.assertEqual(randomHex4.length, 4,
                 "Assert random hex length is 4");
             test.assertTrue(this.isValidHexString(randomHex4),
                     "Assert value hex value '" + randomHex4 + "' is a valid hex value");

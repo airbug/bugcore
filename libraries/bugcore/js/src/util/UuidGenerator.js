@@ -11,6 +11,10 @@
 
 //@Export('UuidGenerator')
 
+//@Require('Class')
+//@Require('Obj')
+//@Require('RandomUtil')
+
 
 //-------------------------------------------------------------------------------
 // Context

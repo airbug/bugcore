@@ -14,8 +14,8 @@
 //@Require('Class')
 //@Require('Collection')
 //@Require('HashTable')
-//@Require('MathUtil')
 //@Require('Obj')
+//@Require('RandomUtil')
 //@Require('WeightedList')
 
 
@@ -32,8 +32,8 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var Collection      = bugpack.require('Collection');
     var HashTable       = bugpack.require('HashTable');
-    var MathUtil        = bugpack.require('MathUtil');
     var Obj             = bugpack.require('Obj');
+    var RandomUtil      = bugpack.require('RandomUtil');
     var WeightedList    = bugpack.require('WeightedList');
 
 
@@ -103,7 +103,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getRandom: function() {
             var totalWeight = this.weightedList.getTotalWeight();
-            var randomNumber = MathUtil.randomBetween(1, totalWeight);
+            var randomNumber = RandomUtil.randomBetween(1, totalWeight);
             return this.weightedList.getAtWeight(randomNumber);
         }
     });
