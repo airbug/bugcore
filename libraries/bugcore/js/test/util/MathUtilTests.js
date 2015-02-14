@@ -49,17 +49,16 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) Getting a random number between 0 and 0
-     * 2) Getting a random number between 0 and 1
-     * 3) Getting a random number between 3 and 4
+     * 1) Converting degrees to radians
      */
-    var randomBetweenTest = {
+    var degreesToRadiansTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
-
+            this.degreesValue = 180;
+            this.expectedValue = Math.PI;
         },
 
 
@@ -67,20 +66,44 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var randomNumber1 = MathUtil.randomBetween(0, 0);
-            test.assertEqual(randomNumber1, 0,
-                "Assert random number is 0");
-
-            var randomNumber2 = MathUtil.randomBetween(0, 1);
-            test.assertTrue((randomNumber2 === 0 || randomNumber2 === 1),
-                "Assert random number is either equal to 0 or equal to 1");
-
-            var randomNumber3 = MathUtil.randomBetween(3, 4);
-            test.assertTrue((randomNumber3 === 3 || randomNumber3 === 4),
-                "Assert random number is either equal to 3 or equal to 4");
+            test.assertEqual(MathUtil.degreesToRadians(this.degreesValue), this.expectedValue,
+                "Assert degrees to radians was correct");
         }
     };
-    bugmeta.tag(randomBetweenTest).with(
-        test().name("Random between test")
+
+    /**
+     * This tests
+     * 1) Converting radians to degrees
+     */
+    var radiansToDegreesTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.radiansValue = Math.PI;
+            this.expectedValue = 180;
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(MathUtil.radiansToDegrees(this.radiansValue), this.expectedValue,
+                "Assert radians to degrees was correct");
+        }
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(degreesToRadiansTest).with(
+        test().name("MathUtil - degreesToRadians test")
+    );
+    bugmeta.tag(radiansToDegreesTest).with(
+        test().name("MathUtil - radiansToDegrees test")
     );
 });

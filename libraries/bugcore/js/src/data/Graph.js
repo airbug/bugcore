@@ -167,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
-         * @returns {boolean}
+         * @return {boolean}
          */
         containsNodeForValue: function(value) {
             var node = new GraphNode(value);

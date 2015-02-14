@@ -83,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {List.<IEventPropagator>}
+         * @return {List.<IEventPropagator>}
          */
         getEventPropagatorList: function() {
             return this.eventPropagatorList;

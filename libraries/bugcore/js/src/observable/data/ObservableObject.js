@@ -179,7 +179,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} propertyName
-         * @returns {*}
+         * @return {*}
          */
         hasProperty: function(propertyName) {
             return ObjectUtil.hasProperty(this.observedObject, propertyName);
@@ -235,7 +235,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {IObservable} observable
-         * @returns {boolean}
+         * @return {boolean}
          */
         containsObservable: function(observable) {
             return this.observablePropertyMap.containsValue(observable);
@@ -244,7 +244,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {IObservable} observable
-         * @returns {Collection.<string>}
+         * @return {Collection.<string>}
          */
         findPropertyNamesByObservable: function(observable) {
             return this.observablePropertyMap.getKeys(observable)
@@ -253,7 +253,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {string} propertyName
-         * @returns {IObservable}
+         * @return {IObservable}
          */
         getObservableProperty: function(propertyName) {
             return this.observablePropertyMap.getValue(propertyName);

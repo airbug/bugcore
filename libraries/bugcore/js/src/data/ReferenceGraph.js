@@ -196,7 +196,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {GraphNode} node
-         * @returns {number}
+         * @return {number}
          */
         getNodeReferenceCount: function(node) {
             var edgesTo = this.getEdgesTo(node);

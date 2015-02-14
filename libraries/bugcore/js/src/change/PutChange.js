@@ -88,7 +88,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {*}
+         * @return {*}
          */
         getKey: function () {
             return this.key;

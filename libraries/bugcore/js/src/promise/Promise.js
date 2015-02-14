@@ -186,7 +186,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         isProcessing: function() {
             return this.processing;

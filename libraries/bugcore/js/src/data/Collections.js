@@ -131,7 +131,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {?(IMap.<K, V> | Object.<K, V>)=} map
-     * @returns {MultiListMap.<K, V>}
+     * @return {MultiListMap.<K, V>}
      */
     Collections.ensureMultiListMap = function(map) {
         if (!Class.doesExtend(map, MultiListMap)) {
@@ -144,7 +144,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {?(ICollection.<I> | Array.<I>)=} items
-     * @returns {Queue.<I>}
+     * @return {Queue.<I>}
      * @template I
      */
     Collections.ensureQueue = function(items) {
@@ -172,7 +172,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param value
-     * @returns {*}
+     * @return {*}
      */
     Collections.ensureStreamable = function(value) {
         if (Class.doesImplement(value, IStreamable)) {
@@ -207,7 +207,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {?(IMap.<K, V> | Object.<K, V>)=} map
-     * @returns {MultiListMap.<K, V>}
+     * @return {MultiListMap.<K, V>}
      */
     Collections.multiListMap = function(map) {
         return new MultiListMap(map);
@@ -216,7 +216,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {?(ICollection.<I> | Array.<I>)=} items
-     * @returns {Queue}
+     * @return {Queue}
      * @template I
      */
     Collections.queue = function(items) {

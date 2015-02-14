@@ -331,7 +331,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          * @param {Change} change
          * @param {string} observationPath
-         * @returns {Observation}
+         * @return {Observation}
          */
         factoryObservation: function(change, observationPath) {
             return new Observation(change, observationPath);

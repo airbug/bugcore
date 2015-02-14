@@ -9,7 +9,7 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Change')
+//@Export('RandomUtil')
 
 //@Require('Class')
 //@Require('Obj')
@@ -37,52 +37,42 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      */
-    var Change = Class.extend(Obj, /** @lends {Change.prototype} */{
-
-        _name: "Change",
-
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @constructs
-         * @param {string} changeType
-         */
-        _constructor: function(changeType) {
-
-            this._super();
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            /**
-             * @private
-             * @type {*}
-             */
-            this.changeType             = changeType;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Getters and Setters
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {string}
-         */
-        getChangeType: function() {
-            return this.changeType;
-        }
+    var RandomUtil = Class.extend(Obj, {
+        _name: "RandomUtil"
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Static Methods
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @param {number} firstInteger
+     * @param {number} secondInteger
+     * @return {number}
+     */
+    RandomUtil.randomBetween = function(firstInteger, secondInteger) {
+        var delta = secondInteger - firstInteger;
+        var randomNumber = Math.floor(Math.random() * (delta + 1));
+        return randomNumber + firstInteger;
+    };
+
+    /**
+     * @static
+     * @param {number} digitLength
+     * @return {string}
+     */
+    RandomUtil.randomHex = function(digitLength) {
+        return Math.floor((1 + Math.random()) * Math.pow(16, digitLength))
+            .toString(16)
+            .substring(1);
+    };
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Change', Change);
+    bugpack.export('RandomUtil', RandomUtil);
 });

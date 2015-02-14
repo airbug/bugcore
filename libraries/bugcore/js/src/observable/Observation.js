@@ -145,7 +145,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {string}
+         * @return {string}
          */
         getChangeType: function() {
             return this.change.getChangeType();

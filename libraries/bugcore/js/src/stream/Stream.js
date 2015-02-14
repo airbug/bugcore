@@ -110,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @returns {ISupplier.<I>}
+         * @return {ISupplier.<I>}
          */
         getSupplier: function() {
             return this.supplier;
@@ -289,7 +289,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {ISupplier.<I>} supplier
      * @param {IStreamOperation=} operation
-     * @returns {Stream.<I>}
+     * @return {Stream.<I>}
      */
     Stream.newStream = function(supplier, operation) {
         var stream = new Stream(supplier, operation);
@@ -300,7 +300,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {(IStreamable.<I> | ISupplier.<I>)} streamable
-     * @returns {Stream.<I>}
+     * @return {Stream.<I>}
      */
     Stream.stream = function(streamable) {
         if (Class.doesImplement(streamable, IStreamable)) {

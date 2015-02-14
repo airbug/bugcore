@@ -304,7 +304,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {(string | Array.<string>)} eventTypes
-         * @returns {EventQueryBuilder}
+         * @return {EventQueryBuilder}
          */
         generateEventQueryBuilder: function(eventTypes) {
             return new EventQueryBuilder(this, eventTypes);

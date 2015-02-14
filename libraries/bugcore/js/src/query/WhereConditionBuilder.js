@@ -99,14 +99,14 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @returns {string}
+         * @return {string}
          */
         getPropertyQuery: function() {
             return this.propertyQuery;
         },
 
         /**
-         * @returns {QueryBuilder}
+         * @return {QueryBuilder}
          */
         getQueryBuilder: function() {
             return this.queryBuilder;

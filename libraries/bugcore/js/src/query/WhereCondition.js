@@ -86,14 +86,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {Set.<string>}
+         * @return {Set.<string>}
          */
         getInSet: function() {
             return this.inSet;
         },
 
         /**
-         * @returns {string}
+         * @return {string}
          */
         getPropertyQuery: function() {
             return this.propertyQuery;

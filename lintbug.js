@@ -133,7 +133,7 @@ lintbug.lintTask("updateCopyright", function(lintFile, callback) {
 /**
  * @private
  * @param {string} fileContents
- * @returns {Array.<{index: number, line: string}>}
+ * @return {Array.<{index: number, line: string}>}
  */
 var generateLines = function(fileContents) {
     return bugcore.StringUtil.split(fileContents, "\n", function(line, index) {

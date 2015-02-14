@@ -256,7 +256,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {Object}
+         * @return {Object}
          */
         toObject: function() {
             var _this   = this;

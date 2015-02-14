@@ -215,7 +215,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {Object} object
-     * @returns {Array.<string>}
+     * @return {Array.<string>}
      */
     ObjectUtil.getProperties = function(object) {
         var propertyArray = [];

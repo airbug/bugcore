@@ -19,36 +19,38 @@
 require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
+    var RandomUtil  = bugpack.require('RandomUtil');
+
+
+    //-------------------------------------------------------------------------------
     // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructor
+     * @class
+     * @extends {Obj}
      */
-    var UuidGenerator = function() {};
+    var UuidGenerator = Class.extend(Obj, {
+        _name: "UuidGenerator"
+    });
 
 
+    //TODO BRN: Update this using https://github.com/broofa/node-uuid/blob/master/uuid.js
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
 
     /**
      * @static
-     * @param {number} digitLength
-     * @return {string}
-     */
-    UuidGenerator.generateHex = function(digitLength) {
-        return Math.floor((1 + Math.random()) * Math.pow(16, digitLength))
-            .toString(16)
-            .substring(1);
-    };
-
-    /**
-     * @static
      * @return {string}
      */
     UuidGenerator.generateHex4 = function() {
-        return UuidGenerator.generateHex(4);
+        return RandomUtil.randomHex(4);
     };
 
     /**

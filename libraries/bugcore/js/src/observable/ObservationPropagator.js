@@ -76,7 +76,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {List.<IObservationPropagator>}
+         * @return {List.<IObservationPropagator>}
          */
         getObservationPropagatorList: function() {
             return this.observationPropagatorList;

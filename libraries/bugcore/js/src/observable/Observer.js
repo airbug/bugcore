@@ -171,7 +171,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} observationPath
-         * @returns {boolean}
+         * @return {boolean}
          */
         match: function(observationPath) {
             return this.objectPathMatcher.match(observationPath);

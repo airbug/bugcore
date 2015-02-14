@@ -274,7 +274,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(...):*} method
      * @param {Object=} context
-     * @returns {Func}
+     * @return {Func}
      */
     Func.func = function(method, context) {
         return (new Func(method)).bind(context);

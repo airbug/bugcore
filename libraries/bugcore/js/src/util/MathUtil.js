@@ -47,14 +47,21 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
-     * @param {number} firstInteger
-     * @param {number} secondInteger
+     * @static
+     * @param {number} degrees
      * @return {number}
      */
-    MathUtil.randomBetween = function(firstInteger, secondInteger) {
-        var delta = secondInteger - firstInteger;
-        var randomNumber = Math.floor(Math.random() * (delta + 1));
-        return randomNumber + firstInteger;
+    MathUtil.degreesToRadians = function (degrees) {
+        return degrees * (Math.PI / 180);
+    };
+
+    /**
+     * @static
+     * @param {number} radians
+     * @return {number}
+     */
+    MathUtil.radiansToDegrees = function (radians) {
+        return radians * (180 / Math.PI);
     };
 
 

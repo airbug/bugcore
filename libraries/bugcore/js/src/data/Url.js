@@ -132,35 +132,35 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {string}
+         * @return {string}
          */
         getAnchor: function() {
             return this.anchor;
         },
 
         /**
-         * @returns {?string}
+         * @return {?string}
          */
         getHost: function() {
             return this.host;
         },
 
         /**
-         * @returns {?string}
+         * @return {?string}
          */
         getPath: function() {
             return this.path;
         },
 
         /**
-         * @returns {number}
+         * @return {number}
          */
         getPort: function() {
             return this.port;
         },
 
         /**
-         * @returns {string}
+         * @return {string}
          */
         getProtocol: function() {
             return this.protocol;

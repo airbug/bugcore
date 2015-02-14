@@ -240,7 +240,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {Object}
+         * @return {Object}
          */
         toObject: function() {
             return this.data;

@@ -149,7 +149,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {*} value
-     * @returns {string}
+     * @return {string}
      */
     TypeUtil.toString = function(value) {
         return Object.prototype.toString.call(value);

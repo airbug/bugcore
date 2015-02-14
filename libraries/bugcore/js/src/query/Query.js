@@ -77,7 +77,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @returns {Set.<ICondition>}
+         * @return {Set.<ICondition>}
          */
         getConditionSet: function() {
             return this.conditionSet;

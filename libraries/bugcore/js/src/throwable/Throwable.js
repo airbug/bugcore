@@ -244,7 +244,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @returns {string}
+         * @return {string}
          */
         generateStackTrace: function() {
             return this.message + "\n" + StackTraceUtil.generateStackTrace();

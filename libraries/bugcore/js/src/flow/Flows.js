@@ -175,7 +175,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(Flow)} whileMethod
      * @param {Flow} whileFlow
-     * @returns {FlowBuilder}
+     * @return {FlowBuilder}
      */
     Flows.$whileParallel    = function(whileMethod, whileFlow) {
         return new FlowBuilder(WhileParallel, [whileMethod, whileFlow]);
@@ -185,7 +185,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {function(Flow)} whileMethod
      * @param {Flow} whileFlow
-     * @returns {FlowBuilder}
+     * @return {FlowBuilder}
      */
     Flows.$whileSeries    = function(whileMethod, whileFlow) {
         return new FlowBuilder(WhileSeries, [whileMethod, whileFlow]);

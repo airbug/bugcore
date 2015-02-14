@@ -57,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @static
      * @param {*} value
-     * @returns {*}
+     * @return {*}
      */
     LiteralUtil.convertToLiteral = function(value) {
         var literal = undefined;
