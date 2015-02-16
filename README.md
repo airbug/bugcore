@@ -23,7 +23,7 @@ free to ask!
 ## Build Status
 
 [![npm version](https://badge.fury.io/js/bugcore.svg)](http://badge.fury.io/js/bugcore)<br />
-[![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)
+[![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)<br />
 [![NPM](https://nodei.co/npm/bugcore.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bugcore/)
 
 
