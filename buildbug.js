@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 airbug inc. http://airbug.com
+ * Copyright (c) 2015 airbug Inc. http://airbug.com
  *
  * bugcore may be freely distributed under the MIT license.
  */
@@ -67,7 +67,7 @@ buildProperties({
             description: "bugcore is a JavaScript library that provides a foundational architecture for object oriented JS",
             main: "./scripts/bugcore-node.js",
             dependencies: dependencies,
-            author: "Brian Neisler <brian@airbug.com>",
+            author: "Brian Neisler <me@brianneisler.com>",
             repository: {
                 type: "git",
                 url: "https://github.com/airbug/bugcore.git"
@@ -80,6 +80,12 @@ buildProperties({
                     type : "MIT",
                     url : "https://raw.githubusercontent.com/airbug/bugcore/master/LICENSE"
                 }
+            ],
+            "keywords": [
+                "bugcore",
+                "framework",
+                "object",
+                "oop"
             ]
         },
         sourcePaths: [

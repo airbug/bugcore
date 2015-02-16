@@ -22,8 +22,9 @@ free to ask!
 
 ## Build Status
 
-Latest Version `0.2.23`<br />
+[![npm version](https://badge.fury.io/js/bugcore.svg)](http://badge.fury.io/js/bugcore)<br />
 [![Code Climate](https://codeclimate.com/github/airbug/bugcore/badges/gpa.svg)](https://codeclimate.com/github/airbug/bugcore)
+[![NPM](https://nodei.co/npm/bugcore.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bugcore/)
 
 
 ## Quick Examples
