@@ -580,7 +580,10 @@ __Method Summary__
 
 Access | Signature | Return Type
 --- | --- | ---
-public | <code>[newInstance](#Class_newInstance)()</code> | <code>{[Constructor](#Constructor)}</code>
+public | <code>[alloc](#Class_alloc)({*...} args)</code> | <code>{[Constructor](#Constructor)}</code>
+public | <code>[allocWithArray](#Class_allocWithArray)({[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;} args)</code> | <code>{[Constructor](#Constructor)}</code>
+public | <code>[newInstance](#Class_newInstance)({*...} args)</code> | <code>{[Constructor](#Constructor)}</code>
+public | <code>[newInstanceWithArray](#Class_newInstanceWithArray)({[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;} args)</code> | <code>{[Constructor](#Constructor)}</code>
 
 
 __Static Method Summary__
@@ -621,7 +624,7 @@ __Parameters__
 Name | Type | Description
 --- | --- | ---
 `constructor` | <code>{function(new:[Constructor](#Constructor)}</code> | The Constructor of this class.
-`interfaces` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).<[Interface](#Interface)>}</code> | Any Interfaces that this Class implements.
+`interfaces` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;[Interface](#Interface)&gt;}</code> | Any Interfaces that this Class implements.
 `name` | <code>{string}</code> | The name of this Class.
 `superclass` | <code>{[Class](#Class)}</code> | The superclass of this Class.
 
@@ -813,10 +816,53 @@ MyBaseClass.getSuperclass();                                // null
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Class_newInstance" />
-### Class#newInstance()
+<a name="Class_alloc" />
+### Class#alloc()
 
-This method returns a new instance of this Class.
+This method allocates and returns a new instance of this Class that has only been constructed. It passes all
+arguments through to the constructor.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {...} args
+ * @return {Constructor}
+ */
+alloc: function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{...}</code> | Any number of arguments of any type.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var BaseBallClass   = BaseBall.getClass();
+var myBaseBall      = BaseBallClass.alloc("arg1", "arg2");
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_allocWithArray" />
+### Class#allocWithArray()
+
+This method allocates and returns a new instance of this Class that has only been constructed. It uses an array
+as the arguments to apply to the constructor.
 
 
 __Method__
@@ -826,7 +872,7 @@ __Method__
  * @param {Array.<*>=} args
  * @return {Constructor}
  */
-newInstance: function(args) {
+allocWithArray: function(args) {
 ```
 
 __Parameters__
@@ -846,7 +892,91 @@ __Examples__
 ```javascript
 var BaseBall        = Class.extend(Ball, {});
 var BaseBallClass   = BaseBall.getClass();
-var myBaseBall      = BaseBallClass.newInstance(["arg1", "arg2"]);
+var myBaseBall      = BaseBallClass.allocWithArray(["arg1", "arg2"]);
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_newInstance" />
+### Class#newInstance()
+
+This method returns a new instance of this Class that has been both constructed and initialized. It passes all
+arguments through to both the constructor as well as the init methods.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {*...} args
+ * @return {Constructor}
+ */
+newInstance: function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{*...}</code> | Any number of arguments of any type.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var BaseBallClass   = BaseBall.getClass();
+var myBaseBall      = BaseBallClass.newInstance("arg1", "arg2");
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Class_newInstanceWithArray" />
+### Class#newInstanceWithArray()
+
+This method returns a new instance of this Class that has been both constructed and initialized. It uses an array
+as the arguments to apply to both the constructor and the init methods.
+
+
+__Method__
+
+```javascript
+/**
+ * @param {Array.<*>=} args
+ * @return {Constructor}
+ */
+newInstanceWithArray: function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;}</code> | An array of args to apply to the constructor and init methods.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var BaseBallClass   = BaseBall.getClass();
+var myBaseBall      = BaseBallClass.newInstanceWithArray(["arg1", "arg2"]);
 ```
 
 
@@ -1138,6 +1268,16 @@ Access | Signature | Return Type
 static public | <code>[getClass](#Constructor-getClass)()</code> | <code>{[Class](#Class)}</code>
 
 
+__Static Methods Summary__
+
+Access | Signature | Return Type
+--- | --- | ---
+static public | <code>[alloc](#Constructor-alloc)({*...} args)</code> | <code>{[Constructor](#Constructor)}</code>
+static public | <code>[allocWithArray](#Constructor-allocWithArray)({[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;} args)</code> | <code>{[Constructor](#Constructor)}</code>
+static public | <code>[newInstance](#Constructor-newInstance)({*...} args)</code> | <code>{[Constructor](#Constructor)}</code>
+static public | <code>[newInstanceWithArray](#Constructor-newInstanceWithArray)({[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;} args)</code> | <code>{[Constructor](#Constructor)}</code>
+
+
 <br />
 ------------------------------------------------------------------------------------
 <br />
@@ -1210,6 +1350,176 @@ __Examples__
 
 ```js
 //TODO BRN: Provide example of Class usage
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Constructor-alloc" />
+### Constructor.alloc()
+
+This method allocates and returns a new instance of the class represented by this Constructor. The new instance
+has only been constructed and not initialized. The method passes all arguments through to the constructor.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*...}
+ * @return {Constructor}
+ */
+Constructor.alloc = function() {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{...}</code> | Any number of arguments of any type.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var myBaseBall      = BaseBall.alloc("arg1", "arg2");
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Constructor-allocWithArray" />
+### Constructor.allocWithArray()
+
+This method allocates and returns a new instance of the class represented by this Constructor. The new instance has only been
+constructed and not initialized. This method uses an array as the arguments to apply to the constructor.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {Array.<*>} args
+ * @return {Constructor}
+ */
+Constructor.allocWithArray = function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;}</code> | An array of args to apply to the constructor.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var myBaseBall      = BaseBall.allocWithArray(["arg1", "arg2"]);
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Constructor-newInstance" />
+### Constructor.newInstance()
+
+This method allocates and returns a new instance of the class represented by this Constructor. The new instance
+has been both constructed and initialized.  This method passes all arguments through to both the constructor as
+well as the init methods.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {*...}
+ * @return {Constructor}
+ */
+Constructor.newInstance = function() {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{*...}</code> | Any number of arguments of any type.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var myBaseBall      = BaseBall.newInstance("arg1", "arg2");
+```
+
+
+<br />
+------------------------------------------------------------------------------------
+<br />
+
+<a name="Constructor-newInstanceWithArray" />
+### Constructor.newInstanceWithArray()
+
+This method allocates and returns a new instance of the class represented by this Constructor. The new instance
+has been both constructed and initialized. This method uses an array as the arguments to apply to both the
+constructor and the init methods.
+
+
+__Method__
+
+```javascript
+/**
+ * @static
+ * @param {Array.<*>} args
+ * @return {Constructor}
+ */
+Constructor.newInstanceWithArray = function(args) {
+```
+
+__Parameters__
+
+Name | Type | Description
+--- | --- | ---
+`args` | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;*&gt;}</code> | An array of args to apply to the constructor and init methods.
+
+
+__Returns__
+
+* <code>{[Constructor](#Constructor)}</code> - The new instance
+
+
+__Examples__
+
+```javascript
+var BaseBall        = Class.extend(Ball, {});
+var myBaseBall      = BaseBall.newInstanceWithArray(["arg1", "arg2"]);
 ```
 
 

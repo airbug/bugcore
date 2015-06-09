@@ -110,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
             ]);
             flowArgs    = args.flowArgs;
             callback    = args.callback;
-            var flow    = this.flowConstructor.getClass().newInstance(this.flowConstructorArgs);
+            var flow    = this.flowConstructor.newInstanceWithArray(this.flowConstructorArgs);
             flow.execute(flowArgs, callback);
         }
     });

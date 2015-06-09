@@ -55,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Tests
     //-------------------------------------------------------------------------------
 
-    var classNewInstanceTest = {
+    var classAllocTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -64,12 +64,16 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testArgument1 = "value1";
             this.testArgument2 = "value2";
+            this.testInitializerNotCalled = true;
             this.NewConstructor = Class.extend(Obj, {
                 _constructor: function(arg1, arg2) {
                     test.assertEqual(arg1, _this.testArgument1,
                         "Assert arg1 is equal to testArgument1");
                     test.assertEqual(arg2, _this.testArgument2,
                         "Assert arg2 is equal to testArgument2");
+                },
+                _initializer: function(arg1, arg2) {
+                    _this.testInitializerNotCalled = false;
                 },
                 someTestFunction1: function() {
 
@@ -78,7 +82,7 @@ require('bugpack').context("*", function(bugpack) {
 
                 }
             });
-            this.instance = this.NewConstructor.getClass().newInstance([this.testArgument1, this.testArgument2]);
+            this.instance = this.NewConstructor.getClass().alloc(this.testArgument1, this.testArgument2);
         },
 
 
@@ -94,6 +98,160 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Object class");
             test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
                 "Assert instance of new class extends NewConstructor");
+            test.assertTrue(this.testInitializerNotCalled,
+                "Assert _initializer has not been called");
+        }
+    };
+
+    var classAllocWithArrayTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.testArgument1 = "value1";
+            this.testArgument2 = "value2";
+            this.testInitializerNotCalled = true;
+            this.NewConstructor = Class.extend(Obj, {
+                _constructor: function(arg1, arg2) {
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2");
+                },
+                _initializer: function(arg1, arg2) {
+                    _this.testInitializerNotCalled = false;
+                },
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            });
+            this.instance = this.NewConstructor.getClass().allocWithArray([this.testArgument1, this.testArgument2]);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
+                "Assert function added to class is present in class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
+                "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Obj),
+                "Assert instance of new class extends base level Object class");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
+                "Assert instance of new class extends NewConstructor");
+            test.assertTrue(this.testInitializerNotCalled,
+                "Assert _initializer has not been called");
+        }
+    };
+
+    var classNewInstanceTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.testArgument1 = "value1";
+            this.testArgument2 = "value2";
+            this.testInitializerCalled = false;
+            this.NewConstructor = Class.extend(Obj, {
+                _constructor: function(arg1, arg2) {
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1 in _constructor");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2 in _constructor");
+                },
+                _initializer: function(arg1, arg2) {
+                    _this.testInitializerCalled = true;
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1 in _initializer");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2 in _initializer");
+                },
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            });
+            this.instance = this.NewConstructor.getClass().newInstance(this.testArgument1, this.testArgument2);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
+                "Assert function added to class is present in class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
+                "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Obj),
+                "Assert instance of new class extends base level Object class");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
+                "Assert instance of new class extends NewConstructor");
+            test.assertTrue(this.testInitializerCalled,
+                "Assert _initializer has been called");
+        }
+    };
+
+    var classNewInstanceWithArrayTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.testArgument1 = "value1";
+            this.testArgument2 = "value2";
+            this.testInitializerCalled = false;
+            this.NewConstructor = Class.extend(Obj, {
+                _constructor: function(arg1, arg2) {
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1 in _constructor");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2 in _constructor");
+                },
+                _initializer: function(arg1, arg2) {
+                    _this.testInitializerCalled = true;
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1 in _initializer");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2 in _initializer");
+                },
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            });
+            this.instance = this.NewConstructor.getClass().newInstanceWithArray([this.testArgument1, this.testArgument2]);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
+                "Assert function added to class is present in class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
+                "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Obj),
+                "Assert instance of new class extends base level Object class");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
+                "Assert instance of new class extends NewConstructor");
+            test.assertTrue(this.testInitializerCalled,
+                "Assert _initializer has been called");
         }
     };
 
@@ -700,8 +858,17 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
+    bugmeta.tag(classAllocTest).with(
+        test().name("Class - #alloc test")
+    );
+    bugmeta.tag(classAllocWithArrayTest).with(
+        test().name("Class - #allocWithArray test")
+    );
     bugmeta.tag(classNewInstanceTest).with(
         test().name("Class - #newInstance test")
+    );
+    bugmeta.tag(classNewInstanceWithArrayTest).with(
+        test().name("Class - #newInstanceWithArray test")
     );
     bugmeta.tag(classAdaptTest).with(
         test().name("Class - #adapt test")

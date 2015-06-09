@@ -68,6 +68,83 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    var constructorAllocTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.instance = Constructor.alloc();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of Constructor extends Constructor");
+        }
+    };
+
+    var constructorAllocWithArrayTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.instance = Constructor.allocWithArray([]);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of Constructor extends Constructor");
+        }
+    };
+
+
+    var constructorNewInstanceTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.instance = Constructor.newInstance();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of Constructor extends Constructor");
+        }
+    };
+
+    var constructorNewInstanceWithArrayTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.instance = Constructor.newInstanceWithArray([]);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(Class.doesExtend(this.instance, Constructor),
+                "Assert instance of Constructor extends Constructor");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -75,5 +152,17 @@ require('bugpack').context("*", function(bugpack) {
 
     bugmeta.tag(constructorInstantiationTest).with(
         test().name("Constructor - instantiation test")
+    );
+    bugmeta.tag(constructorAllocTest).with(
+        test().name("Constructor - #alloc test")
+    );
+    bugmeta.tag(constructorAllocWithArrayTest).with(
+        test().name("Constructor - #allocWithArray test")
+    );
+    bugmeta.tag(constructorNewInstanceTest).with(
+        test().name("Constructor - #newInstance test")
+    );
+    bugmeta.tag(constructorNewInstanceWithArrayTest).with(
+        test().name("Constructor - #newInstanceWithArray test")
     );
 });

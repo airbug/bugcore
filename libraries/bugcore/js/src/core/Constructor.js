@@ -61,9 +61,16 @@ require('bugpack').context("*", function(bugpack) {
      */
     Constructor._class = null;
 
+    /**
+     * @static
+     * @private
+     * @type {boolean}
+     */
+    Constructor.allocateOnly = false;
+
 
     //-------------------------------------------------------------------------------
-    // Static Methods
+    // Static Getters and Setters
     //-------------------------------------------------------------------------------
 
     /**
@@ -72,6 +79,73 @@ require('bugpack').context("*", function(bugpack) {
      */
     Constructor.getClass = function() {
         return this._class;
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Static Methods
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @param {*...}
+     * @return {Constructor}
+     */
+    Constructor.alloc = function() {
+        var constructor = this;
+        function F(args) {
+            return constructor.apply(this, args);
+        }
+        F.prototype = constructor.prototype;
+        Constructor.allocateOnly = true;
+        var instance = new F(arguments);
+        Constructor.allocateOnly = false;
+        return instance;
+    };
+
+    /**
+     * @static
+     * @param {Array.<*>} args
+     * @return {Constructor}
+     */
+    Constructor.allocWithArray = function(args) {
+        var constructor = this;
+        function F(args) {
+            return constructor.apply(this, args);
+        }
+        F.prototype = constructor.prototype;
+        Constructor.allocateOnly = true;
+        var instance = new F(args);
+        Constructor.allocateOnly = false;
+        return instance;
+    };
+
+    /**
+     * @static
+     * @param {*...}
+     * @return {Constructor}
+     */
+    Constructor.newInstance = function() {
+        var constructor = this;
+        function F(args) {
+            return constructor.apply(this, args);
+        }
+        F.prototype = constructor.prototype;
+        return new F(arguments);
+    };
+
+    /**
+     * @static
+     * @param {Array.<*>} args
+     * @return {Constructor}
+     */
+    Constructor.newInstanceWithArray = function(args) {
+        var constructor = this;
+        function F(args) {
+            return constructor.apply(this, args);
+        }
+        F.prototype = constructor.prototype;
+        return new F(args);
     };
 
 

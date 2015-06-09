@@ -76,6 +76,24 @@ require('bugpack').context("*", function(bugpack) {
     Class.prototype = {
 
         /**
+         * @param {*...} args
+         * @return {Constructor}
+         */
+        alloc: function() {
+            var constructor = this.getConstructor();
+            return constructor.allocWithArray(arguments);
+        },
+
+        /**
+         * @param {Array.<*>=} args
+         * @return {Constructor}
+         */
+        allocWithArray: function(args) {
+            var constructor = this.getConstructor();
+            return constructor.allocWithArray(args);
+        },
+
+        /**
          * @return {function(new:Constructor)}
          */
         getConstructor: function() {
@@ -104,16 +122,21 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @param {*...} args
+         * @return {Constructor}
+         */
+        newInstance: function() {
+            var constructor = this.getConstructor();
+            return constructor.newInstanceWithArray(arguments);
+        },
+
+        /**
          * @param {Array.<*>=} args
          * @return {Constructor}
          */
-        newInstance: function(args) {
+        newInstanceWithArray: function(args) {
             var constructor = this.getConstructor();
-            function F(args) {
-                return constructor.apply(this, args);
-            }
-            F.prototype = constructor.prototype;
-            return new F(args);
+            return constructor.newInstanceWithArray(args);
         }
     };
 
@@ -233,7 +256,7 @@ require('bugpack').context("*", function(bugpack) {
                 if (this._constructor) {
                     this._constructor.apply(this, arguments);
                 }
-                if (this._initializer) {
+                if (this._initializer && !Constructor.allocateOnly) {
                     this._initializer.apply(this, arguments);
                 }
             }

@@ -142,7 +142,7 @@ require('bugpack').context("*", function(bugpack) {
             ]);
             flowArgs    = args.flowArgs;
             callback    = args.callback;
-            var flow    = this.getFlowConstructor().getClass().newInstance(this.getFlowConstructorArgs());
+            var flow    = this.getFlowConstructor().newInstanceWithArray(this.getFlowConstructorArgs());
             flow.addAllElseIf(this.elseIfList);
             flow.setElse(this.elseFlow);
             flow.execute(flowArgs, callback);
