@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {string} argName
          * @param {*} argValue
          * @param {string} message
-         * @param {Array.<(Throwable | Error)>} causes
+         * @param {Array.<(Throwable | Error)>=} causes
          * @private
          */
         _constructor: function(type, argName, argValue, message, causes) {

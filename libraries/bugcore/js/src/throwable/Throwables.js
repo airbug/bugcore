@@ -11,6 +11,7 @@
 
 //@Export('Throwables')
 
+//@Require('ArgumentBug')
 //@Require('Bug')
 //@Require('Class')
 //@Require('Exception')
@@ -28,6 +29,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgumentBug         = bugpack.require('ArgumentBug');
     var Bug                 = bugpack.require('Bug');
     var Class               = bugpack.require('Class');
     var Exception           = bugpack.require('Exception');
@@ -74,6 +76,18 @@ require('bugpack').context("*", function(bugpack) {
      */
     Throwables.exception = function(type, data, message, causes) {
         return new Exception(type, data, message, causes);
+    };
+
+    /**
+     * @static
+     * @param {string} argName
+     * @param {*} argValue
+     * @param {string} message
+     * @param {Array.<(Throwable | Error)>=} causes
+     * @return {ArgumentBug}
+     */
+    Throwables.illegalArgumentBug = function(argName, argValue, message, causes) {
+        return new ArgumentBug(ArgumentBug.ILLEGAL, argName, argValue, message, causes);
     };
 
     /**
