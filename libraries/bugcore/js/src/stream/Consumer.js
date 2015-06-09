@@ -13,10 +13,11 @@
 
 //@Require('Bug')
 //@Require('Class')
-//@Require('Exception')
 //@Require('IConsumer')
+//@Require('ISupplier')
 //@Require('Obj')
 //@Require('Supplier')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -31,10 +32,11 @@ require('bugpack').context("*", function(bugpack) {
 
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
     var IConsumer   = bugpack.require('IConsumer');
+    var ISupplier   = bugpack.require('ISupplier');
     var Obj         = bugpack.require('Obj');
     var Supplier    = bugpack.require('Supplier');
+    var Throwables  = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -59,9 +61,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {ISupplier.<I>} supplier
          */
-        _constructor: function(supplier) {
+        _constructor: function() {
 
             this._super();
 
@@ -92,7 +93,24 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {ISupplier.<I>}
              */
-            this.supplier       = supplier;
+            this.supplier       = null;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {ISupplier.<I>} supplier
+         */
+        init: function(supplier) {
+            this._super();
+            if (Class.doesImplement(supplier, ISupplier)) {
+                this.supplier = supplier;
+            } else {
+                throw Throwables.illegalArgumentBug("supplier", supplier, "'supplier' must implement ISupplier");
+            }
         },
 
 
@@ -115,7 +133,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ISupplier}
+         * @return {ISupplier.<I>}
          */
         getSupplier: function() {
             return this.supplier;

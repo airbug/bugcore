@@ -13,8 +13,8 @@
 
 //@Require('Class')
 //@Require('Consumer')
-//@Require('Exception')
 //@Require('ICollection')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -29,8 +29,8 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var Consumer        = bugpack.require('Consumer');
-    var Exception       = bugpack.require('Exception');
     var ICollection     = bugpack.require('ICollection');
+    var Throwables      = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -53,12 +53,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {ISupplier.<I>} supplier
-         * @param {ICollection.<I>} collection
          */
-        _constructor: function(supplier, collection) {
+        _constructor: function() {
 
-            this._super(supplier);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
@@ -69,17 +67,24 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {ICollection.<I>}
              */
-            this.collection     = collection;
+            this.collection     = null;
         },
 
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
         /**
-         * @private
          * @param {ISupplier.<I>} supplier
          * @param {ICollection.<I>} collection
          */
-        _initializer: function(supplier, collection) {
-            if (!Class.doesImplement(this.collection, ICollection)) {
-                throw new Exception("IllegalArgument", {}, "'collection' must implement ICollection");
+        init: function(supplier, collection) {
+            this._super(supplier);
+            if (Class.doesImplement(collection, ICollection)) {
+                this.collection = collection;
+            } else {
+                throw Throwables.illegalArgumentBug("collection", collection, "'collection' must implement ICollection");
             }
         },
 

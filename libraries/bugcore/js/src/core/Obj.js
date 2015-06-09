@@ -90,18 +90,20 @@ require('bugpack').context("*", function(bugpack) {
                 enumerable : false,
                 configurable : false
             });
+
+            IdGenerator.ensureId(this);
         },
 
 
         //-------------------------------------------------------------------------------
-        // Initializer
+        // Init Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @private
          */
-        _initializer: function() {
-            IdGenerator.ensureId(this);
+        init: function() {
+
         },
 
 

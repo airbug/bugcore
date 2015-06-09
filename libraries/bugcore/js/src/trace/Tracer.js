@@ -88,19 +88,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {TreeNode}
              */
-            this.currentNode    = null;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Initializer
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         */
-        _initializer: function() {
-            this.currentNode = this.traceTree.getRootNode();
+            this.currentNode    = this.traceTree.getRootNode();
         },
 
 

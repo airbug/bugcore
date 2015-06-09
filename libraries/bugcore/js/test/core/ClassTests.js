@@ -64,7 +64,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testArgument1 = "value1";
             this.testArgument2 = "value2";
-            this.testInitializerNotCalled = true;
+            this.testInitNotCalled = true;
             this.NewConstructor = Class.extend(Obj, {
                 _constructor: function(arg1, arg2) {
                     test.assertEqual(arg1, _this.testArgument1,
@@ -72,8 +72,8 @@ require('bugpack').context("*", function(bugpack) {
                     test.assertEqual(arg2, _this.testArgument2,
                         "Assert arg2 is equal to testArgument2");
                 },
-                _initializer: function(arg1, arg2) {
-                    _this.testInitializerNotCalled = false;
+                init: function(arg1, arg2) {
+                    _this.testInitNotCalled = false;
                 },
                 someTestFunction1: function() {
 
@@ -98,8 +98,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Object class");
             test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
                 "Assert instance of new class extends NewConstructor");
-            test.assertTrue(this.testInitializerNotCalled,
-                "Assert _initializer has not been called");
+            test.assertTrue(this.testInitNotCalled,
+                "Assert #init has not been called");
         }
     };
 
@@ -112,7 +112,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testArgument1 = "value1";
             this.testArgument2 = "value2";
-            this.testInitializerNotCalled = true;
+            this.testInitNotCalled = true;
             this.NewConstructor = Class.extend(Obj, {
                 _constructor: function(arg1, arg2) {
                     test.assertEqual(arg1, _this.testArgument1,
@@ -120,8 +120,8 @@ require('bugpack').context("*", function(bugpack) {
                     test.assertEqual(arg2, _this.testArgument2,
                         "Assert arg2 is equal to testArgument2");
                 },
-                _initializer: function(arg1, arg2) {
-                    _this.testInitializerNotCalled = false;
+                init: function(arg1, arg2) {
+                    _this.testInitNotCalled = false;
                 },
                 someTestFunction1: function() {
 
@@ -146,8 +146,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Object class");
             test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
                 "Assert instance of new class extends NewConstructor");
-            test.assertTrue(this.testInitializerNotCalled,
-                "Assert _initializer has not been called");
+            test.assertTrue(this.testInitNotCalled,
+                "Assert #init has not been called");
         }
     };
 
@@ -160,7 +160,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testArgument1 = "value1";
             this.testArgument2 = "value2";
-            this.testInitializerCalled = false;
+            this.testInitCalled = false;
             this.NewConstructor = Class.extend(Obj, {
                 _constructor: function(arg1, arg2) {
                     test.assertEqual(arg1, _this.testArgument1,
@@ -168,12 +168,12 @@ require('bugpack').context("*", function(bugpack) {
                     test.assertEqual(arg2, _this.testArgument2,
                         "Assert arg2 is equal to testArgument2 in _constructor");
                 },
-                _initializer: function(arg1, arg2) {
-                    _this.testInitializerCalled = true;
+                init: function(arg1, arg2) {
+                    _this.testInitCalled = true;
                     test.assertEqual(arg1, _this.testArgument1,
-                        "Assert arg1 is equal to testArgument1 in _initializer");
+                        "Assert arg1 is equal to testArgument1 in #init");
                     test.assertEqual(arg2, _this.testArgument2,
-                        "Assert arg2 is equal to testArgument2 in _initializer");
+                        "Assert arg2 is equal to testArgument2 in #init");
                 },
                 someTestFunction1: function() {
 
@@ -198,8 +198,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Object class");
             test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
                 "Assert instance of new class extends NewConstructor");
-            test.assertTrue(this.testInitializerCalled,
-                "Assert _initializer has been called");
+            test.assertTrue(this.testInitCalled,
+                "Assert #init has been called");
         }
     };
 
@@ -212,7 +212,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testArgument1 = "value1";
             this.testArgument2 = "value2";
-            this.testInitializerCalled = false;
+            this.testInitCalled = false;
             this.NewConstructor = Class.extend(Obj, {
                 _constructor: function(arg1, arg2) {
                     test.assertEqual(arg1, _this.testArgument1,
@@ -220,12 +220,12 @@ require('bugpack').context("*", function(bugpack) {
                     test.assertEqual(arg2, _this.testArgument2,
                         "Assert arg2 is equal to testArgument2 in _constructor");
                 },
-                _initializer: function(arg1, arg2) {
-                    _this.testInitializerCalled = true;
+                init: function(arg1, arg2) {
+                    _this.testInitCalled = true;
                     test.assertEqual(arg1, _this.testArgument1,
-                        "Assert arg1 is equal to testArgument1 in _initializer");
+                        "Assert arg1 is equal to testArgument1 in #init");
                     test.assertEqual(arg2, _this.testArgument2,
-                        "Assert arg2 is equal to testArgument2 in _initializer");
+                        "Assert arg2 is equal to testArgument2 in #init");
                 },
                 someTestFunction1: function() {
 
@@ -250,8 +250,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of new class extends base level Object class");
             test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
                 "Assert instance of new class extends NewConstructor");
-            test.assertTrue(this.testInitializerCalled,
-                "Assert _initializer has been called");
+            test.assertTrue(this.testInitCalled,
+                "Assert #init has been called");
         }
     };
 

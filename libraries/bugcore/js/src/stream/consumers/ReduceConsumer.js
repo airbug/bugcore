@@ -13,6 +13,8 @@
 
 //@Require('Class')
 //@Require('Consumer')
+//@Require('Throwables')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -27,6 +29,8 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Consumer    = bugpack.require('Consumer');
+    var Throwables  = bugpack.require('Throwables');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -49,13 +53,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {ISupplier.<I>} supplier
-         * @param {*} memo
-         * @param {function(*, I):*} reduceMethod
          */
-        _constructor: function(supplier, memo, reduceMethod) {
+        _constructor: function() {
 
-            this._super(supplier);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
@@ -66,13 +67,34 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {*}
              */
-            this.memo           = memo;
+            this.memo           = null;
 
             /**
              * @private
              * @type {function(*, I): *}
              */
-            this.reduceMethod   = reduceMethod;
+            this.reduceMethod   = null;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {ISupplier.<I>} supplier
+         * @param {*} memo
+         * @param {function(*, I):*} reduceMethod
+         */
+        init: function(supplier, memo, reduceMethod) {
+            this._super(supplier);
+            this.memo = memo;
+
+            if (TypeUtil.isFunction(reduceMethod)) {
+                this.reduceMethod = reduceMethod;
+            } else {
+                throw Throwables.illegalArgumentBug("reduceMethod", reduceMethod, "'reduceMethod' must be a function");
+            }
         },
 
 

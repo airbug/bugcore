@@ -256,8 +256,8 @@ require('bugpack').context("*", function(bugpack) {
                 if (this._constructor) {
                     this._constructor.apply(this, arguments);
                 }
-                if (this._initializer && !Constructor.allocateOnly) {
-                    this._initializer.apply(this, arguments);
+                if (this.init && !Constructor.allocateOnly) {
+                    this.init.apply(this, arguments);
                 }
             }
         };

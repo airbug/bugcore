@@ -73,9 +73,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(ICollection.<I> | Array.<I>)=} items
          */
-        _constructor: function(items) {
+        _constructor: function() {
 
             this._super();
 
@@ -91,11 +90,16 @@ require('bugpack').context("*", function(bugpack) {
             this.hashStore = new HashStore();
         },
 
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
         /**
          * @private
          * @param {(ICollection.<I> | Array.<I>)=} items
          */
-        _initializer: function(items) {
+        init: function(items) {
 
             this._super();
 

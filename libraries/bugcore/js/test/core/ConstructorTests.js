@@ -106,7 +106,6 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
-
     var constructorNewInstanceTest = {
 
         // Setup Test

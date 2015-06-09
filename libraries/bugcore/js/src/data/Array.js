@@ -85,11 +85,16 @@ require('bugpack').context("*", function(bugpack) {
             this.array  = null;
         },
 
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
         /**
          * @private
          * @param {(ICollection.<I> | Array.<I>)=} items
          */
-        _initializer: function(items) {
+        init: function(items) {
 
             this._super();
 
