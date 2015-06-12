@@ -85,6 +85,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {ISupplier.<I>} supplier
          * @param {*} memo
          * @param {function(*, I):*} reduceMethod
+         * @return {ReduceConsumer}
          */
         init: function(supplier, memo, reduceMethod) {
             this._super(supplier);
@@ -95,6 +96,7 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 throw Throwables.illegalArgumentBug("reduceMethod", reduceMethod, "'reduceMethod' must be a function");
             }
+            return this;
         },
 
 

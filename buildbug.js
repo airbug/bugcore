@@ -35,7 +35,9 @@ var bugpack             = enableModule('bugpack');
 var bugunit             = enableModule('bugunit');
 var core                = enableModule('core');
 var lintbug             = enableModule("lintbug");
-var nodejs              = enableModule('nodejs');
+var nodejs              = enableModule('nodejs', {
+    npmConfig: buildProject.getProperty("npmConfig")
+});
 var uglifyjs            = enableModule("uglifyjs");
 
 
@@ -44,7 +46,7 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.3.0";
+var version             = "0.3.1";
 var dependencies        = {
     bugpack: "0.2.0"
 };
@@ -420,12 +422,12 @@ buildTarget('prod').buildFlow(
                         bucket: "{{public-bucket}}"
                     }
                 }),
-                targetTask('npmConfigSet', {
+               /* targetTask('npmConfigSet', {
                     properties: {
                         config: buildProject.getProperty("npmConfig")
                     }
                 }),
-                targetTask('npmAddUser'),
+                targetTask('npmAddUser'),*/
                 targetTask('publishNodePackage', {
                     properties: {
                         packageName: "{{node.packageJson.name}}",

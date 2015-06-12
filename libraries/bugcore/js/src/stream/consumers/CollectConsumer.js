@@ -78,6 +78,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @param {ISupplier.<I>} supplier
          * @param {ICollection.<I>} collection
+         * @return {CollectConsumer}
          */
         init: function(supplier, collection) {
             this._super(supplier);
@@ -86,6 +87,7 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 throw Throwables.illegalArgumentBug("collection", collection, "'collection' must implement ICollection");
             }
+            return this;
         },
 
 

@@ -103,6 +103,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {ISupplier.<I>} supplier
+         * @return {Consumer}
          */
         init: function(supplier) {
             this._super();
@@ -111,6 +112,7 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 throw Throwables.illegalArgumentBug("supplier", supplier, "'supplier' must implement ISupplier");
             }
+            return this;
         },
 
 

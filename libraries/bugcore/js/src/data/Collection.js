@@ -96,8 +96,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
          * @param {(ICollection.<I> | Array.<I>)=} items
+         * @return {Collection.<I>}
          */
         init: function(items) {
 
@@ -106,6 +106,7 @@ require('bugpack').context("*", function(bugpack) {
             if (items) {
                 this.addAll(items);
             }
+            return this;
         },
 
 

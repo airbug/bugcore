@@ -151,6 +151,59 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    var classAllocInitTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.testArgument1 = "value1";
+            this.testArgument2 = "value2";
+            this.testInitCalled = false;
+            this.NewConstructor = Class.extend(Obj, {
+                _constructor: function() {
+                    this._super();
+                },
+                init: function(arg1, arg2) {
+                    var returned = this._super();
+                    _this.testInitCalled = true;
+                    test.assertEqual(returned, this,
+                        "Assert that init method returned 'this'");
+                    test.assertEqual(arg1, _this.testArgument1,
+                        "Assert arg1 is equal to testArgument1");
+                    test.assertEqual(arg2, _this.testArgument2,
+                        "Assert arg2 is equal to testArgument2");
+                    return this;
+                },
+                someTestFunction1: function() {
+
+                },
+                someTestFunction2: function() {
+
+                }
+            });
+            this.instance = this.NewConstructor.getClass().alloc().init(this.testArgument1, this.testArgument2);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
+                "Assert function added to class is present in class instance");
+            test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
+                "Assert second function added to class is present in class instance");
+            test.assertTrue(Class.doesExtend(this.instance, Obj),
+                "Assert instance of new class extends base level Object class");
+            test.assertTrue(Class.doesExtend(this.instance, this.NewConstructor),
+                "Assert instance of new class extends NewConstructor");
+            test.assertTrue(this.testInitCalled,
+                "Assert #init has been called");
+        }
+    };
+
     var classNewInstanceTest = {
 
         // Setup Test
@@ -863,6 +916,9 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(classAllocWithArrayTest).with(
         test().name("Class - #allocWithArray test")
+    );
+    bugmeta.tag(classAllocInitTest).with(
+        test().name("Class - #alloc and #init test")
     );
     bugmeta.tag(classNewInstanceTest).with(
         test().name("Class - #newInstance test")

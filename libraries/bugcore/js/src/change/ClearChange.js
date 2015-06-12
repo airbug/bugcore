@@ -13,7 +13,6 @@
 
 //@Require('Change')
 //@Require('Class')
-//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -28,7 +27,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Change  = bugpack.require('Change');
     var Class   = bugpack.require('Class');
-    var Obj     = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------

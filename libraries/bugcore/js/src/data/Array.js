@@ -91,8 +91,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
          * @param {(ICollection.<I> | Array.<I>)=} items
+         * @return {Array}
          */
         init: function(items) {
 
@@ -105,6 +105,7 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement ICollection");
             }
+            return this;
         },
 
 

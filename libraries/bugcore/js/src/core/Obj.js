@@ -100,10 +100,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
+         * @return {Obj}
          */
         init: function() {
-
+            return this;
         },
 
 
