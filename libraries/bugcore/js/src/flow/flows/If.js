@@ -11,9 +11,12 @@
 
 //@Export('If')
 
+//@Require('Assertion')
 //@Require('Class')
+//@Require('Collections')
 //@Require('Flow')
-//@Require('List')
+//@Require('Throwables')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class   = bugpack.require('Class');
-    var Flow    = bugpack.require('Flow');
-    var List    = bugpack.require('List');
+    var Assertion       = bugpack.require('Assertion');
+    var Class           = bugpack.require('Class');
+    var Collections     = bugpack.require('Collections');
+    var Flow            = bugpack.require('Flow');
+    var Throwables      = bugpack.require('Throwables');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -50,10 +56,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow)} ifMethod
+         * @param {function(Flow)} assertionMethod
          * @param {Flow} ifFlow
          */
-        _constructor: function(ifMethod, ifFlow) {
+        _constructor: function(assertionMethod, ifFlow) {
 
             this._super();
 
@@ -64,33 +70,39 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
+             * @type {Assertion}
+             */
+            this.assertionFlow      = new Assertion(assertionMethod);
+
+            /**
+             * @private
              * @type {Flow}
              */
-            this.elseFlow = null;
+            this.elseFlow           = null;
 
             /**
              * @private
              * @type {number}
              */
-            this.elseIfIndex = -1;
+            this.elseIfIndex        = -1;
 
             /**
              * @private
-             * @type {List<If>}
+             * @type {List.<If>}
              */
-            this.elseIfList = new List();
+            this.elseIfList         = Collections.list();
 
             /**
              * @private
-             * @type {function(Flow)}
+             * @type {Array.<*>}
              */
-            this.ifMethod = ifMethod;
+            this.execArgs           = null;
 
             /**
              * @private
              * @type {Flow}
              */
-            this.ifFlow = ifFlow;
+            this.ifFlow             = ifFlow;
         },
 
 
@@ -103,7 +115,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addAllElseIf: function(elseIfFlows) {
             if (this.elseFlow) {
-                throw new Error("IfFlow already has an ElseFlow");
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
             }
             this.elseIfList.addAll(elseIfFlows);
         },
@@ -113,7 +125,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addElseIf: function(elseIfFlow) {
             if (this.elseFlow) {
-                throw new Error("IfFlow already has an ElseFlow");
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
             }
             this.elseIfList.add(elseIfFlow);
         },
@@ -123,7 +135,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         setElse: function(elseFlow) {
             if (this.elseFlow) {
-                throw new Error("IfFlow already has an ElseFlow");
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
             }
             this.elseFlow = elseFlow;
         },
@@ -134,35 +146,26 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} args
          */
         executeFlow: function(args) {
             this._super(args);
-            this.execArgs = args;
-            try {
-                this.ifMethod.apply(null, ([this]).concat(args));
-            } catch(throwable) {
-                this.errorFlow(throwable);
-            }
-        },
 
-
-        //-------------------------------------------------------------------------------
-        // Public Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @param {boolean} bool
-         */
-        assert: function(bool) {
             var _this = this;
-            if (bool) {
-                this.ifFlow.execute(this.execArgs, function(throwable) {
-                    _this.complete(throwable, bool);
-                });
-            } else {
-                this.nextElseFlow();
-            }
+            this.execArgs = args;
+            this.assertionFlow.execute(this.execArgs, function(error, result) {
+                if (!error) {
+                    if (result) {
+                        _this.ifFlow.execute(_this.execArgs, function (throwable) {
+                            _this.complete(throwable, result);
+                        });
+                    } else {
+                        _this.nextElseFlow();
+                    }
+                } else {
+                    _this.error(error);
+                }
+            });
         },
 
 

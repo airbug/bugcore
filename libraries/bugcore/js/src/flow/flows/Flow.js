@@ -12,9 +12,9 @@
 //@Export('Flow')
 
 //@Require('ArgUtil')
-//@Require('Bug')
 //@Require('Class')
 //@Require('Obj')
+//@Require('Throwables')
 //@Require('Tracer')
 //@Require('TypeUtil')
 
@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Throwables  = bugpack.require('Throwables');
     var Tracer      = bugpack.require('Tracer');
     var TypeUtil    = bugpack.require('TypeUtil');
 
@@ -147,10 +148,10 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 var args = ArgUtil.toArray(arguments);
                 if (this.hasErrored()) {
-                    this.throwBug(new Bug("DuplicateFlow", {}, "Cannot complete flow. Flow has already errored out."));
+                    this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot complete flow. Flow has already errored out."));
                 }
                 if (this.hasCompleted()) {
-                    this.throwBug(new Bug("DuplicateFlow", {}, "Can only complete a flow once."));
+                    this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only complete a flow once."));
                 }
                 _this.completeFlow(args);
             }
@@ -161,10 +162,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         error: function(throwable) {
             if (this.hasErrored()) {
-                this.throwBug(new Bug("DuplicateFlow", {}, "Can only error flow once.", [throwable]));
+                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only error flow once.", [throwable]));
             }
             if (this.hasCompleted()) {
-                this.throwBug(new Bug("DuplicateFlow", {}, "Cannot error flow. Flow has already completed.", [throwable]));
+                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot error flow. Flow has already completed.", [throwable]));
             }
             this.errorFlow($error(throwable));
         },
@@ -186,7 +187,7 @@ require('bugpack').context("*", function(bugpack) {
                     this.error(throwable);
                 }
             } else {
-                throw new Bug("IllegalState", {}, "A flow can only be executed once.");
+                throw Throwables.bug("IllegalState", {}, "A flow can only be executed once.");
             }
         },
 

@@ -9,13 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('WhileSeries')
+//@Export('Assertion')
 
-//@Require('Assertion')
-//@Require('Bug')
 //@Require('Class')
 //@Require('Flow')
-//@Require('List')
+//@Require('Throwables')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -28,11 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Assertion   = bugpack.require('Assertion');
-    var Bug         = bugpack.require('Bug');
-    var Class       = bugpack.require('Class');
-    var Flow        = bugpack.require('Flow');
-    var List        = bugpack.require('List');
+    var Class           = bugpack.require('Class');
+    var Flow            = bugpack.require('Flow');
+    var Throwables      = bugpack.require('Throwables');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -43,9 +41,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Flow}
      */
-    var WhileSeries = Class.extend(Flow, {
+    var Assertion = Class.extend(Flow, {
 
-        _name: "WhileSeries",
+        _name: "Assertion",
 
 
         //-------------------------------------------------------------------------------
@@ -54,10 +52,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Assertion)} assertionMethod
-         * @param {Flow} whileFlow
+         * @param {function(Flow)} assertionMethod
          */
-        _constructor: function(assertionMethod, whileFlow) {
+        _constructor: function(assertionMethod) {
 
             this._super();
 
@@ -68,22 +65,34 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(Assertion)}
+             * @type {boolean}
              */
-            this.assertionMethod        = assertionMethod;
+            this.assertCalled       = false;
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {function(Flow)}
              */
-            this.execArgs               = null;
+            this.assertionMethod    = assertionMethod;
+        },
 
 
-            /**
-             * @private
-             * @type {Flow}
-             */
-            this.whileFlow              = whileFlow;
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {boolean}
+         */
+        getAssertCalled: function() {
+            return this.assertCalled;
+        },
+
+        /**
+         * @return {function(Flow)}
+         */
+        getAssertionMethod: function() {
+            return this.assertionMethod;
         },
 
 
@@ -96,60 +105,27 @@ require('bugpack').context("*", function(bugpack) {
          */
         executeFlow: function(args) {
             this._super(args);
-            this.execArgs = args;
-            this.runWhileAssertion();
+            var result = this.assertionMethod.apply(null, ([this]).concat(args));
+            if (!TypeUtil.isUndefined(result)) {
+                this.assert(!!result);
+            }
         },
 
 
         //-------------------------------------------------------------------------------
-        // Private Methods
+        // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @private
+         * @param {boolean} bool
          */
-        runWhileAssertion: function() {
+        assert: function(bool) {
             var _this = this;
-            var assertionFlow = new Assertion(this.assertionMethod);
-            assertionFlow.execute(this.execArgs, function(throwable, result) {
-                if (!throwable) {
-                    if (result) {
-                        _this.whileCheckSuccess();
-                    } else {
-                        _this.whileCheckFailed();
-                    }
-                } else {
-                    _this.error(throwable);
-                }
-            });
-        },
-
-        /**
-         * @private
-         */
-        runWhileFlow: function() {
-            var _this = this;
-            this.whileFlow.execute(this.execArgs, function(throwable) {
-                if (!throwable) {
-                    _this.runWhileAssertion();
-                } else {
-                    _this.error(throwable);
-                }
-            });
-        },
-
-        /**
-         * @private
-         */
-        whileCheckFailed: function() {
-            this.complete();
-        },
-
-        /**
-         * @private
-         */
-        whileCheckSuccess: function() {
-            this.runWhileFlow();
+            if (!this.assertCalled) {
+                _this.complete(null, bool);
+            } else {
+                this.error(Throwables.bug("IllegalState", {}, "Flow has already been asserted. Cannot call assert more than once."));
+            }
         }
     });
 
@@ -158,5 +134,5 @@ require('bugpack').context("*", function(bugpack) {
     // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('WhileSeries', WhileSeries);
+    bugpack.export('Assertion', Assertion);
 });

@@ -11,9 +11,11 @@
 
 //@Export('WhileParallel')
 
+//@Require('Assertion')
 //@Require('Class')
 //@Require('Flow')
 //@Require('Throwables')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Flow        = bugpack.require('Flow');
-    var Throwables  = bugpack.require('Throwables');
+    var Assertion       = bugpack.require('Assertion');
+    var Class           = bugpack.require('Class');
+    var Flow            = bugpack.require('Flow');
+    var Throwables      = bugpack.require('Throwables');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -50,10 +54,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow)} whileMethod
+         * @param {function(Assertion)} assertionMethod
          * @param {Flow} whileFlow
          */
-        _constructor: function(whileMethod, whileFlow) {
+        _constructor: function(assertionMethod, whileFlow) {
 
             this._super();
 
@@ -64,15 +68,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {boolean}
+             * @type {function(Assertion)}
              */
-            this.whileCheck             = true;
+            this.assertionMethod        = assertionMethod;
 
             /**
              * @private
              * @type {ParallelException}
              */
             this.exception              = null;
+
+            /**
+             * @private
+             * @type {Array.<*>}
+             */
+            this.execArgs               = null;
 
             /**
              * @private
@@ -94,15 +104,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Flow}
+             * @type {boolean}
              */
-            this.whileFlow              = whileFlow;
+            this.whileCheck             = true;
 
             /**
              * @private
-             * @type {function(Flow)}
+             * @type {Flow}
              */
-            this.whileMethod            = whileMethod;
+            this.whileFlow              = whileFlow;
         },
 
 
@@ -116,27 +126,7 @@ require('bugpack').context("*", function(bugpack) {
         executeFlow: function(args) {
             this._super(args);
             this.execArgs = args;
-            this.runWhileCheck();
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Public Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @param {boolean} bool
-         */
-        assert: function(bool) {
-            if (this.runningWhileCheck) {
-                if (bool) {
-                    this.whileCheckSuccess();
-                } else {
-                    this.whileCheckFailed();
-                }
-            } else {
-                throw Throwables.bug("UnexpectedCall", {}, "Unexpected assert() call. assert might have been called twice in the same check.");
-            }
+            this.runWhileAssertion();
         },
 
 
@@ -173,14 +163,21 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          */
-        runWhileCheck: function() {
-            this.runningWhileCheck = true;
-            try {
-                this.whileMethod.apply(null, ([this]).concat(this.execArgs));
-            } catch(throwable) {
-                this.processThrowable(throwable);
-                this.whileCheckFailed();
-            }
+        runWhileAssertion: function() {
+            var _this = this;
+            var assertionFlow = new Assertion(this.assertionMethod);
+            assertionFlow.execute(this.execArgs, function(throwable, result) {
+                if (!throwable) {
+                    if (result) {
+                        _this.whileCheckSuccess();
+                    } else {
+                        _this.whileCheckFailed();
+                    }
+                } else {
+                    _this.processThrowable(throwable);
+                    _this.whileCheckFailed();
+                }
+            });
         },
 
         /**
@@ -202,7 +199,6 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         whileCheckFailed: function() {
-            this.runningWhileCheck = false;
             this.whileCheck = false;
             this.doCheckComplete();
         },
@@ -211,9 +207,8 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         whileCheckSuccess: function() {
-            this.runningWhileCheck = false;
             this.runWhileFlow();
-            this.runWhileCheck();
+            this.runWhileAssertion();
         }
     });
 

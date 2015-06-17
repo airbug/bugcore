@@ -11,8 +11,8 @@
 
 //@TestFile
 
+//@Require('Assertion')
 //@Require('Class')
-//@Require('Flow')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Flow        = bugpack.require('Flow');
+    var Assertion        = bugpack.require('Assertion');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -47,15 +47,16 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
-     * 1) That the Flow is marked as executed after execute is called
+     * 1) Assertion instantiation
      */
-    var flowExecuteFlowTest = {
+    var assertionInstantiationTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function(test) {
-            this.flow = new Flow();
+            this.testAssertionMethod    = function(flow) {};
+            this.testAssertion          = new Assertion(this.testAssertionMethod);
         },
 
 
@@ -63,26 +64,35 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.flow.execute();
-            test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
+            test.assertTrue(Class.doesExtend(this.testAssertion, Assertion),
+                "Assert testAssertion extends Assertion");
+            test.assertEqual(this.testAssertion.getAssertionMethod(), this.testAssertionMethod,
+                "Assert Assertion.assertionMethod was set correctly");
+            test.assertEqual(this.testAssertion.getAssertCalled(), false,
+                "Assert Assertion.assertedCalled defaults to false");
         }
     };
 
-
     /**
      * This tests..
-     * 1) That the Flow correctly completes
+     * 1) That the Assertion correctly completes after assert is called
      * 2) That the Flow correctly executes the callback
      */
-    var flowCompleteFlowTest = {
+    var assertionAssertTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function(test) {
-            this.flow = new Flow();
-            this.callbackCalled = false;
+            var _this = this;
+            this.assertionMethodCalled  = false;
+            this.callbackCalled         = false;
+            this.testAssertionMethod    = function(flow) {
+                _this.assertionMethodCalled = true;
+                flow.assert(_this.testAssertValue);
+            };
+            this.testAssertion          = new Assertion(this.testAssertionMethod);
+            this.testAssertValue        = true;
         },
 
 
@@ -91,24 +101,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            test.assertEqual(this.flow.hasExecuted(), false,
-                "Assert flow has not executed");
-            test.assertEqual(this.flow.hasCompleted(), false,
-                "Assert flow has not completed");
-            this.flow.execute(function(throwable) {
+            this.testAssertion.execute(function(throwable, result) {
                 _this.callbackCalled = true;
-                test.assertEqual(throwable, undefined,
-                    "Assert throwable is undefined");
+                test.assertEqual(throwable, null,
+                    "Assert throwable is null");
+                test.assertEqual(result, _this.testAssertValue,
+                    "Assert value was passed to callback correctly");
             });
-            test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
-            test.assertEqual(this.flow.hasCompleted(), false,
-                "Assert flow has not completed");
-            this.flow.complete();
-            test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
-            test.assertEqual(this.flow.hasCompleted(), true,
-                "Assert flow has completed");
+            test.assertTrue(this.assertionMethodCalled,
+                "Assert assertion method called");
             test.assertTrue(this.callbackCalled,
                 "Assert callback was called");
         }
@@ -119,10 +120,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.tag(flowExecuteFlowTest).with(
-        test().name("Flow - execute without extension test")
+    bugmeta.tag(assertionInstantiationTest).with(
+        test().name("Assertion - instantiation test")
     );
-    bugmeta.tag(flowCompleteFlowTest).with(
-        test().name("Flow - #complete test")
+    bugmeta.tag(assertionAssertTest).with(
+        test().name("Assertion - #assert test")
     );
 });
