@@ -78,6 +78,17 @@ require('bugpack').context("*", function(bugpack) {
              */
             this.execArgs               = null;
 
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.syncCall               = false;
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.whileCheck             = true;
 
             /**
              * @private
@@ -97,7 +108,7 @@ require('bugpack').context("*", function(bugpack) {
         executeFlow: function(args) {
             this._super(args);
             this.execArgs = args;
-            this.runWhileAssertion();
+            this.startSyncWhileLoop();
         },
 
 
@@ -109,9 +120,13 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         runWhileAssertion: function() {
-            var _this = this;
-            var assertionFlow = new Assertion(this.assertionMethod);
+            var _this           = this;
+            var asyncCall       = false;
+            var assertionFlow   = new Assertion(this.assertionMethod);
             assertionFlow.execute(this.execArgs, function(throwable, result) {
+                if (asyncCall) {
+                    _this.syncCall = false;
+                }
                 if (!throwable) {
                     if (result) {
                         _this.whileCheckSuccess();
@@ -122,26 +137,46 @@ require('bugpack').context("*", function(bugpack) {
                     _this.error(throwable);
                 }
             });
+            //NOTE BRN: This code will run before the above callback for the execute method only if the callback is fired async
+            asyncCall = true;
         },
 
         /**
          * @private
          */
         runWhileFlow: function() {
-            var _this = this;
+            var _this           = this;
+            var asyncCall       = false;
             this.whileFlow.execute(this.execArgs, function(throwable) {
+                if (asyncCall) {
+                    _this.syncCall = false;
+                }
                 if (!throwable) {
-                    _this.runWhileAssertion();
+                    if (!_this.syncCall) {
+                        _this.startSyncWhileLoop();
+                    }
                 } else {
                     _this.error(throwable);
                 }
             });
+            asyncCall = true;
+        },
+
+        /**
+         * @private
+         */
+        startSyncWhileLoop: function() {
+            this.syncCall = true;
+            while (this.syncCall && this.whileCheck) {
+                this.runWhileAssertion();
+            }
         },
 
         /**
          * @private
          */
         whileCheckFailed: function() {
+            this.whileCheck = false;
             this.complete();
         },
 

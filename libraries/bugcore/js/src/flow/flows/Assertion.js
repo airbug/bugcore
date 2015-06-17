@@ -120,9 +120,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {boolean} bool
          */
         assert: function(bool) {
-            var _this = this;
             if (!this.assertCalled) {
-                _this.complete(null, bool);
+                this.complete(null, bool);
             } else {
                 this.error(Throwables.bug("IllegalState", {}, "Flow has already been asserted. Cannot call assert more than once."));
             }

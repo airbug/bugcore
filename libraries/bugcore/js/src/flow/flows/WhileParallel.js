@@ -100,7 +100,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {boolean}
              */
-            this.runningWhileCheck      = false;
+            this.syncCall               = false;
 
             /**
              * @private
@@ -126,7 +126,7 @@ require('bugpack').context("*", function(bugpack) {
         executeFlow: function(args) {
             this._super(args);
             this.execArgs = args;
-            this.runWhileAssertion();
+            this.startSyncWhileLoop();
         },
 
 
@@ -164,9 +164,13 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         runWhileAssertion: function() {
-            var _this = this;
-            var assertionFlow = new Assertion(this.assertionMethod);
+            var _this           = this;
+            var asyncCall       = false;
+            var assertionFlow   = new Assertion(this.assertionMethod);
             assertionFlow.execute(this.execArgs, function(throwable, result) {
+                if (asyncCall) {
+                    _this.syncCall = false;
+                }
                 if (!throwable) {
                     if (result) {
                         _this.whileCheckSuccess();
@@ -178,6 +182,9 @@ require('bugpack').context("*", function(bugpack) {
                     _this.whileCheckFailed();
                 }
             });
+
+            //NOTE BRN: This code will run before the above callback for the execute method only if the callback is fired async
+            asyncCall = true;
         },
 
         /**
@@ -198,6 +205,16 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          */
+        startSyncWhileLoop: function() {
+            this.syncCall = true;
+            while (this.syncCall && this.whileCheck) {
+                this.runWhileAssertion();
+            }
+        },
+
+        /**
+         * @private
+         */
         whileCheckFailed: function() {
             this.whileCheck = false;
             this.doCheckComplete();
@@ -208,7 +225,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         whileCheckSuccess: function() {
             this.runWhileFlow();
-            this.runWhileAssertion();
+            if (!this.syncCall) {
+                this.startSyncWhileLoop();
+            }
         }
     });
 
