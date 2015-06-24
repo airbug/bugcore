@@ -27,8 +27,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Assertion   = bugpack.require('Assertion');
     var Class       = bugpack.require('Class');
-    var Assertion        = bugpack.require('Assertion');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 

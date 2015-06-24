@@ -98,11 +98,11 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} args
          */
         executeFlow: function(args) {
             this._super(args);
-            this.taskMethod.apply(this.taskContext, ([this]).concat(args));
+            return this.taskMethod.apply(this.taskContext, ([this]).concat(args));
         }
     });
 

@@ -11,10 +11,10 @@
 
 //@Export('IteratorFlow')
 
-//@Require('Bug')
 //@Require('Class')
 //@Require('Flow')
 //@Require('Iteration')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Flow        = bugpack.require('Flow');
     var Iteration   = bugpack.require('Iteration');
+    var Throwables  = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             var iteration = new Iteration(this.getIteratorMethod());
             iteration.execute(args, function(throwable) {
-                _this.iterationCallback(args, throwable);
+                _this.iterationCallback(throwable, args);
             })
         },
 
@@ -122,11 +122,11 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @abstract
-         * @param {Array.<*>} args
          * @param {Throwable} throwable
+         * @param {Array.<*>} args
          */
-        iterationCallback: function(args, throwable) {
-            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement iterationCallback");
+        iterationCallback: function(throwable, args) {
+            throw Throwables.bug("AbstractMethodNotImplemented", {}, "Must implement iterationCallback");
         }
     });
 

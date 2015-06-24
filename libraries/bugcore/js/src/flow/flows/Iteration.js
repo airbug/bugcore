@@ -74,11 +74,11 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} args
          */
         executeFlow: function(args) {
             this._super(args);
-            this.iteratorMethod.apply(null, ([this]).concat(args));
+            return this.iteratorMethod.apply(null, ([this]).concat(args));
         }
     });
 

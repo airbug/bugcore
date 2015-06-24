@@ -182,7 +182,10 @@ require('bugpack').context("*", function(bugpack) {
             this.callback = callback;
             if (!this.executed) {
                 try {
-                    this.executeFlow(args);
+                    var returnedValue = this.executeFlow(args);
+                    if (!TypeUtil.isUndefined(returnedValue)) {
+                        this.complete(null, returnedValue);
+                    }
                 } catch(throwable) {
                     this.error(throwable);
                 }

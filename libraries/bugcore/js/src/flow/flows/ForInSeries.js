@@ -84,7 +84,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} args
          */
         executeFlow: function(args) {
             this._super(args);
@@ -102,10 +102,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} args
          * @param {Throwable} throwable
+         * @param {Array.<*>} args
          */
-        iterationCallback: function(args, throwable) {
+        iterationCallback: function(throwable, args) {
             if (throwable) {
                 if (!this.hasErrored()) {
                     this.error(throwable);

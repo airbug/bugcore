@@ -121,6 +121,43 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     * This tests..
+     * 1) That the taskMethod can return a value to complete the task
+     */
+    var taskReturnValueTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.taskMethodExecuted = false;
+            this.testReturnValue  = "testReturnValue";
+            this.taskMethod = function() {
+                _this.taskMethodExecuted = true;
+                return _this.testReturnValue;
+            };
+            this.task = new Task(this.taskMethod);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            this.task.execute(function(throwable, value) {
+                test.assertEqual(throwable, null,
+                    "Assert throwable is null");
+                test.assertEqual(value, _this.testReturnValue,
+                    "Assert return value was passed to callback")
+            });
+            test.assertTrue(this.taskMethodExecuted,
+                "Assert task method was executed");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -131,5 +168,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(taskExecuteWithoutCallbackTest).with(
         test().name("Task - #execute without callback test")
+    );
+    bugmeta.tag(taskReturnValueTest).with(
+        test().name("Task - return value test")
     );
 });

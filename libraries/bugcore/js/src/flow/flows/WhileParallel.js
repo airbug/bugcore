@@ -28,11 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Assertion       = bugpack.require('Assertion');
-    var Class           = bugpack.require('Class');
-    var Flow            = bugpack.require('Flow');
-    var Throwables      = bugpack.require('Throwables');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var Assertion   = bugpack.require('Assertion');
+    var Class       = bugpack.require('Class');
+    var Flow        = bugpack.require('Flow');
+    var Throwables  = bugpack.require('Throwables');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

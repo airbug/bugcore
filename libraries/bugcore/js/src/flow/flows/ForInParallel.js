@@ -117,13 +117,13 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} args
          * @param {Throwable} throwable
+         * @param {Array.<*>} args
          */
-        iterationCallback: function(args, throwable) {
+        iterationCallback: function(throwable, args) {
             this.numberIterationsComplete++;
             if (throwable) {
-                this.processThrowable(args, throwable);
+                this.processThrowable(throwable, args);
             }
             this.checkIterationComplete();
         },
@@ -148,10 +148,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {Array.<*>} args
          * @param {Throwable} throwable
+         * @param {Array.<*>} args
          */
-        processThrowable: function(args, throwable) {
+        processThrowable: function(throwable, args) {
             if (!this.exception) {
                 this.exception = new MappedParallelException();
             }
