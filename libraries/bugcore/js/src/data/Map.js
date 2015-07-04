@@ -32,15 +32,15 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                   = bugpack.require('Class');
-    var Collection              = bugpack.require('Collection');
-    var HashTable               = bugpack.require('HashTable');
-    var IKeyValueIterable       = bugpack.require('IKeyValueIterable');
-    var IMap                    = bugpack.require('IMap');
-    var IObjectable             = bugpack.require('IObjectable');
-    var Obj                     = bugpack.require('Obj');
-    var ObjectUtil              = bugpack.require('ObjectUtil');
-    var TypeUtil                = bugpack.require('TypeUtil');
+    var Class               = bugpack.require('Class');
+    var Collection          = bugpack.require('Collection');
+    var HashTable           = bugpack.require('HashTable');
+    var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
+    var IMap                = bugpack.require('IMap');
+    var IObjectable         = bugpack.require('IObjectable');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectUtil          = bugpack.require('ObjectUtil');
+    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

@@ -12,8 +12,8 @@
 //@Export('ForInSeriesBuilder')
 
 //@Require('Class')
-//@Require('IterableFlowBuilder')
 //@Require('ForInSeries')
+//@Require('IterableFlowBuilder')
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
+    var Class                   = bugpack.require('Class');
+    var ForInSeries             = bugpack.require('ForInSeries');
     var IterableFlowBuilder     = bugpack.require('IterableFlowBuilder');
-    var ForInSeries   = bugpack.require('ForInSeries');
 
 
     //-------------------------------------------------------------------------------

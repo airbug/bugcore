@@ -108,6 +108,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {Object.<string, V>} object
+         * @return {ObjectIterator}
          */
         init: function(object) {
             this._super();
@@ -115,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             if (TypeUtil.isObject(object)) {
                 this.object = object;
-                this.properties = ObjectUtil.getProperties(object);
+                this.properties = ObjectUtil.getOwnProperties(object);
                 this.propertyCount = this.properties.length;
             }
             Object.observe(this.object, function(changes) {
@@ -127,6 +128,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
                 });
             }, ["add", "delete"]);
+            return this;
         },
 
 

@@ -29,12 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator       = bugpack.require('ArrayIterator');
-    var Class               = bugpack.require('Class');
-    var Exception           = bugpack.require('Exception');
-    var IIterator           = bugpack.require('IIterator');
-    var Obj                 = bugpack.require('Obj');
-    var ObjectIterator      = bugpack.require('ObjectIterator');
+    var ArrayIterator   = bugpack.require('ArrayIterator');
+    var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
+    var IIterator       = bugpack.require('IIterator');
+    var Obj             = bugpack.require('Obj');
+    var ObjectIterator  = bugpack.require('ObjectIterator');
 
 
     //-------------------------------------------------------------------------------

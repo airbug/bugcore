@@ -36,19 +36,19 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var AddChange           = bugpack.require('AddChange');
-    var ArgumentBug         = bugpack.require('ArgumentBug');
-    var Class               = bugpack.require('Class');
-    var ClearChange         = bugpack.require('ClearChange');
-    var Collection          = bugpack.require('Collection');
-    var IArrayable          = bugpack.require('IArrayable');
-    var ICollection         = bugpack.require('ICollection');
-    var IIterable           = bugpack.require('IIterable');
-    var Obj                 = bugpack.require('Obj');
-    var Observable          = bugpack.require('Observable');
-    var Proxy               = bugpack.require('Proxy');
-    var RemoveChange        = bugpack.require('RemoveChange');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var AddChange       = bugpack.require('AddChange');
+    var ArgumentBug     = bugpack.require('ArgumentBug');
+    var Class           = bugpack.require('Class');
+    var ClearChange     = bugpack.require('ClearChange');
+    var Collection      = bugpack.require('Collection');
+    var IArrayable      = bugpack.require('IArrayable');
+    var ICollection     = bugpack.require('ICollection');
+    var IIterable       = bugpack.require('IIterable');
+    var Obj             = bugpack.require('Obj');
+    var Observable      = bugpack.require('Observable');
+    var Proxy           = bugpack.require('Proxy');
+    var RemoveChange    = bugpack.require('RemoveChange');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------

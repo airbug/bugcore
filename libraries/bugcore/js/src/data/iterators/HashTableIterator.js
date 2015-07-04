@@ -29,12 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator           = bugpack.require('ArrayIterator');
-    var Class                   = bugpack.require('Class');
-    var Exception               = bugpack.require('Exception');
-    var IKeyValueIterator       = bugpack.require('IKeyValueIterator');
-    var Obj                     = bugpack.require('Obj');
-    var ObjectIterator          = bugpack.require('ObjectIterator');
+    var ArrayIterator       = bugpack.require('ArrayIterator');
+    var Class               = bugpack.require('Class');
+    var Exception           = bugpack.require('Exception');
+    var IKeyValueIterator   = bugpack.require('IKeyValueIterator');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectIterator      = bugpack.require('ObjectIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 if (!this.hashTableKeyArrayIterator.hasNext()) {
                     this.hashTableKeyArrayIterator = null;
-                    return this.next();
+                    return this.nextKey();
                 } else {
                     return this.hashTableKeyArrayIterator.next();
                 }

@@ -175,7 +175,7 @@ require('bugpack').context("*", function(bugpack) {
         containsValue: function(value) {
             var valueFound = false;
             try {
-                ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
+                ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
                     if (hashTableNode.containsValue(value)) {
                         valueFound = true;
                         throw new Exception("BreakException");
@@ -207,7 +207,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getKeyArray: function() {
             var keysArray = [];
-            ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
                 keysArray = keysArray.concat(hashTableNode.getKeyArray());
             });
             return keysArray;
@@ -218,7 +218,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getValueArray: function() {
             var valuesArray = [];
-            ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
                 valuesArray = valuesArray.concat(hashTableNode.getValueArray());
             });
             return valuesArray;
@@ -241,7 +241,7 @@ require('bugpack').context("*", function(bugpack) {
             var hashTableNode = ObjectUtil.getOwnProperty(this.hashTableNodeObject, keyHashCode.toString());
             if (!hashTableNode) {
                 hashTableNode = new HashTableNode();
-                ObjectUtil.setProperty(this.hashTableNodeObject, keyHashCode, hashTableNode);
+                ObjectUtil.setProperty(this.hashTableNodeObject, keyHashCode.toString(), hashTableNode);
             }
             var returnValue = hashTableNode.put(key, value);
             if (returnValue === undefined) {
@@ -263,7 +263,7 @@ require('bugpack').context("*", function(bugpack) {
                 if (returnValue !== undefined) {
                     this.count--;
                     if (hashTableNode.getCount() === 0) {
-                        ObjectUtil.deleteProperty(this.hashTableNodeObject, keyHashCode);
+                        ObjectUtil.deleteProperty(this.hashTableNodeObject, keyHashCode.toString());
                     }
                 }
             }

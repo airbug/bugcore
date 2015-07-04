@@ -9,7 +9,7 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Collections')
+//@Export('Streams')
 
 //@Require('Arr')
 //@Require('Class')

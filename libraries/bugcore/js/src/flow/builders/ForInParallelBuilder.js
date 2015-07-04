@@ -12,8 +12,8 @@
 //@Export('ForInParallelBuilder')
 
 //@Require('Class')
-//@Require('IterableFlowBuilder')
 //@Require('ForInParallel')
+//@Require('IterableFlowBuilder')
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
+    var Class                   = bugpack.require('Class');
+    var ForInParallel           = bugpack.require('ForInParallel');
     var IterableFlowBuilder     = bugpack.require('IterableFlowBuilder');
-    var ForInParallel   = bugpack.require('ForInParallel');
 
 
     //-------------------------------------------------------------------------------

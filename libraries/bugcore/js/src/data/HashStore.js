@@ -212,7 +212,7 @@ require('bugpack').context("*", function(bugpack) {
                 if (result) {
                     this.count--;
                     if (hashStoreNode.getCount() === 0) {
-                        ObjectUtil.deleteProperty(this.hashStoreNodeObject, valueHashCode);
+                        ObjectUtil.deleteProperty(this.hashStoreNodeObject, valueHashCode.toString());
                     }
                 }
             }

@@ -50,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                         = bugpack.require('Obj');
     var ParallelBuilder             = bugpack.require('ParallelBuilder');
     var SeriesBuilder               = bugpack.require('SeriesBuilder');
-    var TaskBuilder                 = bugpack.require('TaskBuilderBuilder');
+    var TaskBuilder                 = bugpack.require('TaskBuilder');
     var WhileParallelBuilder        = bugpack.require('WhileParallelBuilder');
     var WhileSeriesBuilder          = bugpack.require('WhileSeriesBuilder');
 

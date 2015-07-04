@@ -12,10 +12,9 @@
 //@Export('ForInSeries')
 
 //@Require('Class')
-//@Require('IIndexValueIterable)
-//@Require('IKeyValueIterable)
+//@Require('IIndexValueIterator')
+//@Require('IKeyValueIterator')
 //@Require('IterableFlow')
-
 
 
 //-------------------------------------------------------------------------------
@@ -28,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class                       = bugpack.require('Class');
-    var IIndexValueIterable         = bugpack.require('IIndexValueIterable');
-    var IKeyValueIterable           = bugpack.require('IKeyValueIterable');
-    var IterableFlow                = bugpack.require('IterableFlow');
+    var Class                   = bugpack.require('Class');
+    var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
+    var IKeyValueIterator       = bugpack.require('IKeyValueIterator');
+    var IterableFlow            = bugpack.require('IterableFlow');
 
 
     //-------------------------------------------------------------------------------
@@ -95,11 +94,11 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          */
-        next: function() {
-            if (Class.doesExtend(this.getIterator(), IIndexValueIterable)) {
+        nextIteration: function() {
+            if (Class.doesImplement(this.getIterator(), IIndexValueIterator)) {
                 var indexValuePair = this.getIterator().nextIndexValuePair();
                 this.executeIteration([indexValuePair.index, indexValuePair.value]);
-            } else if (Class.doesExtend(this.getIterator(), IKeyValueIterable)) {
+            } else if (Class.doesImplement(this.getIterator(), IKeyValueIterator)) {
                 var keyValuePair = this.getIterator().nextKeyValuePair();
                 this.executeIteration([keyValuePair.key, keyValuePair.value]);
             } else {

@@ -9,7 +9,7 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('SeriesBuilder')
+//@Export('TaskBuilder')
 
 //@Require('Class')
 //@Require('FlowBuilder')
