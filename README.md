@@ -300,8 +300,8 @@ In the browser:
 * [`IterableParallel`](#IterableParallel)
 * [`IterableSeries`](#IterableSeries)
 * [`Iteration`](#Iteration)
-* [`IteratorFlow`](#IteratorFlow)
-* [`Parallel`](#IteratorFlow)
+* [`IterableFlow`](#IterableFlow)
+* [`Parallel`](#Parallel)
 * [`Series`](#Series)
 * [`Task`](#Task)
 * [`WhileParallel`](#WhileParallel)
@@ -4562,8 +4562,8 @@ TODO
 TODO
 
 
-<br /><a name="IteratorFlow" />
-## IteratorFlow
+<br /><a name="IterableFlow" />
+## IterableFlow
 
 TODO
 

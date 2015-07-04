@@ -50,9 +50,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Array.<Flow>} flowArray
          */
-        _constructor: function(flowArray) {
+        _constructor: function() {
 
             this._super();
 
@@ -69,9 +68,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<Flow>}
+             * @type {Array.<FlowBuilder>}
              */
-            this.flowArray          = flowArray;
+            this.flowBuilderArray   = [];
 
             /**
              * @private
@@ -82,20 +81,47 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Flow Extensions
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Array.<FlowBuilder>} flowBuilderArray
+         * @return {Parallel}
+         */
+        init: function(flowBuilderArray) {
+            this._super();
+            this.flowBuilderArray = flowBuilderArray;
+            return this;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Array.<FlowBuilder>}
+         */
+        getFlowBuilderArray: function() {
+            return this.flowBuilderArray;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Flow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
             var _this = this;
-            if (this.flowArray.length > 0) {
-                this.flowArray.forEach(function(flow) {
-                    flow.execute(args, function(error) {
-                        _this.flowCallback(error);
+            if (this.flowBuilderArray.length > 0) {
+                this.flowBuilderArray.forEach(function(flowBuilder) {
+                    flowBuilder.execute(flowArgs, function(throwable) {
+                        _this.flowCallback(throwable);
                     });
                 });
             } else {
@@ -110,22 +136,6 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {Throwable} throwable
-         */
-        processThrowable: function(throwable) {
-            if (!this.exception) {
-                this.exception = Throwables.parallelException();
-            }
-            this.exception.addCause(throwable);
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Event Listeners
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
          * @param {Throwable=} throwable
          */
         flowCallback: function(throwable) {
@@ -133,13 +143,24 @@ require('bugpack').context("*", function(bugpack) {
             if (throwable) {
                 this.processThrowable(throwable);
             }
-            if (this.numberComplete >= this.flowArray.length) {
+            if (this.numberComplete >= this.flowBuilderArray.length) {
                 if (!this.exception) {
                     this.complete();
                 } else {
                     this.error(this.exception);
                 }
             }
+        },
+
+        /**
+         * @private
+         * @param {Throwable} throwable
+         */
+        processThrowable: function(throwable) {
+            if (!this.exception) {
+                this.exception = Throwables.parallelException();
+            }
+            this.exception.addCause(throwable);
         }
     });
 

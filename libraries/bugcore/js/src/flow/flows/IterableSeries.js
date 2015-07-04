@@ -12,10 +12,7 @@
 //@Export('IterableSeries')
 
 //@Require('Class')
-//@Require('IIterable')
-//@Require('Iteration')
-//@Require('IteratorFlow')
-//@Require('Tracer')
+//@Require('IterableFlow')
 
 
 //-------------------------------------------------------------------------------
@@ -29,18 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
-    var IIterable       = bugpack.require('IIterable');
-    var Iteration       = bugpack.require('Iteration');
-    var IteratorFlow    = bugpack.require('IteratorFlow');
-    var Tracer          = bugpack.require('Tracer');
-
-
-    //-------------------------------------------------------------------------------
-    // Simplify References
-    //-------------------------------------------------------------------------------
-
-    var $error          = Tracer.$error;
-    var $trace          = Tracer.$trace;
+    var IterableFlow    = bugpack.require('IterableFlow');
 
 
     //-------------------------------------------------------------------------------
@@ -49,41 +35,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {IteratorFlow}
+     * @extends {IterableFlow}
      */
-    var IterableSeries = Class.extend(IteratorFlow, {
+    var IterableSeries = Class.extend(IterableFlow, {
 
         _name: "IterableSeries",
-
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @constructs
-         * @param {IIterable} data
-         * @param {function(Flow, *)} iteratorMethod
-         */
-        _constructor: function(data, iteratorMethod) {
-
-            this._super(data, iteratorMethod);
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            if (!Class.doesImplement(data, IIterable)) {
-                throw new Error("IterableSeries only supports IIterable instances.");
-            }
-
-            /**
-             * @private
-             * @type {IIterator}
-             */
-            this.iterator = data.iterator();
-        },
 
 
         //-------------------------------------------------------------------------------
@@ -91,40 +47,30 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            if (!this.data) {
-                this.error("data value must be iterable");
-            }
-            if (this.iterator.hasNext()) {
-                this.next();
-            } else {
-                this.complete();
-            }
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            this.nextIteration();
         },
 
 
         //-------------------------------------------------------------------------------
-        // IteratorFlow Methods
+        // IterableFlow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
          * @param {Throwable} throwable
-         * @param {Array.<*>} args
+         * @param {Iteration} iteration
          */
-        iterationCallback: function(throwable, args) {
+        iterationCallback: function(throwable, iteration) {
             if (throwable) {
                 if (!this.hasErrored()) {
                     this.error(throwable);
                 }
             } else {
-                if (!this.iterator.hasNext()) {
-                    this.complete();
-                } else {
-                    this.next();
-                }
+                this.nextIteration();
             }
         },
 
@@ -136,9 +82,13 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          */
-        next: function() {
-            var nextValue = this.iterator.next();
-            this.executeIteration([nextValue]);
+        nextIteration: function() {
+            if (!this.getIterator().hasNext()) {
+                this.complete();
+            } else {
+                var nextValue = this.getIterator().next();
+                this.executeIteration([nextValue]);
+            }
         }
     });
 

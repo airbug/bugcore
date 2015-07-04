@@ -110,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         getProperty: function(propertyQuery) {
-            return ObjectUtil.findProperty(this.propertiesObject, propertyQuery);
+            return ObjectUtil.getOwnNestedProperty(this.propertiesObject, propertyQuery);
         },
 
         /**
@@ -118,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasProperty: function(propertyQuery) {
-            return ObjectUtil.doesPropertyExist(this.propertiesObject, propertyQuery);
+            return ObjectUtil.hasOwnNestedProperty(this.propertiesObject, propertyQuery);
         },
 
         /**

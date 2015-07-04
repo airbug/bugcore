@@ -36,6 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
+     * @template V
      */
     var HashStoreNode = Class.extend(Obj, {
 
@@ -66,7 +67,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {Array.<V>}
              */
             this.valueArray = [];
         },
@@ -82,6 +83,18 @@ require('bugpack').context("*", function(bugpack) {
         getCount: function() {
             return this.count;
         },
+
+        /**
+         * @return {Array.<V>}
+         */
+        getValueArray: function() {
+            return this.valueArray;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
 
         /**
          * @param {*} value
@@ -143,7 +156,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {*} value
+         * @param {V} value
          */
         addValue: function(value) {
             this.valueArray.push(value);
@@ -161,15 +174,6 @@ require('bugpack').context("*", function(bugpack) {
                 }
             }
             return false;
-        },
-
-        //countValues: function(value)
-
-        /**
-         * @return {Array<*>}
-         */
-        getValueArray: function() {
-            return this.valueArray;
         },
 
         /**

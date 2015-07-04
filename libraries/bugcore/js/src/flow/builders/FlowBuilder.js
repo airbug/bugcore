@@ -14,6 +14,7 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('Obj')
+//@Require('Throwables')
 
 
 //-------------------------------------------------------------------------------
@@ -29,6 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Throwables  = bugpack.require('Throwables');
 
 
     //-------------------------------------------------------------------------------
@@ -42,57 +44,6 @@ require('bugpack').context("*", function(bugpack) {
     var FlowBuilder = Class.extend(Obj, {
 
         _name: "FlowBuilder",
-
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @constructs
-         * @param {function(new:Constructor)} flowConstructor
-         * @param {Array.<*>} flowConstructorArgs
-         */
-        _constructor: function(flowConstructor, flowConstructorArgs) {
-
-            this._super();
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            /**
-             * @private
-             * @type {function(new:Constructor)}
-             */
-            this.flowConstructor        = flowConstructor;
-
-            /**
-             * @private
-             * @type {Array.<*>}
-             */
-            this.flowConstructorArgs    = flowConstructorArgs;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Getters and Setters
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {Array.<*>}
-         */
-        getFlowConstructorArgs: function() {
-            return this.flowConstructorArgs;
-        },
-
-        /**
-         * @return {function(new:Constructor)}
-         */
-        getFlowConstructor: function() {
-            return this.flowConstructor;
-        },
 
 
         //-------------------------------------------------------------------------------
@@ -110,8 +61,22 @@ require('bugpack').context("*", function(bugpack) {
             ]);
             flowArgs    = args.flowArgs;
             callback    = args.callback;
-            var flow    = this.flowConstructor.newInstanceWithArray(this.flowConstructorArgs);
+            var flow    = this.doFactoryFlow();
             flow.execute(flowArgs, callback);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Abstract Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @abstract
+         * @protected
+         * @return {Flow}
+         */
+        doFactoryFlow: function() {
+            throw Throwables.bug("AbstractMethodNotImplemented", {}, "Must implement doFactoryFlow method");
         }
     });
 

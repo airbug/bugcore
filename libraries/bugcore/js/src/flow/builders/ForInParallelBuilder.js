@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2015 airbug Inc. http://airbug.com
+ *
+ * bugcore may be freely distributed under the MIT license.
+ */
+
+
+//-------------------------------------------------------------------------------
+// Annotations
+//-------------------------------------------------------------------------------
+
+//@Export('ForInParallelBuilder')
+
+//@Require('Class')
+//@Require('IterableFlowBuilder')
+//@Require('ForInParallel')
+
+
+//-------------------------------------------------------------------------------
+// Context
+//-------------------------------------------------------------------------------
+
+require('bugpack').context("*", function(bugpack) {
+
+    //-------------------------------------------------------------------------------
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class           = bugpack.require('Class');
+    var IterableFlowBuilder     = bugpack.require('IterableFlowBuilder');
+    var ForInParallel   = bugpack.require('ForInParallel');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @class
+     * @extends {IterableFlowBuilder}
+     */
+    var ForInParallelBuilder = Class.extend(IterableFlowBuilder, {
+
+        _name: "ForInParallelBuilder",
+
+
+        //-------------------------------------------------------------------------------
+        // Flow Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @protected
+         * @return {Flow}
+         */
+        doFactoryFlow: function() {
+            return new ForInParallel(this.getData(), this.getIteratorMethod());
+        }
+    });
+
+
+    //-------------------------------------------------------------------------------
+    // Export
+    //-------------------------------------------------------------------------------
+
+    bugpack.export('ForInParallelBuilder', ForInParallelBuilder);
+});

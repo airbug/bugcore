@@ -12,10 +12,10 @@
 //@Export('ForEachParallel')
 
 //@Require('Class')
-//@Require('IIterable')
-//@Require('IteratorFlow')
+//@Require('IIndexValueIterable)
+//@Require('IKeyValueIterable)
+//@Require('IterableFlow')
 //@Require('MappedParallelException')
-//@Require('Tracer')
 
 
 //-------------------------------------------------------------------------------
@@ -29,18 +29,10 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class                       = bugpack.require('Class');
-    var IIterable                   = bugpack.require('IIterable');
-    var IteratorFlow                = bugpack.require('IteratorFlow');
+    var IIndexValueIterable         = bugpack.require('IIndexValueIterable');
+    var IKeyValueIterable           = bugpack.require('IKeyValueIterable');
+    var IterableFlow                = bugpack.require('IterableFlow');
     var MappedParallelException     = bugpack.require('MappedParallelException');
-    var Tracer                      = bugpack.require('Tracer');
-
-
-    //-------------------------------------------------------------------------------
-    // Simplify References
-    //-------------------------------------------------------------------------------
-
-    var $error                      = Tracer.$error;
-    var $trace                      = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -49,9 +41,9 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {IteratorFlow}
+     * @extends {IterableFlow}
      */
-    var ForEachParallel = Class.extend(IteratorFlow, {
+    var ForEachParallel = Class.extend(IterableFlow, {
 
         _name: "ForEachParallel",
 
@@ -62,21 +54,15 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {*} data
-         * @param {function(Flow, *)} iteratorMethod
          */
-        _constructor: function(data, iteratorMethod) {
+        _constructor: function() {
 
-            this._super(data, iteratorMethod);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
-
-            if (Class.doesImplement(data, IIterable)) {
-                throw new Error("ForEachParallel does not support IIterable instances. Use the IterableParallel instead.");
-            }
 
             /**
              * @private
@@ -86,9 +72,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
+             * @type {boolean}
+             */
+            this.iterationComplete          = false;
+
+            /**
+             * @private
              * @type {number}
              */
             this.numberIterationsComplete   = 0;
+
+            /**
+             * @private
+             * @type {number}
+             */
+            this.totalIterationCount        = 0;
         },
 
 
@@ -97,42 +95,33 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            var _this = this;
-            if (this.getData().length > 0) {
-                this.getData().forEach(function(value, index) {
-                    _this.executeIteration([value, index]);
-                });
-            } else {
-                this.complete();
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            while (this.getIterator().hasNext()) {
+                this.nextIteration();
             }
+            this.iterationComplete = true;
+            this.checkIterationComplete();
         },
 
 
         //-------------------------------------------------------------------------------
-        // IteratorFlow Methods
+        // IterableFlow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
          * @param {Throwable} throwable
-         * @param {Array.<*>} args
+         * @param {Iteration} iteration
          */
-        iterationCallback: function(throwable, args) {
+        iterationCallback: function(throwable, iteration) {
             this.numberIterationsComplete++;
             if (throwable) {
-                this.processThrowable(throwable, args);
+                this.processThrowable(throwable, iteration);
             }
-            if (this.numberIterationsComplete >= this.getData().length) {
-                if (!this.exception) {
-                    this.complete();
-                } else {
-                    this.error(this.exception);
-                }
-            }
+            this.checkIterationComplete();
         },
 
 
@@ -142,14 +131,44 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {Throwable} throwable
-         * @param {Array.<*>} args
          */
-        processThrowable: function(throwable, args) {
+        checkIterationComplete: function() {
+            if (this.iterationComplete && this.numberIterationsComplete >= this.totalIterationCount) {
+                if (!this.exception) {
+                    this.complete();
+                } else {
+                    this.error(this.exception);
+                }
+            }
+        },
+
+        /**
+         * @private
+         */
+        nextIteration: function() {
+            this.totalIterationCount++;
+            if (Class.doesExtend(this.getIterator(), IIndexValueIterable)) {
+                var indexValuePair = this.getIterator().nextIndexValuePair();
+                this.executeIteration([indexValuePair.value, indexValuePair.index]);
+            } else if (Class.doesExtend(this.getIterator(), IKeyValueIterable)) {
+                var keyValuePair = this.getIterator().nextKeyValuePair();
+                this.executeIteration([keyValuePair.value, keyValuePair.key]);
+            } else {
+                var value = this.getIterator().next();
+                this.executeIteration([value]);
+            }
+        },
+
+        /**
+         * @private
+         * @param {Throwable} throwable
+         * @param {Iteration} iteration
+         */
+        processThrowable: function(throwable, iteration) {
             if (!this.exception) {
                 this.exception = new MappedParallelException();
             }
-            this.exception.putCause(args[0], throwable);
+            this.exception.putCause(iteration.getFlowArgs()[0], throwable);
         }
     });
 

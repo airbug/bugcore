@@ -13,20 +13,19 @@
 
 //@Require('Class')
 //@Require('FlowBuilder')
-//@Require('ForEachParallel')
-//@Require('ForEachSeries')
-//@Require('ForInParallel')
-//@Require('ForInSeries')
-//@Require('If')
+//@Require('ForEachParallelBuilder')
+//@Require('ForEachSeriesBuilder')
+//@Require('ForInParallelBuilder')
+//@Require('ForInSeriesBuilder')
 //@Require('IfBuilder')
-//@Require('IterableParallel')
-//@Require('IterableSeries')
+//@Require('IterableParallelBuilder')
+//@Require('IterableSeriesBuilder')
 //@Require('Obj')
-//@Require('Parallel')
-//@Require('Series')
-//@Require('Task')
-//@Require('WhileParallel')
-//@Require('WhileSeries')
+//@Require('ParallelBuilder')
+//@Require('SeriesBuilder')
+//@Require('TaskBuilder')
+//@Require('WhileParallelBuilder')
+//@Require('WhileSeriesBuilder')
 
 
 //-------------------------------------------------------------------------------
@@ -39,22 +38,21 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var FlowBuilder         = bugpack.require('FlowBuilder');
-    var ForEachParallel     = bugpack.require('ForEachParallel');
-    var ForEachSeries       = bugpack.require('ForEachSeries');
-    var ForInParallel       = bugpack.require('ForInParallel');
-    var ForInSeries         = bugpack.require('ForInSeries');
-    var If                  = bugpack.require('If');
-    var IfBuilder           = bugpack.require('IfBuilder');
-    var IterableParallel    = bugpack.require('IterableParallel');
-    var IterableSeries      = bugpack.require('IterableSeries');
-    var Obj                 = bugpack.require('Obj');
-    var Parallel            = bugpack.require('Parallel');
-    var Series              = bugpack.require('Series');
-    var Task                = bugpack.require('Task');
-    var WhileParallel       = bugpack.require('WhileParallel');
-    var WhileSeries         = bugpack.require('WhileSeries');
+    var Class                       = bugpack.require('Class');
+    var FlowBuilder                 = bugpack.require('FlowBuilder');
+    var ForEachParallelBuilder      = bugpack.require('ForEachParallelBuilder');
+    var ForEachSeriesBuilder        = bugpack.require('ForEachSeriesBuilder');
+    var ForInParallelBuilder        = bugpack.require('ForInParallelBuilder');
+    var ForInSeriesBuilder          = bugpack.require('ForInSeriesBuilder');
+    var IfBuilder                   = bugpack.require('IfBuilder');
+    var IterableParallelBuilder     = bugpack.require('IterableParallelBuilder');
+    var IterableSeriesBuilder       = bugpack.require('IterableSeriesBuilder');
+    var Obj                         = bugpack.require('Obj');
+    var ParallelBuilder             = bugpack.require('ParallelBuilder');
+    var SeriesBuilder               = bugpack.require('SeriesBuilder');
+    var TaskBuilder                 = bugpack.require('TaskBuilderBuilder');
+    var WhileParallelBuilder        = bugpack.require('WhileParallelBuilder');
+    var WhileSeriesBuilder          = bugpack.require('WhileSeriesBuilder');
 
 
     //-------------------------------------------------------------------------------
@@ -76,119 +74,120 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {Array.<*>} data
-     * @param {function(Flow, *)} iteratorMethod
-     * @return {FlowBuilder}
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(ForEachParallel, *...)} iteratorMethod
+     * @return {ForEachParallelBuilder}
      */
     Flows.$forEachParallel = function(data, iteratorMethod) {
-        return new FlowBuilder(ForEachParallel, [data, iteratorMethod]);
+        return new ForEachParallelBuilder(data, iteratorMethod);
     };
 
     /**
      * @static
-     * @param {Array.<*>} data
-     * @param {function(Flow, *)} iteratorMethod
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(ForEachSeries, *...)} iteratorMethod
+     * @return {ForEachSeriesBuilder}
+     */
+    Flows.$forEachSeries = function(data, iteratorMethod) {
+        return new ForEachSeriesBuilder(data, iteratorMethod);
+    };
+
+    /**
+     * @static
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(ForInParallel, *...)} iteratorMethod
      * @return {FlowBuilder}
      */
-    Flows.$forEachSeries  = function(data, iteratorMethod) {
-        return new FlowBuilder(ForEachSeries, [data, iteratorMethod]);
+    Flows.$forInParallel = function(data, iteratorMethod) {
+        return new ForInParallelBuilder(data, iteratorMethod);
     };
 
     /**
      * @static
-     * @param {Object} data
-     * @param {function(Flow, *, *)} iteratorMethod
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(ForInSeries, *...)} iteratorMethod
      * @return {FlowBuilder}
      */
-    Flows.$forInParallel  = function(data, iteratorMethod) {
-        return new FlowBuilder(ForInParallel, [data, iteratorMethod]);
+    Flows.$forInSeries = function(data, iteratorMethod) {
+        return new ForInSeriesBuilder(data, iteratorMethod);
     };
 
     /**
      * @static
-     * @param {Object} data
-     * @param {function(Flow, *, *)} iteratorMethod
-     * @return {FlowBuilder}
-     */
-    Flows.$forInSeries    = function(data, iteratorMethod) {
-        return new FlowBuilder(ForInSeries, [data, iteratorMethod]);
-    };
-
-    /**
-     * @static
-     * @param {function()} ifMethod
-     * @param {Flow} ifFlow
+     * @param {function(Assertion, *...)} assertionMethod
+     * @param {(FlowBuilder | function(Flow, *...))} assertPassFlowBuilder
      * @return {IfBuilder}
      */
-    Flows.$if = function(ifMethod, ifFlow) {
-        return new IfBuilder(If, [ifMethod, ifFlow]);
+    Flows.$if = function(assertionMethod, assertPassFlowBuilder) {
+        return new IfBuilder(assertionMethod, assertPassFlowBuilder);
     };
 
     /**
      * @static
-     * @param {Array<*>} data
-     * @param {function(Flow, *)} iteratorMethod
-     * @return {FlowBuilder}
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(IterableParallel, *...)} iteratorMethod
+     * @return {IterableParallelBuilder}
      */
     Flows.$iterableParallel = function(data, iteratorMethod) {
-        return new FlowBuilder(IterableParallel, [data, iteratorMethod]);
+        return new IterableParallelBuilder(data, iteratorMethod);
     };
 
     /**
      * @static
-     * @param {Array<*>} data
-     * @param {function(Flow, *)} iteratorMethod
-     * @return {FlowBuilder}
+     * @param {(Array.<*> | Object.<string, *> | IIterable.<*>)} data
+     * @param {function(IterableSeries, *...)} iteratorMethod
+     * @return {IterableSeriesBuilder}
      */
     Flows.$iterableSeries = function(data, iteratorMethod) {
-        return new FlowBuilder(IterableSeries, [data, iteratorMethod]);
+        return new IterableSeriesBuilder(data, iteratorMethod);
     };
 
     /**
      * @static
-     * @param {Array.<Flow>} flowArray
-     * @return {FlowBuilder}
+     * @param {Array.<(FlowBuilder | function(Flow, *...))>} flowBuilderArray
+     * @return {ParallelBuilder}
      */
-    Flows.$parallel = function(flowArray) {
-        return new FlowBuilder(Parallel, [flowArray]);
+    Flows.$parallel = function(flowBuilderArray) {
+        return new ParallelBuilder(flowBuilderArray);
     };
 
     /**
      * @static
-     * @param {Array.<Flow>} flowArray
-     * @return {FlowBuilder}
+     * @param {Array.<(FlowBuilder | function(Flow, *...))>} flowBuilderArray
+     * @return {SeriesBuilder}
      */
-    Flows.$series = function(flowArray) {
-        return new FlowBuilder(Series, [flowArray]);
+    Flows.$series = function(flowBuilderArray) {
+        return new SeriesBuilder(flowBuilderArray);
     };
 
     /**
      * @static
-     * @param {function(Flow)} taskMethod
-     * @return {FlowBuilder}
+     * @param {function(Task, *...)} taskMethod
+     * @param {Object=} taskContext
+     * @return {TaskBuilder}
      */
-    Flows.$task = function(taskMethod) {
-        return new FlowBuilder(Task, [taskMethod]);
+    Flows.$task = function(taskMethod, taskContext) {
+        return new TaskBuilder(taskMethod, taskContext);
     };
 
     /**
      * @static
-     * @param {function(Flow)} whileMethod
-     * @param {Flow} whileFlow
-     * @return {FlowBuilder}
+     * @param {function(Assertion, *...)} assertionMethod
+     * @param {(FlowBuilder | function(Flow, *...))} assertPassFlowBuilder
+     * @return {WhileParallelBuilder}
      */
-    Flows.$whileParallel    = function(whileMethod, whileFlow) {
-        return new FlowBuilder(WhileParallel, [whileMethod, whileFlow]);
+    Flows.$whileParallel = function(assertionMethod, assertPassFlowBuilder) {
+        return new WhileParallelBuilder(assertionMethod, assertPassFlowBuilder);
     };
 
     /**
      * @static
-     * @param {function(Flow)} whileMethod
-     * @param {Flow} whileFlow
-     * @return {FlowBuilder}
+     * @param {function(Assertion, *...)} assertionMethod
+     * @param {(FlowBuilder | function(Flow, *...))} assertPassFlowBuilder
+     * @return {WhileSeriesBuilder}
      */
-    Flows.$whileSeries    = function(whileMethod, whileFlow) {
-        return new FlowBuilder(WhileSeries, [whileMethod, whileFlow]);
+    Flows.$whileSeries = function(assertionMethod, assertPassFlowBuilder) {
+        return new WhileSeriesBuilder(assertionMethod, assertPassFlowBuilder);
     };
 
 

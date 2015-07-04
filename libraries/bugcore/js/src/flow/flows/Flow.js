@@ -101,6 +101,12 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
+             * @type {Array.<*>}
+             */
+            this.flowArgs       = null;
+
+            /**
+             * @private
              * @type {Throwable}
              */
             this.throwable      = null;
@@ -112,24 +118,71 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @return {function(Throwable=)}
+         */
+        getCallback: function() {
+            return this.callback;
+        },
+
+        /**
          * @return {boolean}
          */
-        hasCompleted: function() {
+        getCompleted: function() {
             return this.completed;
         },
 
         /**
          * @return {boolean}
          */
-        hasExecuted: function() {
+        getErrored: function() {
+            return this.errored;
+        },
+
+        /**
+         * @return {boolean}
+         */
+        getExecuted: function() {
             return this.executed;
+        },
+
+        /**
+         * @return {Array.<*>}
+         */
+        getFlowArgs: function() {
+            return this.flowArgs;
+        },
+
+        /**
+         * @return {Throwable}
+         */
+        getThrowable: function() {
+            return this.throwable;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {boolean}
+         */
+        hasCompleted: function() {
+            return this.getCompleted();
         },
 
         /**
          * @return {boolean}
          */
         hasErrored: function() {
-            return this.errored;
+            return this.getErrored();
+        },
+
+        /**
+         * @return {boolean}
+         */
+        hasExecuted: function() {
+            return this.getExecuted();
         },
 
 
@@ -139,7 +192,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {Throwable=} throwable
-         * @param {...} arguments
+         * @param {*...} arguments
          */
         complete: function(throwable) {
             var _this = this;
@@ -158,9 +211,12 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {Throwable} throwable
+         * @param {Throwable=} throwable
          */
         error: function(throwable) {
+            if (!throwable) {
+                throwable = Throwables.exception("FlowException", {}, "A flow exception occurred");
+            }
             if (this.hasErrored()) {
                 this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only error flow once.", [throwable]));
             }
@@ -229,9 +285,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
+        executeFlow: function(flowArgs) {
+            this.flowArgs = flowArgs;
             this.executed = true;
         },
 

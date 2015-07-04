@@ -9,12 +9,13 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IteratorFlow')
+//@Export('SeriesBuilder')
 
 //@Require('Class')
-//@Require('Flow')
-//@Require('Iteration')
+//@Require('FlowBuilder')
+//@Require('Task')
 //@Require('Throwables')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Flow        = bugpack.require('Flow');
-    var Iteration   = bugpack.require('Iteration');
-    var Throwables  = bugpack.require('Throwables');
+    var Class           = bugpack.require('Class');
+    var FlowBuilder     = bugpack.require('FlowBuilder');
+    var Task            = bugpack.require('Task');
+    var Throwables      = bugpack.require('Throwables');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -39,11 +41,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Flow}
+     * @extends {FlowBuilder}
      */
-    var IteratorFlow = Class.extend(Flow, {
+    var TaskBuilder = Class.extend(FlowBuilder, {
 
-        _name: "IteratorFlow",
+        _name: "TaskBuilder",
 
 
         //-------------------------------------------------------------------------------
@@ -52,10 +54,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {*} data
-         * @param {function(Flow, *)} iteratorMethod
          */
-        _constructor: function(data, iteratorMethod) {
+        _constructor: function() {
 
             this._super();
 
@@ -64,69 +64,56 @@ require('bugpack').context("*", function(bugpack) {
             // Private Properties
             //-------------------------------------------------------------------------------
 
-            // TODO BRN: Add support for BugJs data objects that implement the IIterate interface
+            /**
+             * @private
+             * @type {Object}
+             */
+            this.taskContext    = null;
 
             /**
              * @private
-             * @type {*}
+             * @type {function(Task, *...)}
              */
-            this.data               = data;
-
-            /**
-             * @private
-             * @type {function(Flow, *)}
-             */
-            this.iteratorMethod     = iteratorMethod;
+            this.taskMethod     = null;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Getters and Setters
+        // Init Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {*}
+         * @private
+         * @param {function(Task, *...)} taskMethod
+         * @param {Object=} taskContext
          */
-        getData: function() {
-            return this.data;
-        },
-
-        /**
-         * @return {function(Flow, *)}
-         */
-        getIteratorMethod: function() {
-            return this.iteratorMethod;
+        init: function(taskMethod, taskContext) {
+            this._super();
+            if (TypeUtil.isFunction(taskMethod)) {
+                this.taskMethod = taskMethod;
+            } else {
+                throw Throwables.illegalArgumentBug("taskMethod", taskMethod, "must be a function");
+            }
+            if (taskContext) {
+                if (TypeUtil.isObject(taskMethod)) {
+                    this.taskContext = taskContext;
+                } else {
+                    throw Throwables.illegalArgumentBug("taskContext", taskContext, "must be an Object");
+                }
+            }
         },
 
 
         //-------------------------------------------------------------------------------
-        // Protected Methods
+        // Flow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
-         * @param {Array.<*>} args
+         * @return {Flow}
          */
-        executeIteration: function(args) {
-            var _this = this;
-            var iteration = new Iteration(this.getIteratorMethod());
-            iteration.execute(args, function(throwable) {
-                _this.iterationCallback(throwable, args);
-            })
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Abstract Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @abstract
-         * @param {Throwable} throwable
-         * @param {Array.<*>} args
-         */
-        iterationCallback: function(throwable, args) {
-            throw Throwables.bug("AbstractMethodNotImplemented", {}, "Must implement iterationCallback");
+        doFactoryFlow: function() {
+            return new Task(this.taskMethod, this.taskContext);
         }
     });
 
@@ -135,5 +122,5 @@ require('bugpack').context("*", function(bugpack) {
     // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IteratorFlow', IteratorFlow);
+    bugpack.export('TaskBuilder', TaskBuilder);
 });

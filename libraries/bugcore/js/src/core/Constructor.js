@@ -94,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
     Constructor.alloc = function() {
         var constructor = this;
         function F(args) {
-            return constructor.apply(this, args);
+            return Function.prototype.apply.call(constructor, this, args);
         }
         F.prototype = constructor.prototype;
         Constructor.allocateOnly = true;
@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
     Constructor.allocWithArray = function(args) {
         var constructor = this;
         function F(args) {
-            return constructor.apply(this, args);
+            return Function.prototype.apply.call(constructor, this, args);
         }
         F.prototype = constructor.prototype;
         Constructor.allocateOnly = true;
@@ -128,7 +128,7 @@ require('bugpack').context("*", function(bugpack) {
     Constructor.newInstance = function() {
         var constructor = this;
         function F(args) {
-            return constructor.apply(this, args);
+            return Function.prototype.apply.call(constructor, this, args);
         }
         F.prototype = constructor.prototype;
         return new F(arguments);
@@ -142,7 +142,7 @@ require('bugpack').context("*", function(bugpack) {
     Constructor.newInstanceWithArray = function(args) {
         var constructor = this;
         function F(args) {
-            return constructor.apply(this, args);
+            return Function.prototype.apply.call(constructor, this, args);
         }
         F.prototype = constructor.prototype;
         return new F(args);

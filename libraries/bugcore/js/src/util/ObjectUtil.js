@@ -12,6 +12,8 @@
 //@Export('ObjectUtil')
 
 //@Require('FunctionUtil')
+//@Require('Object')
+//@Require('Reflect')
 //@Require('TypeUtil')
 
 
@@ -26,6 +28,8 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var FunctionUtil    = bugpack.require('FunctionUtil');
+    var Object          = bugpack.require('Object');
+    var Reflect         = bugpack.require('Reflect');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -70,13 +74,6 @@ require('bugpack').context("*", function(bugpack) {
         'constructor'
     ];
 
-    /**
-     * @static
-     * @private
-     * @type {function(Object, string):boolean}
-     */
-    ObjectUtil.hasOwnProperty = Object.prototype.hasOwnProperty;
-
 
     //-------------------------------------------------------------------------------
     // Static Methods
@@ -94,7 +91,22 @@ require('bugpack').context("*", function(bugpack) {
      * }} description
      */
     ObjectUtil.defineProperty = function(object, propertyName, description) {
-        Object.defineProperty(object, propertyName, description);
+        Reflect.defineProperty(object, propertyName, description);
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyName
+     */
+    ObjectUtil.deleteProperty = function(object, propertyName) {
+        if (!TypeUtil.isObject(object)) {
+            throw new TypeError("parameter 'object' must be an object");
+        }
+        if (!TypeUtil.isString(propertyName)) {
+            throw new TypeError("parameter 'propertyName' must be an string");
+        }
+        Reflect.deleteProperty(object, propertyName);
     };
 
     /**
@@ -103,7 +115,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {string} propertyQuery
      * @return {boolean}
      */
-    ObjectUtil.doesPropertyExist = function(object, propertyQuery) {
+    ObjectUtil.hasNestedProperty = function(object, propertyQuery) {
         if (!TypeUtil.isObject(object)) {
             throw new Error("'object' must be an Object");
         }
@@ -127,6 +139,35 @@ require('bugpack').context("*", function(bugpack) {
         return true;
     };
 
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyQuery
+     * @return {boolean}
+     */
+    ObjectUtil.hasOwnNestedProperty = function(object, propertyQuery) {
+        if (!TypeUtil.isObject(object)) {
+            throw new Error("'object' must be an Object");
+        }
+        if (!TypeUtil.isString(propertyQuery)) {
+            throw new Error("'propertyQuery' must be a string");
+        }
+        var parts           = propertyQuery.split(".");
+        var propertyValue   = object;
+        for (var i = 0, size = parts.length; i < size; i++) {
+            var part = parts[i];
+            if (TypeUtil.isObject(propertyValue)) {
+                if (ObjectUtil.hasOwnProperty(propertyValue, part)) {
+                    propertyValue = propertyValue[part];
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
 
     /**
      * @static
@@ -134,7 +175,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {string} propertyQuery
      * @return {*}
      */
-    ObjectUtil.findProperty = function(object, propertyQuery) {
+    ObjectUtil.getNestedProperty = function(object, propertyQuery) {
 
         // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
         // {
@@ -150,6 +191,36 @@ require('bugpack').context("*", function(bugpack) {
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
             if (TypeUtil.isObject(propertyValue) && ObjectUtil.hasProperty(propertyValue, part)) {
+                propertyValue = propertyValue[part];
+            } else {
+                return undefined;
+            }
+        }
+        return propertyValue;
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyQuery
+     * @return {*}
+     */
+    ObjectUtil.getOwnNestedProperty = function(object, propertyQuery) {
+
+        // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
+        // {
+        //     name: {
+        //         subName: "someValue"
+        //     }
+        // }
+        // and we request a property named "name.subName", then "someValue" should be returned. If we request the property
+        // "name" then the object {subName: "someValue"} will be returned.
+
+        var parts           = propertyQuery.split(".");
+        var propertyValue   = object;
+        for (var i = 0, size = parts.length; i < size; i++) {
+            var part = parts[i];
+            if (TypeUtil.isObject(propertyValue) && ObjectUtil.hasOwnProperty(propertyValue, part)) {
                 propertyValue = propertyValue[part];
             } else {
                 return undefined;
@@ -185,16 +256,56 @@ require('bugpack').context("*", function(bugpack) {
         }
 
         for (var propertyName in object) {
-            if (ObjectUtil.hasProperty(object, propertyName)) {
-                func.call(context || func, propertyName, object[propertyName]);
-            }
+            Function.prototype.call.call(func, context || func, propertyName, object[propertyName]);
         }
 
         if (ObjectUtil.isDontEnumSkipped) {
             for (var i = 0, size = ObjectUtil.dontEnumProperties.length; i < size; i++) {
                 var dontEnumPropertyName = ObjectUtil.dontEnumProperties[i];
                 if (ObjectUtil.hasProperty(object, dontEnumPropertyName)) {
-                    func.call(context || func, dontEnumPropertyName, object[dontEnumPropertyName]);
+                    Function.prototype.call.call(func, context || func, dontEnumPropertyName, object[dontEnumPropertyName]);
+                }
+            }
+        }
+    };
+
+    /**
+     * @license MIT License
+     * This work is based on the code found here
+     * https://github.com/kangax/protolicious/blob/master/experimental/object.for_in.js#L18
+     *
+     * NOTE BRN: If a property is modified in one iteration and then visited at a later time, its value in the loop is
+     * its value at that later time. A property that is deleted before it has been visited will not be visited later.
+     * Properties added to the object over which iteration is occurring may either be visited or omitted from iteration.
+     * In general it is best not to add, modify or remove properties from the object during iteration, other than the
+     * property currently being visited. There is no guarantee whether or not an added property will be visited, whether
+     * a modified property (other than the current one) will be visited before or after it is modified, or whether a
+     * deleted property will be visited before it is deleted.
+     *
+     * @static
+     * @param {Object} object
+     * @param {function(string, *)} func
+     * @param {Object=} context
+     */
+    ObjectUtil.forInOwn = function(object, func, context) {
+        if (!TypeUtil.isObject(object)) {
+            throw new TypeError("'object' must be an Object");
+        }
+        if (!func || (func && !func.call)) {
+            throw new Error('Iterator function is required');
+        }
+
+        for (var propertyName in object) {
+            if (ObjectUtil.hasOwnProperty(object, propertyName)) {
+                Function.prototype.call.call(func, context || func, propertyName, object[propertyName]);
+            }
+        }
+
+        if (ObjectUtil.isDontEnumSkipped) {
+            for (var i = 0, size = ObjectUtil.dontEnumProperties.length; i < size; i++) {
+                var dontEnumPropertyName = ObjectUtil.dontEnumProperties[i];
+                if (ObjectUtil.hasOwnProperty(object, dontEnumPropertyName)) {
+                    Function.prototype.call.call(func, context || func, dontEnumPropertyName, object[dontEnumPropertyName]);
                 }
             }
         }
@@ -204,12 +315,36 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @param {Object} object
      * @param {string} propertyName
+     * @return {*}
      */
-    ObjectUtil.getProperty = function(object, propertyName) {
-        if (ObjectUtil.hasProperty(object, propertyName)) {
+    ObjectUtil.getOwnProperty = function(object, propertyName) {
+        if (ObjectUtil.hasOwnProperty(object, propertyName)) {
             return object[propertyName];
         }
         return undefined;
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyName
+     * @return {*}
+     */
+    ObjectUtil.getProperty = function(object, propertyName) {
+        return object[propertyName];
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @return {Array.<string>}
+     */
+    ObjectUtil.getOwnProperties = function(object) {
+        var propertyArray = [];
+        ObjectUtil.forInOwn(object, function(propertyName) {
+            propertyArray.push(propertyName);
+        });
+        return propertyArray;
     };
 
     /**
@@ -230,11 +365,23 @@ require('bugpack').context("*", function(bugpack) {
      * @param {Object} object
      * @param {string} propertyName
      */
+    ObjectUtil.hasOwnProperty = function(object, propertyName) {
+        if (!TypeUtil.isObject(object)) {
+            throw new TypeError("'object' must be an Object");
+        }
+        return Object.prototype.hasOwnProperty.call(object, propertyName);
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyName
+     */
     ObjectUtil.hasProperty = function(object, propertyName) {
         if (!TypeUtil.isObject(object)) {
             throw new TypeError("'object' must be an Object");
         }
-        return ObjectUtil.hasOwnProperty.call(object, propertyName)
+        return Reflect.has(object, propertyName)
     };
 
     /**
@@ -291,7 +438,7 @@ require('bugpack').context("*", function(bugpack) {
     ObjectUtil.merge = function(from, into) {
         if (TypeUtil.isObject(from) && TypeUtil.isObject(into)) {
             ObjectUtil.forIn(from, function(prop, value) {
-                into[prop] = from[prop];
+                Reflect.set(into, prop, from[prop]);
             });
             return into;
         } else {
@@ -327,7 +474,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {string} propertyQuery
      * @param {*} value
      */
-    ObjectUtil.setProperty = function(object, propertyQuery, value) {
+    ObjectUtil.setNestedProperty = function(object, propertyQuery, value) {
         if (!TypeUtil.isObject(object)) {
             throw new TypeError("parameter 'object' must be an object");
         }
@@ -339,14 +486,30 @@ require('bugpack').context("*", function(bugpack) {
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
             if (i === size - 1) {
-                propertyValue[part] = value;
+                Reflect.set(propertyValue, part, value);
             } else {
                 if (!TypeUtil.isObject(propertyValue[part])) {
-                    propertyValue[part] = {};
+                    Reflect.set(propertyValue, part, {});
                 }
                 propertyValue = propertyValue[part];
             }
         }
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {string} propertyName
+     * @param {*} value
+     */
+    ObjectUtil.setProperty = function(object, propertyName, value) {
+        if (!TypeUtil.isObject(object)) {
+            throw new TypeError("parameter 'object' must be an object");
+        }
+        if (!TypeUtil.isString(propertyName)) {
+            throw new TypeError("parameter 'propertyName' must be an string");
+        }
+        Reflect.set(object, propertyName, value);
     };
 
     /**

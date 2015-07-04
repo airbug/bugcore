@@ -9,12 +9,14 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('CollectionIterator')
+//@Export('HashStoreIterator')
 
+//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IIterator')
 //@Require('Obj')
+//@Require('ObjectIterator')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
-    var IIterator   = bugpack.require('IIterator');
-    var Obj         = bugpack.require('Obj');
+    var ArrayIterator       = bugpack.require('ArrayIterator');
+    var Class               = bugpack.require('Class');
+    var Exception           = bugpack.require('Exception');
+    var IIterator           = bugpack.require('IIterator');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectIterator      = bugpack.require('ObjectIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -40,12 +44,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @implements {IIterator.<I>}
-     * @template I
+     * @implements {IIterator.<V>}
+     * @template V
      */
-    var CollectionIterator = Class.extend(Obj, {
+    var HashStoreIterator = Class.extend(Obj, {
 
-        _name: "CollectionIterator",
+        _name: "HashStoreIterator",
 
 
         //-------------------------------------------------------------------------------
@@ -54,9 +58,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Collection.<I>} collection
+         * @param {HashStore.<V>} hashStore
          */
-        _constructor: function(collection) {
+        _constructor: function(hashStore) {
 
             this._super();
 
@@ -67,21 +71,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {number}
+             * @type {HashStore.<V>}
              */
-            this.collectionSize = collection.getCount();
+            this.hashStore                          = hashStore;
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {ObjectIterator.<HashStoreNode.<V>>}
              */
-            this.collectionValueArray = collection.getValueArray();
+            this.hashStoreNodeObjectIterator        = new ObjectIterator(this.hashStore.getHashStoreNodeObject());
 
             /**
              * @private
-             * @type {number}
+             * @type {ArrayIterator.<V>}
              */
-            this.index = -1;
+            this.hashStoreNodeArrayIterator         = null;
         },
 
 
@@ -93,18 +97,30 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-            return (this.index < (this.collectionSize - 1));
+            if (this.hashStoreNodeObjectIterator.hasNext()) {
+                return true;
+            }
+            if (this.hashStoreNodeArrayIterator) {
+                return this.hashStoreNodeArrayIterator.hasNext()
+            }
+            return false;
         },
 
         /**
-         * @return {I}
+         * @return {V}
          */
         next: function() {
-            if (this.hasNext()) {
-                this.index++;
-                return this.collectionValueArray[this.index];
+            if (!this.hashStoreNodeArrayIterator) {
+                var hashStoreNodeObject = this.hashStoreNodeObjectIterator.next();
+                this.hashStoreNodeArrayIterator = new ArrayIterator(hashStoreNodeObject.getValueArray());
+                return this.hashStoreNodeArrayIterator.next();
             } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+                if (!this.hashStoreNodeArrayIterator.hasNext()) {
+                    this.hashStoreNodeArrayIterator = null;
+                    return this.next();
+                } else {
+                    return this.hashStoreNodeArrayIterator.next();
+                }
             }
         }
     });
@@ -114,12 +130,12 @@ require('bugpack').context("*", function(bugpack) {
     // Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(CollectionIterator, IIterator);
+    Class.implement(HashStoreIterator, IIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('CollectionIterator', CollectionIterator);
+    bugpack.export('HashStoreIterator', HashStoreIterator);
 });

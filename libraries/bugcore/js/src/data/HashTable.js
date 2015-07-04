@@ -12,8 +12,12 @@
 //@Export('HashTable')
 
 //@Require('Class')
+//@Require('Exception')
+//@Require('HashTableIterator')
 //@Require('HashTableNode')
+//@Require('IKeyValueIterable')
 //@Require('Obj')
+//@Require('ObjectUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +30,13 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var HashTableNode   = bugpack.require('HashTableNode');
-    var Obj             = bugpack.require('Obj');
+    var Class               = bugpack.require('Class');
+    var Exception           = bugpack.require('Exception');
+    var HashTableIterator   = bugpack.require('HashTableIterator');
+    var HashTableNode       = bugpack.require('HashTableNode');
+    var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectUtil          = bugpack.require('ObjectUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -38,6 +46,8 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
+     * @implements {IKeyValueIterable.<K, V>}
+     * @template K, V
      */
     var HashTable = Class.extend(Obj, {
 
@@ -68,7 +78,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Object}
+             * @type {Object.<string, HashTableNode.<K, V>>}
              */
             this.hashTableNodeObject = {};
         },
@@ -85,6 +95,61 @@ require('bugpack').context("*", function(bugpack) {
             return this.count;
         },
 
+        /**
+         * @return {Object.<string, HashTableNode.<K, V>>}
+         */
+        getHashTableNodeObject: function() {
+            return this.hashTableNodeObject;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IIterable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * NOTE BRN: If a value in the HashTable is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the HashTable over which iteration is occurring may either be visited or omitted from iteration.
+         *
+         * @param {function(V, K)} func
+         */
+        forEach: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var nextKey = iterator.nextKey();
+                var nextValue = this.get(nextKey);
+                func(nextValue, nextKey);
+            }
+        },
+
+        /**
+         * NOTE BRN: If a value in the HashTable is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the HashTable over which iteration is occurring may either be visited or omitted from iteration.
+         *
+         * @param {function(K, V)} func
+         */
+        forIn: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var nextKey = iterator.nextKey();
+                var nextValue = this.get(nextKey);
+                func(nextKey, nextValue);
+            }
+        },
+
+        /**
+         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
+         *
+         * @return {IKeyValueIterator.<K, V>}
+         */
+        iterator: function() {
+            return new HashTableIterator(this);
+        },
+
 
         //-------------------------------------------------------------------------------
         // Public Methods
@@ -96,12 +161,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         containsKey: function(key) {
             var keyHashCode = Obj.hashCode(key);
-
-            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            var hashTableNode = ObjectUtil.getOwnProperty(this.hashTableNodeObject, keyHashCode.toString());
             if (hashTableNode) {
                 return hashTableNode.containsKey(key);
             }
@@ -113,52 +173,29 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsValue: function(value) {
-
-            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            for (var keyHashCode in this.hashTableNodeObject) {
-                var hashTableNode = this.hashTableNodeObject[keyHashCode];
-                if (hashTableNode.containsValue(value)) {
-                    return true;
+            var valueFound = false;
+            try {
+                ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
+                    if (hashTableNode.containsValue(value)) {
+                        valueFound = true;
+                        throw new Exception("BreakException");
+                    }
+                });
+            } catch(e) {
+                if (!Class.doesExtend(e, Exception) || e.getType() !== "BreakException") {
+                    throw e;
                 }
             }
-            return false;
+            return valueFound;
         },
 
         /**
-         * NOTE BRN:
-         * @param {function(*)} func
-         */
-        forEach: function(func) {
-
-            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            for (var keyHashCode in this.hashTableNodeObject) {
-                var hashTableNode = this.hashTableNodeObject[keyHashCode];
-                var keyArray = hashTableNode.getKeyArray();
-                hashTableNode.getValueArray().forEach(function(value, index) {
-                    var key = keyArray[index];
-                    func(value, key);
-                });
-            }
-        },
-
-        /**
-         * @param {*} key
-         * @return {*}
+         * @param {K} key
+         * @return {V}
          */
         get: function(key) {
             var keyHashCode = Obj.hashCode(key);
-
-            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            var hashTableNode = ObjectUtil.getOwnProperty(this.hashTableNodeObject, keyHashCode.toString());
             if (hashTableNode) {
                 return hashTableNode.get(key);
             }
@@ -166,36 +203,24 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array<*>}
+         * @return {Array.<K>}
          */
         getKeyArray: function() {
             var keysArray = [];
-
-            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            for (var keyHashCode in this.hashTableNodeObject) {
-                var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
                 keysArray = keysArray.concat(hashTableNode.getKeyArray());
-            }
+            });
             return keysArray;
         },
 
         /**
-         * @return {Array<*>}
+         * @return {Array.<V>}
          */
         getValueArray: function() {
             var valuesArray = [];
-
-            // NOTE BRN: We don't need to use ObjectUtil.forIn here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            for (var keyHashCode in this.hashTableNodeObject) {
-                var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function (keyHashCode, hashTableNode) {
                 valuesArray = valuesArray.concat(hashTableNode.getValueArray());
-            }
+            });
             return valuesArray;
         },
 
@@ -207,21 +232,16 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} key
-         * @param {*} value
-         * @return {*} Returns undefined if no value already existed at this key
+         * @param {K} key
+         * @param {V} value
+         * @return {V} Returns undefined if no value already existed at this key
          */
         put: function(key, value) {
             var keyHashCode = Obj.hashCode(key);
-
-            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            var hashTableNode = ObjectUtil.getOwnProperty(this.hashTableNodeObject, keyHashCode.toString());
             if (!hashTableNode) {
                 hashTableNode = new HashTableNode();
-                this.hashTableNodeObject[keyHashCode] = hashTableNode;
+                ObjectUtil.setProperty(this.hashTableNodeObject, keyHashCode, hashTableNode);
             }
             var returnValue = hashTableNode.put(key, value);
             if (returnValue === undefined) {
@@ -232,29 +252,31 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} key
-         * @return {*} Returns undefined if no value already existed at this key
+         * @return {V} Returns undefined if no value already existed at this key
          */
         remove: function(key) {
             var keyHashCode = Obj.hashCode(key);
-
-            // NOTE BRN: We don't need to use ObjectUtil.getProperty here because we only use numbers (hashcodes) as properties on the
-            // hashTableNodeObject object. Those will never conflict with our native properties. We also do not extend the prototype of
-            // the hashTableNodeObject object. So we shouldn't run in to conflicts with prototype values.
-
-            var hashTableNode = this.hashTableNodeObject[keyHashCode];
+            var hashTableNode = ObjectUtil.getOwnProperty(this.hashTableNodeObject, keyHashCode.toString());
             var returnValue = undefined;
             if (hashTableNode) {
                 returnValue = hashTableNode.remove(key);
                 if (returnValue !== undefined) {
                     this.count--;
                     if (hashTableNode.getCount() === 0) {
-                        delete this.hashTableNodeObject[keyHashCode];
+                        ObjectUtil.deleteProperty(this.hashTableNodeObject, keyHashCode);
                     }
                 }
             }
             return returnValue;
         }
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Implement Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(HashTable, IKeyValueIterable);
 
 
     //-------------------------------------------------------------------------------

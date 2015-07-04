@@ -11,11 +11,10 @@
 
 //@Export('ForEachSeries')
 
-//@Require('Bug')
 //@Require('Class')
-//@Require('IIterable')
-//@Require('IteratorFlow')
-//@Require('Tracer')
+//@Require('IIndexValueIterable)
+//@Require('IKeyValueIterable)
+//@Require('IterableFlow')
 
 
 //-------------------------------------------------------------------------------
@@ -28,19 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Bug             = bugpack.require('Bug');
-    var Class           = bugpack.require('Class');
-    var IIterable       = bugpack.require('IIterable');
-    var IteratorFlow    = bugpack.require('IteratorFlow');
-    var Tracer          = bugpack.require('Tracer');
-
-
-    //-------------------------------------------------------------------------------
-    // Simplify References
-    //-------------------------------------------------------------------------------
-
-    var $error          = Tracer.$error;
-    var $trace          = Tracer.$trace;
+    var Class                       = bugpack.require('Class');
+    var IIndexValueIterable         = bugpack.require('IIndexValueIterable');
+    var IKeyValueIterable           = bugpack.require('IKeyValueIterable');
+    var IterableFlow                = bugpack.require('IterableFlow');
 
 
     //-------------------------------------------------------------------------------
@@ -49,41 +39,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {IteratorFlow}
+     * @extends {IterableFlow}
      */
-    var ForEachSeries = Class.extend(IteratorFlow, {
+    var ForEachSeries = Class.extend(IterableFlow, {
 
         _name: "ForEachSeries",
-
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @constructs
-         * @param {*} data
-         * @param {function(Flow, *)} iteratorMethod
-         */
-        _constructor: function(data, iteratorMethod) {
-
-            this._super(data, iteratorMethod);
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            if (Class.doesImplement(data, IIterable)) {
-                throw new Bug("UnsupportedType", {}, "ForEachSeries does not support IIterable instances. Use the IterableSeries instead.");
-            }
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.iteratorIndex = -1;
-        },
 
 
         //-------------------------------------------------------------------------------
@@ -91,17 +51,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            if (!this.getData()) {
-                this.error("There is not data. Data value must be iterable");
-                //NOTE SUNG
-                // You may need to wrap your forEachSeries in another task
-                // because the data is defined before the forEachSeries is run
-            }
-            if (this.getData().length > 0) {
-                this.next();
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            if (this.getIterator().hasNext()) {
+                this.nextIteration();
             } else {
                 this.complete();
             }
@@ -109,24 +64,24 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // IteratorFlow Methods
+        // IterableFlow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
          * @param {Throwable} throwable
-         * @param {Array.<*>} args
+         * @param {Iteration} iteration
          */
-        iterationCallback: function(throwable, args) {
+        iterationCallback: function(throwable, iteration) {
             if (throwable) {
                 if (!this.hasErrored()) {
                     this.error(throwable);
                 }
             } else {
-                if (this.iteratorIndex >= (this.getData().length - 1)) {
-                    this.complete();
+                if (this.getIterator().hasNext()) {
+                    this.nextIteration();
                 } else {
-                    this.next();
+                    this.complete();
                 }
             }
         },
@@ -139,10 +94,17 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          */
-        next: function() {
-            this.iteratorIndex++;
-            var nextValue = this.getData()[this.iteratorIndex];
-            this.executeIteration([nextValue, this.iteratorIndex]);
+        nextIteration: function() {
+            if (Class.doesExtend(this.getIterator(), IIndexValueIterable)) {
+                var indexValuePair = this.getIterator().nextIndexValuePair();
+                this.executeIteration([indexValuePair.value, indexValuePair.index]);
+            } else if (Class.doesExtend(this.getIterator(), IKeyValueIterable)) {
+                var keyValuePair = this.getIterator().nextKeyValuePair();
+                this.executeIteration([keyValuePair.value, keyValuePair.key]);
+            } else {
+                var value = this.getIterator().next();
+                this.executeIteration([value]);
+            }
         }
     });
 

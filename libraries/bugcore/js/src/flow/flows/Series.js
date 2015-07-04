@@ -48,9 +48,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Array.<Flow>} flowArray
          */
-        _constructor: function(flowArray) {
+        _constructor: function() {
 
             this._super();
 
@@ -61,21 +60,30 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {Array.<FlowBuilder>}
              */
-            this.execArgs    = null;
-
-            /**
-             * @private
-             * @type {Array.<Flow>}
-             */
-            this.flowArray  = flowArray;
+            this.flowBuilderArray   = [];
 
             /**
              * @private
              * @type {number}
              */
-            this.index      = -1;
+            this.index              = -1;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Array.<FlowBuilder>} flowBuilderArray
+         * @return {Series}
+         */
+        init: function(flowBuilderArray) {
+            this._super();
+            this.flowBuilderArray = flowBuilderArray;
+            return this;
         },
 
 
@@ -85,24 +93,11 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            this.execArgs = args;
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
             this.startNextFlow();
-        },
-
-        /**
-         * @private
-         * @param {Error} error
-         */
-        flowCallback: function(error) {
-            if (error) {
-                this.error(error);
-            } else  {
-                this.startNextFlow();
-            }
         },
 
 
@@ -112,14 +107,26 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
+         * @param {Throwable=} throwable
+         */
+        flowCallback: function(throwable) {
+            if (throwable) {
+                this.error(throwable);
+            } else  {
+                this.startNextFlow();
+            }
+        },
+
+        /**
+         * @private
          */
         startNextFlow: function() {
             var _this = this;
             this.index++;
-            if (this.index < this.flowArray.length) {
-                var nextFlow = this.flowArray[this.index];
-                nextFlow.execute(this.execArgs, function(error) {
-                    _this.flowCallback(error);
+            if (this.index < this.flowBuilderArray.length) {
+                var nextFlowBuilder = this.flowBuilderArray[this.index];
+                nextFlowBuilder.execute(this.getFlowArgs(), function(throwable) {
+                    _this.flowCallback(throwable);
                 });
             } else {
                 this.complete();

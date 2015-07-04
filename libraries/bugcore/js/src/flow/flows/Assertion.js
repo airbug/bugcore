@@ -52,7 +52,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow)} assertionMethod
+         * @param {function(Flow, *...)} assertionMethod
          */
         _constructor: function(assertionMethod) {
 
@@ -71,7 +71,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(Flow)}
+             * @type {function(Assertion, *...)}
              */
             this.assertionMethod    = assertionMethod;
         },
@@ -89,7 +89,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {function(Flow)}
+         * @return {function(Assertion, *...)}
          */
         getAssertionMethod: function() {
             return this.assertionMethod;
@@ -101,11 +101,11 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            var result = this.assertionMethod.apply(null, ([this]).concat(args));
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            var result = this.assertionMethod.apply(null, ([this]).concat(this.getFlowArgs()));
             if (!TypeUtil.isUndefined(result)) {
                 this.assert(!!result);
             }

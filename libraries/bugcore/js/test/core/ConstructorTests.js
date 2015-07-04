@@ -144,6 +144,7 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    //TODO BRN: Add a test that ensures that newInstance and alloc methods still work if the Constructor.apply method has been overridden
 
     //-------------------------------------------------------------------------------
     // BugMeta

@@ -9,13 +9,13 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Array')
+//@Export('Arr')
 
 //@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
 //@Require('ICollection')
-//@Require('IIterable')
+//@Require('IIndexValueIterable')
 //@Require('IStreamable')
 //@Require('Obj')
 //@Require('Stream')
@@ -33,16 +33,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator   = bugpack.require('ArrayIterator');
-    var Class           = bugpack.require('Class');
-    var Exception       = bugpack.require('Exception');
-    var ICollection     = bugpack.require('ICollection');
-    var IIterable       = bugpack.require('IIterable');
-    var IStreamable     = bugpack.require('IStreamable');
-    var Obj             = bugpack.require('Obj');
-    var Stream          = bugpack.require('Stream');
-    var Suppliers       = bugpack.require('Suppliers');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var ArrayIterator           = bugpack.require('ArrayIterator');
+    var Class                   = bugpack.require('Class');
+    var Exception               = bugpack.require('Exception');
+    var ICollection             = bugpack.require('ICollection');
+    var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
+    var IStreamable             = bugpack.require('IStreamable');
+    var Obj                     = bugpack.require('Obj');
+    var Stream                  = bugpack.require('Stream');
+    var Suppliers               = bugpack.require('Suppliers');
+    var TypeUtil                = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -52,13 +52,13 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @implements {IIterable.<I>}
-     * @implements {IStreamable.<I>}
-     * @template I
+     * @implements {IIndexValueIterable.<V>}
+     * @implements {IStreamable.<V>}
+     * @template V
      */
-    var Array = Class.extend(Obj, /** @lends {Array.prototype} */{
+    var Arr = Class.extend(Obj, /** @lends {Arr.prototype} */{
 
-        _name: "Array",
+        _name: "Arr",
 
 
         //-------------------------------------------------------------------------------
@@ -67,9 +67,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(ICollection.<I> | Array.<I>)=} items
          */
-        _constructor: function(items) {
+        _constructor: function() {
 
             this._super();
 
@@ -80,7 +79,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {HashStore}
+             * @type {Array.<V>}
              */
             this.array  = null;
         },
@@ -91,8 +90,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {(ICollection.<I> | Array.<I>)=} items
-         * @return {Array}
+         * @param {(ICollection.<V> | Array.<V>)=} items
+         * @return {Arr}
          */
         init: function(items) {
 
@@ -114,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Array.<*>}
+         * @return {Array.<V>}
          */
         getArray: function() {
             return this.array;
@@ -126,14 +125,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {I} item
+         * @param {V} item
          */
         add: function(item) {
             this.array.push(item);
         },
 
         /**
-         * @param {(Array.<I> | IIterable.<I>)} items
+         * @param {(Array.<V> | IIterable.<V>)} items
          */
         addAll: function(items) {
             var _this = this;
@@ -144,35 +143,48 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // IIterable Implementation
+        // IIndexValueIterable Implementation
         //-------------------------------------------------------------------------------
 
         /**
          * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
          * its value at that later time. A value that is deleted before it has been visited will not be visited later.
          * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
-         * In general it is best not to add, modify or remove values from the Collection during iteration, other than the
-         * value currently being visited. There is no guarantee whether or not an added value will be visited, whether
-         * a modified value (other than the current one) will be visited before or after it is modified, or whether a
-         * deleted value will be visited before it is deleted.
          *
-         * @param {function(I, number)} func
+         * @param {function(V, number)} func
          */
         forEach: function(func) {
-            this.array.forEach(func);
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var index = iterator.nextIndex();
+                func(this.array[index], index);
+            }
         },
 
         /**
-         * NOTE BRN: Because of the way javascript works and the current lack of Iterator support across browsers. Iterators
-         * create a snap shot of the values in the Collection before starting the iteration process. If a value is modified
-         * in one iteration and then visited at a later time, its value in the loop is its value when the iteration was
-         * started. A value that is deleted before it has been visited WILL be visited later.
-         * Values added to the Collection over which iteration is occurring will be omitted from iteration.
+         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
          *
-         * @return {IIterator.<I>}
+         * @param {function(number, V)} func
+         */
+        forIn: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var index = iterator.nextIndex();
+                func(index, this.array[index]);
+            }
+        },
+
+        /**
+         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
+         *
+         * @return {IIndexValueIterator.<V>}
          */
         iterator: function() {
-            return new ArrayIterator(this);
+            return new ArrayIterator(this.array);
         },
 
 
@@ -194,18 +206,18 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {boolean=} deep
-         * @return {Array.<I>}
+         * @return {Arr.<I>}
          */
         clone: function(deep) {
-            var cloneArray = new Array();
+            var cloneArr = new Arr();
             if (deep) {
                 this.forEach(function(item) {
-                    cloneArray.add(Obj.clone(item, true));
+                    cloneArr.add(Obj.clone(item, true));
                 });
             } else {
-                cloneArray.addAll(this);
+                cloneArr.addAll(this);
             }
-            return cloneArray;
+            return cloneArr;
         }
     });
 
@@ -214,13 +226,13 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(Array, IIterable);
-    Class.implement(Array, IStreamable);
+    Class.implement(Arr, IIndexValueIterable);
+    Class.implement(Arr, IStreamable);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Array', Array);
+    bugpack.export('Arr', Arr);
 });

@@ -73,7 +73,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          * @param {ISupplier.<I>} supplier
-         * @param {IStreamOperation} operation
+         * @param {IStreamOperation.<I>} operation
          */
         _constructor: function(supplier, operation) {
 
@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {IStreamOperation}
+             * @type {IStreamOperation.<I>}
              */
             this.operation  = operation;
 
@@ -103,7 +103,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {IStreamOperation}
+         * @return {IStreamOperation.<I>}
          */
         getOperation: function() {
             return this.operation;

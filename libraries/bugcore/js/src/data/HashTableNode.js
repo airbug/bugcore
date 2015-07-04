@@ -36,6 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
+     * @template K, V
      */
     var HashTableNode = Class.extend(Obj, {
 
@@ -66,13 +67,13 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array<*>}
+             * @type {Array.<K>}
              */
             this.hashTableKeyArray = [];
 
             /**
              * @private
-             * @type {Array<*>}
+             * @type {Array.<V>}
              */
             this.hashTableValueArray = [];
         },
@@ -87,6 +88,39 @@ require('bugpack').context("*", function(bugpack) {
          */
         getCount: function() {
             return this.count;
+        },
+
+        /**
+         * @return {Array.<K>}
+         */
+        getHashTableKeyArray: function() {
+            return this.hashTableKeyArray;
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        getHashTableValueArray: function() {
+            return this.hashTableValueArray;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Array.<K>}
+         */
+        getKeyArray: function() {
+            return this.hashTableKeyArray;
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        getValueArray: function() {
+            return this.hashTableValueArray;
         },
 
 
@@ -149,7 +183,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} key
-         * @return {*}
+         * @return {V}
          */
         get: function(key) {
             for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
@@ -162,23 +196,9 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array<*>}
-         */
-        getKeyArray: function() {
-            return this.hashTableKeyArray;
-        },
-
-        /**
-         * @return {Array<*>}
-         */
-        getValueArray: function() {
-            return this.hashTableValueArray;
-        },
-
-        /**
-         * @param {*} key
-         * @param {*} value
-         * @return {*}
+         * @param {K} key
+         * @param {V} value
+         * @return {V}
          */
         put: function(key, value) {
             for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
@@ -200,7 +220,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} key
-         * @return {*}
+         * @return {V}
          */
         remove: function(key) {
             for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {

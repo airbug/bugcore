@@ -56,10 +56,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow)} assertionMethod
-         * @param {Flow} ifFlow
          */
-        _constructor: function(assertionMethod, ifFlow) {
+        _constructor: function() {
 
             this._super();
 
@@ -72,37 +70,48 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Assertion}
              */
-            this.assertionFlow      = new Assertion(assertionMethod);
+            this.assertionFlow          = null;
 
             /**
              * @private
-             * @type {Flow}
+             * @type {FlowBuilder}
              */
-            this.elseFlow           = null;
+            this.assertPassFlowBuilder  = null;
+
+            /**
+             * @private
+             * @type {FlowBuilder}
+             */
+            this.elseFlowBuilder        = null;
 
             /**
              * @private
              * @type {number}
              */
-            this.elseIfIndex        = -1;
+            this.elseIfIndex            = -1;
 
             /**
              * @private
-             * @type {List.<If>}
+             * @type {List.<IfBuilder>}
              */
-            this.elseIfList         = Collections.list();
+            this.elseIfBuilderList      = Collections.list();
+        },
 
-            /**
-             * @private
-             * @type {Array.<*>}
-             */
-            this.execArgs           = null;
 
-            /**
-             * @private
-             * @type {Flow}
-             */
-            this.ifFlow             = ifFlow;
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(Flow, *...)} assertionMethod
+         * @param {FlowBuilder} assertPassFlowBuilder
+         * @return {If}
+         */
+        init: function(assertionMethod, assertPassFlowBuilder) {
+            this._super();
+            this.assertionFlow          = new Assertion(assertionMethod);
+            this.assertPassFlowBuilder  = assertPassFlowBuilder;
+            return this;
         },
 
 
@@ -111,33 +120,45 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {(Array.<If> | ICollection.<If>)} elseIfFlows
+         * @return {FlowBuilder}
          */
-        addAllElseIf: function(elseIfFlows) {
-            if (this.elseFlow) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
-            }
-            this.elseIfList.addAll(elseIfFlows);
+        getElseFlowBuilder: function() {
+            return this.elseFlowBuilder;
         },
 
         /**
-         * @param {If} elseIfFlow
+         * @param {FlowBuilder} elseFlowBuilder
          */
-        addElseIf: function(elseIfFlow) {
-            if (this.elseFlow) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
+        setElseFlowBuilder: function(elseFlowBuilder) {
+            if (this.elseFlowBuilder) {
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
             }
-            this.elseIfList.add(elseIfFlow);
+            this.elseFlowBuilder = elseFlowBuilder;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {(Array.<IfBuilder> | ICollection.<IfBuilder>)} elseIfFlowBuilders
+         */
+        addAllElseIfBuilders: function(elseIfFlowBuilders) {
+            if (this.elseFlowBuilder) {
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
+            }
+            this.elseIfBuilderList.addAll(elseIfFlowBuilders);
         },
 
         /**
-         * @param {Flow} elseFlow
+         * @param {IfBuilder} elseIfBuilder
          */
-        setElse: function(elseFlow) {
-            if (this.elseFlow) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlow");
+        addElseIfBuilder: function(elseIfBuilder) {
+            if (this.elseFlowBuilder) {
+                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
             }
-            this.elseFlow = elseFlow;
+            this.elseIfBuilderList.add(elseIfBuilder);
         },
 
 
@@ -146,17 +167,15 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
             var _this = this;
-            this.execArgs = args;
-            this.assertionFlow.execute(this.execArgs, function(error, result) {
+            this.assertionFlow.execute(this.getFlowArgs(), function(error, result) {
                 if (!error) {
                     if (result) {
-                        _this.ifFlow.execute(_this.execArgs, function (throwable) {
+                        _this.assertPassFlowBuilder.execute(_this.getFlowArgs(), function (throwable) {
                             _this.complete(throwable, result);
                         });
                     } else {
@@ -195,14 +214,14 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextElseFlow: function() {
             var _this = this;
-            if (this.elseIfList.getCount() > 0 && this.elseIfIndex < this.elseIfList.getCount()) {
+            if (this.elseIfBuilderList.getCount() > 0 && this.elseIfIndex < this.elseIfBuilderList.getCount()) {
                 this.elseIfIndex++;
-                var elseIfFlow = this.elseIfList.getAt(this.elseIfIndex);
-                elseIfFlow.execute(this.execArgs, function(error, result) {
+                var elseIfFlowBuilder = this.elseIfBuilderList.getAt(this.elseIfIndex);
+                elseIfFlowBuilder.execute(this.getFlowArgs(), function(error, result) {
                     _this.elseIfCallback(error, result);
                 });
-            } else if (this.elseFlow) {
-                this.elseFlow.execute(this.execArgs, function(error) {
+            } else if (this.elseFlowBuilder) {
+                this.elseFlowBuilder.execute(this.getFlowArgs(), function(error) {
                     _this.complete(error, false);
                 });
             } else {

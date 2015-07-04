@@ -109,7 +109,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         check: function(value) {
-            var propertyValue = ObjectUtil.findProperty(value, this.propertyQuery);
+            var propertyValue = ObjectUtil.getOwnNestedProperty(value, this.propertyQuery);
             return this.inSet.contains(propertyValue);
         }
     });

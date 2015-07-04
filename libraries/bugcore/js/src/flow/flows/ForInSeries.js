@@ -12,8 +12,10 @@
 //@Export('ForInSeries')
 
 //@Require('Class')
-//@Require('IteratorFlow')
-//@Require('ObjectUtil')
+//@Require('IIndexValueIterable)
+//@Require('IKeyValueIterable)
+//@Require('IterableFlow')
+
 
 
 //-------------------------------------------------------------------------------
@@ -26,9 +28,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var IteratorFlow    = bugpack.require('IteratorFlow');
-    var ObjectUtil      = bugpack.require('ObjectUtil');
+    var Class                       = bugpack.require('Class');
+    var IIndexValueIterable         = bugpack.require('IIndexValueIterable');
+    var IKeyValueIterable           = bugpack.require('IKeyValueIterable');
+    var IterableFlow                = bugpack.require('IterableFlow');
 
 
     //-------------------------------------------------------------------------------
@@ -37,46 +40,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {IteratorFlow}
+     * @extends {IterableFlow}
      */
-    var ForInSeries = Class.extend(IteratorFlow, {
+    var ForInSeries = Class.extend(IterableFlow, {
 
         _name: "ForInSeries",
-
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @constructs
-         * @param {*} data
-         * @param {function(Flow, *)} iteratorMethod
-         */
-        _constructor: function(data, iteratorMethod) {
-
-            this._super(data, iteratorMethod);
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            // NOTE BRN: Because JS does not have an iterator implementation, we have to create a copy of the properties
-            // here and use the array as our way of iterating through the properties.
-
-            /**
-             * @private
-             * @type {Array.<string>}
-             */
-            this.dataProperties     = ObjectUtil.getProperties(data);
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.iteratorIndex      = -1;
-        },
 
 
         //-------------------------------------------------------------------------------
@@ -84,12 +52,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            if (this.dataProperties.length > 0) {
-                this.next();
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            if (this.getIterator().hasNext()) {
+                this.nextIteration();
             } else {
                 this.complete();
             }
@@ -97,24 +65,24 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // IteratorFlow Methods
+        // IterableFlow Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
          * @param {Throwable} throwable
-         * @param {Array.<*>} args
+         * @param {Iteration} iteration
          */
-        iterationCallback: function(throwable, args) {
+        iterationCallback: function(throwable, iteration) {
             if (throwable) {
                 if (!this.hasErrored()) {
                     this.error(throwable);
                 }
             } else {
-                if (this.iteratorIndex >= (this.dataProperties.length - 1)) {
-                    this.complete();
+                if (this.getIterator().hasNext()) {
+                    this.nextIteration();
                 } else {
-                    this.next();
+                    this.complete();
                 }
             }
         },
@@ -128,10 +96,16 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         next: function() {
-            this.iteratorIndex++;
-            var nextProperty    = this.dataProperties[this.iteratorIndex];
-            var nextValue       = this.getData()[nextProperty];
-            this.executeIteration([nextProperty, nextValue]);
+            if (Class.doesExtend(this.getIterator(), IIndexValueIterable)) {
+                var indexValuePair = this.getIterator().nextIndexValuePair();
+                this.executeIteration([indexValuePair.index, indexValuePair.value]);
+            } else if (Class.doesExtend(this.getIterator(), IKeyValueIterable)) {
+                var keyValuePair = this.getIterator().nextKeyValuePair();
+                this.executeIteration([keyValuePair.key, keyValuePair.value]);
+            } else {
+                var value = this.getIterator().next();
+                this.executeIteration([value]);
+            }
         }
     });
 

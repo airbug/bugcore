@@ -48,8 +48,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow)} taskMethod
-         * @param {Object} taskContext
+         * @param {function(Flow, *...)} taskMethod
+         * @param {Object=} taskContext
          */
         _constructor: function(taskMethod, taskContext) {
 
@@ -68,7 +68,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(Flow)}
+             * @type {function(Flow, *...)}
              */
             this.taskMethod     = taskMethod;
         },
@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {function(Flow)}
+         * @return {function(Flow, *...)}
          */
         getTaskMethod: function() {
             return this.taskMethod;
@@ -98,11 +98,11 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            return this.taskMethod.apply(this.taskContext, ([this]).concat(args));
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            return this.taskMethod.apply(this.taskContext, ([this]).concat(flowArgs));
         }
     });
 

@@ -54,10 +54,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Assertion)} assertionMethod
-         * @param {Flow} whileFlow
          */
-        _constructor: function(assertionMethod, whileFlow) {
+        _constructor: function() {
 
             this._super();
 
@@ -68,21 +66,21 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(Assertion)}
+             * @type {function(Assertion, *...)}
              */
-            this.assertionMethod        = assertionMethod;
+            this.assertionMethod        = null;
+
+            /**
+             * @private
+             * @type {FlowBuilder}
+             */
+            this.assertPassFlowBuilder  = null;
 
             /**
              * @private
              * @type {ParallelException}
              */
             this.exception              = null;
-
-            /**
-             * @private
-             * @type {Array.<*>}
-             */
-            this.execArgs               = null;
 
             /**
              * @private
@@ -107,12 +105,23 @@ require('bugpack').context("*", function(bugpack) {
              * @type {boolean}
              */
             this.whileCheck             = true;
+        },
 
-            /**
-             * @private
-             * @type {Flow}
-             */
-            this.whileFlow              = whileFlow;
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(Flow, *...)} assertionMethod
+         * @param {FlowBuilder} assertPassFlowBuilder
+         * @return {WhileParallel}
+         */
+        init: function(assertionMethod, assertPassFlowBuilder) {
+            this._super();
+            this.assertionMethod        = assertionMethod;
+            this.assertPassFlowBuilder  = assertPassFlowBuilder;
+            return this;
         },
 
 
@@ -121,11 +130,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            this.execArgs = args;
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
             this.startSyncWhileLoop();
         },
 
@@ -167,7 +175,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this           = this;
             var asyncCall       = false;
             var assertionFlow   = new Assertion(this.assertionMethod);
-            assertionFlow.execute(this.execArgs, function(throwable, result) {
+            assertionFlow.execute(this.getFlowArgs(), function(throwable, result) {
                 if (asyncCall) {
                     _this.syncCall = false;
                 }
@@ -193,7 +201,7 @@ require('bugpack').context("*", function(bugpack) {
         runWhileFlow: function() {
             var _this = this;
             this.numberFlowsExecuted++;
-            this.whileFlow.execute(this.execArgs, function(throwable) {
+            this.assertPassFlowBuilder.execute(this.getFlowArgs(), function(throwable) {
                 _this.numberFlowsCompleted++;
                 if (throwable) {
                     _this.processThrowable(throwable);

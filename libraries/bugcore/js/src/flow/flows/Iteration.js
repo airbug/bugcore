@@ -50,9 +50,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(Flow, *)} iteratorMethod
          */
-        _constructor: function(iteratorMethod) {
+        _constructor: function() {
 
             this._super();
 
@@ -63,9 +62,24 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(Flow, *)}
+             * @type {function(IterableFlow, *...)}
              */
+            this.iteratorMethod = null;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(IterableFlow, *...)} iteratorMethod
+         * @return {Iteration}
+         */
+        init: function(iteratorMethod) {
+            this._super();
             this.iteratorMethod = iteratorMethod;
+            return this;
         },
 
 
@@ -74,11 +88,11 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} args
+         * @param {Array.<*>} flowArgs
          */
-        executeFlow: function(args) {
-            this._super(args);
-            return this.iteratorMethod.apply(null, ([this]).concat(args));
+        executeFlow: function(flowArgs) {
+            this._super(flowArgs);
+            return this.iteratorMethod.apply(null, ([this]).concat(this.getFlowArgs()));
         }
     });
 

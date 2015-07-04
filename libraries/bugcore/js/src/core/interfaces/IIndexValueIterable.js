@@ -9,8 +9,9 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('IIterable')
+//@Export('IIndexValueIterable')
 
+//@Require('IIterable')
 //@Require('Interface')
 
 
@@ -24,6 +25,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var IIterable   = bugpack.require('IIterable');
     var Interface   = bugpack.require('Interface');
 
 
@@ -33,11 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
-     * @template I
+     * @extends {IIterable.<V>}
+     * @template V
      */
-    var IIterable = Interface.declare({
+    var IIndexValueIterable = Interface.extend(IIterable, {
 
-        _name: "IIterable",
+        _name: "IIterableIndex",
 
 
         //-------------------------------------------------------------------------------
@@ -45,20 +48,19 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
-         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
-         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
-         * In general it is best not to add, modify or remove values from the Collection during iteration, other than the
-         * value currently being visited. There is no guarantee whether or not an added value will be visited, whether
-         * a modified value (other than the current one) will be visited before or after it is modified, or whether a
-         * deleted value will be visited before it is deleted.
-         *
-         * @param {function(I)} func
+         * @override
+         * @param {function(V, number)} func
          */
         forEach: function(func) {},
 
         /**
-         * @return {IIterator.<I>}
+         * @param {function(number, V)} func
+         */
+        forIn: function(func) {},
+
+        /**
+         * @override
+         * @return {IIndexValueIterator.<V>}
          */
         iterator: function() {}
     });
@@ -68,5 +70,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('IIterable', IIterable);
+    bugpack.export('IIndexValueIterable', IIndexValueIterable);
 });

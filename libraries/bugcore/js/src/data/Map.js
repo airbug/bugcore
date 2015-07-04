@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('Collection')
 //@Require('HashTable')
+//@Require('IKeyValueIterable')
 //@Require('IMap')
 //@Require('IObjectable')
 //@Require('Obj')
@@ -31,14 +32,15 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Collection      = bugpack.require('Collection');
-    var HashTable       = bugpack.require('HashTable');
-    var IMap            = bugpack.require('IMap');
-    var IObjectable     = bugpack.require('IObjectable');
-    var Obj             = bugpack.require('Obj');
-    var ObjectUtil      = bugpack.require('ObjectUtil');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var Class                   = bugpack.require('Class');
+    var Collection              = bugpack.require('Collection');
+    var HashTable               = bugpack.require('HashTable');
+    var IKeyValueIterable       = bugpack.require('IKeyValueIterable');
+    var IMap                    = bugpack.require('IMap');
+    var IObjectable             = bugpack.require('IObjectable');
+    var Obj                     = bugpack.require('Obj');
+    var ObjectUtil              = bugpack.require('ObjectUtil');
+    var TypeUtil                = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -52,6 +54,7 @@ require('bugpack').context("*", function(bugpack) {
      *
      * @class
      * @extends {Obj}
+     * @implements {IKeyValueIterable.<K, V>}
      * @implements {IMap.<K, V>}
      * @implements {IObjectable}
      * @template K, V
@@ -80,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {HashTable}
+             * @type {HashTable.<K, V>}
              */
             this.hashTable = new HashTable();
 
@@ -95,7 +98,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {HashTable}
+         * @return {HashTable.<K, V>}
          */
         getHashTable: function() {
             return this.hashTable;
@@ -124,6 +127,33 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
+        // IKeyValueIterable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(V, K)} func
+         */
+        forEach: function(func) {
+            this.hashTable.forEach(func);
+        },
+
+        /**
+         * @param {function(K, V)} func
+         */
+        forIn: function(func) {
+            this.hashTable.forIn(func);
+        },
+
+        /**
+         * @override
+         * @return {IKeyValueIterator.<K, V>}
+         */
+        iterator: function() {
+            return this.hashTable.iterator();
+        },
+
+
+        //-------------------------------------------------------------------------------
         // IMap Implementation
         //-------------------------------------------------------------------------------
 
@@ -148,13 +178,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         containsValue: function(value) {
             return this.hashTable.containsValue(value);
-        },
-
-        /**
-         * @param {function(V, K)} func
-         */
-        forEach: function(func) {
-            this.hashTable.forEach(func);
         },
 
         /**
@@ -256,7 +279,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Object}
+         * @return {Object.<K,V>}
          */
         toObject: function() {
             var _this   = this;
@@ -278,6 +301,7 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
+    Class.implement(Map, IKeyValueIterable);
     Class.implement(Map, IMap);
     Class.implement(Map, IObjectable);
 

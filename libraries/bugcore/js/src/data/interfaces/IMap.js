@@ -62,11 +62,6 @@ require('bugpack').context("*", function(bugpack) {
         containsValue: function(value) {},
 
         /**
-         * @param {function(V, K)} func
-         */
-        forEach: function(func) {},
-
-        /**
          * @param {*} key
          * @return {V}
          */

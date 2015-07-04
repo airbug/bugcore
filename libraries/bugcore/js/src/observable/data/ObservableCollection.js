@@ -16,7 +16,6 @@
 //@Require('Class')
 //@Require('ClearChange')
 //@Require('Collection')
-//@Require('CollectionIterator')
 //@Require('IArrayable')
 //@Require('ICollection')
 //@Require('IIterable')
@@ -42,7 +41,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var ClearChange         = bugpack.require('ClearChange');
     var Collection          = bugpack.require('Collection');
-    var CollectionIterator  = bugpack.require('CollectionIterator');
     var IArrayable          = bugpack.require('IArrayable');
     var ICollection         = bugpack.require('ICollection');
     var IIterable           = bugpack.require('IIterable');
@@ -61,6 +59,7 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Observable}
      * @implements {ICollection}
+     * @template I
      */
     var ObservableCollection = Class.extend(Observable, /** @lends {ObservableCollection.prototype} */{
 
@@ -73,7 +72,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(ICollection.<*> | Array.<*>)} items
+         * @param {(ICollection.<I> | Array.<I>)} items
          */
         _constructor: function(items) {
 
@@ -86,7 +85,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ICollection}
+             * @type {Collection.<I>}
              */
             this.observed = this.factoryObserved(items);
         },
@@ -97,7 +96,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ICollection}
+         * @return {Collection.<I>}
          */
         getObserved: function() {
             return this.observed;
@@ -110,7 +109,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @override
-         * @return (Array)
+         * @return (Array.<I>)
          */
         toArray: function() {
             return this.getValueArray();
@@ -122,7 +121,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {*} value
+         * @param {I} value
          * @return {boolean}
          */
         add: function(value) {
@@ -134,7 +133,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} items
+         * @param {(ICollection.<I> | Array.<I>)} items
          */
         addAll: function(items) {
             if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
@@ -187,7 +186,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<*>}
+         * @return {Array.<I>}
          */
         getValueArray: function() {
             return this.observed.getValueArray();
@@ -240,23 +239,25 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function(A)} func
+         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
+         *
+         * @param {function(I)} func
          */
         forEach: function(func) {
             this.observed.forEach(func);
         },
 
         /**
-         * NOTE BRN: Because of the way javascript works and the current lack of Iterator support across browsers. Iterators
-         * create a snap shot of the values in the Collection before starting the iteration process. If a value is modified
-         * in one iteration and then visited at a later time, its value in the loop is its value when the iteration was
-         * started. A values that is deleted before it has been visited WILL be visited later.
-         * Values added to the Collection over which iteration is occurring will be omitted from iteration.
+         * NOTE BRN: If a value is modified in one iteration and then visited at a later time, its value in the loop is
+         * its value at that later time. A value that is deleted before it has been visited will not be visited later.
+         * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
          *
-         * @return {IIterator}
+         * @return {IIterator.<I>}
          */
         iterator: function() {
-            return new CollectionIterator(this);
+            return this.observed.iterator();
         },
 
 
@@ -266,7 +267,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {boolean} deep
-         * @return {ObservableCollection.<C>}
+         * @return {ObservableCollection.<I>}
          */
         clone: function(deep) {
             var cloneCollection = new ObservableCollection();
@@ -287,7 +288,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {(ICollection.<*> | Array.<*>)=} items
+         * @param {(ICollection.<I> | Array.<I>)=} items
+         * @return {Collection.<I>}
          */
         factoryObserved: function(items) {
             return new Collection(items);

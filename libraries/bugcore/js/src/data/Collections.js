@@ -11,18 +11,15 @@
 
 //@Export('Collections')
 
-//@Require('Array')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
-//@Require('IStreamable')
 //@Require('List')
 //@Require('Map')
 //@Require('MultiListMap')
 //@Require('Obj')
 //@Require('Queue')
 //@Require('Set')
-//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -35,18 +32,15 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Array           = bugpack.require('Array');
     var Class           = bugpack.require('Class');
     var Collection      = bugpack.require('Collection');
     var Exception       = bugpack.require('Exception');
-    var IStreamable     = bugpack.require('IStreamable');
     var List            = bugpack.require('List');
     var Map             = bugpack.require('Map');
     var MultiListMap    = bugpack.require('MultiListMap');
     var Obj             = bugpack.require('Obj');
     var Queue           = bugpack.require('Queue');
     var Set             = bugpack.require('Set');
-    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -65,16 +59,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
-
-    /**
-     * @static
-     * @param {?(ICollection.<I> | Array.<I>)=} items
-     * @return {Array.<I>}
-     * @template I
-     */
-    Collections.array = function(items) {
-        return new Array(items);
-    };
 
     /**
      * @static
@@ -166,21 +150,6 @@ require('bugpack').context("*", function(bugpack) {
             return new Set(items);
         } else {
             return /** @type {Set.<I>} */(items);
-        }
-    };
-
-    /**
-     * @static
-     * @param value
-     * @return {*}
-     */
-    Collections.ensureStreamable = function(value) {
-        if (Class.doesImplement(value, IStreamable)) {
-            return value;
-        } else if (TypeUtil.isArray(value)) {
-            return Collections.array(value);
-        } else {
-            throw new Exception("IllegalArgument", {}, "'value' cannot be made streamable - value:" + value);
         }
     };
 
