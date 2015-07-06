@@ -107,9 +107,9 @@ require('bugpack').context("*", function(bugpack) {
         if (key.length === 0) {
             return hash;
         }
-        for (var i = 0; i < key.length; i++) {
-            var char = key.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
+        for (var i = 0, size = key.length; i < size && i < 15; i++) {
+            var charCode = key.charCodeAt(i);
+            hash = ((hash << 5) - hash) + charCode;
             hash = hash & hash; // Convert to 32bit integer
         }
         return hash;
