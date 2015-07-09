@@ -87,7 +87,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function(Throwable=, ...=)} callback
+         * @param {function(Throwable=, *...=)} callback
          */
         callback: function(callback) {
             this.deferredPromise.then(function() {

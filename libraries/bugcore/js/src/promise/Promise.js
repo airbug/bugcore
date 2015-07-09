@@ -299,7 +299,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         rejectPromise: function(reasons) {
             if (!this.isPending()) {
-               throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot reject a promise that is not pending.");
+                throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot reject a promise that is not pending.");
             }
             if (this.isResolving()) {
                 throw new Bug("IllegalState", {}, "Promise is already resolving. Cannot resolve a promise that is already resolving.");

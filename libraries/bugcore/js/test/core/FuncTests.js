@@ -101,14 +101,15 @@ require('bugpack').context("*", function(bugpack) {
             var _this           = this;
             this.testObject     = {};
             this.testArgument   = "testArgument";
+            this.testFunctionCalled = false;
             this.testFunction   = function(testParam) {
+                _this.testFunctionCalled = true;
                 test.assertEqual(this, _this.testObject,
                     "Assert that 'this' matches the testObject");
                 test.assertEqual(testParam, _this.testArgument,
                     "Assert that the testParam was set correctly");
                 test.completeTest();
             };
-            this.testFunctionSpy = spyOnFunction(this.testFunction);
             test.completeSetup();
         },
 
@@ -117,16 +118,15 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var _this = this;
-            test.assertTrue(_this.testFunctionSpy.wasNotCalled(),
+            test.assertFalse(this.testFunctionCalled,
                 "Assert testFunction was not called");
-            Func.deferCall(this.testFunctionSpy, this.testObject, this.testArgument);
-            test.assertTrue(this.testFunctionSpy.wasNotCalled(),
+            Func.deferCall(this.testFunction, this.testObject, this.testArgument);
+            test.assertFalse(this.testFunctionCalled,
                 "Assert testFunction was not called");
         },
 
         final: function(test) {
-            test.assertTrue(this.testFunctionSpy.wasCalled(),
+            test.assertTrue(this.testFunctionCalled,
                 "Assert testFunction was called");
             test.completeFinalize();
         }
