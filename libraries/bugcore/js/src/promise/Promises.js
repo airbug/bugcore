@@ -54,8 +54,8 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @return {Deferred}
      */
-    Promises.deferred = function(items) {
-        return new Deferred(items);
+    Promises.deferred = function() {
+        return new Deferred();
     };
 
     /**

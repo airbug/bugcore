@@ -14,6 +14,7 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('Obj')
+//@Require('Promises')
 //@Require('Throwables')
 
 
@@ -30,6 +31,7 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Promises    = bugpack.require('Promises');
     var Throwables  = bugpack.require('Throwables');
 
 
@@ -52,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {(Array.<*> | function(Throwable=))} flowArgs
-         * @param {function(Throwable=)=} callback
+         * @param {function(Throwable, *...=)=} callback
          */
         execute: function(flowArgs, callback) {
             var args = ArgUtil.process(arguments, [
@@ -63,6 +65,25 @@ require('bugpack').context("*", function(bugpack) {
             callback    = args.callback;
             var flow    = this.doFactoryFlow();
             flow.execute(flowArgs, callback);
+        },
+
+        /**
+         * @param {function(...):*=} fulfilledFunction
+         * @param {function(...):*=} rejectedFunction
+         * @return {Promise}
+         */
+        then: function(fulfilledFunction, rejectedFunction) {
+            var deferred = Promises.deferred();
+            this.execute(function(throwable) {
+                if (!throwable) {
+                    deferred.reject(throwable);
+                } else {
+                    var args = ArgUtil.toArray(arguments);
+                    args.shift();
+                    deferred.resolve(args);
+                }
+            });
+            return deferred.promise().then(fulfilledFunction, rejectedFunction);
         },
 
 
