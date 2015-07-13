@@ -105,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         executeFlow: function(flowArgs) {
             this._super(flowArgs);
-            var result = this.assertionMethod.apply(null, ([this]).concat(this.getFlowArgs()));
+            var result = this.assertionMethod.apply(null, ([this.generateCallback()]).concat(this.getFlowArgs()));
             if (!TypeUtil.isUndefined(result)) {
                 this.assert(result);
             }
@@ -125,6 +125,35 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 this.error(Throwables.bug("IllegalState", {}, "Flow has already been asserted. Cannot call assert more than once."));
             }
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Private Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @private
+         * @returns {function(Throwable, *...)}
+         */
+        generateCallback: function() {
+            var _this = this;
+            var callback = function() {
+                _this.complete.apply(_this, arguments);
+            };
+            callback.assert = function() {
+                _this.assert.apply(_this, arguments);
+            };
+            callback.complete = function() {
+                _this.complete.apply(_this, arguments);
+            };
+            callback.resolve = function() {
+                _this.resolve.apply(_this, arguments);
+            };
+            callback.error = function() {
+                _this.error.apply(_this, arguments);
+            };
+            return callback;
         }
     });
 

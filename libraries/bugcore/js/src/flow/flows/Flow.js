@@ -333,6 +333,7 @@ require('bugpack').context("*", function(bugpack) {
             this.resolving  = true;
             var resolver    = new Resolver([this], args);
             resolver.resolve(function(reasons, values) {
+                _this.resolving = false;
                 if (reasons.length > 0) {
                     _this.errorFlow(Throwables.parallelException("ResolveException", {}, "Exceptions occurred during resolution of Flow", reasons));
                 } else {

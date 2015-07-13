@@ -123,10 +123,10 @@ require('bugpack').context("*", function(bugpack) {
                 _this.complete.apply(_this, arguments);
             };
             callback.resolve = function() {
-                _this.complete.resolve(_this, arguments);
+                _this.resolve.apply(_this, arguments);
             };
             callback.error = function() {
-                _this.complete.error(_this, arguments);
+                _this.error.apply(_this, arguments);
             };
             return callback;
         }

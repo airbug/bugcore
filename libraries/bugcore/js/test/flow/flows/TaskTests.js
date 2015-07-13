@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Task')
+//@Require('Throwables')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -29,6 +30,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Task        = bugpack.require('Task');
+    var Throwables  = bugpack.require('Throwables');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -123,6 +125,121 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
+     * 1) Task.complete with no arguments
+     * 2) That Task is in the completed state after Task.complete is called
+     * 3) That Task is not in the resolving state after Task.complete is called with no arguments
+     * 4) That Task is not in the errored state after Task.complete is called
+     */
+    var taskCompleteTest = {
+
+        async: true,
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.taskMethod = function(flow) {
+                flow.complete();
+            };
+            this.task = new Task(this.taskMethod);
+            test.completeSetup();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            this.task.execute(function() {
+                test.assertTrue(_this.task.hasCompleted(), "Assert Task is in the completed state");
+                test.assertFalse(_this.task.isResolving(), "Assert Task is not in the resolving state");
+                test.assertFalse(_this.task.hasErrored(), "Assert Task is not in the errored state");
+                test.completeTest();
+            });
+        }
+    };
+
+    /**
+     * This tests..
+     * 1) Task.complete with exception
+     * 2) That Task is in the errored state after Task.complete is called with an exception argument
+     * 3) That Task is not in the resolving state after Task.complete is called with an exception argument
+     * 4) That Task is not in the completed state after Task.complete is called with an exception argument
+     */
+    var taskCompleteWithExceptionTest = {
+
+        async: true,
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this = this;
+            this.testException = Throwables.exception("TestException");
+            this.taskMethod = function(flow) {
+                flow.complete(_this.testException);
+            };
+            this.task = new Task(this.taskMethod);
+            test.completeSetup();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            this.task.execute(function(throwable) {
+                test.assertEqual(throwable, _this.testException,
+                    "Assert throwable passed to execute callback is testException");
+                test.assertFalse(_this.task.hasCompleted(), "Assert Task is NOT in the completed state");
+                test.assertFalse(_this.task.isResolving(), "Assert Task is not in the resolving state");
+                test.assertTrue(_this.task.hasErrored(), "Assert Task is in the errored state");
+                test.completeTest();
+            });
+        }
+    };
+
+    /**
+     * This tests..
+     * 1) Task.error with no arguments
+     * 2) That Task is in the errored state after Task.error is called
+     * 3) That Task is not in the resolving state after Task.error is called with no arguments
+     * 4) That Task is not in the completed state after Task.error is called with no arguments
+     */
+    var taskErrorTest = {
+
+        async: true,
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.taskMethod = function(flow) {
+                flow.error();
+            };
+            this.task = new Task(this.taskMethod);
+            test.completeSetup();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var _this = this;
+            this.task.execute(function() {
+                test.assertFalse(_this.task.hasCompleted(), "Assert Task is NOT in the completed state");
+                test.assertFalse(_this.task.isResolving(), "Assert Task is NOT in the resolving state");
+                test.assertTrue(_this.task.hasErrored(), "Assert Task IS in the errored state");
+                test.completeTest();
+            });
+        }
+    };
+
+    /**
+     * This tests..
      * 1) That the taskMethod can return a value to complete the task
      */
     var taskReturnValueTest = {
@@ -168,6 +285,15 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(taskExecuteWithoutCallbackTest).with(
         test().name("Task - #execute without callback test")
+    );
+    bugmeta.tag(taskCompleteTest).with(
+        test().name("Task - #complete test")
+    );
+    bugmeta.tag(taskCompleteWithExceptionTest).with(
+        test().name("Task - #complete with Exception test")
+    );
+    bugmeta.tag(taskErrorTest).with(
+        test().name("Task - #error test")
     );
     bugmeta.tag(taskReturnValueTest).with(
         test().name("Task - return value test")
