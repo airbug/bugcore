@@ -107,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
             this._super(flowArgs);
             var result = this.assertionMethod.apply(null, ([this]).concat(this.getFlowArgs()));
             if (!TypeUtil.isUndefined(result)) {
-                this.assert(!!result);
+                this.assert(result);
             }
         },
 

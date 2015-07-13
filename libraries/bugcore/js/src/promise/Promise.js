@@ -171,6 +171,11 @@ require('bugpack').context("*", function(bugpack) {
             return this.valueList;
         },
 
+
+        //-------------------------------------------------------------------------------
+        // Convenience Methods
+        //-------------------------------------------------------------------------------
+
         /**
          * @return {boolean}
          */
@@ -265,36 +270,6 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} values
-         */
-        doFulfillPromise: function(values) {
-            if (this.isPending()) {
-                this.resolving  = false;
-                this.state      = Promise.State.FULFILLED;
-                this.valueList.addAll(values);
-                this.processHandlers();
-            } else {
-                throw new Bug("Promise has already been resolved");
-            }
-        },
-
-        /**
-         * @protected
-         * @param {Array.<*>} reasons
-         */
-        doRejectPromise: function(reasons) {
-            if (this.isPending()) {
-                this.resolving  = false;
-                this.state      = Promise.State.REJECTED;
-                this.reasonList.addAll(reasons);
-                this.processHandlers();
-            } else {
-                throw new Bug("Promise has already been resolved");
-            }
-        },
-
-        /**
-         * @protected
          * @param {Array.<*>} reasons
          */
         rejectPromise: function(reasons) {
@@ -327,6 +302,21 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @protected
+         * @param {Array.<*>} values
+         */
+        doFulfillPromise: function(values) {
+            if (this.isPending()) {
+                this.resolving  = false;
+                this.state      = Promise.State.FULFILLED;
+                this.valueList.addAll(values);
+                this.processHandlers();
+            } else {
+                throw new Bug("Promise has already been resolved");
+            }
+        },
+
+        /**
          * @private
          */
         doProcessHandlers: function() {
@@ -346,13 +336,35 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @protected
+         * @param {Array.<*>} reasons
+         */
+        doRejectPromise: function(reasons) {
+            if (this.isPending()) {
+                this.resolving  = false;
+                this.state      = Promise.State.REJECTED;
+                this.reasonList.addAll(reasons);
+                this.processHandlers();
+            } else {
+                throw new Bug("Promise has already been resolved");
+            }
+        },
+
+        /**
          * @private
          * @param {Array.<*>} values
          */
         doResolvePromise: function(values) {
+            var _this       = this;
             this.resolving  = true;
-            this.resolver   = new Resolver(this, values);
-            this.resolver.resolve();
+            this.resolver   = new Resolver([this], values);
+            this.resolver.resolve(function(reasons, values) {
+                if (reasons.length > 0) {
+                    _this.doRejectPromise(reasons);
+                } else {
+                    _this.doFulfillPromise(values);
+                }
+            });
         },
 
         /**

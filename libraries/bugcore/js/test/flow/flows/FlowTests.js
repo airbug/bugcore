@@ -97,8 +97,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert flow has not completed");
             this.flow.execute(function(throwable) {
                 _this.callbackCalled = true;
-                test.assertEqual(throwable, undefined,
-                    "Assert throwable is undefined");
+                test.assertEqual(throwable, null,
+                    "Assert throwable is null");
             });
             test.assertEqual(this.flow.hasExecuted(), true,
                 "Assert flow has executed");

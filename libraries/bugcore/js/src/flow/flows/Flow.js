@@ -14,6 +14,7 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('Obj')
+//@Require('Resolver')
 //@Require('Throwables')
 //@Require('Tracer')
 //@Require('TypeUtil')
@@ -33,6 +34,7 @@ require('bugpack').context("*", function(bugpack) {
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Resolver    = bugpack.require('Resolver');
     var Throwables  = bugpack.require('Throwables');
     var Tracer      = bugpack.require('Tracer');
     var TypeUtil    = bugpack.require('TypeUtil');
@@ -104,6 +106,12 @@ require('bugpack').context("*", function(bugpack) {
              * @type {Array.<*>}
              */
             this.flowArgs       = null;
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.resolving      = false;
 
             /**
              * @private
@@ -185,6 +193,13 @@ require('bugpack').context("*", function(bugpack) {
             return this.getExecuted();
         },
 
+        /**
+         * @return {boolean}
+         */
+        isResolving: function() {
+            return this.resolving;
+        },
+
 
         //-------------------------------------------------------------------------------
         // Public Methods
@@ -195,7 +210,6 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*...} arguments
          */
         complete: function(throwable) {
-            var _this = this;
             if (throwable) {
                 this.error(throwable);
             } else {
@@ -206,7 +220,8 @@ require('bugpack').context("*", function(bugpack) {
                 if (this.hasCompleted()) {
                     this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only complete a flow once."));
                 }
-                _this.completeFlow(args);
+                args.shift();
+                this.resolve.apply(this, args);
             }
         },
 
@@ -228,7 +243,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {(Array.<*> | function(Throwable=))} args
-         * @param {function(Throwable=)=} callback
+         * @param {function(Throwable, *...=)=} callback
          */
         execute: function(args, callback) {
             if (TypeUtil.isFunction(args)) {
@@ -250,6 +265,23 @@ require('bugpack').context("*", function(bugpack) {
             }
         },
 
+        /**
+         * @param {*...} arguments
+         */
+        resolve: function() {
+            if (this.isResolving()) {
+                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow is already resolving."));
+            }
+            if (this.hasErrored()) {
+                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow has already errored out."));
+            }
+            if (this.hasCompleted()) {
+                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow has already completed."));
+            }
+            var args = ArgUtil.toArray(arguments);
+            this.resolveFlow(args);
+        },
+
 
         //-------------------------------------------------------------------------------
         // Protected Methods
@@ -264,8 +296,8 @@ require('bugpack').context("*", function(bugpack) {
             this.completed = true;
             if (this.callback) {
                 //setTimeout($trace(function() {
-                    _this.callback.apply(this, args);
-               // }), 0);
+                    _this.callback.apply(undefined, [null].concat(args));
+                //}), 0);
             }
         },
 
@@ -290,6 +322,23 @@ require('bugpack').context("*", function(bugpack) {
         executeFlow: function(flowArgs) {
             this.flowArgs = flowArgs;
             this.executed = true;
+        },
+
+        /**
+         * @protected
+         * @param {Array.<*>} args
+         */
+        resolveFlow: function(args) {
+            var _this       = this;
+            this.resolving  = true;
+            var resolver    = new Resolver([this], args);
+            resolver.resolve(function(reasons, values) {
+                if (reasons.length > 0) {
+                    _this.errorFlow(Throwables.parallelException("ResolveException", {}, "Exceptions occurred during resolution of Flow", reasons));
+                } else {
+                    _this.completeFlow(values);
+                }
+            });
         },
 
         /**

@@ -13,8 +13,10 @@
 
 //@Require('Class')
 //@Require('Deferred')
+//@Require('IPromise')
 //@Require('Obj')
 //@Require('Promise')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -29,8 +31,10 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Deferred    = bugpack.require('Deferred');
+    var IPromise    = bugpack.require('IPromise');
     var Obj         = bugpack.require('Obj');
     var Promise     = bugpack.require('Promise');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -56,6 +60,22 @@ require('bugpack').context("*", function(bugpack) {
      */
     Promises.deferred = function() {
         return new Deferred();
+    };
+
+    /**
+     * @static
+     * @param {*} value
+     * @return {boolean}
+     */
+    Promises.isPromise = function(value) {
+        if (Class.doesImplement(value, IPromise)) {
+            return true;
+        } else if (TypeUtil.isFunction(value) || TypeUtil.isObject(value)) {
+             if (TypeUtil.isFunction(value.then)) {
+                 return true;
+             }
+        }
+        return false;
     };
 
     /**
