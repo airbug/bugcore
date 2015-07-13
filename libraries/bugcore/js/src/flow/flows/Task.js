@@ -102,7 +102,33 @@ require('bugpack').context("*", function(bugpack) {
          */
         executeFlow: function(flowArgs) {
             this._super(flowArgs);
-            return this.taskMethod.apply(this.taskContext, ([this]).concat(flowArgs));
+            return this.taskMethod.apply(this.taskContext, ([this.generateCallback()]).concat(flowArgs));
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Private Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @private
+         * @returns {function(Throwable, *...)}
+         */
+        generateCallback: function() {
+            var _this = this;
+            var callback = function() {
+                _this.complete.apply(_this, arguments);
+            };
+            callback.complete = function() {
+                _this.complete.apply(_this, arguments);
+            };
+            callback.resolve = function() {
+                _this.complete.resolve(_this, arguments);
+            };
+            callback.error = function() {
+                _this.complete.error(_this, arguments);
+            };
+            return callback;
         }
     });
 
