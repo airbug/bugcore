@@ -9,10 +9,12 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('FinallyHandler')
+//@Export('CallbackHandler')
 
 //@Require('Class')
+//@Require('Exception')
 //@Require('Handler')
+//@Require('ParallelException')
 //@Require('TypeUtil')
 
 
@@ -26,9 +28,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Handler     = bugpack.require('Handler');
-    var TypeUtil    = bugpack.require('TypeUtil');
+    var Class               = bugpack.require('Class');
+    var Exception           = bugpack.require('Exception');
+    var Handler             = bugpack.require('Handler');
+    var ParallelException   = bugpack.require('ParallelException');
+    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -39,9 +43,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Handler}
      */
-    var FinallyHandler = Class.extend(Handler, {
+    var CallbackHandler = Class.extend(Handler, {
 
-        _name: "FinallyHandler",
+        _name: "CallbackHandler",
 
 
         //-------------------------------------------------------------------------------
@@ -50,10 +54,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(*...):*} finallyFunction
+         * @param {function(Throwable, *...):*} callbackFunction
          * @param {Promise} forwardPromise
          */
-        _constructor: function(finallyFunction, forwardPromise) {
+        _constructor: function(callbackFunction, forwardPromise) {
 
             this._super(forwardPromise);
 
@@ -64,9 +68,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(*...):*}
+             * @type {function(Throwable, *...):*}
              */
-            this.finallyFunction    = finallyFunction;
+            this.callbackFunction   = callbackFunction;
         },
 
 
@@ -75,10 +79,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {function(*...):*}
+         * @return {function(Throwable, *...):*}
          */
-        getFinallyFunction: function() {
-            return this.finallyFunction;
+        getCallbackFunction: function() {
+            return this.callbackFunction;
         },
 
 
@@ -90,29 +94,47 @@ require('bugpack').context("*", function(bugpack) {
          * @param {Array.<*>} values
          */
         doHandleFulfilled: function(values) {
-            this.doHandleFinally();
+            if (TypeUtil.isFunction(this.getCallbackFunction())) {
+                try {
+                    var result = this.callbackFunction.apply(null, [null].concat(values));
+                    if (TypeUtil.isUndefined(result)) {
+                        this.getForwardPromise().resolvePromise([]);
+                    } else {
+                        this.getForwardPromise().resolvePromise([result]);
+                    }
+                } catch(e) {
+                    this.getForwardPromise().rejectPromise([e]);
+                }
+            } else {
+                this.getForwardPromise().resolvePromise(values);
+            }
         },
 
         /**
          * @param {Array.<*>} reasons
          */
         doHandleRejected: function(reasons) {
-            this.doHandleFinally();
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Private Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         */
-        doHandleFinally: function() {
-            if (TypeUtil.isFunction(this.getFinallyFunction())) {
-                this.fireHandleMethod(this.getFinallyFunction(), []);
+            if (TypeUtil.isFunction(this.getCallbackFunction())) {
+                var exception = null;
+                if (reasons.length > 1) {
+                    exception = new ParallelException("MultipleRejectionsException", {}, "Multiple rejection reasons", reasons);
+                } else if (reasons.length === 1) {
+                    exception = reasons[0];
+                } else {
+                    exception = new Exception("PromiseRejected", {}, "Promise was rejected with no reasons given");
+                }
+                try {
+                    var result = this.callbackFunction.call(null, exception);
+                    if (TypeUtil.isUndefined(result)) {
+                        this.getForwardPromise().resolvePromise([]);
+                    } else {
+                        this.getForwardPromise().resolvePromise([result]);
+                    }
+                } catch(e) {
+                    this.getForwardPromise().rejectPromise([e]);
+                }
             } else {
-                this.getForwardPromise().resolvePromise([]);
+                this.getForwardPromise().rejectPromise(reasons);
             }
         }
     });
@@ -122,5 +144,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('FinallyHandler', FinallyHandler);
+    bugpack.export('CallbackHandler', CallbackHandler);
 });

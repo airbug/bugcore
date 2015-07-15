@@ -94,9 +94,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {List.<*>}
              */
-            this.values                 = values;
+            this.values                 = new List(values);
         },
 
 
@@ -119,7 +119,14 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<*>}
+         * @return {boolean}
+         */
+        getResolving: function() {
+            return this.resolving;
+        },
+
+        /**
+         * @return {List.<*>}
          */
         getValues: function() {
             return this.values;

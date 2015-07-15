@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('FlowBuilder')
+//@Require('TaskBuilder')
 //@Require('Throwables')
 //@Require('TypeUtil')
 //@Require('WhileParallel')
@@ -30,6 +31,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var FlowBuilder     = bugpack.require('FlowBuilder');
+    var TaskBuilder     = bugpack.require('TaskBuilder');
     var Throwables      = bugpack.require('Throwables');
     var TypeUtil        = bugpack.require('TypeUtil');
     var WhileParallel   = bugpack.require('WhileParallel');

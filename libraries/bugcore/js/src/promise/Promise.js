@@ -11,15 +11,17 @@
 
 //@Export('Promise')
 
+//@Require('ArgUtil')
 //@Require('Bug')
+//@Require('CallbackHandler')
+//@Require('CatchHandler')
 //@Require('Class')
 //@Require('FinallyHandler')
-//@Require('FulfilledHandler')
 //@Require('IPromise')
 //@Require('List')
 //@Require('Obj')
-//@Require('RejectedHandler')
 //@Require('Resolver')
+//@Require('ThenHandler')
 //@Require('TypeUtil')
 
 
@@ -33,15 +35,17 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgUtil             = bugpack.require('ArgUtil');
     var Bug                 = bugpack.require('Bug');
+    var CallbackHandler     = bugpack.require('CallbackHandler');
+    var CatchHandler        = bugpack.require('CatchHandler');
     var Class               = bugpack.require('Class');
     var FinallyHandler      = bugpack.require('FinallyHandler');
-    var FulfilledHandler    = bugpack.require('FulfilledHandler');
     var IPromise            = bugpack.require('IPromise');
     var List                = bugpack.require('List');
     var Obj                 = bugpack.require('Obj');
-    var RejectedHandler     = bugpack.require('RejectedHandler');
     var Resolver            = bugpack.require('Resolver');
+    var ThenHandler         = bugpack.require('ThenHandler');
     var TypeUtil            = bugpack.require('TypeUtil');
 
 
@@ -217,14 +221,23 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @param {function(Throwable, *...=)} callback
+         * @return {Promise}
+         */
+        callback: function(callback) {
+            var handler = this.generateCallbackHandler(callback);
+            this.processHandlers();
+            return handler.getForwardPromise();
+        },
+
+        /**
          * @param {function(...):*=} catchFunction
          * @return {Promise}
          */
         'catch': function(catchFunction) {
-            var forwardPromise = new Promise();
-            this.generateRejectedHandler(catchFunction, forwardPromise);
+            var handler = this.generateCatchHandler(catchFunction);
             this.processHandlers();
-            return forwardPromise;
+            return handler.getForwardPromise();
         },
 
         /**
@@ -232,10 +245,9 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Promise}
          */
         'finally': function(finallyFunction) {
-            var forwardPromise = new Promise();
-            this.generateFinallyHandler(finallyFunction, forwardPromise);
+            var handler = this.generateFinallyHandler(finallyFunction);
             this.processHandlers();
-            return forwardPromise;
+            return handler.getForwardPromise();
         },
 
         /**
@@ -244,23 +256,9 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Promise}
          */
         then: function(fulfilledFunction, rejectedFunction) {
-            var forwardPromise = new Promise();
-            this.generateFulfilledHandler(fulfilledFunction, forwardPromise);
-            this.generateRejectedHandler(rejectedFunction, forwardPromise);
+            var handler = this.generateThenHandler(fulfilledFunction, rejectedFunction);
             this.processHandlers();
-
-            // NOTE BRN: If onFulfilled is not a function and promise1 is fulfilled, promise2 must be fulfilled with the same value as promise1
-
-            if (!TypeUtil.isFunction(fulfilledFunction) && this.isFulfilled()) {
-                forwardPromise.resolvePromise(this.valueList.toArray());
-            }
-
-            // NOTE BRN: If onRejected is not a function and promise1 is rejected, promise2 must be rejected with the same reason as promise1.
-
-            if (!TypeUtil.isFunction(rejectedFunction) && this.isRejected()) {
-                forwardPromise.rejectPromise(this.reasonList.toArray());
-            }
-            return forwardPromise;
+            return handler.getForwardPromise();
         },
 
 
@@ -369,7 +367,27 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {function(...):*} finallyFunction
+         * @param {function(Throwable, *...):*} callbackFunction
+         * @param {Promise} forwardPromise
+         * @return {CallbackHandler}
+         */
+        factoryCallbackHandler: function(callbackFunction, forwardPromise) {
+            return new CallbackHandler(callbackFunction, forwardPromise);
+        },
+
+        /**
+         * @private
+         * @param {function(*...):*} catchFunction
+         * @param {Promise} forwardPromise
+         * @return {CatchHandler}
+         */
+        factoryCatchHandler: function(catchFunction, forwardPromise) {
+            return new CatchHandler(catchFunction, forwardPromise);
+        },
+
+        /**
+         * @private
+         * @param {function(*...):*} finallyFunction
          * @param {Promise} forwardPromise
          * @return {FinallyHandler}
          */
@@ -379,56 +397,61 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {function(...):*} fulfilledFunction
+         * @param {function(*...):*} fulfilledFunction
+         * @param {function(*...):*} rejectedFunction
          * @param {Promise} forwardPromise
-         * @return {FulfilledHandler}
+         * @return {ThenHandler}
          */
-        factoryFulfilledHandler: function(fulfilledFunction, forwardPromise) {
-            return new FulfilledHandler(fulfilledFunction, forwardPromise);
+        factoryThenHandler: function(fulfilledFunction, rejectedFunction, forwardPromise) {
+            return new ThenHandler(fulfilledFunction, rejectedFunction, forwardPromise);
         },
 
         /**
          * @private
-         * @param {function(Throwable):*} rejectedFunction
-         * @param {Promise} forwardPromise
-         * @return {RejectedHandler}
+         * @param {function(Throwable, *...):*} callbackFunction
+         * @return {CallbackHandler}
          */
-        factoryRejectedHandler: function(rejectedFunction, forwardPromise) {
-            return new RejectedHandler(rejectedFunction, forwardPromise);
+        generateCallbackHandler: function(callbackFunction) {
+            var forwardPromise  = new Promise();
+            var handler = this.factoryCallbackHandler(callbackFunction, forwardPromise);
+            this.handlerList.add(handler);
+            return handler;
         },
 
         /**
          * @private
-         * @param {function(...):*} finallyFunction
-         * @param {Promise} forwardPromise
+         * @param {function(*...):*} catchFunction
+         * @return {CatchHandler}
          */
-        generateFinallyHandler: function(finallyFunction, forwardPromise) {
-            var finallyHandler = this.factoryFinallyHandler(finallyFunction, forwardPromise);
-            this.handlerList.add(finallyHandler);
+        generateCatchHandler: function(catchFunction) {
+            var forwardPromise  = new Promise();
+            var handler = this.factoryCatchHandler(catchFunction, forwardPromise);
+            this.handlerList.add(handler);
+            return handler;
         },
 
         /**
          * @private
-         * @param {function(...):*} fulfilledFunction
-         * @param {Promise} forwardPromise
+         * @param {function(*...):*} finallyFunction
+         * @return {FinallyHandler}
          */
-        generateFulfilledHandler: function(fulfilledFunction, forwardPromise) {
-            if (TypeUtil.isFunction(fulfilledFunction)) {
-                var fulfilledHandler = this.factoryFulfilledHandler(fulfilledFunction, forwardPromise);
-                this.handlerList.add(fulfilledHandler);
-            }
+        generateFinallyHandler: function(finallyFunction) {
+            var forwardPromise  = new Promise();
+            var handler = this.factoryFinallyHandler(finallyFunction, forwardPromise);
+            this.handlerList.add(handler);
+            return handler;
         },
-
         /**
          * @private
-         * @param {function(Throwable):*} rejectedFunction
-         * @param {Promise} forwardPromise
+         * @param {function(*...):*} fulfilledFunction
+         * @param {function(*...):*} rejectedFunction
+         * @return {ThenHandler}
          */
-        generateRejectedHandler: function(rejectedFunction, forwardPromise) {
-            if (TypeUtil.isFunction(rejectedFunction)) {
-                var rejectedHandler = this.factoryRejectedHandler(rejectedFunction, forwardPromise);
-                this.handlerList.add(rejectedHandler);
-            }
+        generateThenHandler: function(fulfilledFunction, rejectedFunction) {
+            var forwardPromise  = new Promise();
+            var handler = this.factoryThenHandler(fulfilledFunction, rejectedFunction, forwardPromise);
+            this.handlerList.add(handler);
+            return handler;
         },
 
         /**
@@ -437,18 +460,12 @@ require('bugpack').context("*", function(bugpack) {
          */
         processHandler: function(index) {
             var handler = this.handlerList.getAt(index);
-            if (Class.doesExtend(handler, FulfilledHandler)) {
-                if (this.isFulfilled()) {
-                    var values = this.valueList.toArray();
-                    handler.handle(values);
-                }
-            } else if (Class.doesExtend(handler, RejectedHandler)) {
-                if (this.isRejected()) {
-                    var reasons = this.reasonList.toArray();
-                    handler.handle(reasons)
-                }
-            } else if (Class.doesExtend(handler, FinallyHandler)) {
-                handler.handle([]);
+            if (this.isFulfilled()) {
+                var values = this.valueList.toArray();
+                handler.handleFulfilled(values);
+            } else {
+                var reasons = this.reasonList.toArray();
+                handler.handleRejected(reasons);
             }
         },
 

@@ -61,7 +61,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @constructs
          * @param {(Array.<*> | Collection.<*>)} illegalValues
-         * @param {Array.<*>} values
+         * @param {(Array.<*> | Collection.<*>)} values
          */
         _constructor: function(illegalValues, values) {
 
@@ -82,7 +82,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {number}
              */
-            this.numberExpectedValues   = values.length;
+            this.numberExpectedValues   = 0;
 
             /**
              * @private
@@ -116,9 +116,23 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {List.<*>}
              */
-            this.values                 = values;
+            this.values                 = new List(values);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {ValuesResolver}
+         */
+        init: function() {
+            this._super();
+            this.numberExpectedValues = this.values.getCount();
+            return this;
         },
 
 
@@ -169,7 +183,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<*>}
+         * @return {List.<*>}
          */
         getValues: function() {
             return this.values;
@@ -210,7 +224,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         resolveValues: function(valuesFulfilledCallback, valuesRejectedCallback) {
             var _this = this;
-            if (this.values.length > 0) {
+            if (this.values.getCount() > 0) {
                 this.values.forEach(function(value, index) {
                     _this.resolvedValueList.add(null);
                     _this.resolvedReasonList.add(null);
@@ -267,30 +281,30 @@ require('bugpack').context("*", function(bugpack) {
             try {
                 var then = object.then;
                 if (TypeUtil.isFunction(then)) {
-                    var resolvePromiseCalled = false;
-                    var rejectPromiseCalled  = false;
+                    var complete = false;
                     try {
                         then.call(object, function () {
-                            if (!resolvePromiseCalled && !rejectPromiseCalled) {
-                                resolvePromiseCalled = true;
+                            if (!complete) {
+                                complete = true;
                                 var values = ArgUtil.toArray(arguments);
                                 var valuesResolver = new ValuesResolver(values, valueFulfilledCallback, valueRejectedCallback);
                                 valuesResolver.resolve(function(reasons, values) {
                                     if (reasons.length > 0) {
                                         valueRejectedCallback.apply(null, reasons);
                                     } else {
-                                        valueFulfilledCallback.apply(null, vakues);
+                                        valueFulfilledCallback.apply(null, values);
                                     }
                                 });
                             }
                         }, function () {
-                            if (!resolvePromiseCalled && !rejectPromiseCalled) {
-                                rejectPromiseCalled = true;
+                            if (!complete) {
+                                complete = true;
                                 valueRejectedCallback.apply(null, arguments)
                             }
                         });
                     } catch(e) {
-                        if (!resolvePromiseCalled && !rejectPromiseCalled) {
+                        if (!complete) {
+                            complete = true;
                             valueRejectedCallback(e);
                         }
                     }

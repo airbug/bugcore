@@ -9,12 +9,11 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Deferred')
+//@Export('ThenHandler')
 
-//@Require('ArgUtil')
 //@Require('Class')
-//@Require('Obj')
-//@Require('Promise')
+//@Require('Handler')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
-    var Obj         = bugpack.require('Obj');
-    var Promise     = bugpack.require('Promise');
+    var Handler     = bugpack.require('Handler');
+    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -39,11 +37,11 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
+     * @extends {Handler}
      */
-    var Deferred = Class.extend(Obj, {
+    var ThenHandler = Class.extend(Handler, {
 
-        _name: "Deferred",
+        _name: "ThenHandler",
 
 
         //-------------------------------------------------------------------------------
@@ -52,10 +50,13 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
+         * @param {function(*...):*} fulfilledFunction
+         * @param {function(*...):*} rejectedFunction
+         * @param {Promise} forwardPromise
          */
-        _constructor: function() {
+        _constructor: function(fulfilledFunction, rejectedFunction, forwardPromise) {
 
-            this._super();
+            this._super(forwardPromise);
 
 
             //-------------------------------------------------------------------------------
@@ -64,9 +65,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Promise}
+             * @type {function(*...):*}
              */
-            this.deferredPromise    = new Promise();
+            this.fulfilledFunction  = fulfilledFunction;
+
+            /**
+             * @private
+             * @type {function(*...):*}
+             */
+            this.rejectedFunction   = rejectedFunction;
         },
 
 
@@ -75,45 +82,44 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Promise}
+         * @return {function(*...):*}
          */
-        getDeferredPromise: function() {
-            return this.deferredPromise;
+        getFulfilledFunction: function() {
+            return this.fulfilledFunction;
+        },
+
+        /**
+         * @return {function(*...):*}
+         */
+        getRejectedFunction: function() {
+            return this.rejectedFunction;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Public Methods
+        // Handler Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function(Throwable=, *...=)} callback
+         * @param {Array.<*>} values
          */
-        callback: function(callback) {
-            this.deferredPromise.callback(callback);
+        doHandleFulfilled: function(values) {
+            if (TypeUtil.isFunction(this.getFulfilledFunction())) {
+                this.fireHandleMethod(this.getFulfilledFunction(), values);
+            } else {
+                this.getForwardPromise().resolvePromise(values);
+            }
         },
 
         /**
-         * @param {*...} args
+         * @param {Array.<*>} reasons
          */
-        reject: function() {
-            var args = ArgUtil.toArray(arguments);
-            this.deferredPromise.rejectPromise(args);
-        },
-
-        /**
-         * @param {*...} args
-         */
-        resolve: function() {
-            var args = ArgUtil.toArray(arguments);
-            this.deferredPromise.resolvePromise(args);
-        },
-
-        /**
-         * @return {Promise}
-         */
-        promise: function() {
-            return this.getDeferredPromise();
+        doHandleRejected: function(reasons) {
+            if (TypeUtil.isFunction(this.getRejectedFunction())) {
+                this.fireHandleMethod(this.getRejectedFunction(), reasons);
+            } else {
+                this.getForwardPromise().rejectPromise(reasons);
+            }
         }
     });
 
@@ -122,5 +128,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Deferred', Deferred);
+    bugpack.export('ThenHandler', ThenHandler);
 });

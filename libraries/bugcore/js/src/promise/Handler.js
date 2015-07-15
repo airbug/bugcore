@@ -11,6 +11,7 @@
 
 //@Export('Handler')
 
+//@Require('Bug')
 //@Require('Class')
 //@Require('Obj')
 //@Require('TypeUtil')
@@ -26,6 +27,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
     var TypeUtil    = bugpack.require('TypeUtil');
@@ -50,10 +52,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {function(...):*} method
          * @param {Promise} forwardPromise
          */
-        _constructor: function(method, forwardPromise) {
+        _constructor: function(forwardPromise) {
 
             this._super();
 
@@ -64,9 +65,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {function(...[*]): *}
+             * @type {boolean}
              */
-            this.method             = method;
+            this.executed           = false;
 
             /**
              * @private
@@ -81,10 +82,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {function(...):*}
+         * @return {boolean}
          */
-        getMethod: function() {
-            return this.method;
+        getExecuted: function() {
+            return this.executed;
         },
 
         /**
@@ -96,35 +97,75 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Abstract Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @abstract
-         * @param {Array.<*>} args
-         */
-        handle: function(args) {
-
-        },
-
-
-        //-------------------------------------------------------------------------------
         // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
+         * @param {Array.<*>} values
+         */
+        handleFulfilled: function(values) {
+            if (!this.getExecuted()) {
+                this.executed = true;
+                this.doHandleFulfilled(values);
+            } else {
+                throw new Bug("IllegalState", {}, "Handler cannot be executed more than once");
+            }
+        },
+
+        /**
+         * @param {Array.<*>} reasons
+         */
+        handleRejected: function(reasons) {
+            if (!this.getExecuted()) {
+                this.executed = true;
+                this.doHandleRejected(reasons);
+            } else {
+                throw new Bug("IllegalState", {}, "Handler cannot be executed more than once");
+            }
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Protected Methods
+        //-------------------------------------------------------------------------------
+
+        /**
          * @protected
+         * @param {function(*...)} method
          * @param {Array.<*>} args
          */
-        doHandleMethod: function(args) {
+        fireHandleMethod: function(method, args) {
             try {
-                var result = this.method.apply(null, args);
-                if (!TypeUtil.isUndefined(result)) {
+                var result = method.apply(null, args);
+                if (TypeUtil.isUndefined(result)) {
+                    this.forwardPromise.resolvePromise([]);
+                } else {
                     this.forwardPromise.resolvePromise([result]);
                 }
             } catch(e) {
                 this.forwardPromise.rejectPromise([e]);
             }
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Abstract Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @abstract
+         * @param {Array.<*>} values
+         */
+        doHandleFulfilled: function(values) {
+            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleFulfilled");
+        },
+
+        /**
+         * @abstract
+         * @param {Array.<*>} reasons
+         */
+        doHandleRejected: function(reasons) {
+            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleRejected");
         }
     });
 

@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Promise')
+//@Require('ThenHandler')
 //@Require('Throwables')
 //@Require('TypeUtil')
 //@Require('bugdouble.BugDouble')
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var Promise         = bugpack.require('Promise');
+    var ThenHandler     = bugpack.require('ThenHandler');
     var Throwables      = bugpack.require('Throwables');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
@@ -101,8 +103,13 @@ require('bugpack').context("*", function(bugpack) {
             var resultPromise = this.testPromise.then();
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
-            test.assertEqual(this.testPromise.getHandlerList().getCount(), 0,
-                "Assert that the handlerList has 0 handlers");
+            test.assertEqual(this.testPromise.getHandlerList().getCount(), 1,
+                "Assert that the handlerList has 1 handler");
+            if (this.testPromise.getHandlerList().getCount() === 1) {
+                var handler = this.testPromise.getHandlerList().getAt(0);
+                test.assertTrue(Class.doesExtend(this.testPromise.getHandlerList().getAt(0), ThenHandler),
+                    "Assert handler is ThenHandler");
+            }
         }
     };
 
@@ -129,7 +136,12 @@ require('bugpack').context("*", function(bugpack) {
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
             test.assertEqual(this.testPromise.getHandlerList().getCount(), 1,
-                "Assert that the handlerList has 1 handlers");
+                "Assert that the handlerList has 1 handler");
+            if (this.testPromise.getHandlerList().getCount() === 1) {
+                var handler = this.testPromise.getHandlerList().getAt(0);
+                test.assertTrue(Class.doesExtend(this.testPromise.getHandlerList().getAt(0), ThenHandler),
+                    "Assert handler is ThenHandler");
+            }
         }
     };
 
@@ -156,7 +168,12 @@ require('bugpack').context("*", function(bugpack) {
             test.assertNotEqual(resultPromise, this.testPromise,
                 "Assert that the returned promise is not the same promise as the testPromise");
             test.assertEqual(this.testPromise.getHandlerList().getCount(), 1,
-                "Assert that the handlerList has 1 handlers");
+                "Assert that the handlerList has 1 handler");
+            if (this.testPromise.getHandlerList().getCount() === 1) {
+                var handler = this.testPromise.getHandlerList().getAt(0);
+                test.assertTrue(Class.doesExtend(this.testPromise.getHandlerList().getAt(0), ThenHandler),
+                    "Assert handler is ThenHandler");
+            }
         }
     };
 
@@ -388,6 +405,60 @@ require('bugpack').context("*", function(bugpack) {
         final: function(test) {
             test.assertTrue(this.testFulfilledFunctionSpy.wasCalled(),
                 "Assert that the fulfilledFunction was called");
+            test.completeFinalize();
+        }
+    };
+
+    /**
+     * This tests
+     * 1) That a forward promise will resolve to a value when only a reject handler was used on the then() call
+     * 2) That the rejected handler is not called when a promise is fulfilled
+     */
+    var promiseRejectHandlerOnlyForwardPromiseTest = {
+
+        async: true,
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            var _this                               = this;
+            this.testValueA                         = "testValueA";
+            this.testFulfilledPromise               = new Promise();
+            this.testRejectedFunction               = function() {};
+            this.testForwardFulfilledFunction       = function(value1) {
+                test.assertEqual(value1, _this.testValueA,
+                    "Assert that value1 is testValueA");
+                test.assertTrue(_this.testForwardPromise.isFulfilled(),
+                    "Assert that the testForwardPromise is fulfilled");
+                test.assertEqual(_this.testForwardPromise.getValueList().getCount(), 1,
+                    "Assert that the testForwardPromise's valueList contains 1 value");
+                test.assertEqual(_this.testForwardPromise.getValueList().getAt(0), _this.testValueA,
+                    "Assert that the testForwardPromise's valueList[0] is testValueA");
+                test.completeTest();
+            };
+            this.testRejectedFunctionSpy            = spyOnFunction(this.testRejectedFunction);
+            this.testForwardFulfilledFunctionSpy    = spyOnFunction(this.testForwardFulfilledFunction);
+            this.testForwardPromise                 = this.testFulfilledPromise.then(null, this.testRejectedFunctionSpy);
+            test.completeSetup();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testForwardPromise.then(this.testForwardFulfilledFunctionSpy);
+            this.testFulfilledPromise.resolvePromise([this.testValueA]);
+            test.assertTrue(this.testFulfilledPromise.isFulfilled(),
+                "Assert that the fulfilled promise has been fulfilled");
+        },
+
+        final: function(test) {
+            test.assertTrue(this.testRejectedFunctionSpy.wasNotCalled(),
+                "Assert that the testRejectedFunction was NOT called");
+            test.assertTrue(this.testForwardFulfilledFunctionSpy.wasCalled(),
+                "Assert that the testForwardFulfilledFunction was called");
             test.completeFinalize();
         }
     };
@@ -787,12 +858,16 @@ require('bugpack').context("*", function(bugpack) {
      */
     var promiseThenWithoutFulfilledFunctionAfterPromiseIsFulfilledTest = {
 
+        async: true,
+
+
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function() {
+        setup: function(test) {
             this.testPromise        = new Promise();
             this.testValueA         = "ValueA";
+            test.completeSetup();
         },
 
 
@@ -800,16 +875,20 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
+            var _this = this;
             this.testPromise.resolvePromise([this.testValueA]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the promise has been fulfilled");
             test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
                 "Assert that the testPromise's valueList[0] is testValueA");
             var forwardPromise = this.testPromise.then();
-            test.assertTrue(forwardPromise.isFulfilled(),
-                "Assert that the forwardPromise has been fulfilled");
-            test.assertEqual(forwardPromise.getValueList().getAt(0), this.testValueA,
-                "Assert that the forwardPromise's valueList[0] is testValueA");
+            forwardPromise.then(function() {
+                test.assertTrue(forwardPromise.isFulfilled(),
+                    "Assert that the forwardPromise has been fulfilled");
+                test.assertEqual(forwardPromise.getValueList().getAt(0), _this.testValueA,
+                    "Assert that the forwardPromise's valueList[0] is testValueA");
+                test.completeTest();
+            })
         }
     };
 
@@ -821,12 +900,16 @@ require('bugpack').context("*", function(bugpack) {
      */
     var promiseThenWithoutRejectedFunctionAfterPromiseIsRejectedTest = {
 
+        async: true,
+
+
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function() {
+        setup: function(test) {
             this.testPromise        = new Promise();
             this.testReasonA         = "ReasonA";
+            test.completeSetup();
         },
 
 
@@ -834,16 +917,20 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
+            var _this = this;
             this.testPromise.rejectPromise([this.testReasonA]);
             test.assertTrue(this.testPromise.isRejected(),
                 "Assert that the promise has been rejected");
             test.assertEqual(this.testPromise.getReasonList().getAt(0), this.testReasonA,
                 "Assert that the testPromise's reasonList[0] is testReasonA");
             var forwardPromise = this.testPromise.then();
-            test.assertTrue(forwardPromise.isRejected(),
-                "Assert that the forwardPromise has been rejected");
-            test.assertEqual(forwardPromise.getReasonList().getAt(0), this.testReasonA,
-                "Assert that the forwardPromise's reasonList[0] is testReasonA");
+            forwardPromise.then(null, function() {
+                test.assertTrue(forwardPromise.isRejected(),
+                    "Assert that the forwardPromise has been rejected");
+                test.assertEqual(forwardPromise.getReasonList().getAt(0), _this.testReasonA,
+                    "Assert that the forwardPromise's reasonList[0] is testReasonA");
+                test.completeTest();
+            });
         }
     };
 
@@ -916,6 +1003,9 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(promiseResolvePromiseWithSinglePromiseTest).with(
         test().name("Promise - #resolvePromise with a single Promise")
+    );
+    bugmeta.tag(promiseRejectHandlerOnlyForwardPromiseTest).with(
+        test().name("Promise - reject handler only forward promise test")
     );
     bugmeta.tag(promiseThenWithFulfilledFunctionAfterPromiseIsFulfilledTest).with(
         test().name("Promise - #then with fulfilledFunction after promise is fulfilled test")
