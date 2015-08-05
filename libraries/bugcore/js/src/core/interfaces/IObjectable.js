@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
+     * @template K, V
      */
     var IObjectable = Interface.declare({
 
@@ -44,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Object}
+         * @return {Object.<K, V>}
          */
         toObject: function() {}
     });

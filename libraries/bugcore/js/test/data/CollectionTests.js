@@ -165,7 +165,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      *
      */
-    var collectionGetValueArrayTest = {
+    var collectionToArrayTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -183,11 +183,11 @@ require('bugpack').context("*", function(bugpack) {
             this.collection.add('value2');
             this.collection.add('value3');
 
-            var valuesArray = this.collection.getValueArray();
+            var valuesArray = this.collection.toArray();
 
-            test.assertEqual(valuesArray[0], 'value1', "Assert array[0] from getValueArray call is value1");
-            test.assertEqual(valuesArray[1], 'value2', "Assert value[1] from getValueArray call is value2");
-            test.assertEqual(valuesArray[2], 'value3', "Assert value[2] from getValueArray call is value3");
+            test.assertEqual(valuesArray[0], 'value1', "Assert array[0] from toValueArray call is value1");
+            test.assertEqual(valuesArray[1], 'value2', "Assert value[1] from toValueArray call is value2");
+            test.assertEqual(valuesArray[2], 'value3', "Assert value[2] from toValueArray call is value3");
         }
     };
 
@@ -566,42 +566,91 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     *
+     */
+    var collectionClearTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.collection = new Collection();
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.collection.add("value1");
+            this.collection.add("value1");
+            this.collection.add("value2");
+            this.collection.add("value3");
+            test.assertEqual(this.collection.contains("value1"), true,
+                "Assert collection contains value1");
+            test.assertEqual(this.collection.contains("value2"), true,
+                "Assert collection contains value2");
+            test.assertEqual(this.collection.contains("value3"), true,
+                "Assert collection contains value3");
+            test.assertEqual(this.collection.getCount(), 4,
+                "Assert collection count is 4 after adding four values");
+
+            this.collection.clear();
+
+            test.assertEqual(this.collection.contains("value1"), false,
+                "Assert collection does not contain value1");
+            test.assertEqual(this.collection.contains("value2"), false,
+                "Assert collection does not contain value2");
+            test.assertEqual(this.collection.contains("value3"), false,
+                "Assert collection does not contain value3");
+            test.assertEqual(this.collection.getCount(), 0,
+                "Assert collection count is 0 after calling clear");
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.tag(collectionStreamFilterTest).with(
-        test().name("Collection - stream, filter, and collect test")
-    );
     bugmeta.tag(collectionConstructorTest).with(
-        test().name("Collection constructor test")
+        test().name("Collection - constructor test")
     );
     bugmeta.tag(collectionAddTest).with(
-        test().name("Collection add test")
+        test().name("Collection - add test")
     );
     bugmeta.tag(collectionAddAllTest).with(
         test().name("Collection - #addAll test")
     );
-    bugmeta.tag(collectionGetValueArrayTest).with(
-        test().name("Collection getValueArray test")
+    bugmeta.tag(collectionToArrayTest).with(
+        test().name("Collection - #toArray test")
     );
     bugmeta.tag(collectionAddEqualObjectsTest).with(
-        test().name("Collection add equal objects test")
+        test().name("Collection - add equal objects test")
     );
     bugmeta.tag(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
-        test().name("Collection add non equal objects that have the same hashCodes test")
+        test().name("Collection - add non equal objects that have the same hashCodes test")
     );
     bugmeta.tag(collectionAddAndRemoveDifferentValuesTest).with(
-        test().name("Collection add and remove different values test")
+        test().name("Collection - add and remove different values test")
     );
     bugmeta.tag(collectionAddAndRemoveSameValuesTest).with(
-        test().name("Collection add and remove same values test")
+        test().name("Collection - add and remove same values test")
     );
     bugmeta.tag(collectionContainsAllTest).with(
-        test().name("Collection contains all test")
+        test().name("Collection - contains all test")
     );
     bugmeta.tag(collectionContainsEqualTest).with(
-        test().name("Collection contains equal test")
+        test().name("Collection - contains equal test")
+    );
+    bugmeta.tag(collectionContainsEqualTest).with(
+        test().name("Collection - contains equal test")
+    );
+    bugmeta.tag(collectionStreamFilterTest).with(
+        test().name("Collection - stream, filter, and collect test")
+    );
+    bugmeta.tag(collectionClearTest).with(
+        test().name("Collection - clear() test")
     );
 });

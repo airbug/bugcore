@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      * @implements {IIterator.<V>}
-     * @template V
+     * @template I
      */
     var HashStoreIterator = Class.extend(Obj, {
 
@@ -58,7 +58,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {HashStore.<V>} hashStore
+         * @param {HashStore.<I>} hashStore
          */
         _constructor: function(hashStore) {
 
@@ -77,15 +77,41 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ObjectIterator.<HashStoreNode.<V>>}
-             */
-            this.hashStoreNodeObjectIterator        = new ObjectIterator(this.hashStore.getHashStoreNodeObject());
-
-            /**
-             * @private
              * @type {ArrayIterator.<V>}
              */
             this.hashStoreNodeArrayIterator         = null;
+
+            /**
+             * @private
+             * @type {ObjectIterator.<HashStoreNode.<V>>}
+             */
+            this.hashStoreNodeObjectIterator        = new ObjectIterator(this.hashStore.getHashStoreNodeObject());
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {HashStore.<V>}
+         */
+        getHashStore: function() {
+            return this.hashStore;
+        },
+
+        /**
+         * @return {ArrayIterator.<V>}
+         */
+        getHashStoreNodeArrayIterator: function() {
+            return this.hashStoreNodeArrayIterator
+        },
+
+        /**
+         * @return {ObjectIterator.<HashStoreNode.<V>>}
+         */
+        getHashStoreNodeObjectIterator: function() {
+            return this.hashStoreNodeObjectIterator;
         },
 
 
@@ -98,10 +124,12 @@ require('bugpack').context("*", function(bugpack) {
          */
         hasNext: function() {
             if (this.hashStoreNodeObjectIterator.hasNext()) {
+                //console.log("this.hashStoreNodeObjectIterator.hasNext():", true);
                 return true;
             }
             if (this.hashStoreNodeArrayIterator) {
-                return this.hashStoreNodeArrayIterator.hasNext()
+                //console.log("this.hashStoreNodeArrayIterator.hasNext():", this.hashStoreNodeArrayIterator.hasNext());
+                return this.hashStoreNodeArrayIterator.hasNext();
             }
             return false;
         },
@@ -112,7 +140,7 @@ require('bugpack').context("*", function(bugpack) {
         next: function() {
             if (!this.hashStoreNodeArrayIterator) {
                 var hashStoreNodeObject = this.hashStoreNodeObjectIterator.next();
-                this.hashStoreNodeArrayIterator = new ArrayIterator(hashStoreNodeObject.getValueArray());
+                this.hashStoreNodeArrayIterator = new ArrayIterator(hashStoreNodeObject.getItemArray());
                 return this.hashStoreNodeArrayIterator.next();
             } else {
                 if (!this.hashStoreNodeArrayIterator.hasNext()) {

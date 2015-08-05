@@ -11,9 +11,11 @@
 
 //@Export('Stack')
 
+//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
+//@Require('IIndexValueIterable')
 //@Require('Obj')
 
 
@@ -27,10 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Collection  = bugpack.require('Collection');
-    var Exception   = bugpack.require('Exception');
-    var Obj         = bugpack.require('Obj');
+    var ArrayIterator           = bugpack.require('ArrayIterator');
+    var Class                   = bugpack.require('Class');
+    var Collection              = bugpack.require('Collection');
+    var Exception               = bugpack.require('Exception');
+    var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
+    var Obj                     = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -40,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Collection}
-     * @template C
+     * @template I
      */
     var Stack = Class.extend(Collection, {
 
@@ -53,9 +57,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(Collection.<*> | Array.<*>)} items
          */
-        _constructor: function(items) {
+        _constructor: function() {
 
             this._super();
 
@@ -66,9 +69,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<C>}
+             * @type {Array.<I>}
              */
-            this.valueArray = [];
+            this.itemArray = [];
         },
 
 
@@ -77,15 +80,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @override
-         * @return {Array.<C>} Array is in the same order as the queue
+         * @return {Array.<I>} Array is in the same order as the queue
          */
-        getValueArray: function() {
-            var valueArray = [];
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                valueArray.push(this.valueArray[i]);
-            }
-            return valueArray;
+        getItemArray: function() {
+            return this.itemArray;
         },
 
 
@@ -115,23 +113,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {C} value
+         * @param {I} value
          * @return {boolean}
          */
         add: function(value) {
             this._super(value);
-            this.valueArray.push(value);
+            this.itemArray.push(value);
             return true;
-        },
-
-        /**
-         * @override
-         * @param {function(C)} func
-         */
-        forEach: function(func) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                func(this.valueArray[i]);
-            }
         },
 
         /**
@@ -148,13 +136,57 @@ require('bugpack').context("*", function(bugpack) {
             return false;
         },
 
+        /**
+         * @override
+         * @return {Array.<I>}
+         */
+        toArray: function() {
+            return Obj.clone(this.itemArray);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IIndexValueIterable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @param {function(I, number)} func
+         */
+        forEach: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var indexValuePair = iterator.nextIndexValuePair();
+                func(indexValuePair.value, indexValuePair.index);
+            }
+        },
+
+        /**
+         * @param {function(number, I)} func
+         */
+        forIn: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var indexValuePair = iterator.nextIndexValuePair();
+                func(indexValuePair.index, indexValuePair.value);
+            }
+        },
+
+        /**
+         * @override
+         * @return {IIndexValueIterator.<I>}
+         */
+        iterator: function() {
+            return new ArrayIterator(this.itemArray);
+        },
+
 
         //-------------------------------------------------------------------------------
         // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {*}
+         * @return {I}
          */
         pop: function() {
             var lastIndex = this.getCount() - 1;
@@ -166,10 +198,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} value
+         * @param {I} item
          */
-        push: function(value) {
-            this.add(value);
+        push: function(item) {
+            this.add(item);
         },
 
 
@@ -180,11 +212,11 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {number} index
-         * @return {*}
+         * @return {I}
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.valueArray[index];
+                return this.itemArray[index];
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
             }
@@ -196,8 +228,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var i = this.valueArray.length - 1; i >= 0; i--) {
-                if (Obj.equals(this.valueArray[i], value)) {
+            for (var i = this.itemArray.length - 1; i >= 0; i--) {
+                if (Obj.equals(this.itemArray[i], value)) {
                     return i;
                 }
             }
@@ -207,17 +239,24 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @private
          * @param {number} index
-         * @return {*} The removed value
+         * @return {I} The removed item
          */
         removeAt: function(index) {
             var value = this.getAt(index);
-            var result = this.getHashStore().removeValue(value);
+            var result = this.getHashStore().remove(value);
             if (result) {
-                this.valueArray.splice(index, 1);
+                this.itemArray.splice(index, 1);
             }
             return value;
         }
     });
+
+
+    //-------------------------------------------------------------------------------
+    // Implement Interfaces
+    //-------------------------------------------------------------------------------
+
+    Class.implement(Stack, IIndexValueIterable);
 
 
     //-------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 //@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
-//@Require('ICollection')
+//@Require('IArrayable')
 //@Require('IIndexValueIterable')
 //@Require('IStreamable')
 //@Require('Obj')
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var ArrayIterator           = bugpack.require('ArrayIterator');
     var Class                   = bugpack.require('Class');
     var Exception               = bugpack.require('Exception');
-    var ICollection             = bugpack.require('ICollection');
+    var IArrayable              = bugpack.require('IArrayable');
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var IStreamable             = bugpack.require('IStreamable');
     var Obj                     = bugpack.require('Obj');
@@ -90,7 +90,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {(ICollection.<V> | Array.<V>)=} items
+         * @param {(IArrayable.<V> | Array.<V>)=} items
          * @return {Arr}
          */
         init: function(items) {
@@ -99,10 +99,10 @@ require('bugpack').context("*", function(bugpack) {
 
             if (TypeUtil.isArray(items)) {
                 this.array = items;
-            } else if (Class.doesImplement(items, ICollection)){
-                this.array = items.getValueArray();
+            } else if (Class.doesImplement(items, IArrayable)){
+                this.array = items.toArray();
             } else {
-                throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement ICollection");
+                throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement IArrayable");
             }
             return this;
         },

@@ -97,10 +97,10 @@ require('bugpack').context("*", function(bugpack) {
             }
             Array.observe(this.array, function(changes) {
                 changes.forEach(function(change) {
-                    if (change.removed) {
+                    if (change.removed && change.removed.length > 0) {
                         _this.handleIndexesRemoved(change.index, change.removed.length);
                     }
-                    if (change.addedCount) {
+                    if (change.addedCount > 0) {
                         _this.handleIndexesAdded(change.index, change.addedCount);
                     }
                 });

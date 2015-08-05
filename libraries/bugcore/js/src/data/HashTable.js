@@ -104,7 +104,7 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // IIterable Implementation
+        // IKeyValueIterable Implementation
         //-------------------------------------------------------------------------------
 
         /**
@@ -156,6 +156,16 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         *
+         */
+        clear: function() {
+            var _this = this;
+            this.forIn(function(key) {
+                _this.remove(key);
+            });
+        },
+
+        /**
          * @param {*} key
          * @return {boolean}
          */
@@ -203,28 +213,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<K>}
-         */
-        getKeyArray: function() {
-            var keysArray = [];
-            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
-                keysArray = keysArray.concat(hashTableNode.getKeyArray());
-            });
-            return keysArray;
-        },
-
-        /**
-         * @return {Array.<V>}
-         */
-        getValueArray: function() {
-            var valuesArray = [];
-            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
-                valuesArray = valuesArray.concat(hashTableNode.getValueArray());
-            });
-            return valuesArray;
-        },
-
-        /**
          * @return {boolean}
          */
         isEmpty: function() {
@@ -268,6 +256,28 @@ require('bugpack').context("*", function(bugpack) {
                 }
             }
             return returnValue;
+        },
+
+        /**
+         * @return {Array.<K>}
+         */
+        toKeyArray: function() {
+            var keysArray = [];
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
+                keysArray = keysArray.concat(hashTableNode.getKeyArray());
+            });
+            return keysArray;
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        toValueArray: function() {
+            var valuesArray = [];
+            ObjectUtil.forInOwn(this.hashTableNodeObject, function(keyHashCode, hashTableNode) {
+                valuesArray = valuesArray.concat(hashTableNode.getValueArray());
+            });
+            return valuesArray;
         }
     });
 

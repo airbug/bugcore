@@ -94,8 +94,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.hashStore.addValue(this.testValue1);
-            this.hashStore.addValue(this.testValue2);
+            this.hashStore.add(this.testValue1);
+            this.hashStore.add(this.testValue2);
             test.assertEqual(ObjectUtil.getProperties(this.hashStore.getHashStoreNodeObject()).length, 2,
                 "Assert that there are two different node objects");
         }

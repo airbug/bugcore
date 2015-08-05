@@ -90,9 +90,9 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsValue: function(value) {
-            var valueArray = this.getHashTable().getValueArray();
-            for (var i = 0, size = valueArray.length; i < size; i++) {
-                var valueCollection = valueArray[i];
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var valueCollection = iterator.nextValue();
                 if (valueCollection.contains(value)) {
                     return true;
                 }
@@ -126,39 +126,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ICollection.<K>}
-         */
-        getKeyCollection: function() {
-            var keyCollection = new Collection();
-            this.getHashTable().getKeyArray().forEach(function(key) {
-                keyCollection.add(key);
-            });
-            return keyCollection;
-        },
-
-        /**
-         * @return {Array.<V>}
-         */
-        getValueArray: function() {
-            var valueArray = [];
-            this.getHashTable().forEach(function(valueSet) {
-                valueArray = valueArray.concat(valueSet.getValueArray());
-            });
-            return valueArray;
-        },
-
-        /**
-         * @return {ICollection.<V>}
-         */
-        getValueCollection: function() {
-            var valueCollection = new Collection();
-            this.getHashTable().forEach(function(valueSet) {
-                valueCollection.addAll(valueSet);
-            });
-            return valueCollection;
-        },
-
-        /**
          * @param {K} key
          * @param {V} value
          * @return {V}
@@ -179,12 +146,12 @@ require('bugpack').context("*", function(bugpack) {
         putAll: function(map) {
             var _this = this;
             if (Class.doesImplement(map, IMap)) {
-                map.getKeyArray().forEach(function(key) {
+                map.toKeyArray().forEach(function(key) {
                     var value = map.get(key);
                     _this.put(key, value);
                 });
             } else if (Class.doesImplement(map, IMultiMap)) {
-                map.getKeyArray().forEach(function(key) {
+                map.toKeyArray().forEach(function(key) {
                     var valueCollection = map.get(key);
                     valueCollection.forEach(function(value) {
                         _this.put(key, value);
@@ -218,6 +185,39 @@ require('bugpack').context("*", function(bugpack) {
                 }
             }
             return result;
+        },
+
+        /**
+         * @return {ICollection.<K>}
+         */
+        toKeyCollection: function() {
+            var keyCollection = new Collection();
+            this.forIn(function(key) {
+                keyCollection.add(key);
+            });
+            return keyCollection;
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        toValueArray: function() {
+            var valueArray = [];
+            this.forEach(function(valueCollection) {
+                valueArray = valueArray.concat(valueCollection.toValueArray());
+            });
+            return valueArray;
+        },
+
+        /**
+         * @return {ICollection.<V>}
+         */
+        toValueCollection: function() {
+            var valueCollection = new Collection();
+            this.getHashTable().forEach(function(valueSet) {
+                valueCollection.addAll(valueSet);
+            });
+            return valueCollection;
         }
     });
 

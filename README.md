@@ -3115,8 +3115,8 @@ public | <code>[containsAll](#Collection_containsAll)({([ICollection](#ICollecti
 public | <code>[containsEqual](#Collection_containsEqual)({([ICollection](#ICollection).&lt;\*&gt; &#124; [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;\*&gt;)} values)</code> | <code>{boolean}</code>
 public | <code>[forEach](#Collection_forEach)({function(I)} func)</code> | None
 public | <code>[getCount](#Collection_getCount)()</code> | <code>{number}</code>
-public | <code>[getValueArray](#Collection_getValueArray)()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;}</code>
-public | <code>[getValueCount](#Collection_getValueCount)({*} value)</code> | <code>{number}</code>
+public | <code>[toValueArray](#Collection_toValueArray()</code> | <code>{[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).&lt;I&gt;}</code>
+public | <code>[countValue](#Collection_countValue)({*} value)</code> | <code>{number}</code>
 public | <code>[isEmpty](#Collection_isEmpty)()</code> | <code>{boolean}</code>
 public | <code>[iterator](#Collection_iterator)()</code> | <code>{[IIterator](#IIterator)}</code>
 public | <code>[map](#Collection_map)({function} fn, {[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)} context)</code> | <code>{[ICollection](#ICollection)}</code>
@@ -3734,8 +3734,8 @@ myCollection.getCount()    //2
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Collection_getValueArray" />
-### Collection#getValueArray()
+<a name="Collection_toValueArray" />
+### Collection#toValueArray()
 
 Returns an Array of the Collection's values.
 
@@ -3753,7 +3753,7 @@ __Method__
 /**
  * @return {Array.<I>}
  */
-getValueArray: function() {
+toValueArray: function() {
 ```
 
 
@@ -3773,7 +3773,7 @@ Empty Collection
 ```js
 var myCollection    = new Collection([]);
 
-myCollection.getValueArray();   // []
+myCollection.toValueArray();   // []
 ```
 
 Starts with 2 items (order of items shown in examples is not indicative of real world results)
@@ -3783,7 +3783,7 @@ var myCollection    = new Collection([
     "item2"
 ]);
 
-myCollection.getValueArray()                // ["item1", "item2"]
+myCollection.toValueArray()                // ["item1", "item2"]
 ```
 
 Manipulation of Collection after array is returned.
@@ -3793,11 +3793,11 @@ var myCollection    = new Collection([
     "item1",
     "item2"
 ]);
-var myValueArray    = myCollection.getValueArray();
+var myValueArray    = myCollection.toValueArray();
 
 myCollection.add("item3")                   // ["item1", "item2"]
 
-console.log(myCollection.getValueArray())   // ["item1", "item2", "item3"]
+console.log(myCollection.toValueArray())   // ["item1", "item2", "item3"]
 console.log(myValueArray)                   // ["item1", "item2"]
 ```
 
@@ -3806,8 +3806,8 @@ console.log(myValueArray)                   // ["item1", "item2"]
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Collection_getValueCount" />
-### Collection#getValueCount(value)
+<a name="Collection_countValue" />
+### Collection#countValue(value)
 
 Returns an the number or items in the Collection that are equal to the given value.
 
@@ -3819,7 +3819,7 @@ __Method__
  * @param {*} value
  * @return {number}
  */
-getValueCount: function(value) {
+countValue: function(value) {
 ```
 
 
@@ -3842,9 +3842,9 @@ var myCollection    = new Collection([
     "b"
 ]);
 
-myCollection.getValueCount("a");    // 2
-myCollection.getValueCount("b");    // 1
-myCollection.getValueCount("c");    // 0
+myCollection.countValue("a");    // 2
+myCollection.countValue("b");    // 1
+myCollection.countValue("c");    // 0
 ```
 
 

@@ -12,10 +12,12 @@
 //@Export('List')
 
 //@Require('ArgumentBug')
+//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
 //@Require('ICollection')
+//@Require('IIndexValueIterable')
 //@Require('IList')
 //@Require('Obj')
 //@Require('TypeUtil')
@@ -31,14 +33,16 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgumentBug     = bugpack.require('ArgumentBug');
-    var Class           = bugpack.require('Class');
-    var Collection      = bugpack.require('Collection');
-    var Exception       = bugpack.require('Exception');
-    var ICollection     = bugpack.require('ICollection');
-    var IList           = bugpack.require('IList');
-    var Obj             = bugpack.require('Obj');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var ArgumentBug             = bugpack.require('ArgumentBug');
+    var ArrayIterator           = bugpack.require('ArrayIterator');
+    var Class                   = bugpack.require('Class');
+    var Collection              = bugpack.require('Collection');
+    var Exception               = bugpack.require('Exception');
+    var ICollection             = bugpack.require('ICollection');
+    var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
+    var IList                   = bugpack.require('IList');
+    var Obj                     = bugpack.require('Obj');
+    var TypeUtil                = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -47,7 +51,8 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Collection}
+     * @extends {Collection.<I>}
+     * @implements {IIndexValueIterable.<I>}
      * @implements {IList.<I>}
      * @template I
      */
@@ -62,9 +67,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(Collection.<*> | Array.<*>)} items
          */
-        _constructor: function(items) {
+        _constructor: function() {
 
             this._super();
 
@@ -75,9 +79,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<*>}
+             * @type {Array.<I>}
              */
-            this.valueArray = [];
+            this.itemArray = [];
         },
 
 
@@ -86,11 +90,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @override
-         * @return {Array} Array is in the same order as the list
+         * @return {Array.<I>} Array is in the same order as the list
          */
-        getValueArray: function() {
-            return Obj.clone(this.valueArray);
+        getItemArray: function() {
+            return this.itemArray;
         },
 
 
@@ -125,26 +128,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(item) {
             this._super(item);
-            this.valueArray.push(item);
+            this.itemArray.push(item);
             return true;
-        },
-
-        /**
-         *
-         */
-        clear: function() {
-            this._super();
-            this.valueArray = [];
-        },
-
-        /**
-         * @override
-         * @param {function(I, number)} func
-         */
-        forEach: function(func) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                func(this.valueArray[i], i);
-            }
         },
 
         /**
@@ -159,6 +144,50 @@ require('bugpack').context("*", function(bugpack) {
                 return true;
             }
             return false;
+        },
+
+        /**
+         * @override
+         * @return {Array.<>}
+         */
+        toArray: function() {
+            return Obj.clone(this.itemArray);
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // IIndexValueIterable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @override
+         * @param {function(I, number)} func
+         */
+        forEach: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var indexValuePair = iterator.nextIndexValuePair();
+                func(indexValuePair.value, indexValuePair.index);
+            }
+        },
+
+        /**
+         * @param {function(number, I)} func
+         */
+        forIn: function(func) {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var indexValuePair = iterator.nextIndexValuePair();
+                func(indexValuePair.index, indexValuePair.value);
+            }
+        },
+
+        /**
+         * @override
+         * @return {IIndexValueIterator.<V>}
+         */
+        iterator: function() {
+            return new ArrayIterator(this.itemArray);
         },
 
 
@@ -176,8 +205,8 @@ require('bugpack').context("*", function(bugpack) {
             // the very end of the list.
 
             if (index <= this.getCount()) {
-                this.getHashStore().addValue(item);
-                this.valueArray.splice(index, 0, item);
+                this.getHashStore().add(item);
+                this.itemArray.splice(index, 0, item);
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
             }
@@ -209,7 +238,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.valueArray[index];
+                return this.itemArray[index];
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
             }
@@ -220,8 +249,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                if (Obj.equals(this.valueArray[i], value)) {
+            for (var i = 0, size = this.itemArray.length; i < size; i++) {
+                if (Obj.equals(this.itemArray[i], value)) {
                     return i;
                 }
             }
@@ -233,8 +262,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.valueArray.length, i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.valueArray[i], value)) {
+            for (var size = this.itemArray.length, i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.itemArray[i], value)) {
                     return i;
                 }
             }
@@ -245,7 +274,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {I} The removed item
          */
         pop: function() {
-            var lastIndex = this.valueArray.length - 1;
+            var lastIndex = this.itemArray.length - 1;
             return this.removeAt(lastIndex);
         },
 
@@ -269,9 +298,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeAt: function(index) {
             var value = this.getAt(index);
-            var result = this.getHashStore().removeValue(value);
+            var result = this.getHashStore().remove(value);
             if (result) {
-                this.valueArray.splice(index, 1);
+                this.itemArray.splice(index, 1);
             }
             return value;
         },
@@ -325,6 +354,7 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
+    Class.implement(List, IIndexValueIterable);
     Class.implement(List, IList);
 
 

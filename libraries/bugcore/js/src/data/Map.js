@@ -161,7 +161,7 @@ require('bugpack').context("*", function(bugpack) {
          *
          */
         clear: function() {
-            this.hashTable = new HashTable();
+            this.hashTable.clear();
         },
 
         /**
@@ -196,42 +196,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<K>}
-         */
-        getKeyArray: function() {
-            return this.hashTable.getKeyArray();
-        },
-
-        /**
-         * @return {ICollection.<K>}
-         */
-        getKeyCollection: function() {
-            var keyCollection = new Collection();
-            this.hashTable.getKeyArray().forEach(function(key) {
-                keyCollection.add(key);
-            });
-            return keyCollection;
-        },
-
-        /**
-         * @return {Array.<V>}
-         */
-        getValueArray: function() {
-            return this.hashTable.getValueArray();
-        },
-
-        /**
-         * @return {ICollection.<V>}
-         */
-        getValueCollection: function() {
-            var valueCollection = new Collection();
-            this.hashTable.forEach(function(value) {
-                valueCollection.add(value);
-            });
-            return valueCollection;
-        },
-
-        /**
          * @return {boolean}
          */
         isEmpty: function() {
@@ -253,7 +217,7 @@ require('bugpack').context("*", function(bugpack) {
         putAll: function(map) {
             var _this = this;
             if (Class.doesImplement(map, IMap)) {
-                var keys = map.getKeyArray();
+                var keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.get(key);
                     _this.put(key, value);
@@ -273,6 +237,42 @@ require('bugpack').context("*", function(bugpack) {
             return this.hashTable.remove(key);
         },
 
+        /**
+         * @return {Array.<K>}
+         */
+        toKeyArray: function() {
+            return this.hashTable.toKeyArray();
+        },
+
+        /**
+         * @return {ICollection.<K>}
+         */
+        toKeyCollection: function() {
+            var keyCollection = new Collection();
+            this.hashTable.toKeyArray().forEach(function(key) {
+                keyCollection.add(key);
+            });
+            return keyCollection;
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        toValueArray: function() {
+            return this.hashTable.toValueArray();
+        },
+
+        /**
+         * @return {ICollection.<V>}
+         */
+        toValueCollection: function() {
+            var valueCollection = new Collection();
+            this.hashTable.forEach(function(value) {
+                valueCollection.add(value);
+            });
+            return valueCollection;
+        },
+
 
         //-------------------------------------------------------------------------------
         // IObjectable Implementation
@@ -284,7 +284,7 @@ require('bugpack').context("*", function(bugpack) {
         toObject: function() {
             var _this   = this;
             var object  = {};
-            var keys    = this.getKeyArray();
+            var keys    = this.toKeyArray();
             keys.forEach(function(key){
                 var stringKey = key;
                 if (!TypeUtil.isString(key) && TypeUtil.isObject(key) && TypeUtil.isFunction(key.toString)) {
@@ -303,7 +303,6 @@ require('bugpack').context("*", function(bugpack) {
 
     Class.implement(Map, IKeyValueIterable);
     Class.implement(Map, IMap);
-    Class.implement(Map, IObjectable);
 
 
     //-------------------------------------------------------------------------------

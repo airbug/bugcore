@@ -105,8 +105,8 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
-     * 1) That the getKeyCollection method successfully returns a Collection
-     * 2) That the getKeyCollection method of an empty Map returns an empty Collection
+     * 1) That the toKeyCollection method successfully returns a Collection
+     * 2) That the toKeyCollection method of an empty Map returns an empty Collection
      */
     var mapGetKeyCollectionOnEmptyMapTest = {
 
@@ -115,7 +115,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new Map();
-            this.emptyKeyCollection = this.map.getKeyCollection();
+            this.emptyKeyCollection = this.map.toKeyCollection();
         },
 
 
@@ -124,7 +124,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.emptyKeyCollection, Collection),
-                "Assert getKeyCollection returned a Collection when called on an empty Map");
+                "Assert toKeyCollection returned a Collection when called on an empty Map");
             test.assertEqual(this.emptyKeyCollection.getCount(), 0,
                 "Assert key Collection count is 0");
         }
@@ -132,8 +132,8 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
-     * 1) That the getKeyCollection method successfully returns a Collection
-     * 2) That the getKeyCollection method of an empty Map returns a map with all of the Map's keys
+     * 1) That the toKeyCollection method successfully returns a Collection
+     * 2) That the toKeyCollection method of an empty Map returns a map with all of the Map's keys
      */
     var mapGetKeyCollectionTest = {
 
@@ -151,7 +151,7 @@ require('bugpack').context("*", function(bugpack) {
             this.map.put(this.key1, this.value1);
             this.map.put(this.key2, this.value2);
             this.map.put(this.key3, this.value3);
-            this.keyCollection = this.map.getKeyCollection();
+            this.keyCollection = this.map.toKeyCollection();
         },
 
 
@@ -160,7 +160,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.keyCollection, Collection),
-                "Assert getKeyCollection returned a Collection");
+                "Assert toKeyCollection returned a Collection");
             test.assertEqual(this.keyCollection.getCount(), 3,
                 "Assert key Collection count is 3");
             test.assertEqual(this.keyCollection.contains(this.key1), true,
@@ -375,6 +375,48 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     *
+     */
+    var mapClearTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.map = new Map();
+            this.map.put("key1", "value1");
+            this.map.put("key2", "value2");
+            this.map.put("key3", "value3");
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(this.map.get("key1"), "value1",
+                "Assert map contains value1 at key1");
+            test.assertEqual(this.map.get("key2"), "value2",
+                "Assert map contains value2 at key2");
+            test.assertEqual(this.map.get("key3"), "value3",
+                "Assert map contains value3 at key3");
+            test.assertEqual(this.map.getCount(), 3,
+                "Assert map count is 3 after adding four values");
+
+            this.map.clear();
+
+            test.assertEqual(this.map.get("key1"), undefined,
+                "Assert map no longer contains key1");
+            test.assertEqual(this.map.get("key2"), undefined,
+                "Assert map no longer contains key2");
+            test.assertEqual(this.map.get("key3"), undefined,
+                "Assert map no longer contains key3");
+            test.assertEqual(this.map.getCount(), 0,
+                "Assert map count is 0 after calling clear");
+        }
+    };
+
     //TODO BRN: Add a remove test
 
 
@@ -389,10 +431,10 @@ require('bugpack').context("*", function(bugpack) {
         test().name("Map - simple put/get test")
     );
     bugmeta.tag(mapGetKeyCollectionOnEmptyMapTest).with(
-        test().name("Map - getKeyCollection called on an empty Map test")
+        test().name("Map - toKeyCollection called on an empty Map test")
     );
     bugmeta.tag(mapGetKeyCollectionTest).with(
-        test().name("Map - getKeyCollection test")
+        test().name("Map - toKeyCollection test")
     );
     bugmeta.tag(mapDataTypeKeyTest).with(
         test().name("Map - data type key test")
@@ -408,5 +450,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(mapSimplePutAllContainsValueTest).with(
         test().name("Map - simple putAll/containsValue test")
+    );
+    bugmeta.tag(mapClearTest).with(
+        test().name("Map - clear test")
     );
 });

@@ -68,16 +68,12 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert HashTable count is 0 after instantiation");
         }
     };
-    bugmeta.tag(hashTableInstantiationTest).with(
-        test().name("HashTable - instantiation test")
-    );
-
 
     /**
      * This tests
-     * 1) That the getKeyArray method returns an array of the HashTable's keys
+     * 1) That the toKeyArray method returns an array of the HashTable's keys
      */
-    var hashTableGetKeyArrayTest = {
+    var hashTableToKeyArrayTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -87,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
             this.hashTable.put('key1', 'value1');
             this.hashTable.put('key2', 'value2');
             this.hashTable.put('key3', 'value3');
-            this.keyArray = this.hashTable.getKeyArray();
+            this.keyArray = this.hashTable.toKeyArray();
         },
 
 
@@ -96,7 +92,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.keyArray),
-                "Assert value returned from getKeyArray is an array");
+                "Assert value returned from toKeyArray is an array");
             test.assertEqual(this.keyArray.length, 3,
                 "Assert key array length is 3");
             test.assertTrue((this.keyArray.indexOf('key1') >= 0),
@@ -107,16 +103,12 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert key3 is in the key array");
         }
     };
-    bugmeta.tag(hashTableGetKeyArrayTest).with(
-        test().name("HashTableNode - getKeyArray test")
-    );
-
 
     /**
      * This tests
-     * 1) That the getValueArray method returns an array of the HashTable's values
+     * 1) That the toValueArray method returns an array of the HashTable's values
      */
-    var hashTableGetValueArrayTest = {
+    var hashTableToValueArrayTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -126,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
             this.hashTable.put('key1', 'value1');
             this.hashTable.put('key2', 'value2');
             this.hashTable.put('key3', 'value3');
-            this.valueArray = this.hashTable.getValueArray();
+            this.valueArray = this.hashTable.toValueArray();
         },
 
 
@@ -135,7 +127,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.valueArray),
-                "Assert value returned from getValueArray is an array");
+                "Assert value returned from toValueArray is an array");
             test.assertEqual(this.valueArray.length, 3,
                 "Assert value array length is 3");
             test.assertTrue((this.valueArray.indexOf('value1') >= 0),
@@ -146,7 +138,19 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert value3 is in the value array");
         }
     };
-    bugmeta.tag(hashTableGetValueArrayTest).with(
-        test().name("HashTableNode - getValueArray test")
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(hashTableInstantiationTest).with(
+        test().name("HashTable - instantiation test")
+    );
+    bugmeta.tag(hashTableToKeyArrayTest).with(
+        test().name("HashTable - #toKeyArray test")
+    );
+    bugmeta.tag(hashTableToValueArrayTest).with(
+        test().name("HashTable - #toValueArray test")
     );
 });

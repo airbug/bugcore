@@ -9,12 +9,14 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('UnorderedPair')
+//@Export('WeightedListIterator')
 
+//@Require('ArrayIterator')
 //@Require('Class')
-//@Require('Collection')
-//@Require('IArrayable')
+//@Require('Exception')
+//@Require('IIndexValueIterator')
 //@Require('Obj')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -27,10 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Collection  = bugpack.require('Collection');
-    var IArrayable  = bugpack.require('IArrayable');
-    var Obj         = bugpack.require('Obj');
+    var ArrayIterator           = bugpack.require('ArrayIterator');
+    var Class                   = bugpack.require('Class');
+    var Exception               = bugpack.require('Exception');
+    var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
+    var Obj                     = bugpack.require('Obj');
+    var TypeUtil                = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -40,12 +44,12 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @implements {IArrayable.<A|B>}
-     * @template A, B
+     * @implements {IIndexValueIterator.<V>}
+     * @template V
      */
-    var UnorderedPair = Class.extend(Obj, {
+    var WeightedListIterator = Class.extend(Obj, {
 
-        _name: "UnorderedPair",
+        _name: "WeightedListIterator",
 
 
         //-------------------------------------------------------------------------------
@@ -66,9 +70,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Collection.<A|B>}
+             * @type {ArrayIterator.<V>}
              */
-            this.pairCollection = new Collection();
+            this.arrayIterator      = null;
+
+            /**
+             * @private
+             * @type {WeightedList.<V>}
+             */
+            this.weightedList       = null;
         },
 
 
@@ -77,16 +87,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {A} a
-         * @param {B} b
-         * @return {UnorderedPair.<A, B>}
+         * @param {WeightedList.<V>} weightedList
          */
-        init: function(a, b) {
+        init: function(weightedList) {
             this._super();
-            this.pairCollection.addAll([a, b]);
-            return this;
+            this.weightedList = weightedList;
+            this.arrayIterator = new ArrayIterator(this.getWeightedList().getItemArray());
         },
-
 
 
         //-------------------------------------------------------------------------------
@@ -94,82 +101,66 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Collection.<A|B>}
+         * @return {ArrayIterator.<V>}
          */
-        getPairCollection: function() {
-            return this.pairCollection;
+        getArrayIterator: function() {
+            return this.arrayIterator;
+        },
+
+        /**
+         * @return {WeightedList.<V>}
+         */
+        getWeightedList: function() {
+            return this.weightedList;
         },
 
 
         //-------------------------------------------------------------------------------
-        // IArrayable Implementation
+        // IIndexValueIterator Implementation
         //-------------------------------------------------------------------------------
 
         /**
-         * @override
-         * @return (Array.<A|B>)
-         */
-        toArray: function() {
-            return this.pairCollection.toArray();
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Obj Extensions
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {UnorderedPair.<A, B>}
-         */
-        clone: function() {
-            var pairArray = this.toArray();
-            return new UnorderedPair(pairArray[0], pairArray[1]);
-        },
-
-        /**
-         * @param {*} value
          * @return {boolean}
          */
-        equals: function(value) {
-            if (Class.doesExtend(value, UnorderedPair)) {
-                return this.pairCollection.containsEqual(value.toArray());
-            }
-            return false;
+        hasNext: function() {
+            return this.arrayIterator.hasNext();
+        },
+
+        /**
+         * @return {V}
+         */
+        next: function() {
+            var index = this.nextIndex();
+            return this.weightedList.getAt(index).getValue();
         },
 
         /**
          * @return {number}
          */
-        hashCode: function() {
-            if (!this._hashCode) {
-                var pairArray = this.toArray();
-                this._hashCode = Obj.hashCode("[UnorderedPair]" + (Obj.hashCode(pairArray[0]) + Obj.hashCode(pairArray[1])));
-            }
-            return this._hashCode;
+        nextIndex: function() {
+            return this.arrayIterator.nextIndex();
         },
 
         /**
-         * @return {string}
+         * @return {{
+         *      index: number
+         *      value: V
+         * }}
          */
-        toString: function() {
-            var output = "";
-            output += "{\n";
-            output += "  " + this.pairCollection.toString() + "\n";
-            output += "}\n";
-            return output;
+        nextIndexValuePair: function() {
+            var index = this.nextIndex();
+            var value = this.weightedList.getAt(index);
+            return {
+                index: index,
+                value: value
+            };
         },
 
-
-        //-------------------------------------------------------------------------------
-        // Public Methods
-        //-------------------------------------------------------------------------------
-
         /**
-         * @param {*} value
-         * @return {boolean}
+         * @return {V}
          */
-        contains: function(value) {
-            return this.pairCollection.contains(value);
+        nextValue: function() {
+            return this.next();
         }
     });
 
@@ -178,12 +169,12 @@ require('bugpack').context("*", function(bugpack) {
     // Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(UnorderedPair, IArrayable);
+    Class.implement(WeightedListIterator, IIndexValueIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('UnorderedPair', UnorderedPair);
+    bugpack.export('WeightedListIterator', WeightedListIterator);
 });

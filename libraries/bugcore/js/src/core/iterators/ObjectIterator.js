@@ -90,15 +90,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Object.<string, number>}
-             */
-            this.propertySkipCountMap = {};
-
-            /**
-             * @private
              * @type {number}
              */
             this.propertyCount = 0;
+
+            /**
+             * @private
+             * @type {Object.<string, number>}
+             */
+            this.propertySkipCountMap = {};
         },
 
 
@@ -137,10 +137,38 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @return {number}
+         */
+        getIndex: function() {
+            return this.index;
+        },
+
+        /**
          * @return {Object.<string, V>}
          */
         getObject: function() {
             return this.object;
+        },
+
+        /**
+         * @return {Array.<string>}
+         */
+        getProperties: function() {
+            return this.properties;
+        },
+
+        /**
+         * @return {number}
+         */
+        getPropertyCount: function() {
+            return this.propertyCount;
+        },
+
+        /**
+         * @return {Object.<string, number>}
+         */
+        getPropertySkipCountMap: function() {
+            return this.propertySkipCountMap;
         },
 
 
@@ -152,6 +180,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
+           // console.log("ObjectIterator - hasNext this.index:", this.index, " this.propertyCount:", this.propertyCount);
             return (this.index < (this.propertyCount - 1));
         },
 

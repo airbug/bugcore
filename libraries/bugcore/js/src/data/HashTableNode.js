@@ -63,19 +63,19 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {number}
              */
-            this.count = 0;
+            this.count      = 0;
 
             /**
              * @private
              * @type {Array.<K>}
              */
-            this.hashTableKeyArray = [];
+            this.keyArray   = [];
 
             /**
              * @private
              * @type {Array.<V>}
              */
-            this.hashTableValueArray = [];
+            this.valueArray = [];
         },
 
 
@@ -93,34 +93,15 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @return {Array.<K>}
          */
-        getHashTableKeyArray: function() {
-            return this.hashTableKeyArray;
-        },
-
-        /**
-         * @return {Array.<V>}
-         */
-        getHashTableValueArray: function() {
-            return this.hashTableValueArray;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Convenience Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {Array.<K>}
-         */
         getKeyArray: function() {
-            return this.hashTableKeyArray;
+            return this.keyArray;
         },
 
         /**
          * @return {Array.<V>}
          */
         getValueArray: function() {
-            return this.hashTableValueArray;
+            return this.valueArray;
         },
 
 
@@ -134,13 +115,13 @@ require('bugpack').context("*", function(bugpack) {
         toString: function() {
             var output = "{";
             output += "  count:" + this.getCount() + ",\n";
-            output += "  hashTableKeyArray:[\n";
-            this.hashTableKeyArray.forEach(function(value) {
+            output += "  keyArray:[\n";
+            this.keyArray.forEach(function(value) {
                 output += value.toString() + ",";
             });
             output += "  ]";
-            output += "  hashTableValueArray:[\n";
-            this.hashTableValueArray.forEach(function(value) {
+            output += "  valueArray:[\n";
+            this.valueArray.forEach(function(value) {
                 output += value.toString() + ",";
             });
             output += "  ]";
@@ -158,8 +139,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsKey: function(key) {
-            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-                var hashTableKey = this.hashTableKeyArray[i];
+            for (var i = 0, size = this.keyArray.length; i < size; i++) {
+                var hashTableKey = this.keyArray[i];
                 if (Obj.equals(key, hashTableKey)) {
                     return true;
                 }
@@ -172,8 +153,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsValue: function(value) {
-            for (var i = 0, size = this.hashTableValueArray.length; i < size; i++) {
-                var hashTableValue = this.hashTableValueArray[i];
+            for (var i = 0, size = this.valueArray.length; i < size; i++) {
+                var hashTableValue = this.valueArray[i];
                 if (Obj.equals(value, hashTableValue)) {
                     return true;
                 }
@@ -186,10 +167,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         get: function(key) {
-            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-                var hashTableKey = this.hashTableKeyArray[i];
+            for (var i = 0, size = this.keyArray.length; i < size; i++) {
+                var hashTableKey = this.keyArray[i];
                 if (Obj.equals(key, hashTableKey)) {
-                    return this.hashTableValueArray[i];
+                    return this.valueArray[i];
                 }
             }
             return undefined;
@@ -201,19 +182,19 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         put: function(key, value) {
-            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-                var hashTableKey = this.hashTableKeyArray[i];
+            for (var i = 0, size = this.keyArray.length; i < size; i++) {
+                var hashTableKey = this.keyArray[i];
                 if (Obj.equals(key, hashTableKey)) {
-                    var previousValue = this.hashTableValueArray[i];
-                    this.hashTableValueArray[i] = value;
+                    var previousValue = this.valueArray[i];
+                    this.valueArray[i] = value;
                     return previousValue;
                 }
             }
 
             //NOTE BRN: If we make it to here it means we did not find a hash table entry that already exists for this key.
 
-            this.hashTableKeyArray.push(key);
-            this.hashTableValueArray.push(value);
+            this.keyArray.push(key);
+            this.valueArray.push(value);
             this.count++;
             return undefined;
         },
@@ -223,12 +204,12 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         remove: function(key) {
-            for (var i = 0, size = this.hashTableKeyArray.length; i < size; i++) {
-                var hashTableKey = this.hashTableKeyArray[i];
+            for (var i = 0, size = this.keyArray.length; i < size; i++) {
+                var hashTableKey = this.keyArray[i];
                 if (Obj.equals(key, hashTableKey)) {
-                    var removedValue = this.hashTableValueArray[i];
-                    this.hashTableKeyArray.splice(i, 1);
-                    this.hashTableValueArray.splice(i, 1);
+                    var removedValue = this.valueArray[i];
+                    this.keyArray.splice(i, 1);
+                    this.valueArray.splice(i, 1);
                     this.count--;
                     return removedValue;
                 }

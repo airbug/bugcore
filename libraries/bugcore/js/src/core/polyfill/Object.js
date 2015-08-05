@@ -73,28 +73,33 @@ require('bugpack').context("*", function(bugpack) {
         }());
     }
 
-    if (!Object.getNotifier) {
+    //if (!Object.getNotifier) {
         Object.getNotifier = function(object) {
             if (!object._notifier) {
-                object._notifier = new Notifier();
+                Object.defineProperty(object, "_notifier", {
+                    value : new Notifier(),
+                    writable : true,
+                    enumerable : false,
+                    configurable : false
+                });
             }
             return object._notifier;
-        }
-    }
+        };
+    //}
 
-    if (!Object.observe) {
+    //if (!Object.observe) {
         Object.observe = function(obj, callback, acceptList) {
             var notifier = Object.getNotifier(obj);
             notifier.addObserver(callback, acceptList);
         };
-    }
+    //}
 
-    if (!Object.unobserve) {
+    //if (!Object.unobserve) {
         Object.unobserve = function(obj, callback) {
             var notifier = Object.getNotifier(obj);
             notifier.removeObserver(callback);
         };
-    }
+    //}
 
 
     //-------------------------------------------------------------------------------

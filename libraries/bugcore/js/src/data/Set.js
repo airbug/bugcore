@@ -83,8 +83,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         add: function(value) {
-            if (!this.getHashStore().hasValue(value)) {
-                this.getHashStore().addValue(value);
+            if (!this.getHashStore().contains(value)) {
+                this.getHashStore().add(value);
                 return true;
             }
             return false;

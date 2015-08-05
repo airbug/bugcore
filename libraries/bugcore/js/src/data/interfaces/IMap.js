@@ -11,6 +11,7 @@
 
 //@Export('IMap')
 
+//@Require('IObjectable')
 //@Require('Interface')
 
 
@@ -24,7 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Interface   = bugpack.require('Interface');
+    var IObjectable     = bugpack.require('IObjectable');
+    var Interface       = bugpack.require('Interface');
 
 
     //-------------------------------------------------------------------------------
@@ -33,6 +35,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
+     * @extends {IObjectable.<K, V>}
      * @template K, V
      */
     var IMap = Interface.declare({
@@ -73,26 +76,6 @@ require('bugpack').context("*", function(bugpack) {
         getCount: function() {},
 
         /**
-         * @return {Array.<K>}
-         */
-        getKeyArray: function() {},
-
-        /**
-         * @return {ICollection.<K>}
-         */
-        getKeyCollection: function() {},
-
-        /**
-         * @return {Array.<V>}
-         */
-        getValueArray: function() {},
-
-        /**
-         * @return {ICollection.<V>}
-         */
-        getValueCollection: function() {},
-
-        /**
          * @return {boolean}
          */
         isEmpty: function() {},
@@ -113,9 +96,27 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} key
          * @return {V}
          */
-        remove: function(key) {
-            return this.hashTable.remove(key);
-        }
+        remove: function(key) {},
+
+        /**
+         * @return {Array.<K>}
+         */
+        toKeyArray: function() {},
+
+        /**
+         * @return {ICollection.<K>}
+         */
+        toKeyCollection: function() {},
+
+        /**
+         * @return {Array.<V>}
+         */
+        toValueArray: function() {},
+
+        /**
+         * @return {ICollection.<V>}
+         */
+        toValueCollection: function() {}
     });
 
 

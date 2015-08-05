@@ -11,6 +11,7 @@
 
 //@Export('ICollection')
 
+//@Require('IArrayable')
 //@Require('Interface')
 
 
@@ -24,6 +25,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var IArrayable  = bugpack.require('IArrayable');
     var Interface   = bugpack.require('Interface');
 
 
@@ -33,9 +35,10 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
+     * @extends {IArrayable.<I>}
      * @template I
      */
-    var ICollection = Interface.declare({
+    var ICollection = Interface.extend(IArrayable, {
 
         _name: "ICollection",
 
@@ -84,20 +87,15 @@ require('bugpack').context("*", function(bugpack) {
         containsEqual: function(values) {},
 
         /**
-         * @return {number}
-         */
-        getCount: function() {},
-
-        /**
-         * @return {Array.<I>}
-         */
-        getValueArray: function() {},
-
-        /**
          * @param {*} value
          * @return {number}
          */
-        getValueCount: function(value) {},
+        countValue: function(value) {},
+
+        /**
+         * @return {number}
+         */
+        getCount: function() {},
 
         /**
          * @return {boolean}

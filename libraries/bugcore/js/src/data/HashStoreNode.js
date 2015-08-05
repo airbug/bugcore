@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @template V
+     * @template I
      */
     var HashStoreNode = Class.extend(Obj, {
 
@@ -63,13 +63,13 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {number}
              */
-            this.count = 0;
+            this.count      = 0;
 
             /**
              * @private
-             * @type {Array.<V>}
+             * @type {Array.<I>}
              */
-            this.valueArray = [];
+            this.itemArray  = [];
         },
 
 
@@ -85,30 +85,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<V>}
+         * @return {Array.<I>}
          */
-        getValueArray: function() {
-            return this.valueArray;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Convenience Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @param {*} value
-         * @return {number}
-         */
-        getValueCount: function(value) {
-            var count = 0;
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                var valueArrayValue = this.valueArray[i];
-                if (Obj.equals(value, valueArrayValue)) {
-                    count++;
-                }
-            }
-            return count;
+        getItemArray: function() {
+            return this.itemArray;
         },
 
 
@@ -123,9 +103,9 @@ require('bugpack').context("*", function(bugpack) {
         equals: function(value) {
             if (Class.doesExtend(value, HashStoreNode)) {
                 if (this.getCount() === value.getCount()) {
-                    for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                        var valueArrayValue = this.valueArray[i];
-                        if (!value.containsValue(valueArrayValue)) {
+                    for (var i = 0, size = this.itemArray.length; i < size; i++) {
+                        var itemArrayValue = this.itemArray[i];
+                        if (!value.containsValue(itemArrayValue)) {
                             return false;
                         }
                     }
@@ -142,8 +122,8 @@ require('bugpack').context("*", function(bugpack) {
             var output = "{";
             output += "  count:" + this.getCount() + ",\n";
             output += "  values:[\n";
-            this.valueArray.forEach(function(value) {
-                output += value + ",";
+            this.itemArray.forEach(function(item) {
+                output += item + ",";
             });
             output += "  ]";
             output += "}";
@@ -156,20 +136,20 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {V} value
+         * @param {I} item
          */
-        addValue: function(value) {
-            this.valueArray.push(value);
+        add: function(item) {
+            this.itemArray.push(item);
             this.count++;
         },
 
         /**
-         * @param {*} value
+         * @param {*} item
          */
-        containsValue: function(value) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                var valueArrayValue = this.valueArray[i];
-                if (Obj.equals(value, valueArrayValue)) {
+        contains: function(item) {
+            for (var i = 0, size = this.itemArray.length; i < size; i++) {
+                var itemArrayValue = this.itemArray[i];
+                if (Obj.equals(item, itemArrayValue)) {
                     return true;
                 }
             }
@@ -178,13 +158,28 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
+         * @return {number}
+         */
+        countValue: function(value) {
+            var count = 0;
+            for (var i = 0, size = this.itemArray.length; i < size; i++) {
+                var itemArrayValue = this.itemArray[i];
+                if (Obj.equals(value, itemArrayValue)) {
+                    count++;
+                }
+            }
+            return count;
+        },
+
+        /**
+         * @param {*} item
          * @return {boolean}
          */
-        removeValue: function(value) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                var valueArrayValue = this.valueArray[i];
-                if (Obj.equals(value, valueArrayValue)) {
-                    this.valueArray.splice(i, 1);
+        remove: function(item) {
+            for (var i = 0, size = this.itemArray.length; i < size; i++) {
+                var itemArrayValue = this.itemArray[i];
+                if (Obj.equals(item, itemArrayValue)) {
+                    this.itemArray.splice(i, 1);
                     this.count--;
                     return true;
                 }

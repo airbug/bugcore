@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('HashStoreIterator')
 //@Require('HashStoreNode')
+//@Require('IArrayable')
 //@Require('IIterable')
 //@Require('Obj')
 //@Require('ObjectUtil')
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var HashStoreIterator   = bugpack.require('HashStoreIterator');
     var HashStoreNode       = bugpack.require('HashStoreNode');
+    var IArrayable          = bugpack.require('IArrayable');
     var IIterable           = bugpack.require('IIterable');
     var Obj                 = bugpack.require('Obj');
     var ObjectUtil          = bugpack.require('ObjectUtil');
@@ -44,8 +46,8 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Obj}
-     * @implements {IIterable.<V>}
-     * @template V
+     * @implements {IIterable.<I>}
+     * @template I
      */
     var HashStore = Class.extend(Obj, {
 
@@ -77,7 +79,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Object.<string, HashStoreNode.<V>>}
+             * @type {Object.<string, HashStoreNode.<I>>}
              */
             this.hashStoreNodeObject = {};
         },
@@ -95,7 +97,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Object.<string, HashStoreNode.<V>>}
+         * @return {Object.<string, HashStoreNode.<I>>}
          */
         getHashStoreNodeObject: function() {
             return this.hashStoreNodeObject;
@@ -103,20 +105,18 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Convenience Methods
+        // IArrayable Implementation
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {*} value
-         * @return {number}
+         * @return {Array.<I>}
          */
-        getValueCount: function(value) {
-            var valueHashCode = Obj.hashCode(value);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, valueHashCode.toString());
-            if (hashStoreNode) {
-                return hashStoreNode.getValueCount(value);
-            }
-            return 0;
+        toArray: function() {
+            var array = [];
+            ObjectUtil.forInOwn(this.hashStoreNodeObject, function(valueHashCode, hashStoreNode) {
+                array = array.concat(hashStoreNode.getItemArray());
+            });
+            return array;
         },
 
 
@@ -129,7 +129,7 @@ require('bugpack').context("*", function(bugpack) {
          * its value at that later time. A value that is deleted before it has been visited will not be visited later.
          * Values added to the HashStore over which iteration is occurring may either be visited or omitted from iteration.
          *
-         * @param {function(V)} func
+         * @param {function(I)} func
          */
         forEach: function(func) {
             var iterator = this.iterator();
@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
          * its value at that later time. A value that is deleted before it has been visited will not be visited later.
          * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
          *
-         * @return {IIterator.<V>}
+         * @return {IIterator.<I>}
          */
         iterator: function() {
             return new HashStoreIterator(this);
@@ -155,41 +155,54 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {V} value
+         * @param {I} item
          */
-        addValue: function(value) {
-            var valueHashCode = Obj.hashCode(value);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, valueHashCode.toString());
+        add: function(item) {
+            var hashCode = Obj.hashCode(item);
+            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
             if (!hashStoreNode) {
                 hashStoreNode = new HashStoreNode();
-                this.hashStoreNodeObject[valueHashCode] = hashStoreNode;
+                this.hashStoreNodeObject[hashCode] = hashStoreNode;
             }
-            hashStoreNode.addValue(value);
+            hashStoreNode.add(item);
             this.count++;
         },
 
         /**
-         * @return {Array.<V>}
+         *
          */
-        getValueArray: function() {
-            var valueArray = [];
-            ObjectUtil.forInOwn(this.hashStoreNodeObject, function(valueHashCode, hashStoreNode) {
-                valueArray = valueArray.concat(hashStoreNode.getValueArray());
-            });
-            return valueArray;
+        clear: function() {
+            var iterator = this.iterator();
+            while (iterator.hasNext()) {
+                var item = iterator.next();
+                this.remove(item);
+            }
+        },
+
+        /**
+         * @param {*} item
+         * @return {boolean}
+         */
+        contains: function(item) {
+            var hashCode = Obj.hashCode(item);
+            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
+            if (hashStoreNode) {
+                return hashStoreNode.contains(item);
+            }
+            return false;
         },
 
         /**
          * @param {*} value
-         * @return {boolean}
+         * @return {number}
          */
-        hasValue: function(value) {
+        countValue: function(value) {
             var valueHashCode = Obj.hashCode(value);
             var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, valueHashCode.toString());
             if (hashStoreNode) {
-                return hashStoreNode.containsValue(value);
+                return hashStoreNode.countValue(value);
             }
-            return false;
+            return 0;
         },
 
         /**
@@ -200,19 +213,19 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} value
+         * @param {*} item
          * @return {boolean}
          */
-        removeValue: function(value) {
-            var valueHashCode = Obj.hashCode(value);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, valueHashCode.toString());
+        remove: function(item) {
+            var hashCode = Obj.hashCode(item);
+            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
             var result = false;
             if (hashStoreNode) {
-                result = hashStoreNode.removeValue(value);
+                result = hashStoreNode.remove(item);
                 if (result) {
                     this.count--;
                     if (hashStoreNode.getCount() === 0) {
-                        ObjectUtil.deleteProperty(this.hashStoreNodeObject, valueHashCode.toString());
+                        ObjectUtil.deleteProperty(this.hashStoreNodeObject, hashCode.toString());
                     }
                 }
             }
@@ -225,6 +238,7 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
+    Class.implement(HashStore, IArrayable);
     Class.implement(HashStore, IIterable);
 
 

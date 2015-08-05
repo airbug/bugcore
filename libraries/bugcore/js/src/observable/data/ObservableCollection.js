@@ -58,7 +58,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @class
      * @extends {Observable}
-     * @implements {ICollection}
+     * @implements {ICollection.<I>}
      * @template I
      */
     var ObservableCollection = Class.extend(Observable, /** @lends {ObservableCollection.prototype} */{
@@ -112,7 +112,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return (Array.<I>)
          */
         toArray: function() {
-            return this.getValueArray();
+            return this.observed.toArray();
         },
 
 
@@ -186,18 +186,11 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<I>}
-         */
-        getValueArray: function() {
-            return this.observed.getValueArray();
-        },
-
-        /**
          * @param {*} value
          * @return {number}
          */
-        getValueCount: function(value) {
-            return this.observed.getValueCount(value);
+        countValue: function(value) {
+            return this.observed.countValue(value);
         },
 
         /**

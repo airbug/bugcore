@@ -13,9 +13,11 @@
 
 //@Require('Class')
 //@Require('Collection')
+//@Require('Exception')
 //@Require('List')
 //@Require('Obj')
 //@Require('TypeUtil')
+//@Require('WeightedListIterator')
 //@Require('WeightedListNode')
 
 
@@ -29,12 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var Collection          = bugpack.require('Collection');
-    var List                = bugpack.require('List');
-    var Obj                 = bugpack.require('Obj');
-    var TypeUtil            = bugpack.require('TypeUtil');
-    var WeightedListNode    = bugpack.require('WeightedListNode');
+    var Class                   = bugpack.require('Class');
+    var Collection              = bugpack.require('Collection');
+    var Exception               = bugpack.require('Exception');
+    var List                    = bugpack.require('List');
+    var Obj                     = bugpack.require('Obj');
+    var TypeUtil                = bugpack.require('TypeUtil');
+    var WeightedListIterator    = bugpack.require('WeightedListIterator');
+    var WeightedListNode        = bugpack.require('WeightedListNode');
 
 
     //-------------------------------------------------------------------------------
@@ -123,8 +127,8 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             if (Class.doesExtend(collection, Collection)) {
                 if (Class.doesExtend(collection, WeightedList)) {
-                    for (var i = 0, size = collection.valueArray.length; i < size; i++) {
-                        this.add(collection.valueArray[i].getValue(), collection.valueArray[i].getWeight());
+                    for (var i = 0, size = collection.getItemArray().length; i < size; i++) {
+                        this.add(collection.getItemArray()[i].getValue(), collection.getItemArray()[i].getWeight());
                     }
                 } else {
                     collection.forEach(function(value) {
@@ -132,16 +136,8 @@ require('bugpack').context("*", function(bugpack) {
                     });
                 }
             } else {
-                throw new Error("collection must be an instance of Collection");
+                throw new Exception("collection must be an instance of Collection");
             }
-        },
-
-        /**
-         *
-         */
-        clear: function() {
-            this._super();
-            this.totalWeight = 0;
         },
 
         /**
@@ -150,38 +146,16 @@ require('bugpack').context("*", function(bugpack) {
          */
         contains: function(value) {
             var weightedListNode = new WeightedListNode(value, 1);
-            return this.getHashStore().hasValue(weightedListNode);
-        },
-
-        /**
-         * @override
-         * @param {function(*)} func
-         */
-        forEach: function(func) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                func(this.valueArray[i].getValue());
-            }
-        },
-
-        /**
-         * @override
-         * @return {Array} Array is in the same order as the list
-         */
-        getValueArray: function() {
-            var valueArray = [];
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                valueArray.push(this.valueArray[i].getValue());
-            }
-            return valueArray;
+            return this.getHashStore().contains(weightedListNode);
         },
 
         /**
          * @param {*} value
          * @return {number}
          */
-        getValueCount: function(value) {
+        countValue: function(value) {
             var weightedListNode = new WeightedListNode(value, 1);
-            return this.hashStore.getValueCount(weightedListNode);
+            return this.getHashStore().countValue(weightedListNode);
         },
 
         /**
@@ -191,7 +165,7 @@ require('bugpack').context("*", function(bugpack) {
         remove: function(value) {
             var index = this.indexOfFirst(value);
             if (index > -1) {
-                var firstValue = this.valueArray[index];
+                var firstValue = this.getItemArray()[index];
                 this.totalWeight -= firstValue.getWeight();
                 this.removeAt(index);
                 return true;
@@ -216,9 +190,9 @@ require('bugpack').context("*", function(bugpack) {
 
             if (index <= this.getCount()) {
                 var weightedListNode = new WeightedListNode(value, weight);
-                this.hashStore.addValue(weightedListNode);
+                this.getHashStore().add(weightedListNode);
                 this.count++;
-                this.valueArray.splice(index, 0, weightedListNode);
+                this.getItemArray().splice(index, 0, weightedListNode);
                 this.totalWeight += weight;
             } else {
                 throw new Error("Index out of bounds");
@@ -236,8 +210,8 @@ require('bugpack').context("*", function(bugpack) {
                 var _this = this;
 
                 if (Class.doesExtend(collection, WeightedList)) {
-                    for (var i = 0, size = collection.valueArray.length; i < size; i++) {
-                        this.addAt(insertingIndex, collection.valueArray[i].getValue(), collection.valueArray[i].getWeight());
+                    for (var i = 0, size = collection.getItemArray().length; i < size; i++) {
+                        this.addAt(insertingIndex, collection.getItemArray()[i].getValue(), collection.getItemArray()[i].getWeight());
 
                         // NOTE BRN: We increment the inserting index so that the collection is inserted in the correct order.
 
@@ -263,9 +237,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.valueArray[index].getValue();
+                return this.getItemArray()[index].getValue();
             } else {
-                throw new Error("Index out of bounds");
+                throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
             }
         },
 
@@ -274,8 +248,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                if (Obj.equals(this.valueArray[i].getValue(), value)) {
+            for (var i = 0, size = this.getItemArray().length; i < size; i++) {
+                if (Obj.equals(this.getItemArray()[i].getValue(), value)) {
                     return i;
                 }
             }
@@ -287,12 +261,20 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.valueArray.length, i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.valueArray[i].getValue(), value)) {
+            for (var size = this.getItemArray().length, i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.getItemArray()[i].getValue(), value)) {
                     return i;
                 }
             }
             return -1;
+        },
+
+        /**
+         * @override
+         * @return {IIndexValueIterator.<V>}
+         */
+        iterator: function() {
+            return new WeightedListIterator(this);
         },
 
         /**
@@ -301,16 +283,16 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeAt: function(index) {
             if (index < this.getCount()) {
-                var weightedListNode = this.valueArray[index];
-                var result = this.hashStore.removeValue(weightedListNode);
+                var weightedListNode = this.getItemArray()[index];
+                var result = this.getHashStore().remove(weightedListNode);
                 if (result) {
                     this.count--;
                     this.totalWeight -= weightedListNode.getWeight();
-                    this.valueArray.splice(index, 1);
+                    this.getItemArray().splice(index, 1);
                 }
                 return weightedListNode.getValue();
             } else {
-                throw new Error("Index out of bounds");
+                throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
             }
         },
 
@@ -322,6 +304,18 @@ require('bugpack').context("*", function(bugpack) {
         set: function(index, value, weight) {
             this.removeAt(index);
             this.addAt(index, value, weight);
+        },
+
+        /**
+         * @override
+         * @return {Array.<I>} Array is in the same order as the list
+         */
+        toArray: function() {
+            var itemArray = [];
+            for (var i = 0, size = this.getItemArray().length; i < size; i++) {
+                itemArray.push(this.getItemArray()[i].getValue());
+            }
+            return itemArray;
         },
 
 
@@ -336,15 +330,15 @@ require('bugpack').context("*", function(bugpack) {
         getAtWeight: function(weight) {
             if (weight <= this.getTotalWeight()) {
                 var currentWeight = 0;
-                for (var i = 0, size = this.valueArray.length; i < size; i++) {
-                    var weightedListNode = this.valueArray[i];
+                for (var i = 0, size = this.getItemArray().length; i < size; i++) {
+                    var weightedListNode = this.getItemArray()[i];
                     currentWeight += weightedListNode.getWeight();
                     if (currentWeight >= weight) {
                         return weightedListNode.getValue();
                     }
                 }
             } else {
-                throw new Error("Weight out of bounds");
+                throw new Exception("WeightOutOfBounds", {}, "Weight out of bounds");
             }
         }
     });

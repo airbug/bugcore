@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
+     * @template I
      */
     var IArrayable = Interface.declare({
 
@@ -44,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Array.<*>}
+         * @return {Array.<I>}
          */
         toArray: function() {}
     });

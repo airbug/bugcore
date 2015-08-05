@@ -105,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
              *      type: string
              * }} changeObject
              */
-            notifiy: function (changeObject) {
+            notify: function (changeObject) {
                 var changes = [changeObject];
                 this.observers.forEach(function(observer) {
                     if (observer.acceptList.indexOf(changeObject.type) > -1) {

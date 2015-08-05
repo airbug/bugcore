@@ -12,6 +12,7 @@
 //@Export('Array')
 
 //@Require('Notifier')
+//@Require('Object')
 
 
 //-------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Notifier        = bugpack.require('Notifier');
+    var Object          = bugpack.require('Object');
 
 
     //-------------------------------------------------------------------------------
@@ -60,16 +62,21 @@ require('bugpack').context("*", function(bugpack) {
     }
 
 
-    if (!Array.getNotifier) {
+    //if (!Array.getNotifier) {
         Array.getNotifier = function(object) {
             if (!object._notifier) {
-                object._notifier = new Notifier();
+                Object.defineProperty(object, "_notifier", {
+                    value : new Notifier(),
+                    writable : true,
+                    enumerable : false,
+                    configurable : false
+                });
             }
             return object._notifier;
-        }
-    }
+        };
+    //}
 
-    if (!Array.observe) {
+    //if (!Array.observe) {
         Array.observe = function(obj, callback, acceptList) {
             var notifier = Array.getNotifier(obj);
             notifier.addObserver(callback, acceptList);
@@ -151,14 +158,14 @@ require('bugpack').context("*", function(bugpack) {
             });
             return returnedLength;
         };
-    }
+    //}
 
-    if (!Array.unobserve) {
+    //if (!Array.unobserve) {
         Array.unobserve = function(obj, callback) {
             var notifier = Array.getNotifier(obj);
             notifier.removeObserver(callback);
         };
-    }
+    //}
 
     //-------------------------------------------------------------------------------
     // Exports

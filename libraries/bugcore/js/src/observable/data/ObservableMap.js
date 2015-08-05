@@ -173,34 +173,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<K>}
-         */
-        getKeyArray: function() {
-            return this.observed.getKeyArray();
-        },
-
-        /**
-         * @return {ICollection.<K>}
-         */
-        getKeyCollection: function() {
-            return this.observed.getKeyCollection();
-        },
-
-        /**
-         * @return {Array.<V>}
-         */
-        getValueArray: function() {
-            return this.observed.getValueArray();
-        },
-
-        /**
-         * @return {ICollection.<V>}
-         */
-        getValueCollection: function() {
-            return this.observed.getValueCollection();
-        },
-
-        /**
          * @return {boolean}
          */
         isEmpty: function() {
@@ -224,7 +196,7 @@ require('bugpack').context("*", function(bugpack) {
         putAll: function(map) {
             var _this = this;
             if (Class.doesImplement(map, IMap)) {
-                var keys = map.getKeyArray();
+                var keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.get(key);
                     _this.put(key, value);
@@ -242,6 +214,34 @@ require('bugpack').context("*", function(bugpack) {
                 this.notifyObservers(new RemoveChange(result));
             }
             return result;
+        },
+
+        /**
+         * @return {Array.<K>}
+         */
+        toKeyArray: function() {
+            return this.observed.toKeyArray();
+        },
+
+        /**
+         * @return {ICollection.<K>}
+         */
+        toKeyCollection: function() {
+            return this.observed.toKeyCollection();
+        },
+
+        /**
+         * @return {Array.<V>}
+         */
+        toValueArray: function() {
+            return this.observed.toValueArray();
+        },
+
+        /**
+         * @return {ICollection.<V>}
+         */
+        toValueCollection: function() {
+            return this.observed.toValueCollection();
         },
 
 

@@ -66,12 +66,40 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             test.assertEqual(this.hashTableNode.getCount(), 0,
                 "Assert HashTableNode count is 0 after instantiation");
+            test.assertTrue(TypeUtil.isArray(this.hashTableNode.getKeyArray()),
+                "Assert HashTableNode.keyArray is an array");
+            test.assertEqual(this.hashTableNode.getKeyArray().length, 0,
+                "Assert HashTableNode.keyArray is empty");
+            test.assertTrue(TypeUtil.isArray(this.hashTableNode.getValueArray()),
+                "Assert HashTableNode.valueArray is an array");
+            test.assertEqual(this.hashTableNode.getValueArray().length, 0,
+                "Assert HashTableNode.valueArray is empty");
         }
     };
-    bugmeta.tag(hashTableNodeInstantiationTest).with(
-        test().name("HashTableNode - instantiation test")
-    );
 
+    /**
+     * This tests
+     * 1) Simple put() and get() test
+     */
+    var hashTablePutAndGetTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.hashTableNode = new HashTableNode();
+            this.hashTableNode.put('key1', 'value1');
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(this.hashTableNode.get('key1'), 'value1',
+                "Assert get 'key1' returns 'value1'");
+        }
+    };
 
     /**
      * This tests
@@ -107,6 +135,18 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert key3 is in the key array");
         }
     };
+
+
+    //-------------------------------------------------------------------------------
+    // BugMeta
+    //-------------------------------------------------------------------------------
+
+    bugmeta.tag(hashTableNodeInstantiationTest).with(
+        test().name("HashTableNode - instantiation test")
+    );
+    bugmeta.tag(hashTablePutAndGetTest).with(
+        test().name("HashTableNode - put() and get() test")
+    );
     bugmeta.tag(hashTableNodeGetKeyArrayTest).with(
         test().name("HashTableNode - getKeyArray test")
     );

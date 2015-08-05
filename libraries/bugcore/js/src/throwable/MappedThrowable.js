@@ -79,7 +79,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Array.<Throwable>}
          */
         getCauses: function() {
-            return this.causeMap.getValueArray();
+            return this.causeMap.toValueArray();
         },
 
         /**

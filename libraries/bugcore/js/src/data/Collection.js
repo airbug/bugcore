@@ -129,7 +129,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return (Array.<I>)
          */
         toArray: function() {
-            return this.getValueArray();
+            return this.hashStore.toArray();
         },
 
 
@@ -142,7 +142,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         add: function(item) {
-            this.hashStore.addValue(item);
+            this.hashStore.add(item);
             return true;
         },
 
@@ -150,6 +150,9 @@ require('bugpack').context("*", function(bugpack) {
          * @param {(ICollection.<I> | Array.<I>)} items
          */
         addAll: function(items) {
+            if (Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection)) {
+                items = items.toArray();
+            }
             if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
                 var _this = this;
                 items.forEach(function(item) {
@@ -164,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
          *
          */
         clear: function() {
-            this.hashStore = new HashStore();
+            this.removeAll(this);
         },
 
         /**
@@ -172,7 +175,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         contains: function(value) {
-            return this.hashStore.hasValue(value);
+            return this.hashStore.contains(value);
         },
 
         /**
@@ -188,7 +191,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesImplement(values, ICollection) || TypeUtil.isArray(values)) {
                 var valueArray = values;
                 if (Class.doesImplement(values, ICollection)) {
-                    valueArray = values.getValueArray();
+                    valueArray = values.toArray();
                 }
                 for (var i = 0, size = valueArray.length; i < size; i++) {
                     var value = valueArray[i];
@@ -215,10 +218,10 @@ require('bugpack').context("*", function(bugpack) {
             }
             if (Class.doesImplement(collection, ICollection)) {
                 if (collection.getCount() === this.getCount()) {
-                    var collectionValueArray = this.getValueArray();
+                    var collectionValueArray = this.toArray();
                     for (var i1 = 0, size1 = collectionValueArray.length; i1 < size1; i1++) {
                         var collectionValue = collectionValueArray[i1];
-                        if (this.getValueCount(collectionValue) !== collection.getValueCount(collectionValue)) {
+                        if (this.countValue(collectionValue) !== collection.countValue(collectionValue)) {
                             return false;
                         }
                     }
@@ -231,28 +234,18 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @param {*} value
+         * @return {number}
+         */
+        countValue: function(value) {
+            return this.hashStore.countValue(value);
+        },
+
+        /**
          * @return {number}
          */
         getCount: function() {
             return this.hashStore.getCount();
-        },
-
-        /**
-         * @return {Array.<I>}
-         */
-        getValueArray: function() {
-
-            //NOTE BRN: The getValueArray method of HashStore already creates a new array
-
-            return this.hashStore.getValueArray();
-        },
-
-        /**
-         * @param {*} value
-         * @return {number}
-         */
-        getValueCount: function(value) {
-            return this.hashStore.getValueCount(value);
         },
 
         /**
@@ -267,7 +260,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         remove: function(value) {
-            return this.hashStore.removeValue(value);
+            return this.hashStore.remove(value);
         },
 
         /**
@@ -369,7 +362,6 @@ require('bugpack').context("*", function(bugpack) {
     // Implement Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(Collection, IArrayable);
     Class.implement(Collection, ICollection);
     Class.implement(Collection, IIterable);
     Class.implement(Collection, IStreamable);

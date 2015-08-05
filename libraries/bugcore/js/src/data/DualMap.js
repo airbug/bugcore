@@ -120,8 +120,8 @@ require('bugpack').context("*", function(bugpack) {
          *
          */
         clear: function() {
-            this.keyValueHashTable              = new HashTable();
-            this.valueKeyCollectionHashTable    = new HashTable();
+            this.keyValueHashTable.clear();
+            this.valueKeyCollectionHashTable.clear();
         },
 
         /**
@@ -164,38 +164,6 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array<*>}
-         */
-        getKeyArray: function() {
-            return this.keyValueHashTable.getKeyArray();
-        },
-
-        /**
-         * @return {Collection.<*>}
-         */
-        getKeyCollection: function() {
-            return new Collection(this.keyValueHashTable.getKeyArray());
-        },
-
-        /**
-         * @return {Array.<*>}
-         */
-        getValueArray: function() {
-            return this.keyValueHashTable.getValueArray();
-        },
-
-        /**
-         * @return {Collection.<*>}
-         */
-        getValueCollection: function() {
-            var valueCollection = new Collection();
-            this.keyValueHashTable.forEach(function(value) {
-                valueCollection.add(value);
-            });
-            return valueCollection;
-        },
-
-        /**
          * @return {boolean}
          */
         isEmpty: function() {
@@ -227,13 +195,13 @@ require('bugpack').context("*", function(bugpack) {
          */
         putAll: function(map) {
             if (Class.doesExtend(map, Map)) {
-                var keys = map.getKeyArray();
+                var keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.get(key);
                     this.put(key, value);
                 });
             } else if (Class.doesExtend(map, DualMap)) {
-                var keys = map.getKeyArray();
+                var keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.getValue(key);
                     this.put(key, value);
@@ -270,6 +238,38 @@ require('bugpack').context("*", function(bugpack) {
                 });
             }
             return keyCollection;
+        },
+
+        /**
+         * @return {Array<*>}
+         */
+        toKeyArray: function() {
+            return this.keyValueHashTable.toKeyArray();
+        },
+
+        /**
+         * @return {Collection.<*>}
+         */
+        toKeyCollection: function() {
+            return new Collection(this.keyValueHashTable.toKeyArray());
+        },
+
+        /**
+         * @return {Array.<*>}
+         */
+        toValueArray: function() {
+            return this.keyValueHashTable.toValueArray();
+        },
+
+        /**
+         * @return {Collection.<*>}
+         */
+        toValueCollection: function() {
+            var valueCollection = new Collection();
+            this.keyValueHashTable.forEach(function(value) {
+                valueCollection.add(value);
+            });
+            return valueCollection;
         }
     });
 
