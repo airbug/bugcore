@@ -88,9 +88,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {function(Throwable=, *...=)} callback
+         * @return {Promise}
          */
         callback: function(callback) {
-            this.deferredPromise.callback(callback);
+            return this.deferredPromise.callback(callback);
         },
 
         /**
@@ -114,6 +115,15 @@ require('bugpack').context("*", function(bugpack) {
          */
         promise: function() {
             return this.getDeferredPromise();
+        },
+
+        /**
+         * @param {function(...):*=} fulfilledFunction
+         * @param {function(...):*=} rejectedFunction
+         * @return {Promise}
+         */
+        then: function(fulfilledFunction, rejectedFunction) {
+            return this.deferredPromise.then(fulfilledFunction, rejectedFunction);
         }
     });
 

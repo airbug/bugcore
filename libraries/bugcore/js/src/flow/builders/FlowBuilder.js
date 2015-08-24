@@ -53,6 +53,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @param {function(Throwable, *...=)=} callback
+         * @return {Promise}
+         */
+        callback: function(callback) {
+            this.execute(callback);
+        },
+
+        /**
          * @param {(Array.<*> | function(Throwable=))} flowArgs
          * @param {function(Throwable, *...=)=} callback
          */
@@ -83,7 +91,7 @@ require('bugpack').context("*", function(bugpack) {
                     deferred.resolve(args);
                 }
             });
-            return deferred.promise().then(fulfilledFunction, rejectedFunction);
+            return deferred.then(fulfilledFunction, rejectedFunction);
         },
 
 

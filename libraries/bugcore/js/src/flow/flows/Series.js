@@ -11,6 +11,7 @@
 
 //@Export('Series')
 
+//@Require('ArgUtil')
 //@Require('Class')
 //@Require('Flow')
 
@@ -25,8 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class   = bugpack.require('Class');
-    var Flow    = bugpack.require('Flow');
+    var ArgUtil     = bugpack.require('ArgUtil');
+    var Class       = bugpack.require('Class');
+    var Flow        = bugpack.require('Flow');
 
 
     //-------------------------------------------------------------------------------
@@ -57,6 +59,12 @@ require('bugpack').context("*", function(bugpack) {
             //-------------------------------------------------------------------------------
             // Private Properties
             //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {boolean}
+             */
+            this.first              = true;
 
             /**
              * @private
@@ -97,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         executeFlow: function(flowArgs) {
             this._super(flowArgs);
-            this.startNextFlow();
+            this.startNextFlow(flowArgs);
         },
 
 
@@ -110,26 +118,29 @@ require('bugpack').context("*", function(bugpack) {
          * @param {Throwable=} throwable
          */
         flowCallback: function(throwable) {
+            var args = ArgUtil.toArray(arguments);
+            args.shift();
             if (throwable) {
                 this.error(throwable);
             } else  {
-                this.startNextFlow();
+                this.startNextFlow(args);
             }
         },
 
         /**
          * @private
+         * @param {Array.<*>} passedArgs
          */
-        startNextFlow: function() {
+        startNextFlow: function(passedArgs) {
             var _this = this;
             this.index++;
             if (this.index < this.flowBuilderArray.length) {
                 var nextFlowBuilder = this.flowBuilderArray[this.index];
-                nextFlowBuilder.execute(this.getFlowArgs(), function(throwable) {
-                    _this.flowCallback(throwable);
+                nextFlowBuilder.execute(passedArgs, function() {
+                    _this.flowCallback.apply(_this, arguments);
                 });
             } else {
-                this.complete();
+                this.complete.apply(this, [null].concat(passedArgs));
             }
         }
     });
