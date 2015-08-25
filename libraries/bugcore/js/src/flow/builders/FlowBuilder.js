@@ -57,7 +57,17 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Promise}
          */
         callback: function(callback) {
-            this.execute(callback);
+            var deferred = Promises.deferred();
+            this.execute(function(throwable) {
+                if (!throwable) {
+                    var args = ArgUtil.toArray(arguments);
+                    args.shift();
+                    deferred.resolve.apply(deferred, args);
+                } else {
+                    deferred.reject(throwable);
+                }
+            });
+            return deferred.callback(callback);
         },
 
         /**
@@ -84,11 +94,11 @@ require('bugpack').context("*", function(bugpack) {
             var deferred = Promises.deferred();
             this.execute(function(throwable) {
                 if (!throwable) {
-                    deferred.reject(throwable);
-                } else {
                     var args = ArgUtil.toArray(arguments);
                     args.shift();
-                    deferred.resolve(args);
+                    deferred.resolve.apply(deferred, args);
+                } else {
+                    deferred.reject(throwable);
                 }
             });
             return deferred.then(fulfilledFunction, rejectedFunction);
