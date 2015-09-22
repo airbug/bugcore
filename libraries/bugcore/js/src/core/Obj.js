@@ -90,8 +90,6 @@ require('bugpack').context("*", function(bugpack) {
                 enumerable : false,
                 configurable : false
             });
-
-            IdGenerator.ensureId(this);
         },
 
 
@@ -103,6 +101,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Obj}
          */
         init: function() {
+            this.generateInternalId();
             return this;
         },
 
@@ -174,6 +173,18 @@ require('bugpack').context("*", function(bugpack) {
                 this._hashCode = HashUtil.hash(this);
             }
             return this._hashCode;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Protected Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @protected
+         */
+        generateInternalId: function() {
+            IdGenerator.ensureId(this);
         }
     });
 
