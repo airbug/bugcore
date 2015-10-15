@@ -70,7 +70,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(IMap.<K, V> | Object.<K, V>)} map
+         * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)} map
          */
         _constructor: function(map) {
 
@@ -212,14 +212,12 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(IMap.<K, V> | Object.<K, V>)} map
+         * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)} map
          */
         putAll: function(map) {
             var _this = this;
-            if (Class.doesImplement(map, IMap)) {
-                var keys = map.toKeyArray();
-                keys.forEach(function(key) {
-                    var value = map.get(key);
+            if (Class.doesImplement(map, IKeyValueIterable)) {
+                map.forIn(function(key, value) {
                     _this.put(key, value);
                 });
             } else if (TypeUtil.isObject(map)) {

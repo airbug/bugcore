@@ -14,8 +14,10 @@
 //@Require('Class')
 //@Require('Collection')
 //@Require('HashTable')
+//@Require('IKeyValueIterable')
 //@Require('Map')
 //@Require('Obj')
+//@Require('ObjectUtil')
 //@Require('TypeUtil')
 
 
@@ -29,12 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Collection  = bugpack.require('Collection');
-    var HashTable   = bugpack.require('HashTable');
-    var Map         = bugpack.require('Map');
-    var Obj         = bugpack.require('Obj');
-    var TypeUtil    = bugpack.require('TypeUtil');
+    var Class               = bugpack.require('Class');
+    var Collection          = bugpack.require('Collection');
+    var HashTable           = bugpack.require('HashTable');
+    var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
+    var Map                 = bugpack.require('Map');
+    var Obj                 = bugpack.require('Obj');
+    var ObjectUtil          = bugpack.require('ObjectUtil');
+    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -50,6 +54,8 @@ require('bugpack').context("*", function(bugpack) {
      *
      * @class
      * @extends {Obj}
+     * @implements {IKeyValueIterable.<K, V>}
+     * @template K, V
      */
     var BidiMap = Class.extend(Obj, {
 
@@ -62,8 +68,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
+         * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)} map
          */
-        _constructor: function() {
+        _constructor: function(map) {
 
             this._super();
 
@@ -74,15 +81,19 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {HashTable}
+             * @type {HashTable.<K, V>}
              */
             this.keyValueHashTable = new HashTable();
 
             /**
              * @private
-             * @type {HashTable}
+             * @type {HashTable.<V, K>}
              */
             this.valueKeyHashTable = new HashTable();
+
+            if (map) {
+                this.putAll(map);
+            }
         },
 
 
@@ -91,19 +102,26 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {number}
+         * @return {HashTable.<K, V>}
          */
-        getCount: function() {
-            return this.keyValueHashTable.getCount();
+        getKeyValueHashTable: function() {
+            return this.keyValueHashTable;
+        },
+
+        /**
+         * @return {HashTable.<V, K>}
+         */
+        getValueKeyHashTable: function() {
+            return this.valueKeyHashTable;
         },
 
 
         //-------------------------------------------------------------------------------
-        // Object Implementation
+        // Obj Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {BidiMap}
+         * @return {BidiMap.<K, V>}
          */
         clone: function() {
             var cloneMap = new BidiMap();
@@ -113,7 +131,34 @@ require('bugpack').context("*", function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Class methods
+        // IKeyValueIterable Implementation
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(V, K)} func
+         */
+        forEach: function(func) {
+            this.keyValueHashTable.forEach(func);
+        },
+
+        /**
+         * @param {function(K, V)} func
+         */
+        forIn: function(func) {
+            this.keyValueHashTable.forIn(func);
+        },
+
+        /**
+         * @override
+         * @return {IKeyValueIterator.<K, V>}
+         */
+        iterator: function() {
+            return this.keyValueHashTable.iterator();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
         //-------------------------------------------------------------------------------
 
         /**
@@ -141,15 +186,15 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {function(*)} func
+         * @return {number}
          */
-        forEach: function(func) {
-            this.keyValueHashTable.forEach(func);
+        getCount: function() {
+            return this.keyValueHashTable.getCount();
         },
 
         /**
-         * @param {string} value
-         * @return {(*|undefined)}
+         * @param {*} value
+         * @return {K}
          */
         getKey: function(value) {
             return this.valueKeyHashTable.get(value);
@@ -157,7 +202,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} key
-         * @return {(*|undefined)} Returns undefined if no value is found.
+         * @return {V} Returns undefined if no value is found.
          */
         getValue: function(key) {
             return this.keyValueHashTable.get(key);
@@ -171,9 +216,9 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {*} key
-         * @param {*} value
-         * @return {*}
+         * @param {K} key
+         * @param {V} value
+         * @return {V}
          */
         put: function(key, value) {
             var currentKey = this.valueKeyHashTable.put(value, key);
@@ -184,27 +229,24 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(Map|DualMap)} map
+         * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)} map
          */
         putAll: function(map) {
-            if (Class.doesExtend(map, Map)) {
-                var keys = map.toKeyArray();
-                keys.forEach(function(key) {
-                    var value = map.get(key);
-                    this.put(key, value);
+            var _this = this;
+            if (Class.doesImplement(map, IKeyValueIterable)) {
+                map.forIn(function(key, value) {
+                    _this.put(key, value);
                 });
-            } else if (Class.doesExtend(map, DualMap)) {
-                var keys = map.toKeyArray();
-                keys.forEach(function(key) {
-                    var value = map.getValue(key);
-                    this.put(key, value);
+            } else if (TypeUtil.isObject(map)) {
+                ObjectUtil.forIn(map, function(key, value) {
+                    _this.put(key, value);
                 });
             }
         },
 
         /**
          * @param {*} key
-         * @return {*}
+         * @return {V}
          */
         removeByKey: function(key) {
             var value = this.keyValueHashTable.remove(key);
@@ -216,7 +258,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {*} value
-         * @return {*}
+         * @return {K}
          */
         removeByValue: function(value) {
             var key = this.valueKeyHashTable.remove(value);
@@ -227,14 +269,14 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array<*>}
+         * @return {Array.<K>}
          */
         toKeyArray: function() {
             return this.keyValueHashTable.toKeyArray();
         },
 
         /**
-         * @return {Collection}
+         * @return {ICollection.<K>}
          */
         toKeyCollection: function() {
             var keyCollection = new Collection();
@@ -245,14 +287,14 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array<*>}
+         * @return {Array.<V>}
          */
         toValueArray: function() {
             return this.keyValueHashTable.toValueArray();
         },
 
         /**
-         * @return {Collection}
+         * @return {ICollection.<V>}
          */
         toValueCollection: function() {
             var valueCollection = new Collection();

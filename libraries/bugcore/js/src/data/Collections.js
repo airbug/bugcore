@@ -11,6 +11,7 @@
 
 //@Export('Collections')
 
+//@Require('BidiMap')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var BidiMap         = bugpack.require('BidiMap');
     var Class           = bugpack.require('Class');
     var Collection      = bugpack.require('Collection');
     var Exception       = bugpack.require('Exception');
@@ -59,6 +61,17 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
+
+
+    /**
+     * @static
+     * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)} map
+     * @return {BidiMap.<K, V>}
+     * @template K, V
+     */
+    Collections.bidiMap = function() {
+        return new BidiMap();
+    };
 
     /**
      * @static
@@ -100,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {?(IMap.<K, V> | Object.<K, V>)=} map
+     * @param {?(IKeyValueIterable.<K, V> | Object.<K, V>)=} map
      * @return {Map.<K, V>}
      * @template K, V
      */
@@ -165,7 +178,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {?(IMap.<K, V> | Object.<K, V>)=} map
+     * @param {(IKeyValueIterable.<K, V> | Object.<K, V>)=} map
      * @return {Map.<K, V>}
      * @template K, V
      */
