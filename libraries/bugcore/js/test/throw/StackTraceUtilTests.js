@@ -58,12 +58,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             function testFunction() {
                 var stackTraceArray = StackTraceUtil.generateStackFromCaller();
+
+                console.log("TEST:", stackTraceArray);
+
                 test.assertEqual(stackTraceArray[0], "function testFunction()",
                     "Assert that the 0 index function is 'testFunction'");
                 test.assertEqual(stackTraceArray[1], "function ()",
                     "Assert that the 1 index function is anonymous function");
-                test.assertEqual(stackTraceArray[2], "function listOnTimeout()",
-                    "Assert that the 2 index function is 'listOnTimeout'");
             }
             setTimeout(function() {
                 testFunction();
