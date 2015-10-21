@@ -48,8 +48,8 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {number} firstInteger
-     * @param {number} secondInteger
+     * @param {number} firstInteger (inclusive)
+     * @param {number} secondInteger  (inclusive)
      * @return {number}
      */
     RandomUtil.randomBetween = function(firstInteger, secondInteger) {

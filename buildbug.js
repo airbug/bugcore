@@ -46,9 +46,9 @@ var uglifyjs            = enableModule("uglifyjs");
 //-------------------------------------------------------------------------------
 
 var name                = "bugcore";
-var version             = "0.3.5";
+var version             = "0.3.6";
 var dependencies        = {
-    bugpack: "0.2.0"
+    bugpack: "0.2.1"
 };
 
 
@@ -422,12 +422,6 @@ buildTarget('prod').buildFlow(
                         bucket: "{{public-bucket}}"
                     }
                 }),
-               /* targetTask('npmConfigSet', {
-                    properties: {
-                        config: buildProject.getProperty("npmConfig")
-                    }
-                }),
-                targetTask('npmAddUser'),*/
                 targetTask('publishNodePackage', {
                     properties: {
                         packageName: "{{node.packageJson.name}}",

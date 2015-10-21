@@ -56,6 +56,7 @@
 //@Require('ProxyObject')
 //@Require('ProxyProperty')
 //@Require('Queue')
+//@Require('RandomUtil')
 //@Require('RateLimiter')
 //@Require('Semaphore')
 //@Require('Set')
@@ -123,6 +124,7 @@ require('bugpack').context("*", function(bugpack) {
     var ProxyObject         = bugpack.require('ProxyObject');
     var ProxyProperty       = bugpack.require('ProxyProperty');
     var Queue               = bugpack.require('Queue');
+    var RandomUtil          = bugpack.require('RandomUtil');
     var RateLimiter         = bugpack.require('RateLimiter');
     var Semaphore           = bugpack.require('Semaphore');
     var Set                 = bugpack.require('Set');
@@ -388,6 +390,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Queue)}
              */
             this.Queue              = Queue;
+
+            /**
+             * @type {function(new:RandomUtil)}
+             */
+            this.RandomUtil         = RandomUtil;
 
             /**
              * @type {function(new:RateLimiter)}
