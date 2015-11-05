@@ -19,111 +19,99 @@
 require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Polyfill
+    // Constructor
     //-------------------------------------------------------------------------------
 
-    var exists = !(typeof(Notifier) == 'undefined');
-
-    Notifier = exists ? Notifier : null;
-
-
-    if (!exists) {
-
-        //-------------------------------------------------------------------------------
-        // Constructor
-        //-------------------------------------------------------------------------------
+    /**
+     * @constructor
+     */
+    var Notifier = function() {
 
         /**
-         * @constructor
+         * @private
+         * @type {Array.<{
+         *      acceptList: Array.<string>,
+         *      callback: function(Array.<{
+         *          name: string,
+         *          object: Object,
+         *          oldValue: *,
+         *          type: string
+         *      }>)
+         * }>}
          */
-        Notifier = function() {
-
-            /**
-             * @private
-             * @type {Array.<{
-             *      acceptList: Array.<string>,
-             *      callback: function(Array.<{
-             *          name: string,
-             *          object: Object,
-             *          oldValue: *,
-             *          type: string
-             *      }>)
-             * }>}
-             */
-            this.observers = [];
-        };
+        this.observers = [];
+    };
 
 
-        //-------------------------------------------------------------------------------
-        // Prototype
-        //-------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------
+    // Prototype
+    //-------------------------------------------------------------------------------
 
-        Notifier.prototype = {
+    Notifier.prototype = {
 
-            /**
-             * @param {function(Array.<{
-             *      name: string,
-             *      object: Object,
-             *      oldValue: *,
-             *      type: string
-             * }>)} callback
-             * @param {Array.<string>=} acceptList
-             */
-            addObserver: function(callback, acceptList) {
-                if (!acceptList) {
-                    acceptList = ["add", "update", "delete", "reconfigure", "setPrototype", "preventExtensions"];
-                }
-                this.observers.push({
-                    acceptList: acceptList,
-                    callback: callback
-                });
-            },
-
-            /**
-             * @param {function(Array.<{
-             *      name: string,
-             *      object: Object,
-             *      oldValue: *,
-             *      type: string
-             * }>)} callback
-             */
-            removeObserver: function(callback) {
-                for (var i = 0, size = this.observers.length; i < size; i++) {
-                    var observer = this.observers[i];
-                    if (observer.callback === callback) {
-                        this.observers.splice(i, 1);
-                        break;
-                    }
-                }
-            },
-
-            /**
-             * @param {{
-             *      name: string,
-             *      object: Object,
-             *      oldValue: *,
-             *      type: string
-             * }} changeObject
-             */
-            notify: function (changeObject) {
-                var changes = [changeObject];
-                this.observers.forEach(function(observer) {
-                    if (observer.acceptList.indexOf(changeObject.type) > -1) {
-                        observer.callback(changes);
-                    }
-                });
-            },
-
-            /**
-             * @param {string} changeType
-             * @param {function():Object} changeMethod
-             */
-            performChange: function(changeType, changeMethod) {
-                var returnedChangeObject = changeMethod();
-                this.notifiy(returnedChangeObject);
+        /**
+         * @param {function(Array.<{
+         *      name: string,
+         *      object: Object,
+         *      oldValue: *,
+         *      type: string
+         * }>)} callback
+         * @param {Array.<string>=} acceptList
+         */
+        addObserver: function(callback, acceptList) {
+            if (!acceptList) {
+                acceptList = ["add", "update", "delete", "reconfigure", "setPrototype", "preventExtensions"];
             }
-        };
-    }
+            this.observers.push({
+                acceptList: acceptList,
+                callback: callback
+            });
+        },
+
+        /**
+         * @param {function(Array.<{
+         *      name: string,
+         *      object: Object,
+         *      oldValue: *,
+         *      type: string
+         * }>)} callback
+         */
+        removeObserver: function(callback) {
+            for (var i = 0, size = this.observers.length; i < size; i++) {
+                var observer = this.observers[i];
+                if (observer.callback === callback) {
+                    this.observers.splice(i, 1);
+                    break;
+                }
+            }
+        },
+
+        /**
+         * @param {{
+         *      name: string,
+         *      object: Object,
+         *      oldValue: *,
+         *      type: string
+         * }} changeObject
+         */
+        notify: function (changeObject) {
+            var changes = [changeObject];
+            this.observers.forEach(function(observer) {
+                if (observer.acceptList.indexOf(changeObject.type) > -1) {
+                    observer.callback(changes);
+                }
+            });
+        },
+
+        /**
+         * @param {string} changeType
+         * @param {function():Object} changeMethod
+         */
+        performChange: function(changeType, changeMethod) {
+            var returnedChangeObject = changeMethod();
+            this.notify(returnedChangeObject);
+        }
+    };
 
 
     //-------------------------------------------------------------------------------

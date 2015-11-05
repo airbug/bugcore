@@ -82,13 +82,29 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Tree}
              */
-            this.traceTree      = new Tree(new TreeNode(new Trace("", "ROOT_NODE")));
+            this.traceTree      = new Tree();
 
             /**
              * @private
              * @type {TreeNode}
              */
             this.currentNode    = this.traceTree.getRootNode();
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Tracer}
+         */
+        init: function() {
+            var _this = this._super();
+            if (_this) {
+                _this.traceTree.setRootNode(new TreeNode(new Trace("", "ROOT_NODE")));
+            }
+            return _this;
         },
 
 
