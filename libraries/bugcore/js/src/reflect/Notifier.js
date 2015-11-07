@@ -11,6 +11,9 @@
 
 //@Export('Notifier')
 
+//@Require('Class')
+//@Require('Obj')
+
 
 //-------------------------------------------------------------------------------
 // Context
@@ -19,35 +22,73 @@
 require('bugpack').context("*", function(bugpack) {
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // BugPack
+    //-------------------------------------------------------------------------------
+
+    var Class                   = bugpack.require('Class');
+    var Obj                     = bugpack.require('Obj');
+
+
+    //-------------------------------------------------------------------------------
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructor
+     * @class
+     * @extends {Obj}
      */
-    var Notifier = function() {
+    var Notifier = Class.extend(Obj, /** @lends {Notifier.prototype} */{
+
+        _name: "Notifier",
+
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
 
         /**
-         * @private
-         * @type {Array.<{
-         *      acceptList: Array.<string>,
-         *      callback: function(Array.<{
-         *          name: string,
-         *          object: Object,
-         *          oldValue: *,
-         *          type: string
-         *      }>)
-         * }>}
+         * @constructs
          */
-        this.observers = [];
-    };
+        _constructor: function() {
+
+            this._super();
 
 
-    //-------------------------------------------------------------------------------
-    // Prototype
-    //-------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
 
-    Notifier.prototype = {
+            /**
+             * @private
+             * @type {Array.<{
+             *      acceptList: Array.<string>,
+             *      callback: function(Array.<{
+             *          name: string,
+             *          object: Object,
+             *          oldValue: *,
+             *          type: string
+             *      }>)
+             * }>}
+             */
+            this.observers = [];
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Array.<{acceptList: Array.<string>, callback: (function(Array.<{name: string, object: Object, oldValue: *, type: string}>))}>}
+         */
+        getObservers: function() {
+            return this.observers;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
         /**
          * @param {function(Array.<{
@@ -111,7 +152,7 @@ require('bugpack').context("*", function(bugpack) {
             var returnedChangeObject = changeMethod();
             this.notify(returnedChangeObject);
         }
-    };
+    });
 
 
     //-------------------------------------------------------------------------------

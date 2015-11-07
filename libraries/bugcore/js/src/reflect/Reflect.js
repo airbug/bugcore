@@ -11,7 +11,9 @@
 
 //@Export('Reflect')
 
-//@Require('Object')
+//@Require('Class')
+//@Require('Notifier')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -24,18 +26,84 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Object          = bugpack.require('Object');
+    var Class       = bugpack.require('Class');
+    var Notifier    = bugpack.require('Notifier');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
-    // Constructor
+    // Declare Class
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructor
+     * @class
+     * @extends {Obj}
      */
-    var Reflect = function() {};
+    var Reflect = Class.extend(Obj, /** @lends {Reflect.prototype} */{
 
+        _name: "Reflect",
+
+
+        //-------------------------------------------------------------------------------
+        // Constructor
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @constructs
+         */
+        _constructor: function() {
+
+            this._super();
+
+
+            //-------------------------------------------------------------------------------
+            // Private Properties
+            //-------------------------------------------------------------------------------
+
+            /**
+             * @private
+             * @type {Notifier}
+             */
+            this.notifier = null;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Notifier}
+         */
+        getNotifier: function() {
+            if (!this.notifier) {
+                this.notifier = new Notifier();
+            }
+            return this.notifier;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function()} callback
+         * @param {Array.<string>} acceptList
+         */
+        observe: function(callback, acceptList) {
+            var notifier = this.getNotifier();
+            notifier.addObserver(callback, acceptList);
+        },
+
+        /**
+         * @param {function()} callback
+         */
+        unobserve: function(callback) {
+            var notifier = this.getNotifier();
+            notifier.removeObserver(callback);
+        }
+    });
 
     //-------------------------------------------------------------------------------
     // Static Methods
