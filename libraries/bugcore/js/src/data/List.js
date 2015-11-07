@@ -12,14 +12,16 @@
 //@Export('List')
 
 //@Require('ArgumentBug')
-//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
+//@Require('IArrayable')
 //@Require('ICollection')
 //@Require('IIndexValueIterable')
 //@Require('IList')
 //@Require('Obj')
+//@Require('ReflectArray')
+//@Require('ReflectArrayIterator')
 //@Require('TypeUtil')
 
 
@@ -34,14 +36,16 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var ArgumentBug             = bugpack.require('ArgumentBug');
-    var ArrayIterator           = bugpack.require('ArrayIterator');
     var Class                   = bugpack.require('Class');
     var Collection              = bugpack.require('Collection');
     var Exception               = bugpack.require('Exception');
+    var IArrayable              = bugpack.require('IArrayable');
     var ICollection             = bugpack.require('ICollection');
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var IList                   = bugpack.require('IList');
     var Obj                     = bugpack.require('Obj');
+    var ReflectArray            = bugpack.require('ReflectArray');
+    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
     var TypeUtil                = bugpack.require('TypeUtil');
 
 
@@ -79,9 +83,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {ReflectArray.<I>}
              */
-            this.itemArray = [];
+            this.itemReflectArray = new ReflectArray([]);
         },
 
 
@@ -90,10 +94,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Array.<I>} Array is in the same order as the list
+         * @return {ReflectArray.<I>} Array is in the same order as the list
          */
-        getItemArray: function() {
-            return this.itemArray;
+        getItemReflectArray: function() {
+            return this.itemReflectArray;
         },
 
 
@@ -128,7 +132,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(item) {
             this._super(item);
-            this.itemArray.push(item);
+            this.itemReflectArray.push(item);
             return true;
         },
 
@@ -151,7 +155,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Array.<>}
          */
         toArray: function() {
-            return Obj.clone(this.itemArray);
+            return Obj.clone(this.itemReflectArray.getArray());
         },
 
 
@@ -187,7 +191,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {IIndexValueIterator.<V>}
          */
         iterator: function() {
-            return new ArrayIterator(this.itemArray);
+            return new ReflectArrayIterator(this.itemReflectArray);
         },
 
 
@@ -206,7 +210,7 @@ require('bugpack').context("*", function(bugpack) {
 
             if (index <= this.getCount()) {
                 this.getHashStore().add(item);
-                this.itemArray.splice(index, 0, item);
+                this.itemReflectArray.splice(index, 0, item);
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
             }
@@ -214,13 +218,20 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {number} index
-         * @param {(ICollection.<I> | Array.<*>)} items
+         * @param {(IArrayable.<I> | Array.<*>)} items
          */
         addAllAt: function(index, items) {
-            if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
+            /** @type {(ICollection.<*> | Array.<*>)} */
+            var collection = null;
+            if ((Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection))) {
+                collection = new Collection(items);
+            } else {
+                collection = /** @type {(ICollection.<*> | Array.<*>)} */(items);
+            }
+            if (Class.doesImplement(collection, ICollection) || TypeUtil.isArray(collection)) {
                 var insertingIndex = index;
                 var _this = this;
-                items.forEach(function(value) {
+                collection.forEach(function(value) {
                     _this.addAt(insertingIndex, value);
 
                     // NOTE BRN: We increment the inserting index so that the collection is inserted in the correct order.
@@ -228,7 +239,7 @@ require('bugpack').context("*", function(bugpack) {
                     insertingIndex++;
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
             }
         },
 
@@ -238,7 +249,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.itemArray[index];
+                return this.itemReflectArray.getAt(index);
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
             }
@@ -249,8 +260,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.itemArray.length; i < size; i++) {
-                if (Obj.equals(this.itemArray[i], value)) {
+            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
+                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -262,8 +273,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.itemArray.length, i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.itemArray[i], value)) {
+            for (var size = this.itemReflectArray.getLength(), i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -274,7 +285,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {I} The removed item
          */
         pop: function() {
-            var lastIndex = this.itemArray.length - 1;
+            var lastIndex = this.itemReflectArray.getLength() - 1;
             return this.removeAt(lastIndex);
         },
 
@@ -300,7 +311,7 @@ require('bugpack').context("*", function(bugpack) {
             var value = this.getAt(index);
             var result = this.getHashStore().remove(value);
             if (result) {
-                this.itemArray.splice(index, 1);
+                this.itemReflectArray.splice(index, 1);
             }
             return value;
         },

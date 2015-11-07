@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Obj')
+//@Require('ReflectArray')
 
 
 //-------------------------------------------------------------------------------
@@ -25,8 +26,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class   = bugpack.require('Class');
-    var Obj     = bugpack.require('Obj');
+    var Class           = bugpack.require('Class');
+    var Obj             = bugpack.require('Obj');
+    var ReflectArray    = bugpack.require('ReflectArray');
 
 
     //-------------------------------------------------------------------------------
@@ -63,13 +65,13 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {number}
              */
-            this.count      = 0;
+            this.count              = 0;
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {ReflectArray.<I>}
              */
-            this.itemArray  = [];
+            this.itemReflectArray   = new ReflectArray([]);
         },
 
 
@@ -85,10 +87,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Array.<I>}
+         * @return {ReflectArray.<I>}
          */
-        getItemArray: function() {
-            return this.itemArray;
+        getItemReflectArray: function() {
+            return this.itemReflectArray;
         },
 
 
@@ -103,8 +105,8 @@ require('bugpack').context("*", function(bugpack) {
         equals: function(value) {
             if (Class.doesExtend(value, HashStoreNode)) {
                 if (this.getCount() === value.getCount()) {
-                    for (var i = 0, size = this.itemArray.length; i < size; i++) {
-                        var itemArrayValue = this.itemArray[i];
+                    for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
+                        var itemArrayValue = this.itemReflectArray.getAt(i);
                         if (!value.containsValue(itemArrayValue)) {
                             return false;
                         }
@@ -122,7 +124,7 @@ require('bugpack').context("*", function(bugpack) {
             var output = "{";
             output += "  count:" + this.getCount() + ",\n";
             output += "  values:[\n";
-            this.itemArray.forEach(function(item) {
+            this.itemReflectArray.forEach(function(item) {
                 output += item + ",";
             });
             output += "  ]";
@@ -139,7 +141,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {I} item
          */
         add: function(item) {
-            this.itemArray.push(item);
+            this.itemReflectArray.push(item);
             this.count++;
         },
 
@@ -147,8 +149,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} item
          */
         contains: function(item) {
-            for (var i = 0, size = this.itemArray.length; i < size; i++) {
-                var itemArrayValue = this.itemArray[i];
+            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemReflectArray.getAt(i);
                 if (Obj.equals(item, itemArrayValue)) {
                     return true;
                 }
@@ -162,8 +164,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         countValue: function(value) {
             var count = 0;
-            for (var i = 0, size = this.itemArray.length; i < size; i++) {
-                var itemArrayValue = this.itemArray[i];
+            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemReflectArray.getAt(i);
                 if (Obj.equals(value, itemArrayValue)) {
                     count++;
                 }
@@ -176,10 +178,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         remove: function(item) {
-            for (var i = 0, size = this.itemArray.length; i < size; i++) {
-                var itemArrayValue = this.itemArray[i];
+            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemReflectArray.getAt(i);
                 if (Obj.equals(item, itemArrayValue)) {
-                    this.itemArray.splice(i, 1);
+                    this.itemReflectArray.splice(i, 1);
                     this.count--;
                     return true;
                 }

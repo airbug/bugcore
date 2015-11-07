@@ -11,9 +11,12 @@
 
 //@Export('WeightedList')
 
+//@Require('ArgumentBug')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
+//@Require('IArrayable')
+//@Require('ICollection')
 //@Require('List')
 //@Require('Obj')
 //@Require('TypeUtil')
@@ -31,9 +34,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgumentBug             = bugpack.require('ArgumentBug');
     var Class                   = bugpack.require('Class');
     var Collection              = bugpack.require('Collection');
     var Exception               = bugpack.require('Exception');
+    var IArrayable              = bugpack.require('IArrayable');
+    var ICollection             = bugpack.require('ICollection');
     var List                    = bugpack.require('List');
     var Obj                     = bugpack.require('Obj');
     var TypeUtil                = bugpack.require('TypeUtil');
@@ -47,7 +53,8 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {List}
+     * @extends {List.<I>}
+     * @template I
      */
     var WeightedList = Class.extend(List, {
 
@@ -60,11 +67,10 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {(Collection.<*> | Array.<*>)} items
          */
-        _constructor: function(items) {
+        _constructor: function() {
 
-            this._super(items);
+            this._super();
 
 
             //-------------------------------------------------------------------------------
@@ -121,14 +127,23 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {Collection} collection
+         * @param {(IArrayable.<I> | Array.<I>)} items
          */
-        addAll: function(collection) {
+        addAll: function(items) {
+            /** @type {(ICollection.<*> | Array.<*>)} */
+            var collection = null;
+            if ((Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection))) {
+                collection = new Collection(items);
+            } else {
+                collection = /** @type {(ICollection.<*> | Array.<*>)} */(items);
+            }
             var _this = this;
-            if (Class.doesExtend(collection, Collection)) {
+            if (Class.doesImplement(collection, ICollection)) {
                 if (Class.doesExtend(collection, WeightedList)) {
-                    for (var i = 0, size = collection.getItemArray().length; i < size; i++) {
-                        this.add(collection.getItemArray()[i].getValue(), collection.getItemArray()[i].getWeight());
+                    /** @type {WeightedList} */
+                    var weightedList = /** @type {WeightedList} */(collection);
+                    for (var i = 0, size = weightedList.getItemReflectArray().getLength(); i < size; i++) {
+                        this.add(weightedList.getItemReflectArray().getAt(i).getValue(), weightedList.getItemReflectArray().getAt(i).getWeight());
                     }
                 } else {
                     collection.forEach(function(value) {
@@ -136,7 +151,7 @@ require('bugpack').context("*", function(bugpack) {
                     });
                 }
             } else {
-                throw new Exception("collection must be an instance of Collection");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
             }
         },
 
@@ -165,7 +180,7 @@ require('bugpack').context("*", function(bugpack) {
         remove: function(value) {
             var index = this.indexOfFirst(value);
             if (index > -1) {
-                var firstValue = this.getItemArray()[index];
+                var firstValue = this.getItemReflectArray().getAt(index);
                 this.totalWeight -= firstValue.getWeight();
                 this.removeAt(index);
                 return true;
@@ -192,26 +207,35 @@ require('bugpack').context("*", function(bugpack) {
                 var weightedListNode = new WeightedListNode(value, weight);
                 this.getHashStore().add(weightedListNode);
                 this.count++;
-                this.getItemArray().splice(index, 0, weightedListNode);
+                this.getItemReflectArray().splice(index, 0, weightedListNode);
                 this.totalWeight += weight;
             } else {
-                throw new Error("Index out of bounds");
+                throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
             }
         },
 
         /**
          * @param {number} index
-         * @param {Collection} collection
+         * @param {(IArrayable.<I> | Array.<I>)} items
          * @param {number} weight
          */
-        addAllAt: function(index, collection, weight) {
-            if (Class.doesExtend(collection, Collection)) {
+        addAllAt: function(index, items, weight) {
+            var _this       = this;
+            /** @type {(ICollection.<*> | Array.<*>)} */
+            var collection  = null;
+            if ((Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection))) {
+                collection = new Collection(items);
+            } else {
+                collection = /** @type {(ICollection.<*> | Array.<*>)} */(items);
+            }
+            if (Class.doesImplement(collection, ICollection) || TypeUtil.isArray(collection)) {
                 var insertingIndex = index;
-                var _this = this;
 
                 if (Class.doesExtend(collection, WeightedList)) {
-                    for (var i = 0, size = collection.getItemArray().length; i < size; i++) {
-                        this.addAt(insertingIndex, collection.getItemArray()[i].getValue(), collection.getItemArray()[i].getWeight());
+                    /** @type {WeightedList} */
+                    var weightedList = /** @type {WeightedList} */(collection);
+                    for (var i = 0, size = weightedList.getItemReflectArray().getLength(); i < size; i++) {
+                        this.addAt(insertingIndex, weightedList.getItemReflectArray().getAt(i).getValue(), weightedList.getItemReflectArray().getAt(i).getWeight());
 
                         // NOTE BRN: We increment the inserting index so that the collection is inserted in the correct order.
 
@@ -227,7 +251,7 @@ require('bugpack').context("*", function(bugpack) {
                     });
                 }
             } else {
-                throw new Error("collection must be an instance of Collection");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
             }
         },
 
@@ -237,7 +261,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.getItemArray()[index].getValue();
+                return this.getItemReflectArray().getAt(index).getValue();
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
             }
@@ -248,8 +272,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.getItemArray().length; i < size; i++) {
-                if (Obj.equals(this.getItemArray()[i].getValue(), value)) {
+            for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
+                if (Obj.equals(this.getItemReflectArray().getAt(i).getValue(), value)) {
                     return i;
                 }
             }
@@ -261,8 +285,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.getItemArray().length, i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.getItemArray()[i].getValue(), value)) {
+            for (var size = this.getItemReflectArray().getLength(), i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.getItemReflectArray().getAt(i).getValue(), value)) {
                     return i;
                 }
             }
@@ -283,12 +307,12 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeAt: function(index) {
             if (index < this.getCount()) {
-                var weightedListNode = this.getItemArray()[index];
+                var weightedListNode = this.getItemReflectArray().getAt(index);
                 var result = this.getHashStore().remove(weightedListNode);
                 if (result) {
                     this.count--;
                     this.totalWeight -= weightedListNode.getWeight();
-                    this.getItemArray().splice(index, 1);
+                    this.getItemReflectArray().splice(index, 1);
                 }
                 return weightedListNode.getValue();
             } else {
@@ -312,8 +336,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toArray: function() {
             var itemArray = [];
-            for (var i = 0, size = this.getItemArray().length; i < size; i++) {
-                itemArray.push(this.getItemArray()[i].getValue());
+            for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
+                itemArray.push(this.getItemReflectArray().getAt(i).getValue());
             }
             return itemArray;
         },
@@ -330,8 +354,8 @@ require('bugpack').context("*", function(bugpack) {
         getAtWeight: function(weight) {
             if (weight <= this.getTotalWeight()) {
                 var currentWeight = 0;
-                for (var i = 0, size = this.getItemArray().length; i < size; i++) {
-                    var weightedListNode = this.getItemArray()[i];
+                for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
+                    var weightedListNode = this.getItemReflectArray().getAt(i);
                     currentWeight += weightedListNode.getWeight();
                     if (currentWeight >= weight) {
                         return weightedListNode.getValue();

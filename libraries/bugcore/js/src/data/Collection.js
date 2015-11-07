@@ -94,17 +94,18 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {(ICollection.<I> | Array.<I>)=} items
+         * @param {(IArrayable.<I> | Array.<I>)=} items
          * @return {Collection.<I>}
          */
         init: function(items) {
+            var _this = this._super();
 
-            this._super();
-
-            if (items) {
-                this.addAll(items);
+            if (_this) {
+                if (items) {
+                    this.addAll(items);
+                }
             }
-            return this;
+            return _this;
         },
 
 
@@ -147,7 +148,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(ICollection.<I> | Array.<I>)} items
+         * @param {(IArrayable.<I> | Array.<I>)} items
          */
         addAll: function(items) {
             if (Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection)) {
@@ -184,13 +185,13 @@ require('bugpack').context("*", function(bugpack) {
          * If you want to check for exact equality, use the equals function.
          * Empty collections are always contained by another collection
          * e.g. Collection[0,1] containsAll Collection[] is true
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IArrayable.<*> | Array.<*>)} values
          * @return {boolean}
          */
         containsAll: function(values) {
-            if (Class.doesImplement(values, ICollection) || TypeUtil.isArray(values)) {
+            if (Class.doesImplement(values, IArrayable) || TypeUtil.isArray(values)) {
                 var valueArray = values;
-                if (Class.doesImplement(values, ICollection)) {
+                if (Class.doesImplement(values, IArrayable)) {
                     valueArray = values.toArray();
                 }
                 for (var i = 0, size = valueArray.length; i < size; i++) {
@@ -211,7 +212,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         containsEqual: function(values) {
             var collection = undefined;
-            if (TypeUtil.isArray(values)) {
+            if (TypeUtil.isArray(values) || (Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
                 collection = new Collection(values);
             } else {
                 collection = values;
@@ -229,7 +230,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return false;
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement IArrayable or be an Array");
             }
         },
 
@@ -264,12 +265,19 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IArrayable.<*> | Array.<*>)} values
          */
         removeAll: function(values) {
-            if (Class.doesImplement(values, ICollection) || TypeUtil.isArray(values)) {
+            /** @type {ICollection.<*> | Array.<*>} */
+            var collection = null;
+            if ((Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
+                collection = new Collection(values);
+            } else {
+                collection = /** @type {ICollection.<*>} */(values);
+            }
+            if (Class.doesImplement(collection, ICollection) || TypeUtil.isArray(collection)) {
                 var _this = this;
-                values.forEach(function(value) {
+                collection.forEach(function(value) {
                     _this.remove(value);
                 });
             } else {
@@ -278,21 +286,25 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IArrayable.<*> | Array.<*>)} values
          */
         retainAll: function(values) {
-            if (TypeUtil.isArray(values)) {
-                values = new Collection(values);
+            /** @type {ICollection} */
+            var collection = null;
+            if (TypeUtil.isArray(values) || (Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
+                collection = new Collection(values);
+            } else {
+                collection = /** @type {ICollection} */(values);
             }
-            if (Class.doesImplement(values, ICollection)) {
+            if (Class.doesImplement(collection, ICollection)) {
                 var _this = this;
                 _this.forEach(function(value) {
-                    if (!values.contains(value)) {
+                    if (!collection.contains(value)) {
                         _this.remove(value);
                     }
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement IArrayable or be an Array");
             }
         },
 

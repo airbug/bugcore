@@ -12,8 +12,6 @@
 //@Export('ObjectUtil')
 
 //@Require('FunctionUtil')
-//@Require('Object')
-//@Require('Reflect')
 //@Require('TypeUtil')
 
 
@@ -28,8 +26,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var FunctionUtil    = bugpack.require('FunctionUtil');
-    var Object          = bugpack.require('Object');
-    var Reflect         = bugpack.require('Reflect');
     var TypeUtil        = bugpack.require('TypeUtil');
 
 
@@ -91,7 +87,7 @@ require('bugpack').context("*", function(bugpack) {
      * }} description
      */
     ObjectUtil.defineProperty = function(object, propertyName, description) {
-        Reflect.defineProperty(object, propertyName, description);
+        Object.defineProperty(object, propertyName, description);
     };
 
     /**
@@ -106,7 +102,15 @@ require('bugpack').context("*", function(bugpack) {
         if (!TypeUtil.isString(propertyName)) {
             throw new TypeError("parameter 'propertyName' must be an string");
         }
-        Reflect.deleteProperty(object, propertyName);
+        try {
+            if (ObjectUtil.hasProperty(object, propertyName)) {
+                delete object[propertyName];
+                return true;
+            }
+        } catch(error) {
+            //do nothing
+        }
+        return false;
     };
 
     /**
@@ -381,7 +385,7 @@ require('bugpack').context("*", function(bugpack) {
         if (!TypeUtil.isObject(object)) {
             throw new TypeError("'object' must be an Object");
         }
-        return Reflect.has(object, propertyName)
+        return (propertyName in object);
     };
 
     /**
@@ -438,7 +442,7 @@ require('bugpack').context("*", function(bugpack) {
     ObjectUtil.merge = function(from, into) {
         if (TypeUtil.isObject(from) && TypeUtil.isObject(into)) {
             ObjectUtil.forIn(from, function(prop, value) {
-                Reflect.set(into, prop, from[prop]);
+                ObjectUtil.setProperty(into, prop, from[prop]);
             });
             return into;
         } else {
@@ -486,10 +490,10 @@ require('bugpack').context("*", function(bugpack) {
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
             if (i === size - 1) {
-                Reflect.set(propertyValue, part, value);
+                ObjectUtil.setProperty(propertyValue, part, value);
             } else {
                 if (!TypeUtil.isObject(propertyValue[part])) {
-                    Reflect.set(propertyValue, part, {});
+                    ObjectUtil.setProperty(propertyValue, part, {});
                 }
                 propertyValue = propertyValue[part];
             }
@@ -509,7 +513,12 @@ require('bugpack').context("*", function(bugpack) {
         if (!TypeUtil.isString(propertyName)) {
             throw new TypeError("parameter 'propertyName' must be an string");
         }
-        Reflect.set(object, propertyName, value);
+        try {
+            object[propertyName] = value;
+            return true;
+        } catch(error) {
+            return false;
+        }
     };
 
     /**

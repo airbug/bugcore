@@ -17,7 +17,7 @@
 //@Require('IArrayable')
 //@Require('IIterable')
 //@Require('Obj')
-//@Require('ObjectUtil')
+//@Require('ReflectObject')
 
 
 //-------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var IArrayable          = bugpack.require('IArrayable');
     var IIterable           = bugpack.require('IIterable');
     var Obj                 = bugpack.require('Obj');
-    var ObjectUtil          = bugpack.require('ObjectUtil');
+    var ReflectObject       = bugpack.require('ReflectObject');
 
 
     //-------------------------------------------------------------------------------
@@ -79,9 +79,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Object.<string, HashStoreNode.<I>>}
+             * @type {ReflectObject.<string, HashStoreNode.<I>>}
              */
-            this.hashStoreNodeObject = {};
+            this.hashStoreNodeReflectObject = new ReflectObject({});
         },
 
 
@@ -97,10 +97,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {Object.<string, HashStoreNode.<I>>}
+         * @return {ReflectObject.<string, HashStoreNode.<I>>}
          */
-        getHashStoreNodeObject: function() {
-            return this.hashStoreNodeObject;
+        getHashStoreNodeReflectObject: function() {
+            return this.hashStoreNodeReflectObject;
         },
 
 
@@ -113,8 +113,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toArray: function() {
             var array = [];
-            ObjectUtil.forInOwn(this.hashStoreNodeObject, function(valueHashCode, hashStoreNode) {
-                array = array.concat(hashStoreNode.getItemArray());
+            this.hashStoreNodeReflectObject.forIn(function(valueHashCode, hashStoreNode) {
+                array = array.concat(hashStoreNode.getItemReflectArray().getArray());
             });
             return array;
         },
@@ -158,11 +158,11 @@ require('bugpack').context("*", function(bugpack) {
          * @param {I} item
          */
         add: function(item) {
-            var hashCode = Obj.hashCode(item);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
+            var hashCode = Obj.hashCode(item).toString();
+            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(hashCode);
             if (!hashStoreNode) {
                 hashStoreNode = new HashStoreNode();
-                this.hashStoreNodeObject[hashCode] = hashStoreNode;
+                this.hashStoreNodeReflectObject.setProperty(hashCode, hashStoreNode);
             }
             hashStoreNode.add(item);
             this.count++;
@@ -184,8 +184,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         contains: function(item) {
-            var hashCode = Obj.hashCode(item);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
+            var hashCode        = Obj.hashCode(item).toString();
+            var hashStoreNode   = this.hashStoreNodeReflectObject.getProperty(hashCode);
             if (hashStoreNode) {
                 return hashStoreNode.contains(item);
             }
@@ -197,8 +197,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         countValue: function(value) {
-            var valueHashCode = Obj.hashCode(value);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, valueHashCode.toString());
+            var valueHashCode = Obj.hashCode(value).toString();
+            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(valueHashCode);
             if (hashStoreNode) {
                 return hashStoreNode.countValue(value);
             }
@@ -217,15 +217,15 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         remove: function(item) {
-            var hashCode = Obj.hashCode(item);
-            var hashStoreNode = ObjectUtil.getOwnProperty(this.hashStoreNodeObject, hashCode.toString());
+            var hashCode = Obj.hashCode(item).toString();
+            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(hashCode);
             var result = false;
             if (hashStoreNode) {
                 result = hashStoreNode.remove(item);
                 if (result) {
                     this.count--;
                     if (hashStoreNode.getCount() === 0) {
-                        ObjectUtil.deleteProperty(this.hashStoreNodeObject, hashCode.toString());
+                        this.hashStoreNodeReflectObject.deleteProperty(hashCode);
                     }
                 }
             }

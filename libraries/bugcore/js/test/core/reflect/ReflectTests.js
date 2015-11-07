@@ -12,7 +12,6 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('Object')
 //@Require('Reflect')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
@@ -30,7 +29,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Object      = bugpack.require('Object');
     var Reflect     = bugpack.require('Reflect');
     var TypeUtil    = bugpack.require('TypeUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
@@ -51,17 +49,15 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) The Reflect.has method
+     * 1) Instantiation of Reflect instance
      */
-    var reflectHasTest = {
+    var reflectInstantiationTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.object = {
-                A: "ValueA"
-            };
+            this.reflect = new Reflect();
         },
 
 
@@ -69,10 +65,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(Reflect.has(this.object, "A"), true,
-                "Assert Reflect.has returns true for a property that exists");
-            test.assertEqual(Reflect.has(this.object, "B"), false,
-                "Assert Reflect.has returns false for a property that does NOT exist");
+            test.assertTrue(Class.doesExtend(this. reflect, Reflect),
+                "Assert instance of Reflect");
+            test.assertEqual(this.reflect.hasNotifier(), false,
+                "Assert Reflect does not start with a Notifier");
         }
     };
 
@@ -81,12 +77,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.tag(reflectHasTest).with(
-        test().name("Reflect - has() test")
+    bugmeta.tag(reflectInstantiationTest).with(
+        test().name("Reflect - instantiation test")
     );
 });
-
-
-//TODO BRN: Add a test that ensures that Reflect.apply method still works if the target.apply method has been overridden
-
-//TODO BRN: Add a test that ensures that Reflect.construct method still works if the target.apply method has been overridden

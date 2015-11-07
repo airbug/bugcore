@@ -12,7 +12,6 @@
 //@Export('ReflectArray')
 
 //@Require('Class')
-//@Require('Obj')
 //@Require('Reflect')
 
 
@@ -26,9 +25,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Obj             = bugpack.require('Obj');
-    var Reflect
+    var Class       = bugpack.require('Class');
+    var Reflect     = bugpack.require('Reflect');
 
 
     //-------------------------------------------------------------------------------
@@ -37,10 +35,10 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
+     * @extends {Reflect}
      * @template {V}
      */
-    var ReflectArray = Class.extend(Obj, /** @lends {ReflectArray.prototype} */{
+    var ReflectArray = Class.extend(Reflect, /** @lends {ReflectArray.prototype} */{
 
         _name: "ReflectArray",
 
@@ -81,128 +79,161 @@ require('bugpack').context("*", function(bugpack) {
             return this.array;
         },
 
+        /**
+         * @return {number}
+         */
+        getLength: function() {
+            return this.array.length;
+        },
+
 
         //-------------------------------------------------------------------------------
         // Public Methods
         //-------------------------------------------------------------------------------
 
+        /**
+         * @param {function(V, number)} func
+         */
+        forEach: function(func) {
+            this.array.forEach(func);
+        },
 
-        // Production steps of ECMA-262, Edition 5, 15.4.4.17
-        // Reference: http://es5.github.io/#x15.4.4.17
-        if (!Array.prototype.some) {
-        Array.prototype.some = function(fun/*, thisArg*/) {
-            'use strict';
+        /**
+         * @param {number} index
+         * @returns {V}
+         */
+        getAt: function(index) {
+            return this.array[index];
+        },
 
-            if (this == null) {
-                throw new TypeError('Array.prototype.some called on null or undefined');
-            }
+        /**
+         * @param {V} value
+         * @returns {number}
+         */
+        indexOf: function(value) {
+            return this.array.indexOf(value);
+        },
 
-            if (typeof fun !== 'function') {
-                throw new TypeError();
-            }
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-
-            var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-            for (var i = 0; i < len; i++) {
-                if (i in t && fun.call(thisArg, t[i], i, t)) {
-                    return true;
+        /**
+         * @return {V}
+         */
+        pop: function() {
+            var length = this.getLength();
+            if (length > 0) {
+                var oldValue = this.array.pop();
+                if (this.hasNotifier()) {
+                    this.getNotifier().notify({
+                        index: length - 1,
+                        object: this,
+                        type: "splice",
+                        removed: [oldValue]
+                    });
                 }
+                return oldValue;
             }
+            return undefined;
+        },
 
-            return false;
-        };
-    }
+        /**
+         * @param {V...} itemN
+         * @return {number}
+         */
+        push: function(itemN) {
+            var length          = this.getLength();
+            var returnedLength  = this.array.push.apply(this.array, arguments);
+            if (this.hasNotifier()) {
+                this.getNotifier().notify({
+                    index: length - 1,
+                    object: this,
+                    type: "splice",
+                    addedCount: returnedLength - length
+                });
+            }
+            return returnedLength;
+        },
 
-
-
-    //if (!Array.observe) {
-    Array.observe = function(obj, callback, acceptList) {
-        var notifier = Array.getNotifier(obj);
-        notifier.addObserver(callback, acceptList);
-    };
-
-    var oldPop = Array.prototype.pop;
-    Array.prototype.pop = function() {
-        var length = this.length;
-        if (length > 0) {
-            var oldValue = oldPop.call(this);
-            Array.getNotifier(this).notify({
-                index: length - 1,
-                object: this,
-                type: "splice",
-                removed: [oldValue]
-            });
+        /**
+         * @param {number} index
+         * @param {V} value
+         * @returns {V}
+         */
+        setAt: function(index, value) {
+            var oldValue = this.array[index];
+            this.array[index] = value;
+            if (this.hasNotifier()) {
+                this.getNotifier().notify({
+                    index: index,
+                    object: this,
+                    removed: [oldValue],
+                    type: "splice"
+                });
+            }
             return oldValue;
+        },
+
+        /**
+         * @return {V}
+         */
+        shift: function() {
+            var length = this.getLength();
+            if (length > 0) {
+                var oldValue = this.array.shift();
+                if (this.hasNotifier()) {
+                    this.getNotifier().notify({
+                        index: 0,
+                        object: this,
+                        removed: [oldValue],
+                        type: "splice"
+                    });
+                }
+                return oldValue;
+            }
+            return undefined;
+        },
+
+        /**
+         * @param {number} start
+         * @param {number} deleteCount
+         * @param {V...=} itemN
+         * @return {Array.<V>}
+         */
+        splice: function(start, deleteCount, itemN) {
+            var removed = this.array.splice.apply(this.array, arguments);
+            if (this.hasNotifier()) {
+                var note = {
+                    index: start,
+                    object: this,
+                    type: "splice"
+                };
+                if (removed.length > 0) {
+                    note.removed = removed
+                }
+                if (arguments.length > 2) {
+                    note.addedCount = arguments.length - 2;
+                }
+                this.getNotifier().notify(note);
+            }
+            return removed;
+        },
+
+        /**
+         * @param {V...=} itemN
+         * @return {number}
+         */
+        unshift: function(itemN) {
+            var length          = this.getLength();
+            var returnedLength  = this.array.unshift.apply(this.array, arguments);
+            if (this.hasNotifier()) {
+                this.getNotifier().notify({
+                    index: 0,
+                    object: this,
+                    type: "splice",
+                    addedCount: returnedLength - length
+                });
+            }
+            return returnedLength;
         }
-        return undefined;
-    };
 
-    var oldPush = Array.prototype.push;
-    Array.prototype.push = function() {
-        var length = this.length;
-        var returnedLength = oldPush.apply(this, arguments);
-        Array.getNotifier(this).notify({
-            index: length - 1,
-            object: this,
-            type: "splice",
-            addedCount: returnedLength - length
-        });
-        return returnedLength;
-    };
-
-    var oldShift = Array.prototype.shift;
-    Array.prototype.shift = function() {
-        var length = this.length;
-        if (length > 0) {
-            var oldValue = oldShift.call(this);
-            Array.getNotifier(this).notify({
-                index: 0,
-                object: this,
-                removed: [oldValue],
-                type: "splice"
-            });
-            return oldValue;
-        }
-        return undefined;
-    };
-
-    var oldSplice = Array.prototype.splice;
-    Array.prototype.splice = function() {
-        var start = arguments[0];
-        var removed = oldSplice.apply(this, arguments);
-        var note = {
-            index: start,
-            object: this,
-            type: "splice"
-        };
-        if (removed.length > 0) {
-            note.removed = removed
-        }
-        if (arguments.length > 2) {
-            note.addedCount = arguments.length - 2;
-        }
-        Array.getNotifier(this).notify(note);
-        return removed;
-    };
-
-    Array.prototype.unshift = function() {
-        var length = this.length;
-        var returnedLength = oldUnshift.apply(this, arguments);
-        Array.getNotifier(this).notify({
-            index: 0,
-            object: this,
-            type: "splice",
-            addedCount: returnedLength - length
-        });
-        return returnedLength;
-    },
-
-    unobserve: function(callback) {
-        var notifier = this.getNotifier();
-        notifier.removeObserver(callback);
-    }
     });
 
 

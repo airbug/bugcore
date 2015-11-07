@@ -11,11 +11,11 @@
 
 //@Export('ObjectIterator')
 
+//@Require('ArgumentBug')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IKeyValueIterator')
 //@Require('Obj')
-//@Require('Object')
 //@Require('ObjectUtil')
 //@Require('TypeUtil')
 
@@ -30,11 +30,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgumentBug         = bugpack.require('ArgumentBug');
     var Class               = bugpack.require('Class');
     var Exception           = bugpack.require('Exception');
     var IKeyValueIterator   = bugpack.require('IKeyValueIterator');
     var Obj                 = bugpack.require('Obj');
-    var Object              = bugpack.require('Object');
     var ObjectUtil          = bugpack.require('ObjectUtil');
     var TypeUtil            = bugpack.require('TypeUtil');
 
@@ -111,24 +111,19 @@ require('bugpack').context("*", function(bugpack) {
          * @return {ObjectIterator}
          */
         init: function(object) {
-            this._super();
+            var _this = this._super();
 
-            var _this = this;
-            if (TypeUtil.isObject(object)) {
-                this.object = object;
-                this.properties = ObjectUtil.getOwnProperties(object);
-                this.propertyCount = this.properties.length;
+            if (_this) {
+                if (TypeUtil.isObject(object)) {
+                    _this.object = object;
+                    _this.properties = ObjectUtil.getOwnProperties(object);
+                    _this.propertyCount = _this.properties.length;
+                } else {
+                    throw new ArgumentBug(ArgumentBug.ILLEGAL, "object", object, "parameter must be an Object");
+                }
             }
-            Object.observe(this.object, function(changes) {
-                changes.forEach(function(change) {
-                    if (change.type === "add") {
-                        _this.handlePropertyAdd(change.name);
-                    } else {
-                        _this.handlePropertyDelete(change.name);
-                    }
-                });
-            }, ["add", "delete"]);
-            return this;
+
+            return _this;
         },
 
 
@@ -164,13 +159,6 @@ require('bugpack').context("*", function(bugpack) {
             return this.propertyCount;
         },
 
-        /**
-         * @return {Object.<string, number>}
-         */
-        getPropertySkipCountMap: function() {
-            return this.propertySkipCountMap;
-        },
-
 
         //-------------------------------------------------------------------------------
         // IIterator Implementation
@@ -180,7 +168,6 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-           // console.log("ObjectIterator - hasNext this.index:", this.index, " this.propertyCount:", this.propertyCount);
             return (this.index < (this.propertyCount - 1));
         },
 
@@ -198,10 +185,7 @@ require('bugpack').context("*", function(bugpack) {
         nextKey: function() {
             if (this.hasNext()) {
                 this.index++;
-                var property = this.properties[this.index];
-                this.propertySkipCountMap[property]--;
-                this.moveIndexToBeforeNextAvailable();
-                return property;
+                return this.properties[this.index];
             } else {
                 throw new Exception("NoSuchElement", {}, "End of iteration reached.");
             }
@@ -227,53 +211,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextValue: function() {
             return this.next();
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Private Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * O(1)
-         * @private
-         * @param {string} property
-         */
-        handlePropertyAdd: function(property) {
-            this.properties.push(property);
-            this.propertyCount++;
-        },
-
-        /**
-         * best: O(1) worst: O(n) (if all properties have been deleted except for the next one)
-         * @private
-         * @param {string} property
-         */
-        handlePropertyDelete: function(property) {
-            this.propertySkipCountMap[property] = this.propertySkipCountMap[property] ? this.propertySkipCountMap[property] + 1 : 1;
-            this.moveIndexToBeforeNextAvailable();
-        },
-
-        /**
-         * @private
-         */
-        moveIndexToBeforeNextAvailable: function() {
-            var nextFound = false;
-            var endFound = false;
-            while (!nextFound && !endFound) {
-                var nextIndex = this.index + 1;
-                if (nextIndex < this.propertyCount) {
-                    var property = this.properties[nextIndex];
-                    if (this.propertySkipCountMap[property] !== undefined && this.propertySkipCountMap[property] > 0) {
-                        this.index++;
-                        this.propertySkipCountMap[property]--;
-                    } else {
-                        nextFound = true;
-                    }
-                } else {
-                    endFound = true;
-                }
-            }
         }
     });
 

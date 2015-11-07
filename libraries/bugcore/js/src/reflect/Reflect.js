@@ -88,6 +88,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
+         * @return {boolean}
+         */
+        hasNotifier: function() {
+            return !!this.notifier;
+        },
+
+        /**
          * @param {function()} callback
          * @param {Array.<string>} acceptList
          */
@@ -105,10 +112,12 @@ require('bugpack').context("*", function(bugpack) {
         }
     });
 
+
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
 
+    //TODO BRN: These methods need to be redone
     /**
      * @static
      * @param {function(...):*} target

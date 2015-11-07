@@ -14,6 +14,7 @@
 //@Require('Class')
 //@Require('HashStore')
 //@Require('ObjectUtil')
+//@Require('ReflectObject')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -29,20 +30,21 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var HashStore   = bugpack.require('HashStore');
-    var ObjectUtil  = bugpack.require('ObjectUtil');
-    var TypeUtil    = bugpack.require('TypeUtil');
-    var BugMeta     = bugpack.require('bugmeta.BugMeta');
-    var TestTag     = bugpack.require('bugunit.TestTag');
+    var Class           = bugpack.require('Class');
+    var HashStore       = bugpack.require('HashStore');
+    var ObjectUtil      = bugpack.require('ObjectUtil');
+    var ReflectObject   = bugpack.require('ReflectObject');
+    var TypeUtil        = bugpack.require('TypeUtil');
+    var BugMeta         = bugpack.require('bugmeta.BugMeta');
+    var TestTag         = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta     = BugMeta.context();
-    var test        = TestTag.test;
+    var bugmeta         = BugMeta.context();
+    var test            = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -70,8 +72,8 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of hashStore");
             test.assertEqual(this.hashStore.getCount(), 0,
                 "Assert .count defaults to 0");
-            test.assertTrue(TypeUtil.isObject(this.hashStore.getHashStoreNodeObject()),
-                "Assert .hashStoreNodeObject is an object");
+            test.assertTrue(Class.doesExtend(this.hashStore.getHashStoreNodeReflectObject(), ReflectObject),
+                "Assert .hashStoreNodeReflectObject is an instance of ReflectObject");
         }
     };
 
@@ -96,7 +98,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.hashStore.add(this.testValue1);
             this.hashStore.add(this.testValue2);
-            test.assertEqual(ObjectUtil.getProperties(this.hashStore.getHashStoreNodeObject()).length, 2,
+            test.assertEqual(this.hashStore.getHashStoreNodeReflectObject().keys().length, 2,
                 "Assert that there are two different node objects");
         }
     };

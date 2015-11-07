@@ -11,11 +11,11 @@
 
 //@Export('WeightedListIterator')
 
-//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IIndexValueIterator')
 //@Require('Obj')
+//@Require('ReflectArrayIterator')
 //@Require('TypeUtil')
 
 
@@ -29,11 +29,11 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator           = bugpack.require('ArrayIterator');
     var Class                   = bugpack.require('Class');
     var Exception               = bugpack.require('Exception');
     var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
     var Obj                     = bugpack.require('Obj');
+    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
     var TypeUtil                = bugpack.require('TypeUtil');
 
 
@@ -70,15 +70,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ArrayIterator.<V>}
+             * @type {ReflectArrayIterator.<V>}
              */
-            this.arrayIterator      = null;
+            this.reflectArrayIterator   = null;
 
             /**
              * @private
              * @type {WeightedList.<V>}
              */
-            this.weightedList       = null;
+            this.weightedList           = null;
         },
 
 
@@ -90,9 +90,12 @@ require('bugpack').context("*", function(bugpack) {
          * @param {WeightedList.<V>} weightedList
          */
         init: function(weightedList) {
-            this._super();
-            this.weightedList = weightedList;
-            this.arrayIterator = new ArrayIterator(this.getWeightedList().getItemArray());
+            var _this = this._super();
+            if (_this) {
+                this.weightedList = weightedList;
+                this.reflectArrayIterator = new ReflectArrayIterator(this.getWeightedList().getItemReflectArray());
+            }
+            return _this;
         },
 
 
@@ -101,10 +104,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ArrayIterator.<V>}
+         * @return {ReflectArrayIterator.<V>}
          */
-        getArrayIterator: function() {
-            return this.arrayIterator;
+        getReflectArrayIterator: function() {
+            return this.reflectArrayIterator;
         },
 
         /**
@@ -123,7 +126,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-            return this.arrayIterator.hasNext();
+            return this.reflectArrayIterator.hasNext();
         },
 
         /**
@@ -138,7 +141,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         nextIndex: function() {
-            return this.arrayIterator.nextIndex();
+            return this.reflectArrayIterator.nextIndex();
         },
 
         /**

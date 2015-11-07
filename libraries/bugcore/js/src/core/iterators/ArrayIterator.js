@@ -11,7 +11,7 @@
 
 //@Export('ArrayIterator')
 
-//@Require('Array')
+//@Require('ArgumentBug')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IIndexValueIterator')
@@ -29,7 +29,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Array                   = bugpack.require('Array');
+    var ArgumentBug             = bugpack.require('ArgumentBug');
     var Class                   = bugpack.require('Class');
     var Exception               = bugpack.require('Exception');
     var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
@@ -88,23 +88,18 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {Array.<V>} array
+         * @return {ArrayIterator}
          */
         init: function(array) {
-            this._super();
-            var _this = this;
-            if (TypeUtil.isArray(array)) {
-                this.array = array;
+            var _this = this._super();
+            if (_this) {
+                if (TypeUtil.isArray(array)) {
+                    _this.array = array;
+                } else {
+                    throw new ArgumentBug(ArgumentBug.ILLEGAL, "array", array, "parameter must be an Array");
+                }
             }
-            Array.observe(this.array, function(changes) {
-                changes.forEach(function(change) {
-                    if (change.removed && change.removed.length > 0) {
-                        _this.handleIndexesRemoved(change.index, change.removed.length);
-                    }
-                    if (change.addedCount > 0) {
-                        _this.handleIndexesAdded(change.index, change.addedCount);
-                    }
-                });
-            }, ["splice"]);
+            return _this;
         },
 
 
@@ -178,37 +173,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextValue: function() {
             return this.next();
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Private Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @private
-         * @param {number} index
-         * @param {number} addedCount
-         */
-        handleIndexesAdded: function(index, addedCount) {
-            if (index <= this.index) {
-                this.index += addedCount;
-            }
-        },
-
-        /**
-         * @private
-         * @param {number} index
-         * @param {number} removedCount
-         */
-        handleIndexesRemoved: function(index, removedCount) {
-            if (index <= this.index) {
-                var newIndex = this.index - removedCount;
-                if (newIndex < index) {
-                    newIndex = index - 1;
-                }
-                this.index = newIndex;
-            }
         }
     });
 

@@ -11,12 +11,12 @@
 
 //@Export('HashStoreIterator')
 
-//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IIterator')
 //@Require('Obj')
-//@Require('ObjectIterator')
+//@Require('ReflectArrayIterator')
+//@Require('ReflectObjectIterator')
 
 
 //-------------------------------------------------------------------------------
@@ -29,12 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator   = bugpack.require('ArrayIterator');
-    var Class           = bugpack.require('Class');
-    var Exception       = bugpack.require('Exception');
-    var IIterator       = bugpack.require('IIterator');
-    var Obj             = bugpack.require('Obj');
-    var ObjectIterator  = bugpack.require('ObjectIterator');
+    var Class                   = bugpack.require('Class');
+    var Exception               = bugpack.require('Exception');
+    var IIterator               = bugpack.require('IIterator');
+    var Obj                     = bugpack.require('Obj');
+    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
+    var ReflectObjectIterator   = bugpack.require('ReflectObjectIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -77,15 +77,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ArrayIterator.<V>}
+             * @type {ReflectArrayIterator.<V>}
              */
-            this.hashStoreNodeArrayIterator         = null;
+            this.hashStoreNodeReflectArrayIterator  = null;
 
             /**
              * @private
-             * @type {ObjectIterator.<HashStoreNode.<V>>}
+             * @type {ReflectObjectIterator.<HashStoreNode.<V>>}
              */
-            this.hashStoreNodeObjectIterator        = new ObjectIterator(this.hashStore.getHashStoreNodeObject());
+            this.hashStoreNodeReflectObjectIterator = new ReflectObjectIterator(this.hashStore.getHashStoreNodeReflectObject());
         },
 
 
@@ -101,17 +101,17 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ArrayIterator.<V>}
+         * @return {ReflectArrayIterator.<V>}
          */
-        getHashStoreNodeArrayIterator: function() {
-            return this.hashStoreNodeArrayIterator
+        getHashStoreNodeReflectArrayIterator: function() {
+            return this.hashStoreNodeReflectArrayIterator
         },
 
         /**
-         * @return {ObjectIterator.<HashStoreNode.<V>>}
+         * @return {ReflectObjectIterator.<HashStoreNode.<V>>}
          */
-        getHashStoreNodeObjectIterator: function() {
-            return this.hashStoreNodeObjectIterator;
+        getHashStoreNodeReflectObjectIterator: function() {
+            return this.hashStoreNodeReflectObjectIterator;
         },
 
 
@@ -123,13 +123,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-            if (this.hashStoreNodeObjectIterator.hasNext()) {
-                //console.log("this.hashStoreNodeObjectIterator.hasNext():", true);
+            if (this.hashStoreNodeReflectObjectIterator.hasNext()) {
                 return true;
             }
-            if (this.hashStoreNodeArrayIterator) {
-                //console.log("this.hashStoreNodeArrayIterator.hasNext():", this.hashStoreNodeArrayIterator.hasNext());
-                return this.hashStoreNodeArrayIterator.hasNext();
+            if (this.hashStoreNodeReflectArrayIterator) {
+                return this.hashStoreNodeReflectArrayIterator.hasNext();
             }
             return false;
         },
@@ -138,16 +136,19 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         next: function() {
-            if (!this.hashStoreNodeArrayIterator) {
-                var hashStoreNodeObject = this.hashStoreNodeObjectIterator.next();
-                this.hashStoreNodeArrayIterator = new ArrayIterator(hashStoreNodeObject.getItemArray());
-                return this.hashStoreNodeArrayIterator.next();
+            if (!this.hashStoreNodeReflectArrayIterator) {
+                var hashStoreNode = this.hashStoreNodeReflectObjectIterator.next();
+                if (!hashStoreNode) {
+                    throw new Exception("EndOfIteration", {}, "End of iteration reached");
+                }
+                this.hashStoreNodeReflectArrayIterator = new ReflectArrayIterator(hashStoreNode.getItemReflectArray());
+                return this.hashStoreNodeReflectArrayIterator.next();
             } else {
-                if (!this.hashStoreNodeArrayIterator.hasNext()) {
-                    this.hashStoreNodeArrayIterator = null;
+                if (!this.hashStoreNodeReflectArrayIterator.hasNext()) {
+                    this.hashStoreNodeReflectArrayIterator = null;
                     return this.next();
                 } else {
-                    return this.hashStoreNodeArrayIterator.next();
+                    return this.hashStoreNodeReflectArrayIterator.next();
                 }
             }
         }

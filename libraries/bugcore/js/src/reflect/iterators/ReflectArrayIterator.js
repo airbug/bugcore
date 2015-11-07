@@ -80,7 +80,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {ReflectArray.<V>}
              */
-            this.reflectArray       = new ReflectArray();
+            this.reflectArray       = new ReflectArray([]);
         },
 
 
@@ -97,8 +97,6 @@ require('bugpack').context("*", function(bugpack) {
             if (_this) {
                 if (Class.doesExtend(reflectArray, ReflectArray)) {
                     this.reflectArray = reflectArray;
-                } else {
-                    throw new ArgumentBug(ArgumentBug.ILLEGAL, "reflectArray", reflectArray, "parameter must be a ReflectArray");
                 }
                 this.reflectArray.observe(function (changes) {
                     changes.forEach(function (change) {
@@ -110,8 +108,10 @@ require('bugpack').context("*", function(bugpack) {
                         }
                     });
                 }, ["splice"]);
+            } else {
+                console.log("WTF");
             }
-            return _this;
+            return this;
         },
 
 
@@ -142,6 +142,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
+            if (!this.reflectArray) {
+                console.log("ERROR");
+                console.log(this);
+            }
             return (this.index < (this.reflectArray.getLength() - 1));
         },
 
@@ -150,7 +154,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         next: function() {
             var index = this.nextIndex();
-            return this.array[index];
+            return this.reflectArray.getAt(index);
         },
 
         /**
@@ -173,7 +177,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextIndexValuePair: function() {
             var index = this.nextIndex();
-            var value = this.array[index];
+            var value = this.reflectArray.getAt(index);
             return {
                 index: index,
                 value: value
@@ -224,12 +228,12 @@ require('bugpack').context("*", function(bugpack) {
     // Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(ArrayIterator, IIndexValueIterator);
+    Class.implement(ReflectArrayIterator, IIndexValueIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ArrayIterator', ArrayIterator);
+    bugpack.export('ReflectArrayIterator', ReflectArrayIterator);
 });

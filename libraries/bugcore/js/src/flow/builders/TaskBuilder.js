@@ -101,6 +101,7 @@ require('bugpack').context("*", function(bugpack) {
                     throw Throwables.illegalArgumentBug("taskContext", taskContext, "must be an Object");
                 }
             }
+            return this;
         },
 
 

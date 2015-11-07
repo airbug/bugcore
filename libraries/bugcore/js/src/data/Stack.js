@@ -11,12 +11,13 @@
 
 //@Export('Stack')
 
-//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Collection')
 //@Require('Exception')
 //@Require('IIndexValueIterable')
 //@Require('Obj')
+//@Require('ReflectArray')
+//@Require('ReflectArrayIterator')
 
 
 //-------------------------------------------------------------------------------
@@ -29,12 +30,13 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator           = bugpack.require('ArrayIterator');
     var Class                   = bugpack.require('Class');
     var Collection              = bugpack.require('Collection');
     var Exception               = bugpack.require('Exception');
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var Obj                     = bugpack.require('Obj');
+    var ReflectArray            = bugpack.require('ReflectArray');
+    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -69,9 +71,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Array.<I>}
+             * @type {ReflectArray.<I>}
              */
-            this.itemArray = [];
+            this.itemReflectArray = new ReflectArray([]);
         },
 
 
@@ -80,10 +82,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Array.<I>} Array is in the same order as the queue
+         * @return {ReflectArray.<I>} Array is in the same order as the queue
          */
-        getItemArray: function() {
-            return this.itemArray;
+        getItemReflectArray: function() {
+            return this.itemReflectArray;
         },
 
 
@@ -118,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(value) {
             this._super(value);
-            this.itemArray.push(value);
+            this.itemReflectArray.push(value);
             return true;
         },
 
@@ -141,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Array.<I>}
          */
         toArray: function() {
-            return Obj.clone(this.itemArray);
+            return Obj.clone(this.itemReflectArray.getArray());
         },
 
 
@@ -177,7 +179,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {IIndexValueIterator.<I>}
          */
         iterator: function() {
-            return new ArrayIterator(this.itemArray);
+            return new ReflectArrayIterator(this.itemReflectArray);
         },
 
 
@@ -216,7 +218,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.itemArray[index];
+                return this.itemReflectArray.getAt(index);
             } else {
                 throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
             }
@@ -228,8 +230,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var i = this.itemArray.length - 1; i >= 0; i--) {
-                if (Obj.equals(this.itemArray[i], value)) {
+            for (var i = this.itemReflectArray.getLength() - 1; i >= 0; i--) {
+                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -245,7 +247,7 @@ require('bugpack').context("*", function(bugpack) {
             var value = this.getAt(index);
             var result = this.getHashStore().remove(value);
             if (result) {
-                this.itemArray.splice(index, 1);
+                this.itemReflectArray.splice(index, 1);
             }
             return value;
         }

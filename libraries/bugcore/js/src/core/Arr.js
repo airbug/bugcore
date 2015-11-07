@@ -94,17 +94,18 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Arr}
          */
         init: function(items) {
+            var _this = this._super();
 
-            this._super();
-
-            if (TypeUtil.isArray(items)) {
-                this.array = items;
-            } else if (Class.doesImplement(items, IArrayable)){
-                this.array = items.toArray();
-            } else {
-                throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement IArrayable");
+            if (_this) {
+                if (TypeUtil.isArray(items)) {
+                    this.array = items;
+                } else if (Class.doesImplement(items, IArrayable)) {
+                    this.array = items.toArray();
+                } else {
+                    throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement IArrayable");
+                }
             }
-            return this;
+            return _this;
         },
 
 

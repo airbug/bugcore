@@ -247,6 +247,7 @@ require('bugpack').context("*", function(bugpack) {
         }
         var newConstructor = function() {
             if (!Class.extending) {
+                var _this = this;
                 Object.defineProperty(this, "_class", {
                     value : newClass,
                     writable : false,
@@ -257,8 +258,9 @@ require('bugpack').context("*", function(bugpack) {
                     this._constructor.apply(this, arguments);
                 }
                 if (this.init && !Constructor.allocateOnly) {
-                    this.init.apply(this, arguments);
+                    _this = this.init.apply(this, arguments);
                 }
+                return _this;
             }
         };
         newConstructor.prototype = prototype;

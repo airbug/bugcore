@@ -11,7 +11,9 @@
 
 //@TestFile
 
+//@Require('Class')
 //@Require('HashTableNode')
+//@Require('ReflectArray')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -27,7 +29,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Class           = bugpack.require('Class');
     var HashTableNode   = bugpack.require('HashTableNode');
+    var ReflectArray    = bugpack.require('ReflectArray');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
@@ -66,13 +70,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             test.assertEqual(this.hashTableNode.getCount(), 0,
                 "Assert HashTableNode count is 0 after instantiation");
-            test.assertTrue(TypeUtil.isArray(this.hashTableNode.getKeyArray()),
-                "Assert HashTableNode.keyArray is an array");
-            test.assertEqual(this.hashTableNode.getKeyArray().length, 0,
-                "Assert HashTableNode.keyArray is empty");
-            test.assertTrue(TypeUtil.isArray(this.hashTableNode.getValueArray()),
-                "Assert HashTableNode.valueArray is an array");
-            test.assertEqual(this.hashTableNode.getValueArray().length, 0,
+            test.assertTrue(Class.doesExtend(this.hashTableNode.getKeyReflectArray(), ReflectArray),
+                "Assert HashTableNode.keyReflectArray is an instance of ReflectArray");
+            test.assertEqual(this.hashTableNode.getKeyReflectArray().getLength(), 0,
+                "Assert HashTableNode.keyReflectArray is empty");
+            test.assertTrue(Class.doesExtend(this.hashTableNode.getValueReflectArray(), ReflectArray),
+                "Assert HashTableNode.valueArray is an instance of ReflectArray");
+            test.assertEqual(this.hashTableNode.getValueReflectArray().getLength(), 0,
                 "Assert HashTableNode.valueArray is empty");
         }
     };
@@ -115,7 +119,7 @@ require('bugpack').context("*", function(bugpack) {
             this.hashTableNode.put('key1', 'value1');
             this.hashTableNode.put('key2', 'value2');
             this.hashTableNode.put('key3', 'value3');
-            this.keyArray = this.hashTableNode.getKeyArray();
+            this.keyReflectArray = this.hashTableNode.getKeyReflectArray();
         },
 
 
@@ -123,15 +127,15 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertTrue(TypeUtil.isArray(this.keyArray),
-                "Assert value returned from getKeyArray is an array");
-            test.assertEqual(this.keyArray.length, 3,
+            test.assertTrue(Class.doesExtend(this.keyReflectArray, ReflectArray),
+                "Assert value returned from getKeyReflectArray is an instance of ReflectArray");
+            test.assertEqual(this.keyReflectArray.getLength(), 3,
                 "Assert key array length is 3");
-            test.assertTrue((this.keyArray.indexOf('key1') >= 0),
+            test.assertTrue((this.keyReflectArray.indexOf('key1') >= 0),
                 "Assert key1 is in the key array");
-            test.assertTrue((this.keyArray.indexOf('key2') >= 0),
+            test.assertTrue((this.keyReflectArray.indexOf('key2') >= 0),
                 "Assert key2 is in the key array");
-            test.assertTrue((this.keyArray.indexOf('key3') >= 0),
+            test.assertTrue((this.keyReflectArray.indexOf('key3') >= 0),
                 "Assert key3 is in the key array");
         }
     };

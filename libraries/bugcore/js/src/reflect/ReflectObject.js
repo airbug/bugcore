@@ -27,10 +27,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var Notifier        = bugpack.require('Notifier');
-    var ObjectUtil      = bugpack.require('ObjectUtil');
-    var Reflect         = bugpack.require('Reflect');
+    var Class       = bugpack.require('Class');
+    var Notifier    = bugpack.require('Notifier');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
+    var Reflect     = bugpack.require('Reflect');
 
 
     //-------------------------------------------------------------------------------
@@ -81,60 +81,60 @@ require('bugpack').context("*", function(bugpack) {
          */
         getObject: function() {
             return this.object;
-        }
-    });
+        },
 
 
-    //-------------------------------------------------------------------------------
-    // Prototype
-    //-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
 
-    ReflectObject.prototype = {
-        keys: (function() {
-            'use strict';
-            var hasOwnProperty = Object.prototype.hasOwnProperty;
-            var hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString');
-            var dontEnums = [
-                'toString',
-                'toLocaleString',
-                'valueOf',
-                'hasOwnProperty',
-                'isPrototypeOf',
-                'propertyIsEnumerable',
-                'constructor'
-            ];
-            var dontEnumsLength = dontEnums.length;
-
-            return function(obj) {
-                if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-                    throw new TypeError('Object.keys called on non-object');
-                }
-
-                var result = [], prop, i;
-
-                for (prop in obj) {
-                    if (hasOwnProperty.call(obj, prop)) {
-                        result.push(prop);
-                    }
-                }
-
-                if (hasDontEnumBug) {
-                    for (i = 0; i < dontEnumsLength; i++) {
-                        if (hasOwnProperty.call(obj, dontEnums[i])) {
-                            result.push(dontEnums[i]);
+        /**
+         * @param {string} name
+         * @returns {boolean}
+         */
+        deleteProperty: function(name) {
+            try {
+                if (this.hasProperty(name)) {
+                    var oldValue = this.object[name];
+                    var result = ObjectUtil.deleteProperty(this.object, name);
+                    if (result) {
+                        if (this.hasNotifier()) {
+                            this.getNotifier().notify({
+                                name: name,
+                                object: this,
+                                oldValue: oldValue,
+                                type: "delete"
+                            });
                         }
+                        return true;
                     }
                 }
-                return result;
-            };
-        }()),
+            } catch(error) {
+                //do nothing
+            }
+            return false;
+        },
+
+        /**
+         * @param {function(string, *)} func
+         */
+        forIn: function(func) {
+            ObjectUtil.forInOwn(this.object, func);
+        },
+
+        /**
+         * @return {Array.<string>}
+         */
+        keys: function() {
+            return ObjectUtil.getOwnProperties(this.object);
+        },
 
         /**
          * @param {string} name
          * @return {*}
          */
-        get: function(name) {
-            return ObjectUtil.getProperty(this.object, name);
+        getProperty: function(name) {
+            return ObjectUtil.getOwnProperty(this.object, name);
         },
 
         /**
@@ -142,8 +142,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {string} name
          * @return {boolean}
          */
-        has: function(name) {
-            return ObjectUtil.hasProperty(this.object, name);
+        hasProperty: function(name) {
+            return ObjectUtil.hasOwnProperty(this.object, name);
         },
 
         /**
@@ -151,16 +151,16 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} value
          * @return {boolean}
          */
-        set: function(name, value) {
+        setProperty: function(name, value) {
             try {
                 var oldValue = this[name];
                 var changeType = "add";
-                if (this.has(name)) {
+                if (this.hasProperty(name)) {
                     changeType = "update";
                 }
                 ObjectUtil.setProperty(this.object, name, value);
-                if (this.notifier) {
-                    this.notifier.notify({
+                if (this.hasNotifier()) {
+                    this.getNotifier().notify({
                         name: name,
                         object: this,
                         oldValue: oldValue,
@@ -169,10 +169,11 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return true;
             } catch(error) {
-                return false;
+
             }
+            return false;
         }
-    };
+    });
 
 
     //-------------------------------------------------------------------------------

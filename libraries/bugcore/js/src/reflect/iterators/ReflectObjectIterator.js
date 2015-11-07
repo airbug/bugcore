@@ -96,9 +96,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Object.<string, V>}
+             * @type {ReflectObject.<string, V>}
              */
-            this.reflectObject          = null;
+            this.reflectObject          = new ReflectObject({});
         },
 
 
@@ -108,27 +108,29 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {ReflectObject.<V>} reflectObject
-         * @return {ObjectIterator}
+         * @return {ReflectObjectIterator}
          */
         init: function(reflectObject) {
-            this._super();
+            var _this = this._super();
 
-            var _this = this;
-            if (Class.doesExtend(reflectObject, ReflectObject)) {
-                this.reflectObject = reflectObject;
-                this.properties = ObjectUtil.getOwnProperties(object);
-                this.propertyCount = this.properties.length;
+            if (_this) {
+                if (Class.doesExtend(reflectObject, ReflectObject)) {
+                    this.reflectObject = reflectObject;
+                    this.properties = this.reflectObject.keys();
+                    this.propertyCount = this.properties.length;
+                }
+                this.reflectObject.observe(function (changes) {
+                    changes.forEach(function (change) {
+                        if (change.type === "add") {
+                            _this.handlePropertyAdd(change.name);
+                        } else {
+                            _this.handlePropertyDelete(change.name);
+                        }
+                    });
+                }, ["add", "delete"]);
             }
-            Object.observe(this.object, function(changes) {
-                changes.forEach(function(change) {
-                    if (change.type === "add") {
-                        _this.handlePropertyAdd(change.name);
-                    } else {
-                        _this.handlePropertyDelete(change.name);
-                    }
-                });
-            }, ["add", "delete"]);
-            return this;
+
+            return _this;
         },
 
 
@@ -141,13 +143,6 @@ require('bugpack').context("*", function(bugpack) {
          */
         getIndex: function() {
             return this.index;
-        },
-
-        /**
-         * @return {Object.<string, V>}
-         */
-        getObject: function() {
-            return this.object;
         },
 
         /**
@@ -171,6 +166,13 @@ require('bugpack').context("*", function(bugpack) {
             return this.propertySkipCountMap;
         },
 
+        /**
+         * @return {ReflectObject.<string, V>}
+         */
+        getReflectObject: function() {
+            return this.reflectObject;
+        },
+
 
         //-------------------------------------------------------------------------------
         // IIterator Implementation
@@ -188,7 +190,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         next: function() {
             var key = this.nextKey();
-            return this.object[key];
+            return this.reflectObject.getProperty(key);
         },
 
         /**
@@ -214,7 +216,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextKeyValuePair: function() {
             var key     = this.nextKey();
-            var value   = this.object[key];
+            var value   = this.reflectObject.getProperty(key);
             return {
                 key: key,
                 value: value
@@ -281,12 +283,12 @@ require('bugpack').context("*", function(bugpack) {
     // Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(ObjectIterator, IKeyValueIterator);
+    Class.implement(ReflectObjectIterator, IKeyValueIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ObjectIterator', ObjectIterator);
+    bugpack.export('ReflectObjectIterator', ReflectObjectIterator);
 });

@@ -14,7 +14,7 @@
 //@Require('Class')
 //@Require('HashStore')
 //@Require('HashStoreIterator')
-//@Require('ObjectIterator')
+//@Require('ReflectObjectIterator')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -30,21 +30,21 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var HashStore           = bugpack.require('HashStore');
-    var HashStoreIterator   = bugpack.require('HashStoreIterator');
-    var ObjectIterator      = bugpack.require('ObjectIterator');
-    var TypeUtil            = bugpack.require('TypeUtil');
-    var BugMeta             = bugpack.require('bugmeta.BugMeta');
-    var TestTag             = bugpack.require('bugunit.TestTag');
+    var Class                   = bugpack.require('Class');
+    var HashStore               = bugpack.require('HashStore');
+    var HashStoreIterator       = bugpack.require('HashStoreIterator');
+    var ReflectObjectIterator   = bugpack.require('ReflectObjectIterator');
+    var TypeUtil                = bugpack.require('TypeUtil');
+    var BugMeta                 = bugpack.require('bugmeta.BugMeta');
+    var TestTag                 = bugpack.require('bugunit.TestTag');
 
 
     //-------------------------------------------------------------------------------
     // Simplify References
     //-------------------------------------------------------------------------------
 
-    var bugmeta             = BugMeta.context();
-    var test                = TestTag.test;
+    var bugmeta                 = BugMeta.context();
+    var test                    = TestTag.test;
 
 
     //-------------------------------------------------------------------------------
@@ -75,10 +75,10 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert instance of HashStoreIterator");
             test.assertEqual(this.hashStoreIterator.getHashStore(), this.hashStore,
                 "Assert HashStoreIterator.hashStore was set correctly during instantiation");
-            test.assertEqual(this.hashStoreIterator.getHashStoreNodeArrayIterator(), null,
-                "Assert HashStoreIterator.hashStoreNodeArrayIterator defaults to null");
-            test.assertTrue(Class.doesExtend(this.hashStoreIterator.getHashStoreNodeObjectIterator(), ObjectIterator),
-                "Assert HashStoreIterator.hashStoreNodeObjectIterator is an ObjectIterator");
+            test.assertEqual(this.hashStoreIterator.getHashStoreNodeReflectArrayIterator(), null,
+                "Assert HashStoreIterator.hashStoreNodeReflectArrayIterator defaults to null");
+            test.assertTrue(Class.doesExtend(this.hashStoreIterator.getHashStoreNodeReflectObjectIterator(), ReflectObjectIterator),
+                "Assert HashStoreIterator.hashStoreNodeReflectObjectIterator is an ObjectIterator");
         }
     };
 

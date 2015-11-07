@@ -11,7 +11,9 @@
 
 //@TestFile
 
+//@Require('Class')
 //@Require('HashStoreNode')
+//@Require('ReflectArray')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -27,7 +29,9 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Class           = bugpack.require('Class');
     var HashStoreNode   = bugpack.require('HashStoreNode');
+    var ReflectArray    = bugpack.require('ReflectArray');
     var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
@@ -64,12 +68,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
+            test.assertTrue(Class.doesExtend(this.hashStoreNode, HashStoreNode),
+                "Assert instance of HashStoreNode");
             test.assertEqual(this.hashStoreNode.getCount(), 0,
                 "Assert HashStoreNode count is 0 after instantiation");
-            test.assertTrue(TypeUtil.isArray(this.hashStoreNode.getItemArray()),
-                "Assert HashStoreNode.itemArray is an array");
-            test.assertEqual(this.hashStoreNode.getItemArray().length, 0,
-                "Assert HashStoreNode.itemArray is empty");
+            test.assertTrue(Class.doesExtend(this.hashStoreNode.getItemReflectArray(), ReflectArray),
+                "Assert HashStoreNode.itemReflectArray is an instance of ReflectArray");
+            test.assertEqual(this.hashStoreNode.getItemReflectArray().getLength(), 0,
+                "Assert HashStoreNode.itemReflectArray is empty");
         }
     };
 

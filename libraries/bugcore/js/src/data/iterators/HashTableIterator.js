@@ -11,12 +11,12 @@
 
 //@Export('HashTableIterator')
 
-//@Require('ArrayIterator')
 //@Require('Class')
 //@Require('Exception')
 //@Require('IKeyValueIterator')
 //@Require('Obj')
-//@Require('ObjectIterator')
+//@Require('ReflectArrayIterator')
+//@Require('ReflectObjectIterator')
 
 
 //-------------------------------------------------------------------------------
@@ -29,12 +29,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArrayIterator       = bugpack.require('ArrayIterator');
-    var Class               = bugpack.require('Class');
-    var Exception           = bugpack.require('Exception');
-    var IKeyValueIterator   = bugpack.require('IKeyValueIterator');
-    var Obj                 = bugpack.require('Obj');
-    var ObjectIterator      = bugpack.require('ObjectIterator');
+    var Class                   = bugpack.require('Class');
+    var Exception               = bugpack.require('Exception');
+    var IKeyValueIterator       = bugpack.require('IKeyValueIterator');
+    var Obj                     = bugpack.require('Obj');
+    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
+    var ReflectObjectIterator   = bugpack.require('ReflectObjectIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -73,19 +73,45 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {HashTable.<K, V>}
              */
-            this.hashTable                      = hashTable;
+            this.hashTable                              = hashTable;
 
             /**
              * @private
-             * @type {ObjectIterator.<HashTableNode.<K, V>>}
+             * @type {ReflectObjectIterator.<HashTableNode.<K, V>>}
              */
-            this.hashTableNodeObjectIterator    = new ObjectIterator(this.hashTable.getHashTableNodeObject());
+            this.hashTableNodeReflectObjectIterator     = new ReflectObjectIterator(this.hashTable.getHashTableNodeReflectObject());
 
             /**
              * @private
-             * @type {ArrayIterator.<K>}
+             * @type {ReflectArrayIterator.<K>}
              */
-            this.hashTableKeyArrayIterator      = null;
+            this.hashTableKeyReflectArrayIterator       = null;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {HashTable.<K, V>}
+         */
+        getHashTable: function() {
+            return this.hashTable;
+        },
+
+        /**
+         * @return {ReflectObjectIterator.<HashTableNode.<K, V>>}
+         */
+        getHashTableNodeReflectObjectIterator: function() {
+            return this.hashTableNodeReflectObjectIterator;
+        },
+
+        /**
+         * @return {ReflectArrayIterator.<K>}
+         */
+        getHashTableKeyReflectArrayIterator: function() {
+            return this.hashTableKeyReflectArrayIterator;
         },
 
 
@@ -97,11 +123,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-            if (this.hashTableNodeObjectIterator.hasNext()) {
+            if (this.hashTableNodeReflectObjectIterator.hasNext()) {
                 return true;
             }
-            if (this.hashTableKeyArrayIterator) {
-                return this.hashTableKeyArrayIterator.hasNext()
+            if (this.hashTableKeyReflectArrayIterator) {
+                return this.hashTableKeyReflectArrayIterator.hasNext()
             }
             return false;
         },
@@ -118,16 +144,16 @@ require('bugpack').context("*", function(bugpack) {
          * @return {K}
          */
         nextKey: function() {
-            if (!this.hashTableKeyArrayIterator) {
-                var hashTableNodeObject = this.hashTableNodeObjectIterator.next();
-                this.hashTableKeyArrayIterator = new ArrayIterator(hashTableNodeObject.getKeyArray());
-                return this.hashTableKeyArrayIterator.next();
+            if (!this.hashTableKeyReflectArrayIterator) {
+                var hashTableNode = this.hashTableNodeReflectObjectIterator.next();
+                this.hashTableKeyReflectArrayIterator = new ReflectArrayIterator(hashTableNode.getKeyReflectArray());
+                return this.hashTableKeyReflectArrayIterator.next();
             } else {
-                if (!this.hashTableKeyArrayIterator.hasNext()) {
-                    this.hashTableKeyArrayIterator = null;
+                if (!this.hashTableKeyReflectArrayIterator.hasNext()) {
+                    this.hashTableKeyReflectArrayIterator = null;
                     return this.nextKey();
                 } else {
-                    return this.hashTableKeyArrayIterator.next();
+                    return this.hashTableKeyReflectArrayIterator.next();
                 }
             }
         },
@@ -140,7 +166,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         nextKeyValuePair: function() {
             var key     = this.nextKey();
-            var value   = this.object[key];
+            var value   = this.hashTable.get(key);
             return {
                 key: key,
                 value: value
