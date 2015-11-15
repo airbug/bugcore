@@ -49,9 +49,9 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
-     * 1) That the while parallel completes
+     * 1) That the while series completes
      */
-    var bugflowExecuteWhileParallelTest = {
+    var bugflowExecuteWhileSeriesTest = {
 
         async: true,
 
@@ -61,25 +61,25 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this = this;
-            this.testIndex = -1;
+            this.numberAssertionsStarted = 0;
             this.numberTasksCompleted = 0;
             this.numberTasksStarted = 0;
             this.testAssertionMethod = function(flow) {
-                _this.testIndex++;
-                return (_this.testIndex < 2);
+                _this.numberAssertionsStarted++;
+                return (_this.numberAssertionsStarted <= 2);
             };
             this.testTask = Flows.$task(function(flow) {
                 _this.numberTasksStarted++;
-                if (_this.numberTasksStarted == 2) {
-                    test.assertEqual(_this.numberTasksCompleted, 0,
-                        "Assert tasks are executed in parallel");
-                }
+                test.assertEqual(_this.numberTasksStarted, _this.numberAssertionsStarted,
+                    "Assert tasks are executed in series with assertions");
+                test.assertEqual(_this.numberTasksCompleted, _this.numberTasksStarted - 1,
+                    "Assert tasks are executed in series");
                 setTimeout(function() {
                     _this.numberTasksCompleted++;
                     flow.complete();
                 }, 0);
             });
-            this.whileParallel = Flows.$whileParallel(this.testAssertionMethod, this.testTask);
+            this.whileSeries = Flows.$whileSeries(this.testAssertionMethod, this.testTask);
             test.completeSetup();
         },
 
@@ -90,15 +90,17 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             var executeCallbackFired = false;
-            this.whileParallel.execute(function(throwable) {
+            this.whileSeries.execute(function(throwable) {
                 test.assertFalse(executeCallbackFired,
                     "Assert that the execute callback has not already fired");
                 executeCallbackFired = true;
                 if (!throwable) {
+                    test.assertEqual(_this.numberTasksStarted, 2,
+                        "Assert testTask was started twice");
                     test.assertEqual(_this.numberTasksCompleted, 2,
-                        "Assert testTask was run twice");
-                    test.assertEqual(_this.testIndex, 2,
-                        "Assert that the ForEachParallel iterated 2 times");
+                        "Assert testTask was completed twice");
+                    test.assertEqual(_this.numberAssertionsStarted, 3,
+                        "Assert that the ForEachParallel iterated twice and ended on the third");
                 } else {
                     test.error(throwable);
                 }
@@ -110,9 +112,9 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests..
-     * 1) That the while parallel does not execute another assertion until the previous assertion completes
+     * 1) That the while series does not execute another assertion until the previous assertion completes
      */
-    var bugflowExecuteWhileParallelWithAsyncAssertionTest = {
+    var bugflowExecuteWhileSeriesWithAsyncAssertionTest = {
 
         async: true,
 
@@ -124,7 +126,11 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.numberAssertionsCompleted = 0;
             this.numberAssertionsStarted = 0;
+            this.numberTasksCompleted = 0;
+            this.numberTasksStarted = 0;
             this.testAsyncAssertionMethod = function(flow) {
+                test.assertEqual(_this.numberAssertionsStarted, _this.numberTasksCompleted,
+                    "Assert that assertions are running in series with tasks");
                 _this.numberAssertionsStarted++;
                 if (_this.numberAssertionsStarted > 3) {
                     throw new Throwables.exception("TestException", {}, "Test assertions are running infinitely");
@@ -136,8 +142,6 @@ require('bugpack').context("*", function(bugpack) {
                     flow.assert(_this.numberAssertionsStarted < 3);
                 }, 0);
             };
-            this.numberTasksCompleted = 0;
-            this.numberTasksStarted = 0;
             this.testWhileTask = Flows.$task(function(flow) {
                 _this.numberTasksStarted++;
                 setTimeout(function() {
@@ -145,7 +149,7 @@ require('bugpack').context("*", function(bugpack) {
                     flow.complete();
                 }, 0);
             });
-            this.whileParallel = Flows.$whileParallel(this.testAsyncAssertionMethod, this.testWhileTask);
+            this.whileSeries = Flows.$whileSeries(this.testAsyncAssertionMethod, this.testWhileTask);
             test.completeSetup();
         },
 
@@ -156,7 +160,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             var executeCallbackFired = false;
-            this.whileParallel.execute(function(throwable) {
+            this.whileSeries.execute(function(throwable) {
                 test.assertFalse(executeCallbackFired,
                     "Assert that the execute callback has not already fired");
                 executeCallbackFired = true;
@@ -182,10 +186,10 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
-    bugmeta.tag(bugflowExecuteWhileParallelTest).with(
-        test().name("Flows WhileParallel - execute test")
+    bugmeta.tag(bugflowExecuteWhileSeriesTest).with(
+        test().name("Flows WhileSeries - execute test")
     );
-    bugmeta.tag(bugflowExecuteWhileParallelWithAsyncAssertionTest).with(
-        test().name("Flows WhileParallel - execute with async assertion test")
+    bugmeta.tag(bugflowExecuteWhileSeriesWithAsyncAssertionTest).with(
+        test().name("Flows WhileSeries - execute with async assertion test")
     );
 });

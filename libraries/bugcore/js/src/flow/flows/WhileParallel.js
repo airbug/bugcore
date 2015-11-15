@@ -173,12 +173,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         runWhileAssertion: function() {
             var _this           = this;
-            var asyncCall       = false;
+            var executed        = false;
             var assertionFlow   = new Assertion(this.assertionMethod);
             assertionFlow.execute(this.getFlowArgs(), function(throwable, result) {
-                if (asyncCall) {
-                    _this.syncCall = false;
-                }
+                executed = true;
                 if (!throwable) {
                     if (result) {
                         _this.whileCheckSuccess();
@@ -192,7 +190,7 @@ require('bugpack').context("*", function(bugpack) {
             });
 
             //NOTE BRN: This code will run before the above callback for the execute method only if the callback is fired async
-            asyncCall = true;
+            this.syncCall = executed;
         },
 
         /**
