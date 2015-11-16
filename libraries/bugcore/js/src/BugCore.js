@@ -67,6 +67,10 @@
 //@Require('Suppliers')
 //@Require('Throwable')
 //@Require('TypeUtil')
+//@Require('ValidationMachine')
+//@Require('Validator')
+//@Require('ValidatorGroup')
+//@Require('ValidatorProcessor')
 
 
 //-------------------------------------------------------------------------------
@@ -135,6 +139,10 @@ require('bugpack').context("*", function(bugpack) {
     var Suppliers           = bugpack.require('Suppliers');
     var Throwable           = bugpack.require('Throwable');
     var TypeUtil            = bugpack.require('TypeUtil');
+    var ValidationMachine   = bugpack.require('ValidationMachine');
+    var Validator           = bugpack.require('Validator');
+    var ValidatorGroup      = bugpack.require('ValidatorGroup');
+    var ValidatorProcessor  = bugpack.require('ValidatorProcessor');
 
 
     //-------------------------------------------------------------------------------
@@ -445,6 +453,26 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:TypeUtil)}
              */
             this.TypeUtil           = TypeUtil;
+
+            /**
+             * @type {function(new:ValidationMachine)}
+             */
+            this.ValidationMachine  = ValidationMachine;
+
+            /**
+             * @type {function(new:Validator)}
+             */
+            this.Validator          = Validator;
+
+            /**
+             * @type {function(new:ValidatorGroup)}
+             */
+            this.ValidatorGroup     = ValidatorGroup;
+
+            /**
+             * @type {function(new:ValidatorProcessor)}
+             */
+            this.ValidatorProcessor = ValidatorProcessor;
         },
 
 
