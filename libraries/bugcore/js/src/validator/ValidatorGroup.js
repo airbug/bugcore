@@ -204,6 +204,9 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.validate(function(throwable) {
                 _this.timeoutSetup = false;
+                if (throwable) {
+                    throw throwable;
+                }
             });
         },
 
