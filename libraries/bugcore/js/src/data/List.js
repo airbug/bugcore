@@ -19,9 +19,9 @@
 //@Require('ICollection')
 //@Require('IIndexValueIterable')
 //@Require('IList')
-//@Require('Obj')
 //@Require('NotifyingArray')
 //@Require('NotifyingArrayIterator')
+//@Require('Obj')
 //@Require('TypeUtil')
 
 
@@ -43,9 +43,9 @@ require('bugpack').context('*', function(bugpack) {
     var ICollection             = bugpack.require('ICollection');
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var IList                   = bugpack.require('IList');
+    var NotifyingArray          = bugpack.require('NotifyingArray');
+    var NotifyingArrayIterator  = bugpack.require('NotifyingArrayIterator');
     var Obj                     = bugpack.require('Obj');
-    var NotifyingArray            = bugpack.require('NotifyingArray');
-    var NotifyingArrayIterator    = bugpack.require('NotifyingArrayIterator');
     var TypeUtil                = bugpack.require('TypeUtil');
 
 

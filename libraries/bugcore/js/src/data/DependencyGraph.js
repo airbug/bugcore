@@ -27,10 +27,10 @@ require('bugpack').context('*', function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Graph       = bugpack.require('Graph');
-    var List        = bugpack.require('List');
-    var Set         = bugpack.require('Set');
+    var Class   = bugpack.require('Class');
+    var Graph   = bugpack.require('Graph');
+    var List    = bugpack.require('List');
+    var Set     = bugpack.require('Set');
 
 
     //-------------------------------------------------------------------------------

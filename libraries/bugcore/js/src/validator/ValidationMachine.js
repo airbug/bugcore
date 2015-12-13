@@ -28,11 +28,11 @@ require('bugpack').context('*', function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var Collections         = bugpack.require('Collections');
-    var Obj                 = bugpack.require('Obj');
-    var Validator           = bugpack.require('Validator');
-    var ValidatorGroup      = bugpack.require('ValidatorGroup');
+    var Class           = bugpack.require('Class');
+    var Collections     = bugpack.require('Collections');
+    var Obj             = bugpack.require('Obj');
+    var Validator       = bugpack.require('Validator');
+    var ValidatorGroup  = bugpack.require('ValidatorGroup');
 
 
     //-------------------------------------------------------------------------------

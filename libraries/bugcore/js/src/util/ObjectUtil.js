@@ -54,7 +54,7 @@ require('bugpack').context('*', function(bugpack) {
             return obj[prop];
         }
         return true;
-    });
+    })();
 
     /**
      * @static

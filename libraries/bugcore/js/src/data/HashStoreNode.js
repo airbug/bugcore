@@ -12,8 +12,8 @@
 //@Export('HashStoreNode')
 
 //@Require('Class')
-//@Require('Obj')
 //@Require('NotifyingArray')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -27,8 +27,8 @@ require('bugpack').context('*', function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
+    var NotifyingArray  = bugpack.require('NotifyingArray');
     var Obj             = bugpack.require('Obj');
-    var NotifyingArray    = bugpack.require('NotifyingArray');
 
 
     //-------------------------------------------------------------------------------

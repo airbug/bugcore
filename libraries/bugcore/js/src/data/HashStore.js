@@ -16,8 +16,8 @@
 //@Require('HashStoreNode')
 //@Require('IArrayable')
 //@Require('IIterable')
-//@Require('Obj')
 //@Require('NotifyingObject')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -35,8 +35,8 @@ require('bugpack').context('*', function(bugpack) {
     var HashStoreNode       = bugpack.require('HashStoreNode');
     var IArrayable          = bugpack.require('IArrayable');
     var IIterable           = bugpack.require('IIterable');
+    var NotifyingObject     = bugpack.require('NotifyingObject');
     var Obj                 = bugpack.require('Obj');
-    var NotifyingObject       = bugpack.require('NotifyingObject');
 
 
     //-------------------------------------------------------------------------------

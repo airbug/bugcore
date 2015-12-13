@@ -26,7 +26,7 @@ require('bugpack').context('*', function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Notifying     = bugpack.require('Notifying');
+    var Notifying   = bugpack.require('Notifying');
 
 
     //-------------------------------------------------------------------------------

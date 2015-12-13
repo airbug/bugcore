@@ -14,8 +14,8 @@
 //@Require('Class')
 //@Require('Exception')
 //@Require('IIndexValueIterator')
-//@Require('Obj')
 //@Require('NotifyingArray')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -31,8 +31,8 @@ require('bugpack').context('*', function(bugpack) {
     var Class                   = bugpack.require('Class');
     var Exception               = bugpack.require('Exception');
     var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
-    var Obj                     = bugpack.require('Obj');
     var NotifyingArray          = bugpack.require('NotifyingArray');
+    var Obj                     = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------

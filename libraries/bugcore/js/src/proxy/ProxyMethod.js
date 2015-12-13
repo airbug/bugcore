@@ -26,9 +26,9 @@ require('bugpack').context('*', function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var IProxy      = bugpack.require('IProxy');
-    var Obj         = bugpack.require('Obj');
+    var Class   = bugpack.require('Class');
+    var IProxy  = bugpack.require('IProxy');
+    var Obj     = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------

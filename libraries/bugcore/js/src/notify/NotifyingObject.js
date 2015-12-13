@@ -12,8 +12,8 @@
 //@Export('NotifyingObject')
 
 //@Require('Class')
-//@Require('ObjectUtil')
 //@Require('Notifying')
+//@Require('ObjectUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -27,8 +27,8 @@ require('bugpack').context('*', function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var ObjectUtil  = bugpack.require('ObjectUtil');
     var Notifying   = bugpack.require('Notifying');
+    var ObjectUtil  = bugpack.require('ObjectUtil');
 
 
     //-------------------------------------------------------------------------------

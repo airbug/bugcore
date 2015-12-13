@@ -16,8 +16,8 @@
 //@Require('HashTableIterator')
 //@Require('HashTableNode')
 //@Require('IKeyValueIterable')
-//@Require('Obj')
 //@Require('NotifyingObject')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
@@ -35,8 +35,8 @@ require('bugpack').context('*', function(bugpack) {
     var HashTableIterator   = bugpack.require('HashTableIterator');
     var HashTableNode       = bugpack.require('HashTableNode');
     var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
+    var NotifyingObject     = bugpack.require('NotifyingObject');
     var Obj                 = bugpack.require('Obj');
-    var NotifyingObject       = bugpack.require('NotifyingObject');
 
 
     //-------------------------------------------------------------------------------
