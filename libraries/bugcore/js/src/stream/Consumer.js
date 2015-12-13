@@ -13,6 +13,7 @@
 
 //@Require('Bug')
 //@Require('Class')
+//@Require('Exception')
 //@Require('IConsumer')
 //@Require('ISupplier')
 //@Require('Obj')
@@ -24,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -32,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
+    var Exception   = bugpack.require('Exception');
     var IConsumer   = bugpack.require('IConsumer');
     var ISupplier   = bugpack.require('ISupplier');
     var Obj         = bugpack.require('Obj');
@@ -52,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Consumer = Class.extend(Obj, {
 
-        _name: "Consumer",
+        _name: 'Consumer',
 
 
         //-------------------------------------------------------------------------------
@@ -110,7 +112,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesImplement(supplier, ISupplier)) {
                 this.supplier = supplier;
             } else {
-                throw Throwables.illegalArgumentBug("supplier", supplier, "'supplier' must implement ISupplier");
+                throw Throwables.illegalArgumentBug('supplier', supplier, '"supplier" must implement ISupplier');
             }
             return this;
         },
@@ -183,11 +185,11 @@ require('bugpack').context("*", function(bugpack) {
                     this.supplier.supply(Supplier.Mode.ASYNC);
                 } else {
                     if (this.supplier.getMode() !== Supplier.Mode.ASYNC) {
-                        return callback(new Exception("IllegalState", {}, "Supplier is already supplying in SYNC mode. Cannot switch to ASYNC once started."));
+                        return callback(new Exception('IllegalState', {}, 'Supplier is already supplying in SYNC mode. Cannot switch to ASYNC once started.'));
                     }
                 }
             } else {
-                return callback(new Exception("IllegalState", {}, "Consumer is already consuming"));
+                return callback(new Exception('IllegalState', {}, 'Consumer is already consuming'));
             }
         },
 
@@ -201,15 +203,15 @@ require('bugpack').context("*", function(bugpack) {
                     this.supplier.supply(Supplier.Mode.SYNC);
                 } else {
                     if (this.supplier.getMode() !== Supplier.Mode.SYNC) {
-                        throw new Exception("IllegalState", {}, "Supplier is already supplying in ASYNC mode. Cannot switch to SYNC once started.");
+                        throw new Exception('IllegalState', {}, 'Supplier is already supplying in ASYNC mode. Cannot switch to SYNC once started.');
                     }
                 }
                 if (!this.isEnded()) {
-                    throw new Exception("IllegalState", {}, "Consumer did not receive end call");
+                    throw new Exception('IllegalState', {}, 'Consumer did not receive end call');
                 }
                 return this.doConsume();
             } else {
-                throw new Exception("IllegalState", {}, "Consumer is already consuming");
+                throw new Exception('IllegalState', {}, 'Consumer is already consuming');
             }
         },
 
@@ -220,7 +222,7 @@ require('bugpack').context("*", function(bugpack) {
             if (!this.isEnded()) {
                 this.doEnd();
             } else {
-                throw new Exception("IllegalState", {}, "Consumer already ended");
+                throw new Exception('IllegalState', {}, 'Consumer already ended');
             }
         },
 
@@ -248,8 +250,8 @@ require('bugpack').context("*", function(bugpack) {
          * @abstract
          * @param {I} item
          */
-        doAccept: function(item) {
-            throw new Bug("AbstractMethod", {}, "Abstract method doAccept has not been implemented");
+        doAccept: function() {
+            throw new Bug('AbstractMethod', {}, 'Abstract method doAccept has not been implemented');
         },
 
         /**
@@ -257,7 +259,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         doConsume: function() {
-            throw new Bug("AbstractMethod", {}, "Abstract method doConsume has not been implemented");
+            throw new Bug('AbstractMethod', {}, 'Abstract method doConsume has not been implemented');
         }
     });
 

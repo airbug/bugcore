@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -80,14 +80,14 @@ require('bugpack').context("*", function(bugpack) {
                 typeValueSet.forEach(function(typeValue) {
                     var repeatHash = HashUtil.hash(typeValue.value);
                     var expectedHash = _this.hashValues[typeValue.name];
-                    test.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + typeValue.value +
-                        " is the same when it is hashed repeatedly.");
+                    test.assertEqual(repeatHash, expectedHash, 'Assert hash of ' + typeValue.name + ' ' + typeValue.value +
+                        ' is the same when it is hashed repeatedly.');
                 });
             }
         }
     };
     bugmeta.tag(hashRepeatTest).with(
-        test().name("Hash repeat test")
+        test().name('Hash repeat test')
     );
 
     /**
@@ -111,12 +111,12 @@ require('bugpack').context("*", function(bugpack) {
             var nativeHash1 = HashUtil.hash(this.native1);
             var nativeHash2 = HashUtil.hash(this.native2);
             test.assertNotEqual(nativeHash1, nativeHash2,
-                "Assert that nativeHash1 and nativeHash2 are not equal");
+                'Assert that nativeHash1 and nativeHash2 are not equal');
             test.assertEqual(nativeHash1, HashUtil.hash(this.native1),
-                "Assert that the same hash is given for rehash");
+                'Assert that the same hash is given for rehash');
         }
     };
     bugmeta.tag(hashNativeTypesTest).with(
-        test().name("Hash - native types test")
+        test().name('Hash - native types test')
     );
 });

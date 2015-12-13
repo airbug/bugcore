@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -64,7 +64,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testGraph, Graph),
-                "Assert Graph instance extends Graph class");
+                'Assert Graph instance extends Graph class');
         }
     };
 
@@ -80,7 +80,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testGraph  = new Graph();
-            this.testValue  = "testValue";
+            this.testValue  = 'testValue';
         },
 
 
@@ -90,10 +90,10 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testGraph.addNodeForValue(this.testValue);
             test.assertTrue(this.testGraph.containsNodeForValue(this.testValue),
-                "Assert testGraph contains node for value");
+                'Assert testGraph contains node for value');
             this.testGraph.removeNodeForValue(this.testValue);
             test.assertFalse(this.testGraph.containsNodeForValue(this.testValue),
-                "Assert testGraph does not contain node for value");
+                'Assert testGraph does not contain node for value');
         }
     };
 
@@ -108,8 +108,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testGraph      = new Graph();
-            this.testValue1     = "testValue1";
-            this.testValue2     = "testValue2";
+            this.testValue1     = 'testValue1';
+            this.testValue2     = 'testValue2';
         },
 
 
@@ -120,28 +120,28 @@ require('bugpack').context("*", function(bugpack) {
             this.testGraph.addNodeForValue(this.testValue1);
             this.testGraph.addNodeForValue(this.testValue2);
             test.assertFalse(this.testGraph.containsEdgeFromValueToValue(this.testValue1, this.testValue2),
-                "Assert Graph does not start with edge from value 1 to value 2");
+                'Assert Graph does not start with edge from value 1 to value 2');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges from value 1");
+                'Assert Graph does not contain edges from value 1');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges from value 2");
+                'Assert Graph does not contain edges from value 2');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges to value 1");
+                'Assert Graph does not contain edges to value 1');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges to value 2");
+                'Assert Graph does not contain edges to value 2');
             this.testGraph.addEdgeFromValueToValue(this.testValue1, this.testValue2);
             test.assertTrue(this.testGraph.containsEdgeFromValueToValue(this.testValue1, this.testValue2),
-                "Assert Graph now contains edge from value 1 to value 2");
+                'Assert Graph now contains edge from value 1 to value 2');
             test.assertFalse(this.testGraph.containsEdgeFromValueToValue(this.testValue2, this.testValue1),
-                "Assert Graph does not contain edge from value 2 to value 1");
+                'Assert Graph does not contain edge from value 2 to value 1');
             test.assertTrue(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph contains edges from value 1");
+                'Assert Graph contains edges from value 1');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges from value 2");
+                'Assert Graph does not contain edges from value 2');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges to value 1");
+                'Assert Graph does not contain edges to value 1');
             test.assertTrue(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph contains edges to value 2");
+                'Assert Graph contains edges to value 2');
         }
     };
 
@@ -156,8 +156,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testGraph      = new Graph();
-            this.testValue1     = "testValue1";
-            this.testValue2     = "testValue2";
+            this.testValue1     = 'testValue1';
+            this.testValue2     = 'testValue2';
         },
 
 
@@ -169,30 +169,30 @@ require('bugpack').context("*", function(bugpack) {
             this.testGraph.addNodeForValue(this.testValue2);
             this.testGraph.addEdgeFromValueToValue(this.testValue1, this.testValue2);
             test.assertTrue(this.testGraph.containsEdgeFromValueToValue(this.testValue1, this.testValue2),
-                "Assert Graph now contains edge from value 1 to value 2");
+                'Assert Graph now contains edge from value 1 to value 2');
             test.assertFalse(this.testGraph.containsEdgeFromValueToValue(this.testValue2, this.testValue1),
-                "Assert Graph does not contain edge from value 2 to value 1");
+                'Assert Graph does not contain edge from value 2 to value 1');
             test.assertTrue(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph contains edges from value 1");
+                'Assert Graph contains edges from value 1');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges from value 2");
+                'Assert Graph does not contain edges from value 2');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges to value 1");
+                'Assert Graph does not contain edges to value 1');
             test.assertTrue(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph contains edges to value 2");
+                'Assert Graph contains edges to value 2');
             this.testGraph.removeEdgeFromValueToValue(this.testValue1, this.testValue2);
             test.assertFalse(this.testGraph.containsEdgeFromValueToValue(this.testValue1, this.testValue2),
-                "Assert Graph does not contain edge from value 1 to value 2");
+                'Assert Graph does not contain edge from value 1 to value 2');
             test.assertFalse(this.testGraph.containsEdgeFromValueToValue(this.testValue2, this.testValue1),
-                "Assert Graph does not contain edge from value 2 to value 1");
+                'Assert Graph does not contain edge from value 2 to value 1');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges from value 1");
+                'Assert Graph does not contain edges from value 1');
             test.assertFalse(this.testGraph.containsEdgesFrom(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges from value 2");
+                'Assert Graph does not contain edges from value 2');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue1)),
-                "Assert Graph does not contain edges to value 1");
+                'Assert Graph does not contain edges to value 1');
             test.assertFalse(this.testGraph.containsEdgesTo(this.testGraph.getNode(this.testValue2)),
-                "Assert Graph does not contain edges to value 2");
+                'Assert Graph does not contain edges to value 2');
         }
     };
 
@@ -202,15 +202,15 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(graphInstantiationTest).with(
-        test().name("Graph - instantiation test")
+        test().name('Graph - instantiation test')
     );
     bugmeta.tag(graphAddValueRemoveValueTest).with(
-        test().name("Graph - add value and remove value for test")
+        test().name('Graph - add value and remove value for test')
     );
     bugmeta.tag(graphAddEdgeFromValueToValueTest).with(
-        test().name("Graph - add edge from value to value")
+        test().name('Graph - add edge from value to value')
     );
     bugmeta.tag(graphRemoveEdgeFromValueToValueTest).with(
-        test().name("Graph - remove edge from value to value")
+        test().name('Graph - remove edge from value to value')
     );
 });

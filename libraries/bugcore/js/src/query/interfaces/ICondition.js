@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var ICondition = Interface.declare({
 
-        _name: "ICondition",
+        _name: 'ICondition',
 
 
         //-------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         check: function(value) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

@@ -24,14 +24,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var ArgUtil     = bugpack.require('ArgUtil');
-    var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
     var Resolver    = bugpack.require('Resolver');
@@ -45,7 +44,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var $error      = Tracer.$error;
-    var $trace      = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -58,7 +56,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Flow = Class.extend(Obj, {
 
-        _name: "Flow",
+        _name: 'Flow',
 
 
         //-------------------------------------------------------------------------------
@@ -215,10 +213,10 @@ require('bugpack').context("*", function(bugpack) {
             } else {
                 var args = ArgUtil.toArray(arguments);
                 if (this.hasErrored()) {
-                    this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot complete flow. Flow has already errored out."));
+                    this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Cannot complete flow. Flow has already errored out.'));
                 }
                 if (this.hasCompleted()) {
-                    this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only complete a flow once."));
+                    this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Can only complete a flow once.'));
                 }
                 args.shift();
                 this.resolve.apply(this, args);
@@ -230,13 +228,13 @@ require('bugpack').context("*", function(bugpack) {
          */
         error: function(throwable) {
             if (!throwable) {
-                throwable = Throwables.exception("FlowException", {}, "A flow exception occurred");
+                throwable = Throwables.exception('FlowException', {}, 'A flow exception occurred');
             }
             if (this.hasErrored()) {
-                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Can only error flow once.", [throwable]));
+                this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Can only error flow once.', [throwable]));
             }
             if (this.hasCompleted()) {
-                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot error flow. Flow has already completed.", [throwable]));
+                this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Cannot error flow. Flow has already completed.', [throwable]));
             }
             this.errorFlow($error(throwable));
         },
@@ -261,7 +259,7 @@ require('bugpack').context("*", function(bugpack) {
                     this.error(throwable);
                 }
             } else {
-                throw Throwables.bug("IllegalState", {}, "A flow can only be executed once.");
+                throw Throwables.bug('IllegalState', {}, 'A flow can only be executed once.');
             }
         },
 
@@ -270,13 +268,13 @@ require('bugpack').context("*", function(bugpack) {
          */
         resolve: function() {
             if (this.isResolving()) {
-                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow is already resolving."));
+                this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Cannot resolve flow. Flow is already resolving.'));
             }
             if (this.hasErrored()) {
-                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow has already errored out."));
+                this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Cannot resolve flow. Flow has already errored out.'));
             }
             if (this.hasCompleted()) {
-                this.throwBug(Throwables.bug("DuplicateFlow", {}, "Cannot resolve flow. Flow has already completed."));
+                this.throwBug(Throwables.bug('DuplicateFlow', {}, 'Cannot resolve flow. Flow has already completed.'));
             }
             var args = ArgUtil.toArray(arguments);
             this.resolveFlow(args);
@@ -296,7 +294,7 @@ require('bugpack').context("*", function(bugpack) {
             this.completed = true;
             if (this.callback) {
                 //setTimeout($trace(function() {
-                    _this.callback.apply(undefined, [null].concat(args));
+                _this.callback.apply(undefined, [null].concat(args));
                 //}), 0);
             }
         },
@@ -335,7 +333,7 @@ require('bugpack').context("*", function(bugpack) {
             resolver.resolve(function(reasons, values) {
                 _this.resolving = false;
                 if (reasons.length > 0) {
-                    _this.errorFlow(Throwables.parallelException("ResolveException", {}, "Exceptions occurred during resolution of Flow", reasons));
+                    _this.errorFlow(Throwables.parallelException('ResolveException', {}, 'Exceptions occurred during resolution of Flow', reasons));
                 } else {
                     _this.completeFlow(values);
                 }

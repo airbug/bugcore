@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -57,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testPropertiesObject = {
-                someProperty: "someValue"
+                someProperty: 'someValue'
             };
             this.testProperties = new Properties(this.testPropertiesObject);
         },
@@ -68,13 +68,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testProperties.getPropertiesObject(), this.testPropertiesObject,
-                "Assert the properties object is the test properties object");
-            test.assertEqual(this.testProperties.getProperty("someProperty"), "someValue",
-                "Assert 'someProperty' is 'someValue'");
-            test.assertEqual(this.testProperties.getProperty("doesNotExist"), undefined,
-                "Assert a property that does not exist will return 'undefined'");
-            test.assertEqual(this.testProperties.getProperty("someProperty.doesNotExist"), undefined,
-                "Assert a property that does exist but has no sub properties not exist will return 'undefined' if we try to access a sub property");
+                'Assert the properties object is the test properties object');
+            test.assertEqual(this.testProperties.getProperty('someProperty'), 'someValue',
+                'Assert "someProperty" is "someValue"');
+            test.assertEqual(this.testProperties.getProperty('doesNotExist'), undefined,
+                'Assert a property that does not exist will return "undefined"');
+            test.assertEqual(this.testProperties.getProperty('someProperty.doesNotExist'), undefined,
+                'Assert a property that does exist but has no sub properties not exist will return "undefined" if we try to access a sub property');
         }
     };
 
@@ -98,16 +98,16 @@ require('bugpack').context("*", function(bugpack) {
             this.testProperties.updateProperties({
                 someProp: {
                     someArray: [
-                        "."
+                        '.'
                     ]
                 }
             });
 
-            var someArray = this.testProperties.getProperty("someProp.someArray");
+            var someArray = this.testProperties.getProperty('someProp.someArray');
             test.assertTrue(TypeUtil.isArray(someArray),
-                "Assert 'someProp.someArray' is an array");
-            test.assertEqual(someArray[0], ".",
-                "Assert index 0 of someArray is equal to '.'");
+                'Assert "someProp.someArray" is an array');
+            test.assertEqual(someArray[0], '.',
+                'Assert index 0 of someArray is equal to "."');
         }
     };
 
@@ -129,18 +129,18 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.testProperties.updateProperties({
-                name: "value",
+                name: 'value',
                 test: {
-                    name: "otherValue"
+                    name: 'otherValue'
                 }
             });
 
-            var nameValue       = this.testProperties.getProperty("name");
-            var testNameValue   = this.testProperties.getProperty("test.name");
-            test.assertEqual(nameValue, "value",
-                "Assert 'name' is 'value'");
-            test.assertEqual(testNameValue, "otherValue",
-                "Assert 'test.name' is 'otherValue'");
+            var nameValue       = this.testProperties.getProperty('name');
+            var testNameValue   = this.testProperties.getProperty('test.name');
+            test.assertEqual(nameValue, 'value',
+                'Assert "name" is "value"');
+            test.assertEqual(testNameValue, 'otherValue',
+                'Assert "test.name" is "otherValue"');
         }
     };
 
@@ -150,12 +150,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(propertiesInstantiationTest).with(
-        test().name("Properties instantiation test")
+        test().name('Properties instantiation test')
     );
     bugmeta.tag(propertiesUpdatePropertiesTest).with(
-        test().name("Properties - #updateProperties test")
+        test().name('Properties - #updateProperties test')
     );
     bugmeta.tag(propertiesUpdatePropertiesDuplicateSubNameTest).with(
-        test().name("Properties - #updateProperties duplicate sub name test")
+        test().name('Properties - #updateProperties duplicate sub name test')
     );
 });

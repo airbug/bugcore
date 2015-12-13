@@ -12,7 +12,6 @@
 //@Export('IterableParallel')
 
 //@Require('Class')
-//@Require('IIterable')
 //@Require('IterableFlow')
 //@Require('MappedParallelException')
 
@@ -21,14 +20,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                       = bugpack.require('Class');
-    var IIterable                   = bugpack.require('IIterable');
     var IterableFlow                = bugpack.require('IterableFlow');
     var MappedParallelException     = bugpack.require('MappedParallelException');
 
@@ -43,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IterableParallel = Class.extend(IterableFlow, {
 
-        _name: "IterableParallel",
+        _name: 'IterableParallel',
 
 
         //-------------------------------------------------------------------------------

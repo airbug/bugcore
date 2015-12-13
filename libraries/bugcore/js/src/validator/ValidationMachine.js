@@ -16,14 +16,13 @@
 //@Require('Obj')
 //@Require('Validator')
 //@Require('ValidatorGroup')
-//@Require('ValidatorProcessor')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,7 +33,6 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var Validator           = bugpack.require('Validator');
     var ValidatorGroup      = bugpack.require('ValidatorGroup');
-    var ValidatorProcessor  = bugpack.require('ValidatorProcessor');
 
 
     //-------------------------------------------------------------------------------
@@ -47,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ValidationMachine = Class.extend(Obj, /** @lends {ValidationMachine.prototype} */{
 
-        _name: "ValidationMachine",
+        _name: 'ValidationMachine',
 
 
         //-------------------------------------------------------------------------------
@@ -70,7 +68,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Map.<string, ValidatorGroup>}
              */
-            this.typeToValidatorGroupMap    = Collections.map()
+            this.typeToValidatorGroupMap    = Collections.map();
         },
 
 

@@ -14,7 +14,6 @@
 //@Require('Class')
 //@Require('EventQuery')
 //@Require('EventQueryListener')
-//@Require('Obj')
 //@Require('QueryBuilder')
 
 
@@ -22,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,7 +30,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var EventQuery          = bugpack.require('EventQuery');
     var EventQueryListener  = bugpack.require('EventQueryListener');
-    var Obj                 = bugpack.require('Obj');
     var QueryBuilder        = bugpack.require('QueryBuilder');
 
 
@@ -45,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventQueryBuilder = Class.extend(QueryBuilder, {
 
-        _name: "EventQueryBuilder",
+        _name: 'EventQueryBuilder',
 
 
         //-------------------------------------------------------------------------------

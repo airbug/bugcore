@@ -9,24 +9,24 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ReflectArray')
+//@Export('NotifyingArray')
 
 //@Require('Class')
-//@Require('Reflect')
+//@Require('Notifying')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Reflect     = bugpack.require('Reflect');
+    var Notifying     = bugpack.require('Notifying');
 
 
     //-------------------------------------------------------------------------------
@@ -35,12 +35,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Reflect}
+     * @extends {Notifying}
      * @template {V}
      */
-    var ReflectArray = Class.extend(Reflect, /** @lends {ReflectArray.prototype} */{
+    var NotifyingArray = Class.extend(Notifying, /** @lends {NotifyingArray.prototype} */{
 
-        _name: "ReflectArray",
+        _name: 'NotifyingArray',
 
 
         //-------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ require('bugpack').context("*", function(bugpack) {
                     this.getNotifier().notify({
                         index: length - 1,
                         object: this,
-                        type: "splice",
+                        type: 'splice',
                         removed: [oldValue]
                     });
                 }
@@ -138,14 +138,14 @@ require('bugpack').context("*", function(bugpack) {
          * @param {V...} itemN
          * @return {number}
          */
-        push: function(itemN) {
+        push: function() {
             var length          = this.getLength();
             var returnedLength  = this.array.push.apply(this.array, arguments);
             if (this.hasNotifier()) {
                 this.getNotifier().notify({
                     index: length - 1,
                     object: this,
-                    type: "splice",
+                    type: 'splice',
                     addedCount: returnedLength - length
                 });
             }
@@ -165,7 +165,7 @@ require('bugpack').context("*", function(bugpack) {
                     index: index,
                     object: this,
                     removed: [oldValue],
-                    type: "splice"
+                    type: 'splice'
                 });
             }
             return oldValue;
@@ -183,7 +183,7 @@ require('bugpack').context("*", function(bugpack) {
                         index: 0,
                         object: this,
                         removed: [oldValue],
-                        type: "splice"
+                        type: 'splice'
                     });
                 }
                 return oldValue;
@@ -197,16 +197,16 @@ require('bugpack').context("*", function(bugpack) {
          * @param {V...=} itemN
          * @return {Array.<V>}
          */
-        splice: function(start, deleteCount, itemN) {
+        splice: function(start) {
             var removed = this.array.splice.apply(this.array, arguments);
             if (this.hasNotifier()) {
                 var note = {
                     index: start,
                     object: this,
-                    type: "splice"
+                    type: 'splice'
                 };
                 if (removed.length > 0) {
-                    note.removed = removed
+                    note.removed = removed;
                 }
                 if (arguments.length > 2) {
                     note.addedCount = arguments.length - 2;
@@ -220,14 +220,14 @@ require('bugpack').context("*", function(bugpack) {
          * @param {V...=} itemN
          * @return {number}
          */
-        unshift: function(itemN) {
+        unshift: function() {
             var length          = this.getLength();
             var returnedLength  = this.array.unshift.apply(this.array, arguments);
             if (this.hasNotifier()) {
                 this.getNotifier().notify({
                     index: 0,
                     object: this,
-                    type: "splice",
+                    type: 'splice',
                     addedCount: returnedLength - length
                 });
             }
@@ -241,5 +241,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ReflectArray', ReflectArray);
+    bugpack.export('NotifyingArray', NotifyingArray);
 });

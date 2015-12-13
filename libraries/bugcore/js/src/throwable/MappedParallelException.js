@@ -14,14 +14,13 @@
 //@Require('Class')
 //@Require('Map')
 //@Require('ParallelException')
-//@Require('StackTraceUtil')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -30,7 +29,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var Map                 = bugpack.require('Map');
     var ParallelException   = bugpack.require('ParallelException');
-    var StackTraceUtil      = bugpack.require('StackTraceUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -43,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MappedParallelException = Class.extend(ParallelException, {
 
-        _name: "MappedParallelException",
+        _name: 'MappedParallelException',
 
 
         //-------------------------------------------------------------------------------
@@ -68,7 +66,7 @@ require('bugpack').context("*", function(bugpack) {
              */
             this.causeMap   = new Map();
 
-            type = type ? type : "MappedParallelException";
+            type = type ? type : 'MappedParallelException';
             this._super(type, data, message);
         },
 
@@ -115,8 +113,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toString: function() {
             var data = this._super();
-            data = data + "\n causeMap:" + this.causeMap.toString();
-            return data
+            data = data + '\n causeMap:' + this.causeMap.toString();
+            return data;
         },
 
 
@@ -148,13 +146,13 @@ require('bugpack').context("*", function(bugpack) {
                 this.primaryStack = this.generateStackTrace();
             }
             var stack = this.primaryStack;
-            stack += "\n\n";
-            stack += this.type + " was caused by " + this.causeMap.getCount() + " exceptions:\n";
+            stack += '\n\n';
+            stack += this.type + ' was caused by ' + this.causeMap.getCount() + ' exceptions:\n';
             var count = 0;
             this.causeMap.forEach(function(cause, key) {
                 count++;
-                stack += _this.type + " cause mapped to '" + key + "':\n";
-                stack += cause.message + "\n";
+                stack += _this.type + ' cause mapped to "' + key + '":\n';
+                stack += cause.message + '\n';
                 stack += cause.stack;
             });
             this.stack = stack;

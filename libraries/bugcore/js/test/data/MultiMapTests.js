@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -57,9 +57,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new MultiMap();
-            this.value1 = "value1";
-            this.value2 = "value2";
-            this.value3 = "value3";
+            this.value1 = 'value1';
+            this.value2 = 'value2';
+            this.value3 = 'value3';
             this.map.put('key1', this.value1);
             this.map.put('key2', this.value2);
         },
@@ -70,11 +70,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.map.containsValue(this.value1), true,
-                "Assert containsValue returns true for value1.");
+                'Assert containsValue returns true for value1.');
             test.assertEqual(this.map.containsValue(this.value2), true,
-                "Assert containsValue returns true for value2.");
+                'Assert containsValue returns true for value2.');
             test.assertEqual(this.map.containsValue(this.value3), false,
-                "Assert containsValue returns false for value that hasn't been added to the map.");
+                'Assert containsValue returns false for value that hasn\'t been added to the map.');
         }
     };
 
@@ -88,8 +88,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new MultiMap();
-            this.key1 = "key1";
-            this.value1 = "value1";
+            this.key1 = 'key1';
+            this.value1 = 'value1';
             this.map.put(this.key1, this.value1);
         },
 
@@ -100,9 +100,9 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var collection = this.map.get(this.key1);
             test.assertTrue(Class.doesExtend(collection, Collection),
-                "Assert a Collection was returned by get()");
+                'Assert a Collection was returned by get()');
             test.assertTrue(collection.contains(this.value1),
-                "Assert collection at key1 contains value1.");
+                'Assert collection at key1 contains value1.');
         }
     };
 
@@ -116,9 +116,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new MultiMap();
-            this.key1 = "key1";
-            this.value1 = "value1";
-            this.value2 = "value2";
+            this.key1 = 'key1';
+            this.value1 = 'value1';
+            this.value2 = 'value2';
             this.map.put(this.key1, this.value1);
             this.map.put(this.key1, this.value2);
         },
@@ -129,18 +129,18 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.map.containsValue(this.value1), true,
-                "Assert containsValue returns true for value1");
+                'Assert containsValue returns true for value1');
             test.assertEqual(this.map.containsValue(this.value2), true,
-                "Assert containsValue returns true for value2");
+                'Assert containsValue returns true for value2');
             var collection = this.map.get(this.key1);
             test.assertTrue(Class.doesExtend(collection, Collection),
-                "Assert Collection is returned from get()");
+                'Assert Collection is returned from get()');
             test.assertEqual(collection.getCount(), 2,
-                "Assert Collection contains 2 values");
+                'Assert Collection contains 2 values');
             test.assertTrue(collection.contains(this.value1),
-                "Assert Collection contains value1");
+                'Assert Collection contains value1');
             test.assertTrue(collection.contains(this.value2),
-                "Assert Collection contains value2");
+                'Assert Collection contains value2');
         }
     };
 
@@ -150,12 +150,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(multiMapSimplePutContainsValueTest).with(
-        test().name("MultiMap - simple put/containsValue test")
+        test().name('MultiMap - simple put/containsValue test')
     );
     bugmeta.tag(multiMapSimplePutGetTest).with(
-        test().name("MultiMap - simple put/get test")
+        test().name('MultiMap - simple put/get test')
     );
     bugmeta.tag(multiMapPutSameKeyDifferentValueTest).with(
-        test().name("MultiMap - put same key with different values test")
+        test().name('MultiMap - put same key with different values test')
     );
 });

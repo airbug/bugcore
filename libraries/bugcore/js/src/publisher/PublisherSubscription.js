@@ -12,7 +12,6 @@
 //@Export('PublisherSubscription')
 
 //@Require('Class')
-//@Require('HashUtil')
 //@Require('Obj')
 
 
@@ -20,14 +19,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var HashUtil    = bugpack.require('HashUtil');
     var Obj         = bugpack.require('Obj');
 
 
@@ -41,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var PublisherSubscription = Class.extend(Obj, {
 
-        _name: "PublisherSubscription",
+        _name: 'PublisherSubscription',
 
 
         //-------------------------------------------------------------------------------
@@ -123,7 +121,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[PublisherSubscription]" + Obj.hashCode(this.topic) + Obj.hashCode(this.subscriberFunction) +
+                this._hashCode = Obj.hashCode('[PublisherSubscription]' + Obj.hashCode(this.topic) + Obj.hashCode(this.subscriberFunction) +
                     Obj.hashCode(this.subscriberContext));
             }
             return this._hashCode;

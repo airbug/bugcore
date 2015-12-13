@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ArraySupplier = Class.extend(Supplier, {
 
-        _name: "ArraySupplier",
+        _name: 'ArraySupplier',
 
 
         //-------------------------------------------------------------------------------

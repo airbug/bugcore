@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var PropertiesChain = Class.extend(Obj, {
 
-        _name: "PropertiesChain",
+        _name: 'PropertiesChain',
 
 
         //-------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ require('bugpack').context("*", function(bugpack) {
 
             if (!TypeUtil.isUndefined(propertiesList)) {
                 if (!(TypeUtil.isArray(propertiesList) || Class.doesExtend(propertiesList, List))) {
-                    throw new Exception("propertiesList must either be an Array of Properties or a List of Properties");
+                    throw new Exception('propertiesList must either be an Array of Properties or a List of Properties');
                 }
             } else {
                 propertiesList = [];

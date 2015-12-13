@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -47,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Config = Class.extend(Obj, {
 
-        _name: "Config",
+        _name: 'Config',
 
 
         //-------------------------------------------------------------------------------
@@ -155,5 +155,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export("Config", Config);
+    bugpack.export('Config', Config);
 });

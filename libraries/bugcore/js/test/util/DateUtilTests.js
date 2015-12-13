@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -54,8 +54,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testAmDate = new Date("October 13, 1975 11:13:00");
-            this.testPmDate = new Date("Octoner 13, 1975 23:13:00");
+            this.testAmDate = new Date('October 13, 1975 11:13:00');
+            this.testPmDate = new Date('Octoner 13, 1975 23:13:00');
         },
 
 
@@ -63,13 +63,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(DateUtil.getAMPM(this.testAmDate), "AM",
-                "Assert an AM Date returned AM");
-            test.assertEqual(DateUtil.getAMPM(this.testPmDate), "PM",
-                "Assert a PM Date returned PM");
+            test.assertEqual(DateUtil.getAMPM(this.testAmDate), 'AM',
+                'Assert an AM Date returned AM');
+            test.assertEqual(DateUtil.getAMPM(this.testPmDate), 'PM',
+                'Assert a PM Date returned PM');
         }
     };
     bugmeta.tag(dateUtilGetAmPmTest).with(
-        test().name("DateUtil - #getAMPM test")
+        test().name('DateUtil - #getAMPM test')
     );
 });

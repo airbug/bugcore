@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -53,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Publisher = Class.extend(Obj, {
 
-        _name: "Publisher",
+        _name: 'Publisher',
 
 
         //-------------------------------------------------------------------------------

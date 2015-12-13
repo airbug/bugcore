@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Promises = Class.extend(Obj, {
-        _name: "Promises"
+        _name: 'Promises'
     });
 
 
@@ -71,9 +71,9 @@ require('bugpack').context("*", function(bugpack) {
         if (Class.doesImplement(value, IPromise)) {
             return true;
         } else if (TypeUtil.isFunction(value) || TypeUtil.isObject(value)) {
-             if (TypeUtil.isFunction(value.then)) {
-                 return true;
-             }
+            if (TypeUtil.isFunction(value.then)) {
+                return true;
+            }
         }
         return false;
     };

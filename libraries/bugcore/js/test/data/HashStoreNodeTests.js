@@ -13,8 +13,7 @@
 
 //@Require('Class')
 //@Require('HashStoreNode')
-//@Require('ReflectArray')
-//@Require('TypeUtil')
+//@Require('NotifyingArray')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -23,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,8 +30,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var HashStoreNode   = bugpack.require('HashStoreNode');
-    var ReflectArray    = bugpack.require('ReflectArray');
-    var TypeUtil        = bugpack.require('TypeUtil');
+    var NotifyingArray  = bugpack.require('NotifyingArray');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
 
@@ -69,13 +67,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.hashStoreNode, HashStoreNode),
-                "Assert instance of HashStoreNode");
+                'Assert instance of HashStoreNode');
             test.assertEqual(this.hashStoreNode.getCount(), 0,
-                "Assert HashStoreNode count is 0 after instantiation");
-            test.assertTrue(Class.doesExtend(this.hashStoreNode.getItemReflectArray(), ReflectArray),
-                "Assert HashStoreNode.itemReflectArray is an instance of ReflectArray");
-            test.assertEqual(this.hashStoreNode.getItemReflectArray().getLength(), 0,
-                "Assert HashStoreNode.itemReflectArray is empty");
+                'Assert HashStoreNode count is 0 after instantiation');
+            test.assertTrue(Class.doesExtend(this.hashStoreNode.getItemNotifyingArray(), NotifyingArray),
+                'Assert HashStoreNode.itemNotifyingArray is an instance of NotifyingArray');
+            test.assertEqual(this.hashStoreNode.getItemNotifyingArray().getLength(), 0,
+                'Assert HashStoreNode.itemNotifyingArray is empty');
         }
     };
 
@@ -85,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(hashStoreNodeInstantiationTest).with(
-        test().name("HashStoreNode - instantiation test")
+        test().name('HashStoreNode - instantiation test')
     );
 });
 

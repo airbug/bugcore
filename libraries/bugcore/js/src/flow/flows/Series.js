@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Series = Class.extend(Flow, {
 
-        _name: "Series",
+        _name: 'Series',
 
 
         //-------------------------------------------------------------------------------

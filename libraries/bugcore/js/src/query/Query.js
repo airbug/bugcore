@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Query = Class.extend(Obj, {
 
-        _name: "Query",
+        _name: 'Query',
 
 
         //-------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addCondition: function(condition) {
             if (!Class.doesImplement(condition, ICondition)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "condition", condition, "parameter must implement ICondition");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'condition', condition, 'parameter must implement ICondition');
             }
             if (!this.conditionSet.contains(condition)) {
                 this.conditionSet.add(condition);

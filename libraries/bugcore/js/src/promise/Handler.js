@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Handler = Class.extend(Obj, {
 
-        _name: "Handler",
+        _name: 'Handler',
 
 
         //-------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.executed = true;
                 this.doHandleFulfilled(values);
             } else {
-                throw new Bug("IllegalState", {}, "Handler cannot be executed more than once");
+                throw new Bug('IllegalState', {}, 'Handler cannot be executed more than once');
             }
         },
 
@@ -120,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.executed = true;
                 this.doHandleRejected(reasons);
             } else {
-                throw new Bug("IllegalState", {}, "Handler cannot be executed more than once");
+                throw new Bug('IllegalState', {}, 'Handler cannot be executed more than once');
             }
         },
 
@@ -156,16 +156,16 @@ require('bugpack').context("*", function(bugpack) {
          * @abstract
          * @param {Array.<*>} values
          */
-        doHandleFulfilled: function(values) {
-            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleFulfilled");
+        doHandleFulfilled: function() {
+            throw new Bug('AbstractMethodNotImplemented', {}, 'Must implement doHandleFulfilled');
         },
 
         /**
          * @abstract
          * @param {Array.<*>} reasons
          */
-        doHandleRejected: function(reasons) {
-            throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleRejected");
+        doHandleRejected: function() {
+            throw new Bug('AbstractMethodNotImplemented', {}, 'Must implement doHandleRejected');
         }
     });
 

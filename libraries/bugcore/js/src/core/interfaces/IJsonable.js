@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IJsonable = Interface.declare({
 
-        _name: "IJsonable",
+        _name: 'IJsonable',
 
 
         //-------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         toJson: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

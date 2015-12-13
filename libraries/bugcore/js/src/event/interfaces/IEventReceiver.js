@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IEventReceiver = Interface.declare({
 
-        _name: "IEventReceiver",
+        _name: 'IEventReceiver',
 
 
         //-------------------------------------------------------------------------------
@@ -81,6 +82,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeEventListener: function(eventType, listenerFunction, listenerContext) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

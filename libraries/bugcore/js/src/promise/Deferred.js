@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Deferred = Class.extend(Obj, {
 
-        _name: "Deferred",
+        _name: 'Deferred',
 
 
         //-------------------------------------------------------------------------------

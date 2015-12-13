@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IEventPropagator = Interface.declare({
 
-        _name: "IEventPropagator",
+        _name: 'IEventPropagator',
 
 
         //-------------------------------------------------------------------------------
@@ -58,6 +59,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeEventPropagator: function(eventPropagator) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

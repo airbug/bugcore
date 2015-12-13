@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var FinallyHandler = Class.extend(Handler, {
 
-        _name: "FinallyHandler",
+        _name: 'FinallyHandler',
 
 
         //-------------------------------------------------------------------------------
@@ -89,14 +89,14 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @param {Array.<*>} values
          */
-        doHandleFulfilled: function(values) {
+        doHandleFulfilled: function() {
             this.doHandleFinally();
         },
 
         /**
-         * @param {Array.<*>} reasons
+         *
          */
-        doHandleRejected: function(reasons) {
+        doHandleRejected: function() {
             this.doHandleFinally();
         },
 

@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Suppliers = Class.extend(Obj, {
-        _name: "Suppliers"
+        _name: 'Suppliers'
     });
 
 

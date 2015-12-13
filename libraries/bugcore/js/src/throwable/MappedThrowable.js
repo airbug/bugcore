@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MappedThrowable = Class.extend(Throwable, {
 
-        _name: "MappedThrowable",
+        _name: 'MappedThrowable',
 
 
         //-------------------------------------------------------------------------------
@@ -118,13 +118,13 @@ require('bugpack').context("*", function(bugpack) {
                 this.primaryStack = this.generateStackTrace();
             }
             var stack = this.primaryStack;
-            stack += "\n\n";
-            stack += this.getType() + " was caused by " + this.causeMap.getCount() + " exceptions:\n";
+            stack += '\n\n';
+            stack += this.getType() + ' was caused by ' + this.causeMap.getCount() + ' exceptions:\n';
             var count = 0;
             this.causeMap.forEach(function(cause, key) {
                 count++;
-                stack += _this.getType() + " cause mapped to '" + key + "':\n";
-                stack += cause.message + "\n";
+                stack += _this.getType() + ' cause mapped to "' + key + '":\n';
+                stack += cause.message + '\n';
                 stack += cause.stack;
             });
             this.stack = stack;
@@ -139,7 +139,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * @const {string}
      */
-    MappedThrowable.MAPPED = "MappedThrowable:Mapped";
+    MappedThrowable.MAPPED = 'MappedThrowable:Mapped';
 
 
     //-------------------------------------------------------------------------------

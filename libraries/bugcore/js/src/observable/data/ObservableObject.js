@@ -27,7 +27,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -56,7 +56,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableObject = Class.extend(Observable, /** @lends {ObservableObject.prototype} */{
 
-        _name: "ObservableObject",
+        _name: 'ObservableObject',
 
 
         //-------------------------------------------------------------------------------
@@ -136,8 +136,8 @@ require('bugpack').context("*", function(bugpack) {
             propertyNames.forEach(function(propertyName) {
                 var observationClone    = observation.clone();
                 var observationPath     = observationClone.getObservationPath();
-                if (observationPath !== "") {
-                    observationPath = "." + observationPath;
+                if (observationPath !== '') {
+                    observationPath = '.' + observationPath;
                 }
                 observationPath = propertyName + observationPath;
                 observationClone.setObservationPath(observationPath);
@@ -247,7 +247,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Collection.<string>}
          */
         findPropertyNamesByObservable: function(observable) {
-            return this.observablePropertyMap.getKeys(observable)
+            return this.observablePropertyMap.getKeys(observable);
         },
 
         /**

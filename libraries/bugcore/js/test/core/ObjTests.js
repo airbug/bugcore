@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -70,15 +70,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testObject1.getClass().getConstructor(), Obj,
-                "Assert object1's class's Constructor is Obj");
+                'Assert object1\'s class\'s Constructor is Obj');
             test.assertEqual(this.testObject2.getClass().getConstructor(), Obj,
-                "Assert object2's class's constructor is Obj");
+                'Assert object2\'s class\'s constructor is Obj');
             test.assertTrue(this.testObject1.getInternalId(),
-                "Assert object1's internalId is defined");
+                'Assert object1\'s internalId is defined');
             test.assertTrue(this.testObject2.getInternalId(),
-                "Assert object2's internalId is defined");
+                'Assert object2\'s internalId is defined');
             test.assertNotEqual(this.testObject1.getInternalId(), this.testObject2.getInternalId(),
-                "Assert id of both objects are different");
+                'Assert id of both objects are different');
         }
     };
 
@@ -110,13 +110,13 @@ require('bugpack').context("*", function(bugpack) {
             // verify that they are numeric at least.
 
             test.assertTrue(TypeUtil.isNumber(this.testObjectHashCode),
-                "Assert object's hash code is numeric");
+                'Assert object\'s hash code is numeric');
             test.assertTrue(TypeUtil.isNumber(this.testObjectHashCode),
-                "Assert value returned from Obj.hashCode is numeric");
+                'Assert value returned from Obj.hashCode is numeric');
             test.assertEqual(this.testObject.hashCode(), this.testObjectHashCode,
-                "Assert object's hash code is the same when run multiple times");
+                'Assert object\'s hash code is the same when run multiple times');
             test.assertEqual(this.testObjectHashCode, this.testStaticObjectHashCode,
-                "Assert Obj.hashCode and the instantiated object hashCode match");
+                'Assert Obj.hashCode and the instantiated object hashCode match');
         }
     };
 
@@ -140,30 +140,30 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var time = (new Date()).getTime();
-            test.assertTrue(Obj.equals("value1", "value1"),
-                "Assert equals returns true for two matching strings");
+            test.assertTrue(Obj.equals('value1', 'value1'),
+                'Assert equals returns true for two matching strings');
             test.assertTrue(Obj.equals(123, 123),
-                "Assert equals returns true for two matching numbers");
+                'Assert equals returns true for two matching numbers');
             test.assertTrue(Obj.equals(0, 0),
-                "Assert equals returns true for two 0 numbers");
+                'Assert equals returns true for two 0 numbers');
             test.assertTrue(Obj.equals(null, null),
-                "Assert equals returns true for two null values");
+                'Assert equals returns true for two null values');
             test.assertTrue(Obj.equals(undefined, undefined),
-                "Assert equals returns true for two undefined values");
+                'Assert equals returns true for two undefined values');
             test.assertTrue(Obj.equals(this.testObject1, this.testObject1),
-                "Assert two of the same Obj instance are equal");
-            test.assertTrue(Obj.equals(new String("abc123"), "abc123"),
-                "Assert equals returns true for a string object and string literal that are the same string");
+                'Assert two of the same Obj instance are equal');
+            test.assertTrue(Obj.equals(new String('abc123'), 'abc123'),
+                'Assert equals returns true for a string object and string literal that are the same string');
             test.assertTrue(Obj.equals(new Number(123), 123),
-                "Assert equals returns true for number object and number literal that are the same number");
+                'Assert equals returns true for number object and number literal that are the same number');
             test.assertTrue(Obj.equals(new Number(123), new Number(123)),
-                "Assert equals returns true for two number objects that are the same number");
+                'Assert equals returns true for two number objects that are the same number');
             test.assertTrue(Obj.equals(new Boolean(true), new Boolean(true)),
-                "Assert equals returns true for two Boolean objects that are the same value");
+                'Assert equals returns true for two Boolean objects that are the same value');
             test.assertTrue(Obj.equals(new Date(time), new Date(time)),
-                "Assert equals returns true for two Dates that are the same time");
+                'Assert equals returns true for two Dates that are the same time');
             test.assertFalse(Obj.equals(this.testObject1, this.testObject2),
-                "Assert two different Obj instances are not equal");
+                'Assert two different Obj instances are not equal');
         }
     };
 
@@ -180,7 +180,7 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testObj        = new Obj();
             this.testSubObject  = {};
-            this.testObj.someValue =  "testValue";
+            this.testObj.someValue =  'testValue';
             this.testObj.subObject = this.testSubObject;
         },
 
@@ -191,13 +191,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var cloneObj = Obj.clone(this.testObj);
             test.assertNotEqual(cloneObj, this.testObj,
-                "Assert that the clone Obj does not equal the original Obj");
+                'Assert that the clone Obj does not equal the original Obj');
             test.assertEqual(cloneObj.testValue, this.testObj.testValue,
-                "Assert that testValue was copied to the Obj clone");
+                'Assert that testValue was copied to the Obj clone');
             test.assertTrue(Class.doesExtend(cloneObj, Obj),
-                "Assert that cloneObj is an instance of Obj");
+                'Assert that cloneObj is an instance of Obj');
             test.assertEqual(cloneObj.subObject, this.testSubObject,
-                "Assert that the subObject has not been cloned");
+                'Assert that the subObject has not been cloned');
         }
     };
 
@@ -212,7 +212,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue      = "testValue";
+            this.testValue      = 'testValue';
             this.testSubArray   = [];
             this.genericObject  = {
                 testValue: this.testValue,
@@ -227,11 +227,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var cloneGenericObject = Obj.clone(this.genericObject);
             test.assertNotEqual(cloneGenericObject, this.genericObject,
-                "Assert the cloned generic object and the original generic object are not equal.");
+                'Assert the cloned generic object and the original generic object are not equal.');
             test.assertEqual(cloneGenericObject.testValue, this.testValue,
-                "Assert the values were copied from the original generic object to the cloned generic object");
+                'Assert the values were copied from the original generic object to the cloned generic object');
             test.assertEqual(cloneGenericObject.subArray, this.testSubArray,
-                "Assert the subArray has not been cloned");
+                'Assert the subArray has not been cloned');
         }
     };
 
@@ -256,11 +256,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var cloneDateObject = Obj.clone(this.testDate);
             test.assertTrue(Class.doesExtend(cloneDateObject, Date),
-                "Assert that the clone is an instance of Date");
+                'Assert that the clone is an instance of Date');
             test.assertTrue(cloneDateObject !== this.testDate,
-                "Assert that the Date instances are not equal");
+                'Assert that the Date instances are not equal');
             test.assertEqual(cloneDateObject, this.testDate,
-                "Assert that the Date values are equal");
+                'Assert that the Date values are equal');
         }
     };
 
@@ -276,16 +276,16 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.valuesThatPassThrough = [
-                "",
-                "string",
+                '',
+                'string',
                 0,
                 0.123,
                 123,
                 true,
                 false,
-                new String("another string"),
+                new String('another string'),
                 new Date(0)
-            ]
+            ];
         },
 
 
@@ -296,9 +296,9 @@ require('bugpack').context("*", function(bugpack) {
             this.valuesThatPassThrough.forEach(function(passThroughValue) {
                 var valueClone = Obj.clone(passThroughValue);
                 test.assertEqual(valueClone, passThroughValue,
-                    "Assert value " + passThroughValue + " passed through the clone function and simply returned the " +
-                        "original value");
-            })
+                    'Assert value ' + passThroughValue + ' passed through the clone function and simply returned the ' +
+                        'original value');
+            });
         }
     };
 
@@ -307,7 +307,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             var _this = this;
 
             this.NewClass = Class.extend(Obj, {
@@ -320,7 +320,7 @@ require('bugpack').context("*", function(bugpack) {
 
             this.testFunction = function() {
                 new _this.NewClass();
-            }
+            };
         },
 
         // Run Test
@@ -328,7 +328,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertNotThrows(this.testFunction,
-                "Assert no error is thrown when the _internalId has already been set");
+                'Assert no error is thrown when the _internalId has already been set');
         }
     };
 
@@ -338,27 +338,27 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(objInstantiationTest).with(
-        test().name("Obj - instantiation test")
+        test().name('Obj - instantiation test')
     );
     bugmeta.tag(objHashCodeTest).with(
-        test().name("Obj - hashCode test")
+        test().name('Obj - hashCode test')
     );
     bugmeta.tag(objEqualsTest).with(
-        test().name("Obj - #equals test")
+        test().name('Obj - #equals test')
     );
     bugmeta.tag(objCloneObjShallowTest).with(
-        test().name("Obj - #clone() Obj shallow test")
+        test().name('Obj - #clone() Obj shallow test')
     );
     bugmeta.tag(objCloneDateTest).with(
-        test().name("Obj - #clone() Date test")
+        test().name('Obj - #clone() Date test')
     );
     bugmeta.tag(objCloneObjectLiteralShallowTest).with(
-        test().name("Obj - #clone object literal shallow test")
+        test().name('Obj - #clone object literal shallow test')
     );
     bugmeta.tag(objClonePassThroughTest).with(
-        test().name("Obj - #clone pass through test")
+        test().name('Obj - #clone pass through test')
     );
     bugmeta.tag(objEnsureInternalIdTest).with(
-        test().name("Obj - internalId already defined test")
+        test().name('Obj - internalId already defined test')
     );
 });

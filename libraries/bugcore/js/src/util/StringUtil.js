@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -47,10 +47,10 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.capitalize = function(value) {
-        var strings = value.split(" ");
+        var strings = value.split(' ');
         var result;
         if (strings.map) {
-            result = strings.map(function(string, index, array) {
+            result = strings.map(function(string) {
                 return string[0].toUpperCase() + string.substring(1);
             });
         } else {
@@ -59,7 +59,7 @@ require('bugpack').context("*", function(bugpack) {
                 result.push(string[0].toUpperCase() + string.substring(1));
             });
         }
-        return result.join(" ");
+        return result.join(' ');
     };
 
     /**
@@ -70,10 +70,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     StringUtil.contains = function(value, string) {
         if (!TypeUtil.isString(value)) {
-            throw new TypeError( "'value' must be an String");
+            throw new TypeError( '"value" must be an String');
         }
         if (!TypeUtil.isString(string)) {
-            throw new TypeError( "'string' must be an String");
+            throw new TypeError( '"string" must be an String');
         }
         return value.indexOf(string) > -1;
     };
@@ -95,7 +95,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.lpad = function(value, pad, size) {
-        var result = value + "";
+        var result = value + '';
         while (result.length < size) {
             result = pad + result;
         }
@@ -110,8 +110,8 @@ require('bugpack').context("*", function(bugpack) {
      */
     StringUtil.lowerCamelToSeparator = function(value, separator) {
         return value
-            .replace(/([A-Z])([A-Z])/g, "$1" + separator + ("$2"))
-            .replace(/([a-z\d])([A-Z])/g, "$1" + separator + ("$2"))
+            .replace(/([A-Z])([A-Z])/g, '$1' + separator + ('$2'))
+            .replace(/([a-z\d])([A-Z])/g, '$1' + separator + ('$2'))
             .toLowerCase();
     };
 
@@ -122,8 +122,8 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.ltrim = function(value, chars) {
-        chars = chars || "\\s";
-        return value.replace(new RegExp("^[" + chars + "]+", "g"), "");
+        chars = chars || '\\s';
+        return value.replace(new RegExp('^[' + chars + ']+', 'g'), '');
     };
 
     /**
@@ -135,7 +135,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     StringUtil.pad = function(value, pad, size) {
         // Ensure string
-        var result = value + "";
+        var result = value + '';
         while (result.length < size) {
             result = pad + result + pad;
         }
@@ -150,12 +150,12 @@ require('bugpack').context("*", function(bugpack) {
     StringUtil.pluralize = function(value) {
         //TODO also add irregular patterns
         var irregularPlurals = {
-            winklevoss: "winklevii"
+            winklevoss: 'winklevii'
         };
         if (irregularPlurals[value]) {
-            return irregularPlurals[value]
+            return irregularPlurals[value];
         } else {
-            return value + "s";
+            return value + 's';
         }
     };
 
@@ -167,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.rpad = function(value, pad, size) {
-        var result = value + "";
+        var result = value + '';
         while (result.length < size) {
             result = result + pad;
         }
@@ -181,8 +181,8 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.rtrim = function(value, chars) {
-        chars = chars || "\\s";
-        return value.replace(new RegExp("[" + chars + "]+$", "g"), "");
+        chars = chars || '\\s';
+        return value.replace(new RegExp('[' + chars + ']+$', 'g'), '');
     };
 
     /**
@@ -207,8 +207,8 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.trim = function(value, chars) {
-        chars = chars || "\\s";
-        return value.replace(new RegExp("^[" + chars + "]+|[" + chars + "]+$", "g"), "");
+        chars = chars || '\\s';
+        return value.replace(new RegExp('^[' + chars + ']+|[' + chars + ']+$', 'g'), '');
     };
 
     /**
@@ -217,10 +217,10 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     StringUtil.uncapitalize = function(value) {
-        var strings = value.split(" ");
+        var strings = value.split(' ');
         var result;
         if (strings.map) {
-            result = strings.map(function(string, index, array) {
+            result = strings.map(function(string) {
                 return string[0].toLowerCase() + string.substring(1);
             });
         } else {
@@ -229,7 +229,7 @@ require('bugpack').context("*", function(bugpack) {
                 result.push(string[0].toLowerCase() + string.substring(1));
             });
         }
-        return result.join(" ");
+        return result.join(' ');
     };
 
 

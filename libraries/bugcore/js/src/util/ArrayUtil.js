@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -48,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ArrayUtil.first = function(array, number) {
         if (!TypeUtil.isArray(array)) {
-            throw new TypeError( "'array' must be an Array");
+            throw new TypeError( '"array" must be an Array');
         }
         if (!TypeUtil.isNumber(number)) {
             number = 1;
@@ -65,7 +65,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ArrayUtil.indexOf = function(array, search, fromIndex) {
         if (!TypeUtil.isArray(array)) {
-            throw new TypeError( "'array' must be an Array");
+            throw new TypeError( '"array" must be an Array');
         }
         var length = array.length >>> 0; // Hack to convert object.length to a UInt32
         fromIndex = +fromIndex || 0;
@@ -111,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ArrayUtil.isEmpty = function(array) {
         if (!TypeUtil.isArray(array)) {
-            throw new TypeError( "'array' must be an Array");
+            throw new TypeError( '"array" must be an Array');
         }
         return array.length === 0;
     };
@@ -124,10 +124,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ArrayUtil.isEqual = function(array1, array2) {
         if (!TypeUtil.isArray(array1)) {
-            throw new TypeError( "'array1' must be an Array");
+            throw new TypeError( '"array1" must be an Array');
         }
         if (!TypeUtil.isArray(array2)) {
-            throw new TypeError( "'array2' must be an Array");
+            throw new TypeError( '"array2" must be an Array');
         }
         if (array1 === array2) {
             return true;

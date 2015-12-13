@@ -12,11 +12,9 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('ICondition')
 //@Require('Query')
 //@Require('QueryBuilder')
 //@Require('Set')
-//@Require('WhereCondition')
 //@Require('WhereConditionBuilder')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -26,18 +24,16 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                   = bugpack.require('Class');
-    var ICondition              = bugpack.require('ICondition');
     var Query                   = bugpack.require('Query');
     var QueryBuilder            = bugpack.require('QueryBuilder');
     var Set                     = bugpack.require('Set');
-    var WhereCondition          = bugpack.require('WhereCondition');
     var WhereConditionBuilder   = bugpack.require('WhereConditionBuilder');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
     var TestTag                 = bugpack.require('bugunit.TestTag');
@@ -75,16 +71,16 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testQueryBuilder, QueryBuilder),
-                "Assert instance extends QueryBuilder class");
+                'Assert instance extends QueryBuilder class');
             var conditionBuilderSet = this.testQueryBuilder.getConditionBuilderSet();
             test.assertTrue(Class.doesExtend(conditionBuilderSet, Set),
-                "Assert #getConditionBuilderSet returns a Set");
+                'Assert #getConditionBuilderSet returns a Set');
             test.assertTrue(conditionBuilderSet.isEmpty(),
-                "Assert conditionBuilderSet is empty");
+                'Assert conditionBuilderSet is empty');
         }
     };
     bugmeta.tag(queryBuilderInstantiationTest).with(
-        test().name("QueryBuilder - instantiation test")
+        test().name('QueryBuilder - instantiation test')
     );
 
 
@@ -98,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPropertyQuery  = "testPropertyQuery";
+            this.testPropertyQuery  = 'testPropertyQuery';
             this.testQueryBuilder   = new QueryBuilder();
         },
 
@@ -109,13 +105,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var whereConditionBuilder = this.testQueryBuilder.where(this.testPropertyQuery);
             test.assertTrue(Class.doesExtend(whereConditionBuilder, WhereConditionBuilder),
-                "Assert returned whereConditionBuilder extends WhereConditionBuilder");
+                'Assert returned whereConditionBuilder extends WhereConditionBuilder');
             test.assertTrue(this.testQueryBuilder.getConditionBuilderSet().contains(whereConditionBuilder),
-                "Assert conditionBuilderSet contains WhereConditionBuilder");
+                'Assert conditionBuilderSet contains WhereConditionBuilder');
         }
     };
     bugmeta.tag(queryBuilderWhereTest).with(
-        test().name("QueryBuilder - #where test")
+        test().name('QueryBuilder - #where test')
     );
 
     /**
@@ -128,7 +124,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPropertyQuery  = "testPropertyQuery";
+            this.testPropertyQuery  = 'testPropertyQuery';
             this.testQueryBuilder   = new QueryBuilder();
         },
 
@@ -137,13 +133,13 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var whereConditionBuilder       = this.testQueryBuilder.where(this.testPropertyQuery);
+            this.testQueryBuilder.where(this.testPropertyQuery);
             var query                       = this.testQueryBuilder.build();
             test.assertTrue(Class.doesExtend(query, Query),
-                "Assert query extends Query");
+                'Assert query extends Query');
         }
     };
     bugmeta.tag(queryBuilderBuildTest).with(
-        test().name("QueryBuilder - #build test")
+        test().name('QueryBuilder - #build test')
     );
 });

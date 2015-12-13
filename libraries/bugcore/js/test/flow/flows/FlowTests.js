@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('Flow')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -21,13 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var Flow        = bugpack.require('Flow');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -54,7 +52,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.flow = new Flow();
         },
 
@@ -65,7 +63,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.flow.execute();
             test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
+                'Assert flow has executed');
         }
     };
 
@@ -80,7 +78,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.flow = new Flow();
             this.callbackCalled = false;
         },
@@ -92,25 +90,25 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             test.assertEqual(this.flow.hasExecuted(), false,
-                "Assert flow has not executed");
+                'Assert flow has not executed');
             test.assertEqual(this.flow.hasCompleted(), false,
-                "Assert flow has not completed");
+                'Assert flow has not completed');
             this.flow.execute(function(throwable) {
                 _this.callbackCalled = true;
                 test.assertEqual(throwable, null,
-                    "Assert throwable is null");
+                    'Assert throwable is null');
             });
             test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
+                'Assert flow has executed');
             test.assertEqual(this.flow.hasCompleted(), false,
-                "Assert flow has not completed");
+                'Assert flow has not completed');
             this.flow.complete();
             test.assertEqual(this.flow.hasExecuted(), true,
-                "Assert flow has executed");
+                'Assert flow has executed');
             test.assertEqual(this.flow.hasCompleted(), true,
-                "Assert flow has completed");
+                'Assert flow has completed');
             test.assertTrue(this.callbackCalled,
-                "Assert callback was called");
+                'Assert callback was called');
         }
     };
 
@@ -120,9 +118,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(flowExecuteFlowTest).with(
-        test().name("Flow - execute without extension test")
+        test().name('Flow - execute without extension test')
     );
     bugmeta.tag(flowCompleteFlowTest).with(
-        test().name("Flow - #complete test")
+        test().name('Flow - #complete test')
     );
 });

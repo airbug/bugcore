@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -47,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WhileParallelBuilder = Class.extend(FlowBuilder, {
 
-        _name: "WhileParallelBuilder",
+        _name: 'WhileParallelBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(assertionMethod)) {
                 this.assertionMethod = assertionMethod;
             } else {
-                throw Throwables.illegalArgumentBug("assertionMethod", assertionMethod, "must be a function");
+                throw Throwables.illegalArgumentBug('assertionMethod', assertionMethod, 'must be a function');
             }
             if (TypeUtil.isFunction(assertPassFlowBuilder)) {
                 assertPassFlowBuilder = new TaskBuilder(assertPassFlowBuilder);
@@ -102,7 +102,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesExtend(assertPassFlowBuilder, FlowBuilder)) {
                 this.assertPassFlowBuilder = assertPassFlowBuilder;
             } else {
-                throw Throwables.illegalArgumentBug("assertPassFlowBuilder", assertPassFlowBuilder, "must be a function or a FlowBuilder");
+                throw Throwables.illegalArgumentBug('assertPassFlowBuilder', assertPassFlowBuilder, 'must be a function or a FlowBuilder');
             }
             return this;
         },

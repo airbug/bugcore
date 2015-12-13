@@ -11,14 +11,10 @@
 
 //@Export('Resolver')
 
-//@Require('ArgUtil')
-//@Require('Bug')
 //@Require('Class')
 //@Require('Exception')
-//@Require('IPromise')
 //@Require('List')
 //@Require('Obj')
-//@Require('TypeUtil')
 //@Require('ValuesResolver')
 
 
@@ -26,20 +22,16 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil         = bugpack.require('ArgUtil');
-    var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
     var Exception       = bugpack.require('Exception');
-    var IPromise        = bugpack.require('IPromise');
     var List            = bugpack.require('List');
     var Obj             = bugpack.require('Obj');
-    var TypeUtil        = bugpack.require('TypeUtil');
     var ValuesResolver  = bugpack.require('ValuesResolver');
 
 
@@ -53,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Resolver = Class.extend(Obj, {
 
-        _name: "Resolver",
+        _name: 'Resolver',
 
 
         //-------------------------------------------------------------------------------
@@ -145,7 +137,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.resolving = true;
                 this.startResolving(callback);
             } else {
-                throw new Exception("IllegalState", {}, "Resolver is already resolving.");
+                throw new Exception('IllegalState', {}, 'Resolver is already resolving.');
             }
         },
 

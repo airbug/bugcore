@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var TaskBuilder = Class.extend(FlowBuilder, {
 
-        _name: "TaskBuilder",
+        _name: 'TaskBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -92,13 +92,13 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(taskMethod)) {
                 this.taskMethod = taskMethod;
             } else {
-                throw Throwables.illegalArgumentBug("taskMethod", taskMethod, "must be a function");
+                throw Throwables.illegalArgumentBug('taskMethod', taskMethod, 'must be a function');
             }
             if (taskContext) {
                 if (TypeUtil.isObject(taskMethod)) {
                     this.taskContext = taskContext;
                 } else {
-                    throw Throwables.illegalArgumentBug("taskContext", taskContext, "must be an Object");
+                    throw Throwables.illegalArgumentBug('taskContext', taskContext, 'must be an Object');
                 }
             }
             return this;

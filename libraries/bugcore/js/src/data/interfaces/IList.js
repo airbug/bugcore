@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {ICollection.<I>}
@@ -40,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IList = Interface.extend(ICollection, {
 
-        _name: "IList",
+        _name: 'IList',
 
 
         //-------------------------------------------------------------------------------
@@ -121,6 +122,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         unshift: function(item) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

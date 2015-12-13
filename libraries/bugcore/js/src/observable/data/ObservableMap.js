@@ -13,8 +13,6 @@
 
 //@Require('Class')
 //@Require('ClearChange')
-//@Require('Collection')
-//@Require('HashTable')
 //@Require('IMap')
 //@Require('IObjectable')
 //@Require('Map')
@@ -29,7 +27,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -37,8 +35,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var ClearChange     = bugpack.require('ClearChange');
-    var Collection      = bugpack.require('Collection');
-    var HashTable       = bugpack.require('HashTable');
     var IMap            = bugpack.require('IMap');
     var IObjectable     = bugpack.require('IObjectable');
     var Map             = bugpack.require('Map');
@@ -61,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableMap = Class.extend(Observable, /** @lends {ObservableMap.prototype} */ {
 
-        _name: "ObservableMap",
+        _name: 'ObservableMap',
 
 
         //-------------------------------------------------------------------------------

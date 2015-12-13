@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -30,7 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var IStreamOperation    = bugpack.require('IStreamOperation');
     var Obj                 = bugpack.require('Obj');
-    var TypeUtil            = bugpack.require('TypeUtil')
+    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EachOperation = Class.extend(Obj, {
 
-        _name: "EachOperation",
+        _name: 'EachOperation',
 
 
         //-------------------------------------------------------------------------------

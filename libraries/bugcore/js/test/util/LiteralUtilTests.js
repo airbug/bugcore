@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('List')
 //@Require('LiteralUtil')
 //@Require('Pair')
@@ -25,13 +24,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
     var List            = bugpack.require('List');
     var LiteralUtil     = bugpack.require('LiteralUtil');
     var Pair            = bugpack.require('Pair');
@@ -69,13 +67,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.testConvertedSet),
-                "Assert converted Set is an array");
+                'Assert converted Set is an array');
             test.assertEqual(this.testConvertedSet.length, 0,
-                "Assert the converted Set's array is empty");
+                'Assert the converted Set\'s array is empty');
         }
     };
     bugmeta.tag(literalUtilConvertEmptySetToLiteral).with(
-        test().name("LiteralUtil - #convertToLiteral empty Set test")
+        test().name('LiteralUtil - #convertToLiteral empty Set test')
     );
 
 
@@ -95,15 +93,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isObject(this.testConvertedPair),
-                "Assert converted Pair is an object");
+                'Assert converted Pair is an object');
             test.assertEqual(this.testConvertedPair.a, undefined,
-                "Assert the convertedPair.a is undefined");
+                'Assert the convertedPair.a is undefined');
             test.assertEqual(this.testConvertedPair.b, undefined,
-                "Assert the convertedPair.b is undefined");
+                'Assert the convertedPair.b is undefined');
         }
     };
     bugmeta.tag(literalUtilConvertEmptyPairToLiteral).with(
-        test().name("LiteralUtil - #convertToLiteral empty Pair test")
+        test().name('LiteralUtil - #convertToLiteral empty Pair test')
     );
 
 
@@ -114,11 +112,11 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testList           = new List();
-            this.testA1             = "testA1";
-            this.testB1             = "testB1";
+            this.testA1             = 'testA1';
+            this.testB1             = 'testB1';
             this.testPairA          = new Pair(this.testA1, this.testB1);
-            this.testA2             = "testA2";
-            this.testB2             = "testB2";
+            this.testA2             = 'testA2';
+            this.testB2             = 'testB2';
             this.testPairB          = new Pair(this.testA2, this.testB2);
             this.testList.add(this.testPairA);
             this.testList.add(this.testPairB);
@@ -131,20 +129,20 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.testConvertedList),
-                "Assert testConvertedList is an array");
+                'Assert testConvertedList is an array');
             test.assertEqual(this.testConvertedList.length, 2,
-                "Assert the testConvertedList's array is a length of 2");
+                'Assert the testConvertedList\'s array is a length of 2');
             test.assertEqual(this.testConvertedList[0].a, this.testA1,
-                "Assert testConvertedList[0].a is testA1");
+                'Assert testConvertedList[0].a is testA1');
             test.assertEqual(this.testConvertedList[0].b, this.testB1,
-                "Assert testConvertedList[0].a is testB1");
+                'Assert testConvertedList[0].a is testB1');
             test.assertEqual(this.testConvertedList[1].a, this.testA2,
-                "Assert testConvertedList[1].a is testA2");
+                'Assert testConvertedList[1].a is testA2');
             test.assertEqual(this.testConvertedList[1].b, this.testB2,
-                "Assert testConvertedList[1].b is testB2");
+                'Assert testConvertedList[1].b is testB2');
         }
     };
     bugmeta.tag(literalUtilConvertListWithPairsToLiteral).with(
-        test().name("LiteralUtil - #convertToLiteral List with Pairs test")
+        test().name('LiteralUtil - #convertToLiteral List with Pairs test')
     );
 });

@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,13 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @template I
      */
     var IStreamable = Interface.declare({
 
-        _name: "IStreamable",
+        _name: 'IStreamable',
 
 
         //-------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         stream: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

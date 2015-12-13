@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('StackTraceUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -21,13 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
     var StackTraceUtil  = bugpack.require('StackTraceUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
@@ -58,13 +56,10 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             function testFunction() {
                 var stackTraceArray = StackTraceUtil.generateStackFromCaller();
-
-                console.log("TEST:", stackTraceArray);
-
-                test.assertEqual(stackTraceArray[0], "function testFunction()",
-                    "Assert that the 0 index function is 'testFunction'");
-                test.assertEqual(stackTraceArray[1], "function ()",
-                    "Assert that the 1 index function is anonymous function");
+                test.assertEqual(stackTraceArray[0], 'function testFunction()',
+                    'Assert that the 0 index function is "testFunction"');
+                test.assertEqual(stackTraceArray[1], 'function ()',
+                    'Assert that the 1 index function is anonymous function');
             }
             setTimeout(function() {
                 testFunction();
@@ -73,7 +68,7 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
     bugmeta.tag(generateStackFromCallerTest).with(
-        test().name("Generate stack trace from caller test")
+        test().name('Generate stack trace from caller test')
     );
 
 
@@ -97,10 +92,10 @@ require('bugpack').context("*", function(bugpack) {
 
             var error = StackTraceUtil.createException();
             var isError = error instanceof Error;
-            test.assertTrue(isError, "Assert createException returns an error");
+            test.assertTrue(isError, 'Assert createException returns an error');
         }
     };
     bugmeta.tag(stackTraceUtilCreateExceptionTest).with(
-        test().name("StackTraceUtil - #createException test")
+        test().name('StackTraceUtil - #createException test')
     );
 });

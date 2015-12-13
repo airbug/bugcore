@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -70,13 +70,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isFunction(this.NewInterface.prototype.someFunction1),
-                "Assert function added to interface is function and is present in interface prototype");
+                'Assert function added to interface is function and is present in interface prototype');
             test.assertTrue(TypeUtil.isFunction(this.NewInterface.prototype.someFunction2),
-                "Assert second function added to interface is function and is present in interface prototype");
+                'Assert second function added to interface is function and is present in interface prototype');
         }
     };
     bugmeta.tag(interfaceDeclareTest).with(
-        test().name("Interface declare test")
+        test().name('Interface declare test')
     );
 
 
@@ -111,19 +111,19 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isFunction(this.NewInterface.prototype.someFunction1),
-                "Assert function added to interface is function and is present in interface prototype");
+                'Assert function added to interface is function and is present in interface prototype');
             test.assertTrue(TypeUtil.isFunction(this.NewInterface.prototype.someFunction2),
-                "Assert second function added to interface is function and is present in interface prototype");
+                'Assert second function added to interface is function and is present in interface prototype');
 
             test.assertTrue(TypeUtil.isFunction(this.SubInterface.prototype.someFunction2),
-                "Assert first function added to sub interface is function and is present in interface prototype");
+                'Assert first function added to sub interface is function and is present in interface prototype');
             test.assertTrue(TypeUtil.isFunction(this.SubInterface.prototype.someFunction2),
-                "Assert second function added to sub interface is function and is present in interface prototype");
+                'Assert second function added to sub interface is function and is present in interface prototype');
             test.assertTrue(TypeUtil.isFunction(this.SubInterface.prototype.someFunction2),
-                "Assert third function added to sub interface is function and is present in interface prototype");
+                'Assert third function added to sub interface is function and is present in interface prototype');
         }
     };
     bugmeta.tag(interfaceExtendTest).with(
-        test().name("Interface extend test")
+        test().name('Interface extend test')
     );
 });

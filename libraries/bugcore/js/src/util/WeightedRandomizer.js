@@ -12,8 +12,6 @@
 //@Export('WeightedRandomizer')
 
 //@Require('Class')
-//@Require('Collection')
-//@Require('HashTable')
 //@Require('Obj')
 //@Require('RandomUtil')
 //@Require('WeightedList')
@@ -23,15 +21,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class           = bugpack.require('Class');
-    var Collection      = bugpack.require('Collection');
-    var HashTable       = bugpack.require('HashTable');
     var Obj             = bugpack.require('Obj');
     var RandomUtil      = bugpack.require('RandomUtil');
     var WeightedList    = bugpack.require('WeightedList');
@@ -47,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WeightedRandomizer = Class.extend(Obj, {
 
-        _name: "WeightedRandomizer",
+        _name: 'WeightedRandomizer',
 
 
         //-------------------------------------------------------------------------------

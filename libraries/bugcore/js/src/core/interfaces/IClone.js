@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IClone = Interface.declare({
 
-        _name: "IClone",
+        _name: 'IClone',
 
 
         //-------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         clone: function(deep) {}
     });
-
+    /*eslint-enable no-unused-vars */
 
     //-------------------------------------------------------------------------------
     // Exports

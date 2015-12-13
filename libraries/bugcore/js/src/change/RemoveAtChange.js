@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var RemoveAtChange = Class.extend(RemoveChange, /** @lends {RemoveAtChange.prototype} */ {
 
-        _name: "RemoveAtChange",
+        _name: 'RemoveAtChange',
 
 
         //-------------------------------------------------------------------------------

@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,13 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @template I
      */
     var IConsumer = Interface.declare({
 
-        _name: "IConsumer",
+        _name: 'IConsumer',
 
 
         //-------------------------------------------------------------------------------
@@ -54,6 +55,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         end: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

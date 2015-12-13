@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Observer = Class.extend(Obj, {
 
-        _name: "Observer",
+        _name: 'Observer',
 
 
         //-------------------------------------------------------------------------------
@@ -63,10 +63,10 @@ require('bugpack').context("*", function(bugpack) {
             this._super();
 
             if (!TypeUtil.isString(observationPathPattern)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "observationPathPattern", observationPathPattern, "parameter must be a string");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'observationPathPattern', observationPathPattern, 'parameter must be a string');
             }
             if (!TypeUtil.isFunction(observerFunction)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "observerFunction", observerFunction, "parameter must be a function");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'observerFunction', observerFunction, 'parameter must be a function');
             }
 
             //-------------------------------------------------------------------------------
@@ -156,9 +156,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[Observer]" +
-                    Obj.hashCode(this.getObserverFunction()) + "_" +
-                    Obj.hashCode(this.getObserverContext()) + "_" +
+                this._hashCode = Obj.hashCode('[Observer]' +
+                    Obj.hashCode(this.getObserverFunction()) + '_' +
+                    Obj.hashCode(this.getObserverContext()) + '_' +
                     Obj.hashCode(this.getObservationPathPattern()));
             }
             return this._hashCode;

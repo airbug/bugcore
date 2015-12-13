@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Throwable = Class.extend(Obj, {
 
-        _name: "Throwable",
+        _name: 'Throwable',
 
 
         //-------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {string}
              */
-            this.message            = TypeUtil.isString(message) ? message : "";
+            this.message            = TypeUtil.isString(message) ? message : '';
 
             /**
              * @private
@@ -193,12 +193,12 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            return "{" +
-                "causes:"   + this.getCauses().join(",\n") + "," +
-                "data:"     + this.getData() + "\n" +
-                "message:"  + this.getMessage() + "\n" +
-                "type:"     + this.getType() + "\n" +
-                "}";
+            return '{' +
+                'causes:'   + this.getCauses().join(',\n') + ',' +
+                'data:'     + this.getData() + '\n' +
+                'message:'  + this.getMessage() + '\n' +
+                'type:'     + this.getType() + '\n' +
+                '}';
         },
 
 
@@ -227,15 +227,15 @@ require('bugpack').context("*", function(bugpack) {
             if (!this.primaryStack) {
                 this.primaryStack = this.generateStackTrace();
             }
-            var stack = this.primaryStack + "\n";
-            stack += "\n";
+            var stack = this.primaryStack + '\n';
+            stack += '\n';
             if (this.causes.length > 0) {
-                stack += this.type + " was caused by " + this.causes.length + " exceptions:\n";
+                stack += this.type + ' was caused by ' + this.causes.length + ' exceptions:\n';
                 var count = 0;
                 this.causes.forEach(function(cause) {
                     count++;
-                    stack += _this.type + " cause " + count + ":\n";
-                    stack += cause.message + "\n";
+                    stack += _this.type + ' cause ' + count + ':\n';
+                    stack += cause.message + '\n';
                     stack += cause.stack;
                 });
             }
@@ -247,7 +247,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         generateStackTrace: function() {
-            return this.message + "\n" + StackTraceUtil.generateStackTrace();
+            return this.message + '\n' + StackTraceUtil.generateStackTrace();
         }
     });
 

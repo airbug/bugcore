@@ -9,28 +9,26 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ReflectObject')
+//@Export('NotifyingObject')
 
 //@Require('Class')
-//@Require('Notifier')
 //@Require('ObjectUtil')
-//@Require('Reflect')
+//@Require('Notifying')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Notifier    = bugpack.require('Notifier');
     var ObjectUtil  = bugpack.require('ObjectUtil');
-    var Reflect     = bugpack.require('Reflect');
+    var Notifying   = bugpack.require('Notifying');
 
 
     //-------------------------------------------------------------------------------
@@ -39,12 +37,12 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Reflect}
+     * @extends {Notifying}
      * @template {V}
      */
-    var ReflectObject = Class.extend(Reflect, /** @lends {ReflectObject.prototype} */{
+    var NotifyingObject = Class.extend(Notifying, /** @lends {NotifyingObject.prototype} */{
 
-        _name: "ReflectObject",
+        _name: 'NotifyingObject',
 
 
         //-------------------------------------------------------------------------------
@@ -103,7 +101,7 @@ require('bugpack').context("*", function(bugpack) {
                                 name: name,
                                 object: this,
                                 oldValue: oldValue,
-                                type: "delete"
+                                type: 'delete'
                             });
                         }
                         return true;
@@ -154,9 +152,9 @@ require('bugpack').context("*", function(bugpack) {
         setProperty: function(name, value) {
             try {
                 var oldValue = this[name];
-                var changeType = "add";
+                var changeType = 'add';
                 if (this.hasProperty(name)) {
-                    changeType = "update";
+                    changeType = 'update';
                 }
                 ObjectUtil.setProperty(this.object, name, value);
                 if (this.hasNotifier()) {
@@ -169,9 +167,8 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return true;
             } catch(error) {
-
+                return false;
             }
-            return false;
         }
     });
 
@@ -180,5 +177,5 @@ require('bugpack').context("*", function(bugpack) {
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ReflectObject', ReflectObject);
+    bugpack.export('NotifyingObject', NotifyingObject);
 });

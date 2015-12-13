@@ -1,0 +1,35 @@
+{
+    "name": "bugcore",
+    "version": "0.4.0",
+    "description": "bugcore is a JavaScript library that provides a foundational architecture for object oriented JS",
+    "main": "./projects/bugcore-node/scripts/bugcore-node.js",
+    "dependencies": {
+        "bugpack": "^0.2.2"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.0",
+        "gulp-eslint": "^1.1.1",
+        "gulp-util": "^3.0.7"
+    },
+    "author": "Brian Neisler <me@brianneisler.com>",
+    "homepage": "https://github.com/airbug/bugcore",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/airbug/bugcore.git"
+    },
+    "bugs": {
+        "url": "https://github.com/airbug/bugcore/issues"
+    },
+    "license": "MIT",
+    "keywords": [
+        "bugcore",
+        "framework",
+        "object",
+        "oop",
+        "es6",
+        "es7"
+    ],
+    "engines": {
+        "node": ">= 0.4.0"
+    }
+}

@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ArgumentBug = Class.extend(Bug, {
 
-        _name: "ArgumentBug",
+        _name: 'ArgumentBug',
 
 
         //-------------------------------------------------------------------------------
@@ -107,8 +107,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         generateStackTrace: function() {
-            return this.getMessage() + "\n" +
-                "Argument '" + this.argName + "' was " + this.argValue + "\n" +
+            return this.getMessage() + '\n' +
+                'Argument "' + this.argName + '" was ' + this.argValue + '\n' +
                 StackTraceUtil.generateStackTrace();
         }
     });
@@ -122,7 +122,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @const {string}
      */
-    ArgumentBug.ILLEGAL = "ArgumentBug:Illegal";
+    ArgumentBug.ILLEGAL = 'ArgumentBug:Illegal';
 
 
     //-------------------------------------------------------------------------------

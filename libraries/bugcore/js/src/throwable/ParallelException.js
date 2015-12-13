@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ParallelException = Class.extend(Exception, {
 
-        _name: "ParallelException",
+        _name: 'ParallelException',
 
 
         //-------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {Array.<(Throwable | Error)>=} causes
          */
         _constructor: function(type, data, message, causes) {
-            type = type ? type : "ParallelException";
+            type = type ? type : 'ParallelException';
             this._super(type, data, message, causes);
         }
     });

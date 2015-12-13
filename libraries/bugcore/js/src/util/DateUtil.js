@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var DateUtil = Class.extend(Obj, {
-        _name: "DateUtil"
+        _name: 'DateUtil'
     });
 
 
@@ -53,18 +53,18 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {String}
      */
     DateUtil.monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
     ];
 
     /**
@@ -72,18 +72,18 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {String}
      */
     DateUtil.monthShortNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
     ];
 
 
@@ -98,9 +98,9 @@ require('bugpack').context("*", function(bugpack) {
      */
     DateUtil.getAMPM = function(date) {
         if (date.getHours() < 12) {
-            return "AM";
+            return 'AM';
         }
-        return "PM";
+        return 'PM';
     };
 
     /**
@@ -158,42 +158,42 @@ require('bugpack').context("*", function(bugpack) {
         var nowDate = new Date();
         var nowUTC = nowDate.getTime();
         var yesterdayDate = new Date(nowUTC - (1000 * 60 * 60 * 24));
-        var timestampUTC = timestampDate.getTime()
-        var howLongAgo = "";
+        var timestampUTC = timestampDate.getTime();
+        var howLongAgo = '';
 
         // Did this message occur within the last minute?
         if (nowUTC < timestampUTC + (1000 * 60)) {
-            howLongAgo += "a few seconds ago";
+            howLongAgo += 'a few seconds ago';
         }
         // Did this message occur within the last hour?
         else if (nowUTC < timestampUTC + (1000 * 60 * 60)) {
             var numberOfMinutesAgo = DateUtil.getNumberMinutesAgo(timestampDate, nowDate);
-            howLongAgo += numberOfMinutesAgo + " minutes ago";
+            howLongAgo += numberOfMinutesAgo + ' minutes ago';
         }
         // Did this message occur on the same year?
         else if (nowDate.getFullYear() === timestampDate.getFullYear()) {
 
             // Did this message occur on the same day and month?
             if (nowDate.getDate() === timestampDate.getDate() && nowDate.getMonth() === timestampDate.getMonth()) {
-                howLongAgo += DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                howLongAgo += DateUtil.getHour12HourClock(timestampDate) + ':' +
+                    StringUtil.lpad(timestampDate.getMinutes(), '0', 2) + ' ' + DateUtil.getAMPM(timestampDate);
             }
             // Did this message occur yesterday?
             else if (yesterdayDate.getDate() === timestampDate.getDate() && yesterdayDate.getMonth() === timestampDate.getMonth()) {
-                howLongAgo += "yesterday " + DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                howLongAgo += 'yesterday ' + DateUtil.getHour12HourClock(timestampDate) + ':' +
+                    StringUtil.lpad(timestampDate.getMinutes(), '0', 2) + ' ' + DateUtil.getAMPM(timestampDate);
             }
             else {
-                howLongAgo += DateUtil.getMonthName(timestampDate) + " " + timestampDate.getDate() + ", " +
-                    DateUtil.getHour12HourClock(timestampDate) + ":" + StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " +
+                howLongAgo += DateUtil.getMonthName(timestampDate) + ' ' + timestampDate.getDate() + ', ' +
+                    DateUtil.getHour12HourClock(timestampDate) + ':' + StringUtil.lpad(timestampDate.getMinutes(), '0', 2) + ' ' +
                     DateUtil.getAMPM(timestampDate);
             }
         }
         // Fallback to a full timestamp
         else {
-            howLongAgo += DateUtil.getMonthName(timestampDate) + " " + timestampDate.getDate() + ", " +
-                timestampDate.getFullYear() + " " + DateUtil.getHour12HourClock(timestampDate) + ":" +
-                StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+            howLongAgo += DateUtil.getMonthName(timestampDate) + ' ' + timestampDate.getDate() + ', ' +
+                timestampDate.getFullYear() + ' ' + DateUtil.getHour12HourClock(timestampDate) + ':' +
+                StringUtil.lpad(timestampDate.getMinutes(), '0', 2) + ' ' + DateUtil.getAMPM(timestampDate);
         }
 
         return howLongAgo;
@@ -206,21 +206,21 @@ require('bugpack').context("*", function(bugpack) {
      */
     DateUtil.renderShortTime = function(timestampDate) {
         var nowDate = new Date();
-        var stamp = "";
+        var stamp = '';
 
         //same year?
         if (nowDate.getFullYear() === timestampDate.getFullYear()) {
 
             //same day?
             if (nowDate.getDate() === timestampDate.getDate() && nowDate.getMonth() === timestampDate.getMonth()) {
-                stamp += DateUtil.getHour12HourClock(timestampDate) + ":" +
-                    StringUtil.lpad(timestampDate.getMinutes(), "0", 2) + " " + DateUtil.getAMPM(timestampDate);
+                stamp += DateUtil.getHour12HourClock(timestampDate) + ':' +
+                    StringUtil.lpad(timestampDate.getMinutes(), '0', 2) + ' ' + DateUtil.getAMPM(timestampDate);
             } else {
-                stamp += DateUtil.getMonthShortName(timestampDate) + " " + timestampDate.getDate();
+                stamp += DateUtil.getMonthShortName(timestampDate) + ' ' + timestampDate.getDate();
             }
 
         } else {
-            stamp += timestampDate.getMonth() + "/" + timestampDate.getDate() + "/" + timestampDate.getFullYear();
+            stamp += timestampDate.getMonth() + '/' + timestampDate.getDate() + '/' + timestampDate.getFullYear();
         }
 
         return stamp;

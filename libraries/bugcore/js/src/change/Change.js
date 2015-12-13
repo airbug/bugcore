@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Change = Class.extend(Obj, /** @lends {Change.prototype} */{
 
-        _name: "Change",
+        _name: 'Change',
 
 
         //-------------------------------------------------------------------------------

@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventListener = Class.extend(Obj, {
 
-        _name: "EventListener",
+        _name: 'EventListener',
 
 
         //-------------------------------------------------------------------------------
@@ -141,8 +141,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[EventListener]" +
-                    Obj.hashCode(this.listenerFunction) + "_" +
+                this._hashCode = Obj.hashCode('[EventListener]' +
+                    Obj.hashCode(this.listenerFunction) + '_' +
                     Obj.hashCode(this.listenerContext));
             }
             return this._hashCode;

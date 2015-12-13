@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var AddChange = Class.extend(Change, /** @lends {AddChange.prototype} */ {
 
-        _name: "AddChange",
+        _name: 'AddChange',
 
 
         //-------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @const {string}
      */
-    AddChange.CHANGE_TYPE = "Add";
+    AddChange.CHANGE_TYPE = 'Add';
 
 
     //-------------------------------------------------------------------------------

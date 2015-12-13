@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -68,13 +68,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.eventPropagatorWithoutTarget.getTarget(), this.eventPropagatorWithoutTarget,
-                "Assert target is set to itself if no target is passed in during instantiation");
+                'Assert target is set to itself if no target is passed in during instantiation');
             test.assertEqual(this.eventPropagatorWithTarget.getTarget(), this.testTarget,
-                "Assert target is set to the target passed in during instantiation");
+                'Assert target is set to the target passed in during instantiation');
         }
     };
     bugmeta.tag(eventPropagatorInstantiationTest).with(
-        test().name("EventPropagator instantiation test")
+        test().name('EventPropagator instantiation test')
     );
 
     /**
@@ -90,8 +90,8 @@ require('bugpack').context("*", function(bugpack) {
         setup: function(test) {
             var _this = this;
             this.eventPropagator = new EventPropagator();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.addedPropagateEventCalled = false;
             this.addedEventPropagator = new EventPropagator();
@@ -99,10 +99,10 @@ require('bugpack').context("*", function(bugpack) {
             this.addedEventPropagator.propagateEvent = function(event) {
                 _this.addedPropagateEventCalled = true;
                 test.assertEqual(event.getData(), _this.testEventData,
-                    "Assert that event data was the same");
+                    'Assert that event data was the same');
                 test.assertEqual(event.getType(), _this.testEventType,
-                    "Assert that event type was the same");
-            }
+                    'Assert that event type was the same');
+            };
         },
 
 
@@ -113,11 +113,11 @@ require('bugpack').context("*", function(bugpack) {
             this.eventPropagator.addEventPropagator(this.addedEventPropagator);
             this.eventPropagator.propagateEvent(this.testEvent);
             test.assertTrue(this.addedPropagateEventCalled,
-                "Assert that propagateEvent was called on the added eventPropagator");
+                'Assert that propagateEvent was called on the added eventPropagator');
         }
     };
     bugmeta.tag(eventPropagatorSimpleAddEventPropagatorPropagateEventTest).with(
-        test().name("EventPropagator simple add eventPropagator and propagateEvent test")
+        test().name('EventPropagator simple add eventPropagator and propagateEvent test')
     );
 
     //TODO BRN: Add a test for stopPropagation

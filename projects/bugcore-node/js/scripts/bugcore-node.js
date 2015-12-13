@@ -9,9 +9,9 @@
 // Script
 //-------------------------------------------------------------------------------
 
-var bugpack     = require("bugpack").loadContextSync(module);
-bugpack.loadExportSync("BugCore");
-var BugCore     = bugpack.require("BugCore");
+var bugpack     = require('bugpack').loadContextSync(module);
+bugpack.loadExportSync('BugCore');
+var BugCore     = bugpack.require('BugCore');
 
 
 //-------------------------------------------------------------------------------

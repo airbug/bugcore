@@ -15,7 +15,6 @@
 //@Require('Flows')
 //@Require('Promise')
 //@Require('Promises')
-//@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -24,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,7 +33,6 @@ require('bugpack').context("*", function(bugpack) {
     var Flows       = bugpack.require('Flows');
     var Promise     = bugpack.require('Promise');
     var Promises    = bugpack.require('Promises');
-    var TypeUtil    = bugpack.require('TypeUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -66,7 +64,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this           = this;
-            this.testValue      = "TestValue";
+            this.testValue      = 'TestValue';
             this.testDeferred   = Promises.deferred();
             this.testSeries     = Flows.$series([
                 function() {
@@ -88,12 +86,12 @@ require('bugpack').context("*", function(bugpack) {
             this.testSeries.callback(function(throwable, value) {
                 if (!throwable) {
                     test.assertEqual(value, _this.testValue,
-                        "Assert value received in callback is equal to testValue");
+                        'Assert value received in callback is equal to testValue');
                 } else {
                     test.error(throwable);
                 }
                 test.completeTest();
-            })
+            });
         }
     };
 
@@ -112,7 +110,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this           = this;
-            this.testValue      = "TestValue";
+            this.testValue      = 'TestValue';
             this.testDeferred   = Promises.deferred();
             this.testSeries     = Flows.$series([
                 function() {
@@ -133,16 +131,12 @@ require('bugpack').context("*", function(bugpack) {
             var _this           = this;
             var forwardPromise  = this.testSeries.callback();
             test.assertTrue(Class.doesExtend(forwardPromise, Promise),
-                "Assert Series.callback method returns a promise");
+                'Assert Series.callback method returns a promise');
             if (Class.doesExtend(forwardPromise, Promise)) {
                 forwardPromise
                     .then(function(value) {
-                        //TEST
-                        console.log("Type:", TypeUtil.toType(_this.testValue), " testValue:", _this.testValue);
-                        console.log("Type:", TypeUtil.toType(value), " value:", value);
-
                         test.assertEqual(value, _this.testValue,
-                            "Assert value received in forwardPromise.then is equal to testValue");
+                            'Assert value received in forwardPromise.then is equal to testValue');
                     })
                     .catch(function(throwable) {
                         test.error(throwable);
@@ -170,7 +164,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this           = this;
-            this.testValue      = "TestValue";
+            this.testValue      = 'TestValue';
             this.testDeferred   = Promises.deferred();
             this.testTask       = Flows.$task(function() {
                 setTimeout(function() {
@@ -189,9 +183,9 @@ require('bugpack').context("*", function(bugpack) {
             var _this           = this;
             this.testTask.execute(function(throwable, value) {
                 test.assertEqual(value, _this.testValue,
-                    "Assert value received in callback is equal to testValue");
+                    'Assert value received in callback is equal to testValue');
                 test.completeTest();
-            })
+            });
         }
     };
 
@@ -200,12 +194,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(flowsResolveSeriesWithPromiseToCallbackTest).with(
-        test().name("Flows - resolve Series with Promise to callback test")
+        test().name('Flows - resolve Series with Promise to callback test')
     );
     bugmeta.tag(flowsResolveSeriesWithPromiseToForwardPromiseTest).with(
-        test().name("Flows - resolve Series with Promise to forward Promise test")
+        test().name('Flows - resolve Series with Promise to forward Promise test')
     );
     bugmeta.tag(flowsResolveTaskWithPromiseTest).with(
-        test().name("Flows - resolve Task with Promise test")
+        test().name('Flows - resolve Task with Promise test')
     );
 });

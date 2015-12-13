@@ -20,8 +20,8 @@
 //@Require('IIndexValueIterable')
 //@Require('IList')
 //@Require('Obj')
-//@Require('ReflectArray')
-//@Require('ReflectArrayIterator')
+//@Require('NotifyingArray')
+//@Require('NotifyingArrayIterator')
 //@Require('TypeUtil')
 
 
@@ -29,7 +29,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -44,8 +44,8 @@ require('bugpack').context("*", function(bugpack) {
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var IList                   = bugpack.require('IList');
     var Obj                     = bugpack.require('Obj');
-    var ReflectArray            = bugpack.require('ReflectArray');
-    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
+    var NotifyingArray            = bugpack.require('NotifyingArray');
+    var NotifyingArrayIterator    = bugpack.require('NotifyingArrayIterator');
     var TypeUtil                = bugpack.require('TypeUtil');
 
 
@@ -62,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var List = Class.extend(Collection, {
 
-        _name: "List",
+        _name: 'List',
 
 
         //-------------------------------------------------------------------------------
@@ -83,9 +83,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectArray.<I>}
+             * @type {NotifyingArray.<I>}
              */
-            this.itemReflectArray = new ReflectArray([]);
+            this.itemNotifyingArray = new NotifyingArray([]);
         },
 
 
@@ -94,10 +94,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ReflectArray.<I>} Array is in the same order as the list
+         * @return {NotifyingArray.<I>} Array is in the same order as the list
          */
-        getItemReflectArray: function() {
-            return this.itemReflectArray;
+        getItemNotifyingArray: function() {
+            return this.itemNotifyingArray;
         },
 
 
@@ -132,7 +132,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(item) {
             this._super(item);
-            this.itemReflectArray.push(item);
+            this.itemNotifyingArray.push(item);
             return true;
         },
 
@@ -155,7 +155,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Array.<>}
          */
         toArray: function() {
-            return Obj.clone(this.itemReflectArray.getArray());
+            return Obj.clone(this.itemNotifyingArray.getArray());
         },
 
 
@@ -191,7 +191,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {IIndexValueIterator.<V>}
          */
         iterator: function() {
-            return new ReflectArrayIterator(this.itemReflectArray);
+            return new NotifyingArrayIterator(this.itemNotifyingArray);
         },
 
 
@@ -210,9 +210,9 @@ require('bugpack').context("*", function(bugpack) {
 
             if (index <= this.getCount()) {
                 this.getHashStore().add(item);
-                this.itemReflectArray.splice(index, 0, item);
+                this.itemNotifyingArray.splice(index, 0, item);
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'index was out of bounds');
             }
         },
 
@@ -239,7 +239,7 @@ require('bugpack').context("*", function(bugpack) {
                     insertingIndex++;
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must either implement IArrayable or be an Array');
             }
         },
 
@@ -249,9 +249,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.itemReflectArray.getAt(index);
+                return this.itemNotifyingArray.getAt(index);
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'index was out of bounds');
             }
         },
 
@@ -260,8 +260,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
+            for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                if (Obj.equals(this.itemNotifyingArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -273,8 +273,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.itemReflectArray.getLength(), i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
+            for (var size = this.itemNotifyingArray.getLength(), i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.itemNotifyingArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -285,7 +285,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {I} The removed item
          */
         pop: function() {
-            var lastIndex = this.itemReflectArray.getLength() - 1;
+            var lastIndex = this.itemNotifyingArray.getLength() - 1;
             return this.removeAt(lastIndex);
         },
 
@@ -311,7 +311,7 @@ require('bugpack').context("*", function(bugpack) {
             var value = this.getAt(index);
             var result = this.getHashStore().remove(value);
             if (result) {
-                this.itemReflectArray.splice(index, 1);
+                this.itemNotifyingArray.splice(index, 1);
             }
             return value;
         },
@@ -343,7 +343,7 @@ require('bugpack').context("*", function(bugpack) {
                 toIndex = this.getCount();
             }
             if (fromIndex < 0 || fromIndex > toIndex || toIndex > this.getCount()) {
-                throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'index was out of bounds');
             }
             var subList = new List();
             for (var i = fromIndex; i < toIndex; i++) {

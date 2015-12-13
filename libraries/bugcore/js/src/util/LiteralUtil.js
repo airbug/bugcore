@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var LiteralUtil     = Class.extend(Obj, {
-        _name: "LiteralUtil"
+        _name: 'LiteralUtil'
     });
 
 
@@ -86,7 +86,7 @@ require('bugpack').context("*", function(bugpack) {
 
             literal = value;
         }
-        return literal
+        return literal;
     };
 
 

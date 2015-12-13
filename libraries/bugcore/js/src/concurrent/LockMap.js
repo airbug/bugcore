@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var LockMap = Class.extend(Map, /** @lends {LockMap.prototype} */ {
 
-        _name: "LockMap",
+        _name: 'LockMap',
 
 
         //-------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         put: function(key, value) {
             if (!Class.doesExtend(value, Lock)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "value", value, "parameter must extend Lock");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'value', value, 'parameter must extend Lock');
             }
             this._super(key, value);
         }

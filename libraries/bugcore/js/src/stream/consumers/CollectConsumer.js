@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CollectConsumer = Class.extend(Consumer, {
 
-        _name: "CollectConsumer",
+        _name: 'CollectConsumer',
 
 
         //-------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesImplement(collection, ICollection)) {
                 this.collection = collection;
             } else {
-                throw Throwables.illegalArgumentBug("collection", collection, "'collection' must implement ICollection");
+                throw Throwables.illegalArgumentBug('collection', collection, '"collection" must implement ICollection');
             }
             return this;
         },

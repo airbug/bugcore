@@ -11,8 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
-//@Require('Obj')
 //@Require('RandomUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -22,14 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
-    var Obj         = bugpack.require('Obj');
     var RandomUtil  = bugpack.require('RandomUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -69,15 +65,15 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var randomNumber1 = RandomUtil.randomBetween(0, 0);
             test.assertEqual(randomNumber1, 0,
-                "Assert random number is 0");
+                'Assert random number is 0');
 
             var randomNumber2 = RandomUtil.randomBetween(0, 1);
             test.assertTrue((randomNumber2 === 0 || randomNumber2 === 1),
-                "Assert random number is either equal to 0 or equal to 1");
+                'Assert random number is either equal to 0 or equal to 1');
 
             var randomNumber3 = RandomUtil.randomBetween(3, 4);
             test.assertTrue((randomNumber3 === 3 || randomNumber3 === 4),
-                "Assert random number is either equal to 3 or equal to 4");
+                'Assert random number is either equal to 3 or equal to 4');
         }
     };
 
@@ -92,9 +88,9 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             var _this = this;
-            this.validHexValues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+            this.validHexValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
             this.isValidHexString = function(hex) {
                 for (var i = 0, size = hex.length; i < size; i++) {
                     var hexVal = hex[i];
@@ -104,7 +100,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
                 }
                 return true;
-            }
+            };
         },
 
 
@@ -113,20 +109,20 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var randomHex0 = RandomUtil.randomHex(0);
-            test.assertEqual(randomHex0, "",
-                "Assert random hex of length 0 is empty");
+            test.assertEqual(randomHex0, '',
+                'Assert random hex of length 0 is empty');
 
             var randomHex1 = RandomUtil.randomHex(1);
             test.assertEqual(randomHex1.length, 1,
-                "Assert random hex length is 1");
+                'Assert random hex length is 1');
             test.assertTrue(this.isValidHexString(randomHex1),
-                    "Assert value hex value '" + randomHex1 + "' is a valid hex value");
+                    'Assert value hex value "' + randomHex1 + '" is a valid hex value');
 
             var randomHex4 = RandomUtil.randomHex(4);
             test.assertEqual(randomHex4.length, 4,
-                "Assert random hex length is 4");
+                'Assert random hex length is 4');
             test.assertTrue(this.isValidHexString(randomHex4),
-                    "Assert value hex value '" + randomHex4 + "' is a valid hex value");
+                    'Assert value hex value "' + randomHex4 + '" is a valid hex value');
         }
     };
 
@@ -136,9 +132,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(randomBetweenTest).with(
-        test().name("RandomUtil - randomBetween test")
+        test().name('RandomUtil - randomBetween test')
     );
     bugmeta.tag(randomHexTest).with(
-        test().name("RandomUtil - randomHex test")
+        test().name('RandomUtil - randomHex test')
     );
 });

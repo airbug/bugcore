@@ -26,7 +26,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -55,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableList = Class.extend(ObservableCollection, /** @lends {ObservableList.prototype} */{
 
-        _name: "ObservableList",
+        _name: 'ObservableList',
 
 
         //-------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addAt: function(index, item) {
             this.getObserved().addAt(index, item);
-            this.notifyObservers(new AddAtChange(item, index))
+            this.notifyObservers(new AddAtChange(item, index));
         },
 
         /**
@@ -135,7 +135,7 @@ require('bugpack').context("*", function(bugpack) {
                     insertingIndex++;
                 });
             } else {
-                throw new Error("'items' must be implement ICollection or be an Array");
+                throw new Error('"items" must be implement ICollection or be an Array');
             }
         },
 

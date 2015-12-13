@@ -9,22 +9,20 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('ReflectObjectIterator')
+//@Export('NotifyingObjectIterator')
 
 //@Require('Class')
 //@Require('Exception')
 //@Require('IKeyValueIterator')
 //@Require('Obj')
-//@Require('ObjectUtil')
-//@require('ReflectObject')
-//@Require('TypeUtil')
+//@require('NotifyingObject')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,9 +32,7 @@ require('bugpack').context("*", function(bugpack) {
     var Exception           = bugpack.require('Exception');
     var IKeyValueIterator   = bugpack.require('IKeyValueIterator');
     var Obj                 = bugpack.require('Obj');
-    var ObjectUtil          = bugpack.require('ObjectUtil');
-    var ReflectObject       = bugpack.require('ReflectObject');
-    var TypeUtil            = bugpack.require('TypeUtil');
+    var NotifyingObject     = bugpack.require('NotifyingObject');
 
 
     //-------------------------------------------------------------------------------
@@ -49,9 +45,9 @@ require('bugpack').context("*", function(bugpack) {
      * @implements {IKeyValueIterator.<string, V>}
      * @template V
      */
-    var ReflectObjectIterator = Class.extend(Obj, {
+    var NotifyingObjectIterator = Class.extend(Obj, {
 
-        _name: "ReflectObjectIterator",
+        _name: 'NotifyingObjectIterator',
 
 
         //-------------------------------------------------------------------------------
@@ -96,9 +92,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectObject.<string, V>}
+             * @type {NotifyingObject.<string, V>}
              */
-            this.reflectObject          = new ReflectObject({});
+            this.reflectObject          = new NotifyingObject({});
         },
 
 
@@ -107,27 +103,27 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {ReflectObject.<V>} reflectObject
-         * @return {ReflectObjectIterator}
+         * @param {NotifyingObject.<V>} reflectObject
+         * @return {NotifyingObjectIterator}
          */
         init: function(reflectObject) {
             var _this = this._super();
 
             if (_this) {
-                if (Class.doesExtend(reflectObject, ReflectObject)) {
+                if (Class.doesExtend(reflectObject, NotifyingObject)) {
                     this.reflectObject = reflectObject;
                     this.properties = this.reflectObject.keys();
                     this.propertyCount = this.properties.length;
                 }
                 this.reflectObject.observe(function (changes) {
                     changes.forEach(function (change) {
-                        if (change.type === "add") {
+                        if (change.type === 'add') {
                             _this.handlePropertyAdd(change.name);
                         } else {
                             _this.handlePropertyDelete(change.name);
                         }
                     });
-                }, ["add", "delete"]);
+                }, ['add', 'delete']);
             }
 
             return _this;
@@ -167,9 +163,9 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectObject.<string, V>}
+         * @return {NotifyingObject.<string, V>}
          */
-        getReflectObject: function() {
+        getNotifyingObject: function() {
             return this.reflectObject;
         },
 
@@ -204,7 +200,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.moveIndexToBeforeNextAvailable();
                 return property;
             } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+                throw new Exception('NoSuchElement', {}, 'End of iteration reached.');
             }
         },
 
@@ -283,12 +279,12 @@ require('bugpack').context("*", function(bugpack) {
     // Interfaces
     //-------------------------------------------------------------------------------
 
-    Class.implement(ReflectObjectIterator, IKeyValueIterator);
+    Class.implement(NotifyingObjectIterator, IKeyValueIterator);
 
 
     //-------------------------------------------------------------------------------
     // Exports
     //-------------------------------------------------------------------------------
 
-    bugpack.export('ReflectObjectIterator', ReflectObjectIterator);
+    bugpack.export('NotifyingObjectIterator', NotifyingObjectIterator);
 });

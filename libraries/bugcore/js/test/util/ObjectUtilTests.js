@@ -11,8 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
-//@Require('IdGenerator')
 //@Require('Obj')
 //@Require('ObjectUtil')
 //@Require('TypeUtil')
@@ -24,14 +22,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
-    var IdGenerator     = bugpack.require('IdGenerator');
     var Obj             = bugpack.require('Obj');
     var ObjectUtil      = bugpack.require('ObjectUtil');
     var TypeUtil        = bugpack.require('TypeUtil');
@@ -63,8 +59,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testObject = {
-                prop1: "value1"
-            }
+                prop1: 'value1'
+            };
         },
 
 
@@ -72,10 +68,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "prop1"), true,
-                "Assert .hasNestedProperty() check returns true for 'prop1'");
-            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "prop2"), false,
-                "Assert .hasNestedProperty() check returns false for 'prop2'");
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, 'prop1'), true,
+                'Assert .hasNestedProperty() check returns true for "prop1"');
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, 'prop2'), false,
+                'Assert .hasNestedProperty() check returns false for "prop2"');
         }
     };
 
@@ -91,7 +87,7 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testObject = {
                 prop1: undefined
-            }
+            };
         },
 
 
@@ -99,10 +95,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "prop1"), true,
-                "Assert .hasNestedProperty() check returns true for 'prop1'");
-            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "prop2"), false,
-                "Assert .hasNestedProperty() check returns false for 'prop2'");
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, 'prop1'), true,
+                'Assert .hasNestedProperty() check returns true for "prop1"');
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, 'prop2'), false,
+                'Assert .hasNestedProperty() check returns false for "prop2"');
         }
     };
 
@@ -118,7 +114,7 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testConstructor = function() {};
             this.testConstructor.prototype = {
-                inheritedProperty: "inheritedProperty"
+                inheritedProperty: 'inheritedProperty'
             };
             this.testObject = new this.testConstructor();
         },
@@ -128,8 +124,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "inheritedProperty"), true,
-                "Assert .hasNestedProperty() check returns true for inherited property");
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, 'inheritedProperty'), true,
+                'Assert .hasNestedProperty() check returns true for inherited property');
         }
     };
 
@@ -145,7 +141,7 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testConstructor = function() {};
             this.testConstructor.prototype = {
-                inheritedProperty: "inheritedProperty"
+                inheritedProperty: 'inheritedProperty'
             };
             this.testObject = new this.testConstructor();
         },
@@ -155,8 +151,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.hasOwnNestedProperty(this.testObject, "inheritedProperty"), false,
-                "Assert .hasOwnNestedProperty() check returns false for inherited property");
+            test.assertEqual(ObjectUtil.hasOwnNestedProperty(this.testObject, 'inheritedProperty'), false,
+                'Assert .hasOwnNestedProperty() check returns false for inherited property');
         }
     };
 
@@ -172,9 +168,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testObject = {
-                prop1: "value1",
+                prop1: 'value1',
                 prop2: {
-                    subProp1: "value2"
+                    subProp1: 'value2'
                 }
             };
         },
@@ -184,12 +180,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, "prop1"), "value1",
-                "Assert first level property is found");
-            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, "prop2"), this.testObject.prop2,
-                "Assert object was returned");
-            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, "prop2.subProp1"), "value2",
-                "Assert sub properties are correctly returned");
+            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, 'prop1'), 'value1',
+                'Assert first level property is found');
+            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, 'prop2'), this.testObject.prop2,
+                'Assert object was returned');
+            test.assertEqual(ObjectUtil.getNestedProperty(this.testObject, 'prop2.subProp1'), 'value2',
+                'Assert sub properties are correctly returned');
         }
     };
 
@@ -204,16 +200,16 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.builtInProperties = [
-                "eval",
-                "hasOwnProperty",
-                "isPrototypeOf",
-                "propertyIsEnumerable",
-                "toLocaleString",
-                "toSource",
-                "toString",
-                "unwatch",
-                "valueOf",
-                "watch"
+                'eval',
+                'hasOwnProperty',
+                'isPrototypeOf',
+                'propertyIsEnumerable',
+                'toLocaleString',
+                'toSource',
+                'toString',
+                'unwatch',
+                'valueOf',
+                'watch'
             ];
             this.testObject = {};
         },
@@ -226,7 +222,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.builtInProperties.forEach(function(builtInProperty) {
                 test.assertEqual(ObjectUtil.getOwnNestedProperty(_this.testObject, builtInProperty), undefined,
-                        "Assert .getOwnNestedProperty() returns undefined for built in property '" + builtInProperty + "'");
+                        'Assert .getOwnNestedProperty() returns undefined for built in property "' + builtInProperty + '"');
             });
         }
     };
@@ -242,12 +238,12 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.builtInProperties = [
-                "hasOwnProperty",
-                "isPrototypeOf",
-                "propertyIsEnumerable",
-                "toLocaleString",
-                "toString",
-                "valueOf"
+                'hasOwnProperty',
+                'isPrototypeOf',
+                'propertyIsEnumerable',
+                'toLocaleString',
+                'toString',
+                'valueOf'
             ];
             this.testObject = {};
         },
@@ -260,7 +256,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.builtInProperties.forEach(function(builtInProperty) {
                 test.assertNotEqual(ObjectUtil.getNestedProperty(_this.testObject, builtInProperty), undefined,
-                        "Assert .getNestedProperty() does not return undefined for built in property '" + builtInProperty + "'");
+                        'Assert .getNestedProperty() does not return undefined for built in property "' + builtInProperty + '"');
             });
         }
     };
@@ -276,9 +272,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.testObject = {
-                prop1: "value1",
-                prop2: "value2",
-                prop3: "value3"
+                prop1: 'value1',
+                prop2: 'value2',
+                prop3: 'value3'
             };
             this.testContext = {
                 contextTrue: true
@@ -296,27 +292,27 @@ require('bugpack').context("*", function(bugpack) {
                 iteratedProps.push(prop);
                 iteratedValues.push(value);
                 test.assertTrue(this.contextTrue,
-                    "Assert that we are executing within the correct context");
+                    'Assert that we are executing within the correct context');
             }, this.testContext);
 
             test.assertTrue((iteratedProps.length === 3),
-                "Assert we iterated over 3 properties");
+                'Assert we iterated over 3 properties');
             test.assertTrue((iteratedValues.length === 3),
-                "Assert we iterated over 3 values");
+                'Assert we iterated over 3 values');
 
             var expectedProps = [
-                "prop1",
-                "prop2",
-                "prop3"
+                'prop1',
+                'prop2',
+                'prop3'
             ];
             for (var i = 0, size = iteratedProps.length; i < size; i++) {
                 var iteratedProp = iteratedProps[i];
                 var expectedPropIndex = expectedProps.indexOf(iteratedProp);
                 test.assertTrue((expectedPropIndex > -1),
-                    "Assert prop was in the expectedProps");
+                    'Assert prop was in the expectedProps');
                 expectedProps.splice(expectedPropIndex, 1);
                 test.assertEqual(iteratedValues[i], this.testObject[iteratedProp],
-                    "Assert the value that was iterated is the one that corresponds to the property");
+                    'Assert the value that was iterated is the one that corresponds to the property');
             }
         }
     };
@@ -326,16 +322,16 @@ require('bugpack').context("*", function(bugpack) {
      * 1) That the forIn function correctly iterates over an object in IE8
      * 2) Don't enum properties are not correctly iterated when they are overridden in IE8
      */
-    var objectUtilForInIterationDontEnumPropertiesTest = {
+    /*var objectUtilForInIterationDontEnumPropertiesTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
             this.testObject = {
-                prop1: "value1",
-                prop2: "value2",
-                prop3: "value3"
+                prop1: 'value1',
+                prop2: 'value2',
+                prop3: 'value3'
             };
             ObjectUtil.hasOwnProperty = function(prop) {
                 if (prop === 'toString') {
@@ -361,24 +357,24 @@ require('bugpack').context("*", function(bugpack) {
             });
 
             test.assertTrue((iteratedProps.length === 4),
-                "Assert we iterated over 4 properties");
+                'Assert we iterated over 4 properties');
             test.assertTrue((iteratedValues.length === 4),
-                "Assert we iterated over 4 values");
+                'Assert we iterated over 4 values');
 
             var expectedProps = [
-                "prop1",
-                "prop2",
-                "prop3",
-                "toString"
+                'prop1',
+                'prop2',
+                'prop3',
+                'toString'
             ];
             for (var i = 0, size = iteratedProps.length; i < size; i++) {
                 var iteratedProp = iteratedProps[i];
                 var expectedPropIndex = expectedProps.indexOf(iteratedProp);
                 test.assertTrue((expectedPropIndex > -1),
-                    "Assert prop was in the expectedProps");
+                    'Assert prop was in the expectedProps');
                 expectedProps.splice(expectedPropIndex, 1);
                 test.assertEqual(iteratedValues[i], this.testObject[iteratedProp],
-                    "Assert the value that was iterated is the one that corresponds to the property");
+                    'Assert the value that was iterated is the one that corresponds to the property');
             }
         },
 
@@ -390,23 +386,23 @@ require('bugpack').context("*", function(bugpack) {
             ObjectUtil.hasOwnProperty = Object.prototype.hasOwnProperty;
             ObjectUtil.isDontEnumSkipped = this.originalIsDontEnumSkipped;
         }
-    };
+    };*/
 
     var objectUtilIsEmptyTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.emptyObject = {};
             this.notEmptyObject = {
-                propertyx: "x"
+                propertyx: 'x'
             };
             this.notEmptyObjectNull = {
-                null: ""
+                null: ''
             };
             this.notEmptyObjectString = {
-                "": null
+                '': null
             };
         },
 
@@ -415,13 +411,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(ObjectUtil.isEmpty(this.emptyObject), true,
-                "Assert isEmpty returns true for an empty object");
+                'Assert isEmpty returns true for an empty object');
             test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObject), false,
-                "Assert isEmpty returns false for a non empty object");
+                'Assert isEmpty returns false for a non empty object');
             test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObjectNull), false,
-                "Assert isEmpty returns false for a non empty object with a null only key");
+                'Assert isEmpty returns false for a non empty object with a null only key');
             test.assertEqual(ObjectUtil.isEmpty(this.notEmptyObjectString), false,
-                "Assert isEmpty returns false for a non empty object with an empty string only key");
+                'Assert isEmpty returns false for a non empty object with an empty string only key');
         }
     };
 
@@ -430,31 +426,31 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.baseObject = {
-                a: "value1",
-                null: "value2",
-                "": "value3"
+                a: 'value1',
+                null: 'value2',
+                '': 'value3'
             };
             this.equalObject = {
-                a: "value1",
-                null: "value2",
-                "": "value3"
+                a: 'value1',
+                null: 'value2',
+                '': 'value3'
             };
             this.notEqualObjectMissingKey = {
-                a: "value1",
-                null: "value2"
+                a: 'value1',
+                null: 'value2'
             };
             this.notEqualObjectExtraKey = {
-                a: "value1",
-                b: "value1",
-                null: "value2",
-                "": "value3"
+                a: 'value1',
+                b: 'value1',
+                null: 'value2',
+                '': 'value3'
             };
             this.notEqualObjectDifferentValue = {
-                a: "value4",
-                null: "value2",
-                "": "value3"
+                a: 'value4',
+                null: 'value2',
+                '': 'value3'
             };
         },
 
@@ -463,15 +459,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.equalObject), true,
-                "Assert isEqual returns true for an equal object");
+                'Assert isEqual returns true for an equal object');
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.baseObject), true,
-                "Assert isEqual returns true for the same object object");
+                'Assert isEqual returns true for the same object object');
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectMissingKey), false,
-                "Assert isEqual returns false for an object that is missing a key");
+                'Assert isEqual returns false for an object that is missing a key');
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectExtraKey), false,
-                "Assert isEqual returns false for an object that has an extra key");
+                'Assert isEqual returns false for an object that has an extra key');
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectDifferentValue), false,
-                "Assert isEqual returns false for an object with a different value");
+                'Assert isEqual returns false for an object with a different value');
         }
     };
 
@@ -480,16 +476,16 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.from = {
-                propertya: "a",
-                propertyb: "b",
-                propertyc: "c"
+                propertya: 'a',
+                propertyb: 'b',
+                propertyc: 'c'
             };
             this.into = {
-                propertyx: "x",
-                propertyy: "y",
-                propertyz: "z"
+                propertyx: 'x',
+                propertyy: 'y',
+                propertyz: 'z'
             };
         },
 
@@ -499,10 +495,10 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var returnedObj = ObjectUtil.merge(this.from, this.into);
             test.assertEqual(returnedObj, this.into,
-                "Assert the object returned by ObjectUtil.merge is the object given as the second parameter");
-            test.assertTrue( this.into.propertya === "a" && this.into.propertyb === "b" && this.into.propertyc === "c" &&
-                    this.into.propertyx === "x" && this.into.propertyy === "y" && this.into.propertyz === "z",
-                "Assert that the into object has all properties from itself and from the from object");
+                'Assert the object returned by ObjectUtil.merge is the object given as the second parameter');
+            test.assertTrue( this.into.propertya === 'a' && this.into.propertyb === 'b' && this.into.propertyc === 'c' &&
+                    this.into.propertyx === 'x' && this.into.propertyy === 'y' && this.into.propertyz === 'z',
+                'Assert that the into object has all properties from itself and from the from object');
         }
     };
 
@@ -511,10 +507,10 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
-            this.propertyQuery  = "a.b";
+        setup: function() {
+            this.propertyQuery  = 'a.b';
             this.testObject     = {};
-            this.testValue      = "testValue";
+            this.testValue      = 'testValue';
         },
 
         // Run Test
@@ -523,11 +519,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             ObjectUtil.setNestedProperty(this.testObject, this.propertyQuery, this.testValue);
             test.assertTrue(TypeUtil.isObject(this.testObject),
-                "Assert testObject is still an object");
+                'Assert testObject is still an object');
             test.assertTrue(TypeUtil.isObject(this.testObject.a),
-                "Assert testObject.a was created and is an object");
+                'Assert testObject.a was created and is an object');
             test.assertEqual(this.testObject.a.b, this.testValue,
-                "Assert testObject.a.b was set to the testValue");
+                'Assert testObject.a.b was set to the testValue');
         }
     };
 
@@ -536,7 +532,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function (test) {
+        setup: function () {
             this.testObj = new Obj();
         },
 
@@ -545,14 +541,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function (test) {
-            ObjectUtil.forIn(this.testObj, function(propertyName, propertyValue) {
-                test.assertTrue(propertyName !== "_internalId",
-                    "Assert ._internalId is not iterable");
-                test.assertTrue(propertyName !== "_hashCode",
-                    "Assert ._hashCode is not iterable");
-                test.assertTrue(propertyName !== "_hashCode",
-                    "Assert ._class is not iterable");
-            })
+            ObjectUtil.forIn(this.testObj, function(propertyName) {
+                test.assertTrue(propertyName !== '_internalId',
+                    'Assert ._internalId is not iterable');
+                test.assertTrue(propertyName !== '_hashCode',
+                    'Assert ._hashCode is not iterable');
+                test.assertTrue(propertyName !== '_hashCode',
+                    'Assert ._class is not iterable');
+            });
         }
     };
 
@@ -562,45 +558,45 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(objectUtilHasNestedPropertyBasicTest).with(
-        test().name("ObjectUtil - .hasNestedProperty() basic test")
+        test().name('ObjectUtil - .hasNestedProperty() basic test')
     );
     bugmeta.tag(objectUtilHasNestedPropertyUndefinedValueTest).with(
-        test().name("ObjectUtil - .hasNestedProperty() undefined value test")
+        test().name('ObjectUtil - .hasNestedProperty() undefined value test')
     );
     bugmeta.tag(objectUtilHasNestedPropertyInheritedPropertyTest).with(
-        test().name("ObjectUtil - .hasNestedProperty() inherited property test")
+        test().name('ObjectUtil - .hasNestedProperty() inherited property test')
     );
     bugmeta.tag(objectUtilHasOwnNestedPropertyInheritedPropertyTest).with(
-        test().name("ObjectUtil - .hasOwnNestedProperty() inherited property test")
+        test().name('ObjectUtil - .hasOwnNestedProperty() inherited property test')
     );
     bugmeta.tag(objectUtilGetNestedPropertyBasicTest).with(
-        test().name("ObjectUtil - .getNestedProperty() basic test")
+        test().name('ObjectUtil - .getNestedProperty() basic test')
     );
     bugmeta.tag(objectUtilGetNestedPropertyBuiltInPropertyObservedTest).with(
-        test().name("ObjectUtil - .getNestedProperty() built in property observed test")
+        test().name('ObjectUtil - .getNestedProperty() built in property observed test')
     );
     bugmeta.tag(objectUtilGetOwnNestedPropertyBuiltInPropertyIgnoredTest).with(
-        test().name("ObjectUtil - .getOwnNestedProperty() built in property ignored test")
+        test().name('ObjectUtil - .getOwnNestedProperty() built in property ignored test')
     );
     bugmeta.tag(objectUtilForInIterationTest).with(
-        test().name("ObjectUtil - .forIn() iteration test")
+        test().name('ObjectUtil - .forIn() iteration test')
     );
     /*bugmeta.tag(objectUtilForInIterationDontEnumPropertiesTest).with(
-        test().name("ObjectUtil - .forIn() iteration of don't enum properties test")
+        test().name('ObjectUtil - .forIn() iteration of don't enum properties test')
     );*/
     bugmeta.tag(objectUtilIsEmptyTest).with(
-        test().name("ObjectUtil - .isEmpty Test")
+        test().name('ObjectUtil - .isEmpty Test')
     );
     bugmeta.tag(objectUtilIsEqualTest).with(
-        test().name("ObjectUtil - .isEqual Test")
+        test().name('ObjectUtil - .isEqual Test')
     );
     bugmeta.tag(objectUtilMergeTest).with(
-        test().name("ObjectUtil - .merge Test")
+        test().name('ObjectUtil - .merge Test')
     );
     bugmeta.tag(objectUtilSetNestedPropertyTest).with(
-        test().name("ObjectUtil - .setNestedProperty() Test")
+        test().name('ObjectUtil - .setNestedProperty() Test')
     );
     bugmeta.tag(objectUtilPropertyIterationTest).with(
-        test().name("ObjectUtil - property iteration Test")
+        test().name('ObjectUtil - property iteration Test')
     );
 });

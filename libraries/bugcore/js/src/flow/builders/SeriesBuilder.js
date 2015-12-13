@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -47,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var SeriesBuilder = Class.extend(FlowBuilder, {
 
-        _name: "SeriesBuilder",
+        _name: 'SeriesBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -90,12 +90,12 @@ require('bugpack').context("*", function(bugpack) {
                         flowBuilder = new TaskBuilder(flowBuilder);
                     }
                     if (!Class.doesExtend(flowBuilder, FlowBuilder)) {
-                        throw Throwables.illegalArgumentBug("flowBuilderArray", flowBuilderArray, "values in Array must be either functions for FlowBuilders");
+                        throw Throwables.illegalArgumentBug('flowBuilderArray', flowBuilderArray, 'values in Array must be either functions for FlowBuilders');
                     }
                     _this.flowBuilderArray.push(flowBuilder);
                 });
             } else {
-                throw Throwables.illegalArgumentBug("flowBuilderArray", flowBuilderArray, "must be an Array");
+                throw Throwables.illegalArgumentBug('flowBuilderArray', flowBuilderArray, 'must be an Array');
             }
             return this;
         },

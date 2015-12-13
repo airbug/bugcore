@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -50,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Supplier = Class.extend(Obj, {
 
-        _name: "Supplier",
+        _name: 'Supplier',
 
 
         //-------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesImplement(consumer, IConsumer)) {
                 this.consumers.push(consumer);
             } else {
-                throw new Exception("IllegalArgument", {}, "Consumer must implement IConsumer");
+                throw new Exception('IllegalArgument', {}, 'Consumer must implement IConsumer');
             }
         },
 
@@ -150,7 +150,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.mode = mode;
                 this.doStart(mode);
             } else {
-                throw new Exception("IllegalState", {}, "Supplier already started");
+                throw new Exception('IllegalState', {}, 'Supplier already started');
             }
         },
 
@@ -163,8 +163,8 @@ require('bugpack').context("*", function(bugpack) {
          * @abstract
          * @param {Supplier.Mode} mode
          */
-        doStart: function(mode) {
-            throw new Bug("AbstractMethod", {}, "Abstract method doStart has not been implemented");
+        doStart: function() {
+            throw new Bug('AbstractMethod', {}, 'Abstract method doStart has not been implemented');
         },
 
 
@@ -213,8 +213,8 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     Supplier.Mode = {
-        ASYNC: "Supplier:Mode:Async",
-        SYNC: "Supplier:Mode:Sync"
+        ASYNC: 'Supplier:Mode:Async',
+        SYNC: 'Supplier:Mode:Sync'
     };
 
 

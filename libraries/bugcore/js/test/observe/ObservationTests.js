@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -53,9 +53,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testChangeType         = "testChangeType";
+            this.testChangeType         = 'testChangeType';
             this.testChange             = new Change(this.testChangeType);
-            this.testObservationPath    = "testObservationPath";
+            this.testObservationPath    = 'testObservationPath';
             this.testObservation        = new Observation(this.testChange, this.testObservationPath);
         },
 
@@ -65,13 +65,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testObservation, Observation),
-                "Assert instance of Observation");
+                'Assert instance of Observation');
             test.assertEqual(this.testObservation.getChange(), this.testChange,
-                "Assert .change was set correctly");
+                'Assert .change was set correctly');
             test.assertEqual(this.testObservation.getChangeType(), this.testChangeType,
-                "Assert changeType is correctly proxied");
+                'Assert changeType is correctly proxied');
             test.assertEqual(this.testObservation.getObservationPath(), this.testObservationPath,
-                "Assert .observationPath was set correctly");
+                'Assert .observationPath was set correctly');
 
         }
     };
@@ -82,6 +82,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(observationInstantiationTest).with(
-        test().name("Observation - instantiation test")
+        test().name('Observation - instantiation test')
     );
 });

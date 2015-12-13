@@ -11,9 +11,7 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('MathUtil')
-//@Require('Obj')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -22,15 +20,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var MathUtil    = bugpack.require('MathUtil');
-    var Obj         = bugpack.require('Obj');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -67,7 +63,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(MathUtil.degreesToRadians(this.degreesValue), this.expectedValue,
-                "Assert degrees to radians was correct");
+                'Assert degrees to radians was correct');
         }
     };
 
@@ -91,7 +87,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(MathUtil.radiansToDegrees(this.radiansValue), this.expectedValue,
-                "Assert radians to degrees was correct");
+                'Assert radians to degrees was correct');
         }
     };
 
@@ -101,9 +97,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(degreesToRadiansTest).with(
-        test().name("MathUtil - degreesToRadians test")
+        test().name('MathUtil - degreesToRadians test')
     );
     bugmeta.tag(radiansToDegreesTest).with(
-        test().name("MathUtil - radiansToDegrees test")
+        test().name('MathUtil - radiansToDegrees test')
     );
 });

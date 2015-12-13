@@ -14,7 +14,6 @@
 //@Require('BidiMap')
 //@Require('Class')
 //@Require('Collection')
-//@Require('Exception')
 //@Require('List')
 //@Require('Map')
 //@Require('MultiListMap')
@@ -27,7 +26,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -36,7 +35,6 @@ require('bugpack').context("*", function(bugpack) {
     var BidiMap         = bugpack.require('BidiMap');
     var Class           = bugpack.require('Class');
     var Collection      = bugpack.require('Collection');
-    var Exception       = bugpack.require('Exception');
     var List            = bugpack.require('List');
     var Map             = bugpack.require('Map');
     var MultiListMap    = bugpack.require('MultiListMap');
@@ -54,7 +52,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Collections = Class.extend(Obj, {
-        _name: "Collections"
+        _name: 'Collections'
     });
 
 

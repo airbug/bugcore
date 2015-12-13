@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('Flows')
 //@Require('Throwables')
 //@Require('bugmeta.BugMeta')
@@ -22,13 +21,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var Flows       = bugpack.require('Flows');
     var Throwables  = bugpack.require('Throwables');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
@@ -64,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
             this.testIndex = -1;
             this.numberTasksCompleted = 0;
             this.numberTasksStarted = 0;
-            this.testAssertionMethod = function(flow) {
+            this.testAssertionMethod = function() {
                 _this.testIndex++;
                 return (_this.testIndex < 2);
             };
@@ -72,7 +70,7 @@ require('bugpack').context("*", function(bugpack) {
                 _this.numberTasksStarted++;
                 if (_this.numberTasksStarted == 2) {
                     test.assertEqual(_this.numberTasksCompleted, 0,
-                        "Assert tasks are executed in parallel");
+                        'Assert tasks are executed in parallel');
                 }
                 setTimeout(function() {
                     _this.numberTasksCompleted++;
@@ -92,13 +90,13 @@ require('bugpack').context("*", function(bugpack) {
             var executeCallbackFired = false;
             this.whileParallel.execute(function(throwable) {
                 test.assertFalse(executeCallbackFired,
-                    "Assert that the execute callback has not already fired");
+                    'Assert that the execute callback has not already fired');
                 executeCallbackFired = true;
                 if (!throwable) {
                     test.assertEqual(_this.numberTasksCompleted, 2,
-                        "Assert testTask was run twice");
+                        'Assert testTask was run twice');
                     test.assertEqual(_this.testIndex, 2,
-                        "Assert that the ForEachParallel iterated 2 times");
+                        'Assert that the ForEachParallel iterated 2 times');
                 } else {
                     test.error(throwable);
                 }
@@ -127,12 +125,12 @@ require('bugpack').context("*", function(bugpack) {
             this.testAsyncAssertionMethod = function(flow) {
                 _this.numberAssertionsStarted++;
                 if (_this.numberAssertionsStarted > 3) {
-                    throw new Throwables.exception("TestException", {}, "Test assertions are running infinitely");
+                    throw new Throwables.exception('TestException', {}, 'Test assertions are running infinitely');
                 }
                 setTimeout(function() {
                     _this.numberAssertionsCompleted++;
                     test.assertEqual(_this.numberAssertionsCompleted, _this.numberAssertionsStarted,
-                        "Assert that previous assertion completed before the next one started");
+                        'Assert that previous assertion completed before the next one started');
                     flow.assert(_this.numberAssertionsStarted < 3);
                 }, 0);
             };
@@ -158,17 +156,17 @@ require('bugpack').context("*", function(bugpack) {
             var executeCallbackFired = false;
             this.whileParallel.execute(function(throwable) {
                 test.assertFalse(executeCallbackFired,
-                    "Assert that the execute callback has not already fired");
+                    'Assert that the execute callback has not already fired');
                 executeCallbackFired = true;
                 if (!throwable) {
                     test.assertEqual(_this.numberAssertionsStarted, 3,
-                        "Assert three assertions started");
+                        'Assert three assertions started');
                     test.assertEqual(_this.numberAssertionsCompleted, 3,
-                        "Assert three assertions completed");
+                        'Assert three assertions completed');
                     test.assertEqual(_this.numberTasksStarted, 2,
-                        "Assert that the ForEachParallel started 2 tasks");
+                        'Assert that the ForEachParallel started 2 tasks');
                     test.assertEqual(_this.numberTasksCompleted, 2,
-                        "Assert that the ForEachParallel completed 2 tasks");
+                        'Assert that the ForEachParallel completed 2 tasks');
                 } else {
                     test.error(throwable);
                 }
@@ -183,9 +181,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(bugflowExecuteWhileParallelTest).with(
-        test().name("Flows WhileParallel - execute test")
+        test().name('Flows WhileParallel - execute test')
     );
     bugmeta.tag(bugflowExecuteWhileParallelWithAsyncAssertionTest).with(
-        test().name("Flows WhileParallel - execute with async assertion test")
+        test().name('Flows WhileParallel - execute with async assertion test')
     );
 });

@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Assertion = Class.extend(Flow, {
 
-        _name: "Assertion",
+        _name: 'Assertion',
 
 
         //-------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ require('bugpack').context("*", function(bugpack) {
             if (!this.assertCalled) {
                 this.complete(null, bool);
             } else {
-                this.error(Throwables.bug("IllegalState", {}, "Flow has already been asserted. Cannot call assert more than once."));
+                this.error(Throwables.bug('IllegalState', {}, 'Flow has already been asserted. Cannot call assert more than once.'));
             }
         },
 

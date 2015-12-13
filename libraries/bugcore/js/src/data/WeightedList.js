@@ -28,7 +28,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -58,7 +58,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WeightedList = Class.extend(List, {
 
-        _name: "WeightedList",
+        _name: 'WeightedList',
 
 
         //-------------------------------------------------------------------------------
@@ -142,8 +142,8 @@ require('bugpack').context("*", function(bugpack) {
                 if (Class.doesExtend(collection, WeightedList)) {
                     /** @type {WeightedList} */
                     var weightedList = /** @type {WeightedList} */(collection);
-                    for (var i = 0, size = weightedList.getItemReflectArray().getLength(); i < size; i++) {
-                        this.add(weightedList.getItemReflectArray().getAt(i).getValue(), weightedList.getItemReflectArray().getAt(i).getWeight());
+                    for (var i = 0, size = weightedList.getItemNotifyingArray().getLength(); i < size; i++) {
+                        this.add(weightedList.getItemNotifyingArray().getAt(i).getValue(), weightedList.getItemNotifyingArray().getAt(i).getWeight());
                     }
                 } else {
                     collection.forEach(function(value) {
@@ -151,7 +151,7 @@ require('bugpack').context("*", function(bugpack) {
                     });
                 }
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must either implement IArrayable or be an Array');
             }
         },
 
@@ -180,7 +180,7 @@ require('bugpack').context("*", function(bugpack) {
         remove: function(value) {
             var index = this.indexOfFirst(value);
             if (index > -1) {
-                var firstValue = this.getItemReflectArray().getAt(index);
+                var firstValue = this.getItemNotifyingArray().getAt(index);
                 this.totalWeight -= firstValue.getWeight();
                 this.removeAt(index);
                 return true;
@@ -207,10 +207,10 @@ require('bugpack').context("*", function(bugpack) {
                 var weightedListNode = new WeightedListNode(value, weight);
                 this.getHashStore().add(weightedListNode);
                 this.count++;
-                this.getItemReflectArray().splice(index, 0, weightedListNode);
+                this.getItemNotifyingArray().splice(index, 0, weightedListNode);
                 this.totalWeight += weight;
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "index was out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'index was out of bounds');
             }
         },
 
@@ -234,8 +234,8 @@ require('bugpack').context("*", function(bugpack) {
                 if (Class.doesExtend(collection, WeightedList)) {
                     /** @type {WeightedList} */
                     var weightedList = /** @type {WeightedList} */(collection);
-                    for (var i = 0, size = weightedList.getItemReflectArray().getLength(); i < size; i++) {
-                        this.addAt(insertingIndex, weightedList.getItemReflectArray().getAt(i).getValue(), weightedList.getItemReflectArray().getAt(i).getWeight());
+                    for (var i = 0, size = weightedList.getItemNotifyingArray().getLength(); i < size; i++) {
+                        this.addAt(insertingIndex, weightedList.getItemNotifyingArray().getAt(i).getValue(), weightedList.getItemNotifyingArray().getAt(i).getWeight());
 
                         // NOTE BRN: We increment the inserting index so that the collection is inserted in the correct order.
 
@@ -251,7 +251,7 @@ require('bugpack').context("*", function(bugpack) {
                     });
                 }
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must either implement IArrayable or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must either implement IArrayable or be an Array');
             }
         },
 
@@ -261,9 +261,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.getItemReflectArray().getAt(index).getValue();
+                return this.getItemNotifyingArray().getAt(index).getValue();
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'Index out of bounds');
             }
         },
 
@@ -272,8 +272,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
-                if (Obj.equals(this.getItemReflectArray().getAt(i).getValue(), value)) {
+            for (var i = 0, size = this.getItemNotifyingArray().getLength(); i < size; i++) {
+                if (Obj.equals(this.getItemNotifyingArray().getAt(i).getValue(), value)) {
                     return i;
                 }
             }
@@ -285,8 +285,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfLast: function(value) {
-            for (var size = this.getItemReflectArray().getLength(), i = size - 1; i >= 0; i--) {
-                if (Obj.equals(this.getItemReflectArray().getAt(i).getValue(), value)) {
+            for (var size = this.getItemNotifyingArray().getLength(), i = size - 1; i >= 0; i--) {
+                if (Obj.equals(this.getItemNotifyingArray().getAt(i).getValue(), value)) {
                     return i;
                 }
             }
@@ -307,16 +307,16 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeAt: function(index) {
             if (index < this.getCount()) {
-                var weightedListNode = this.getItemReflectArray().getAt(index);
+                var weightedListNode = this.getItemNotifyingArray().getAt(index);
                 var result = this.getHashStore().remove(weightedListNode);
                 if (result) {
                     this.count--;
                     this.totalWeight -= weightedListNode.getWeight();
-                    this.getItemReflectArray().splice(index, 1);
+                    this.getItemNotifyingArray().splice(index, 1);
                 }
                 return weightedListNode.getValue();
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'Index out of bounds');
             }
         },
 
@@ -336,8 +336,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toArray: function() {
             var itemArray = [];
-            for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
-                itemArray.push(this.getItemReflectArray().getAt(i).getValue());
+            for (var i = 0, size = this.getItemNotifyingArray().getLength(); i < size; i++) {
+                itemArray.push(this.getItemNotifyingArray().getAt(i).getValue());
             }
             return itemArray;
         },
@@ -354,15 +354,15 @@ require('bugpack').context("*", function(bugpack) {
         getAtWeight: function(weight) {
             if (weight <= this.getTotalWeight()) {
                 var currentWeight = 0;
-                for (var i = 0, size = this.getItemReflectArray().getLength(); i < size; i++) {
-                    var weightedListNode = this.getItemReflectArray().getAt(i);
+                for (var i = 0, size = this.getItemNotifyingArray().getLength(); i < size; i++) {
+                    var weightedListNode = this.getItemNotifyingArray().getAt(i);
                     currentWeight += weightedListNode.getWeight();
                     if (currentWeight >= weight) {
                         return weightedListNode.getValue();
                     }
                 }
             } else {
-                throw new Exception("WeightOutOfBounds", {}, "Weight out of bounds");
+                throw new Exception('WeightOutOfBounds', {}, 'Weight out of bounds');
             }
         }
     });

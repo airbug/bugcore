@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Url = Class.extend(Obj, {
 
-        _name: "Url",
+        _name: 'Url',
 
 
         //-------------------------------------------------------------------------------
@@ -70,18 +70,18 @@ require('bugpack').context("*", function(bugpack) {
             if (!TypeUtil.isObject(urlParts)) {
                 urlParts = {};
             }
-            if (!TypeUtil.isString(urlParts.protocol) || urlParts.protocol === "") {
-                urlParts.protocol = "http";
+            if (!TypeUtil.isString(urlParts.protocol) || urlParts.protocol === '') {
+                urlParts.protocol = 'http';
             }
             if (!TypeUtil.isNumber(urlParts.port) || urlParts.port <= 0) {
                 urlParts.port = 80;
             }
 
-            if (!TypeUtil.isString(urlParts.path) || urlParts.path === "") {
-                urlParts.path = "/";
+            if (!TypeUtil.isString(urlParts.path) || urlParts.path === '') {
+                urlParts.path = '/';
             }
-            if (urlParts.path.substr(0, 1) !== "/") {
-                urlParts.path = "/" + urlParts.path;
+            if (urlParts.path.substr(0, 1) !== '/') {
+                urlParts.path = '/' + urlParts.path;
             }
 
 
@@ -171,10 +171,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {boolean} deep
          * @return {Url}
          */
-        clone: function(deep) {
+        clone: function() {
             var options = {
                 anchor: this.getAnchor(),
                 host: this.getHost(),
@@ -204,7 +203,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[Url]" +
+                this._hashCode = Obj.hashCode('[Url]' +
                     Obj.hashCode(this.toString()));
             }
             return this._hashCode;
@@ -214,29 +213,29 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
-            output += this.getProtocol() + "://";
+            var output = '';
+            output += this.getProtocol() + '://';
             output += this.getHost();
             if (this.getPort() && this.getPort() !== 80) {
-                output += ":" + this.getPort();
+                output += ':' + this.getPort();
             }
             if (this.getPath()) {
                 output += this.getPath();
             }
             if (!this.urlQueryMap.isEmpty()) {
-                output += "?";
+                output += '?';
                 var first = true;
                 this.urlQueryMap.forEach(function(value, key) {
                     if (first) {
                         first = false;
-                        output += key + "=" + encodeURIComponent(value);
+                        output += key + '=' + encodeURIComponent(value);
                     } else {
-                        output += "&" + key + "=" + encodeURIComponent(value);
+                        output += '&' + key + '=' + encodeURIComponent(value);
                     }
                 });
             }
             if (this.getAnchor()) {
-                output += "#";
+                output += '#';
                 output += this.getAnchor();
             }
             return output;
@@ -267,7 +266,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toBaseUrlString: function() {
-            return this.getProtocol() + "://" + this.toHostString();
+            return this.getProtocol() + '://' + this.toHostString();
         },
 
         /**
@@ -277,7 +276,7 @@ require('bugpack').context("*", function(bugpack) {
             var hostString  = this.getHost();
             var port        = this.getPort();
             if (port !== 80) {
-                hostString += ":" + port;
+                hostString += ':' + port;
             }
             return hostString;
         },
@@ -325,9 +324,9 @@ require('bugpack').context("*", function(bugpack) {
         }
         var finalOptions = {
             strictMode: false,
-            key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+            key: ['source','protocol','authority','userInfo','user','password','host','port','relative','path','directory','file','query','anchor'],
             q:   {
-                name:   "queryKey",
+                name:   'queryKey',
                 parser: /(?:^|&)([^&=]*)=?([^&]*)/g
             },
             parser: {
@@ -336,12 +335,12 @@ require('bugpack').context("*", function(bugpack) {
             }
         };
         ObjectUtil.merge(options, finalOptions);
-        var m = finalOptions.parser[finalOptions.strictMode ? "strict" : "loose"].exec(urlString);
+        var m = finalOptions.parser[finalOptions.strictMode ? 'strict' : 'loose'].exec(urlString);
         var uri = {};
         var i   = 14;
 
         while (i--) {
-            uri[finalOptions.key[i]] = m[i] || "";
+            uri[finalOptions.key[i]] = m[i] || '';
         }
 
         uri[finalOptions.q.name] = {};

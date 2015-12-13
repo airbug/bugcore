@@ -13,11 +13,6 @@
 
 //@Require('Class')
 //@Require('Graph')
-//@Require('GraphEdge')
-//@Require('GraphNode')
-//@Require('List')
-//@Require('Map')
-//@Require('Obj')
 //@Require('Set')
 
 
@@ -25,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,11 +28,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Graph       = bugpack.require('Graph');
-    var GraphEdge   = bugpack.require('GraphEdge');
-    var GraphNode   = bugpack.require('GraphNode');
-    var List        = bugpack.require('List');
-    var Map         = bugpack.require('Map');
-    var Obj         = bugpack.require('Obj');
     var Set         = bugpack.require('Set');
 
 
@@ -51,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ReferenceGraph = Class.extend(Graph, {
 
-        _name: "ReferenceGraph",
+        _name: 'ReferenceGraph',
 
 
         //-------------------------------------------------------------------------------

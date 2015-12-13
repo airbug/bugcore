@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,14 +33,15 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {IObjectable.<K, V>}
      * @template K, V
      */
-    var IMap = Interface.declare({
+    var IMap = Interface.extend(IObjectable, {
 
-        _name: "IMap",
+        _name: 'IMap',
 
 
         //-------------------------------------------------------------------------------
@@ -118,6 +119,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         toValueCollection: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

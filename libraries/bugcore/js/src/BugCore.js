@@ -77,7 +77,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -155,7 +155,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var BugCore = Class.extend(Obj, {
 
-        _name: "BugCore",
+        _name: 'BugCore',
 
 
         //-------------------------------------------------------------------------------
@@ -569,12 +569,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
-        "collection",
-        "list",
-        "map",
-        "queue",
-        "set",
-        "stack"
+        'collection',
+        'list',
+        'map',
+        'queue',
+        'set',
+        'stack'
     ]);
 
 

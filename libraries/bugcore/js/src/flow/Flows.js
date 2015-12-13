@@ -12,7 +12,6 @@
 //@Export('Flows')
 
 //@Require('Class')
-//@Require('FlowBuilder')
 //@Require('ForEachParallelBuilder')
 //@Require('ForEachSeriesBuilder')
 //@Require('ForInParallelBuilder')
@@ -32,14 +31,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                       = bugpack.require('Class');
-    var FlowBuilder                 = bugpack.require('FlowBuilder');
     var ForEachParallelBuilder      = bugpack.require('ForEachParallelBuilder');
     var ForEachSeriesBuilder        = bugpack.require('ForEachSeriesBuilder');
     var ForInParallelBuilder        = bugpack.require('ForInParallelBuilder');
@@ -64,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Flows = Class.extend(Obj, {
-        _name: "Flows"
+        _name: 'Flows'
     });
 
 

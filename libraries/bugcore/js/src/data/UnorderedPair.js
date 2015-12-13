@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var UnorderedPair = Class.extend(Obj, {
 
-        _name: "UnorderedPair",
+        _name: 'UnorderedPair',
 
 
         //-------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
         hashCode: function() {
             if (!this._hashCode) {
                 var pairArray = this.toArray();
-                this._hashCode = Obj.hashCode("[UnorderedPair]" + (Obj.hashCode(pairArray[0]) + Obj.hashCode(pairArray[1])));
+                this._hashCode = Obj.hashCode('[UnorderedPair]' + (Obj.hashCode(pairArray[0]) + Obj.hashCode(pairArray[1])));
             }
             return this._hashCode;
         },
@@ -152,10 +152,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
-            output += "{\n";
-            output += "  " + this.pairCollection.toString() + "\n";
-            output += "}\n";
+            var output = '';
+            output += '{\n';
+            output += '  ' + this.pairCollection.toString() + '\n';
+            output += '}\n';
             return output;
         },
 

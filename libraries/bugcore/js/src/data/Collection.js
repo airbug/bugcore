@@ -28,7 +28,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -62,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
 
-        _name: "Collection",
+        _name: 'Collection',
 
 
         //-------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.add(item);
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must implement ICollection or be an Array');
             }
         },
 
@@ -202,7 +202,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return true;
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'values', values, 'parameter must implement ICollection or be an Array');
             }
         },
 
@@ -230,7 +230,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return false;
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement IArrayable or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'values', values, 'parameter must implement IArrayable or be an Array');
             }
         },
 
@@ -281,7 +281,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.remove(value);
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'values', values, 'parameter must implement ICollection or be an Array');
             }
         },
 
@@ -304,7 +304,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "values", values, "parameter must implement IArrayable or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'values', values, 'parameter must implement IArrayable or be an Array');
             }
         },
 

@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var ArgUtil = Class.extend(Obj, {
-        _name: "ArgUtil"
+        _name: 'ArgUtil'
     });
 
 
@@ -152,13 +152,13 @@ require('bugpack').context("*", function(bugpack) {
         if (notFoundDescriptions.length > 0) {
             var throwable = null;
             if (notFoundDescriptions.length === 1) {
-                throwable = new ArgumentBug(ArgumentBug.ILLEGAL, notFoundDescriptions[0].name, undefined, "Argument missing");
+                throwable = new ArgumentBug(ArgumentBug.ILLEGAL, notFoundDescriptions[0].name, undefined, 'Argument missing');
             } else {
                 var missingThrowables = [];
                 notFoundDescriptions.forEach(function(notFoundDescription) {
-                    missingThrowables.push(new ArgumentBug(ArgumentBug.ILLEGAL, notFoundDescription.name, undefined, "argument missing"));
+                    missingThrowables.push(new ArgumentBug(ArgumentBug.ILLEGAL, notFoundDescription.name, undefined, 'argument missing'));
                 });
-                throwable = new Bug("MultipleIllegalArguments", {}, "Multiple arguments missing", missingThrowables);
+                throwable = new Bug('MultipleIllegalArguments', {}, 'Multiple arguments missing', missingThrowables);
             }
             throw throwable;
         }
@@ -352,7 +352,7 @@ require('bugpack').context("*", function(bugpack) {
     ArgUtil.setArgOnArgsObject = function(arg, argsObject, description) {
         var validType = ArgUtil.checkTypeMatch(arg, description);
         if (!validType) {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, description.name, arg, "Argument type does not match. Must be of type '" + description.type + "'");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, description.name, arg, 'Argument type does not match. Must be of type "' + description.type + '"');
         }
         argsObject[description.name] = arg;
     };
@@ -370,22 +370,22 @@ require('bugpack').context("*", function(bugpack) {
      */
     ArgUtil.validateDescriptions = function(descriptions, expectedNumber) {
         if (!TypeUtil.isArray(descriptions)) {
-            throw new ArgumentBug(ArgumentBug.ILLEGAL, "descriptions", descriptions, "parameter must be an Array");
+            throw new ArgumentBug(ArgumentBug.ILLEGAL, 'descriptions', descriptions, 'parameter must be an Array');
         }
 
         //TODO BRN: Is this something that we want to support? Should we have to declare all args?
         if (expectedNumber > descriptions.length) {
-            throw new  ArgumentBug(ArgumentBug.ILLEGAL, "descriptions", descriptions,
-                "Too few descriptions. Number of descriptions must be equal to or greater than the number of arguments");
+            throw new  ArgumentBug(ArgumentBug.ILLEGAL, 'descriptions', descriptions,
+                'Too few descriptions. Number of descriptions must be equal to or greater than the number of arguments');
         }
 
         for (var i = descriptions.length - 1; i >= 0; i--) {
             var description = descriptions[i];
             if (!TypeUtil.isObject(description)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "descriptions", descriptions, "descriptions Array must only contain description objects");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'descriptions', descriptions, 'descriptions Array must only contain description objects');
             }
             if (!TypeUtil.isString(description.name)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "descriptions", descriptions, "description objects must have a name");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'descriptions', descriptions, 'description objects must have a name');
             }
         }
     };

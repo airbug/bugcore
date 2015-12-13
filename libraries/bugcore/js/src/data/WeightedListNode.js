@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WeightedListNode = Class.extend(Obj, {
 
-        _name: "WeightedListNode",
+        _name: 'WeightedListNode',
 
 
         //-------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         getValue: function() {
-           return this.value;
+            return this.value;
         },
 
         /**
@@ -113,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[WeightedListNode]" + Obj.hashCode(this.value));
+                this._hashCode = Obj.hashCode('[WeightedListNode]' + Obj.hashCode(this.value));
             }
             return this._hashCode;
         }

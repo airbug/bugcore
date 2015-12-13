@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {IArrayable.<I>}
@@ -40,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ICollection = Interface.extend(IArrayable, {
 
-        _name: "ICollection",
+        _name: 'ICollection',
 
 
         //-------------------------------------------------------------------------------
@@ -113,6 +114,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeAll: function(values) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

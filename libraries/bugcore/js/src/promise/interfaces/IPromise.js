@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IPromise = Interface.declare({
 
-        _name: "IPromise",
+        _name: 'IPromise',
 
 
         //-------------------------------------------------------------------------------
@@ -62,6 +63,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         then: function(fulfilledFunction, rejectedFunction) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

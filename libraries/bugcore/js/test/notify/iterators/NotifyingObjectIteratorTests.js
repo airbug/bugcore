@@ -12,8 +12,8 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('ReflectObject')
-//@Require('ReflectObjectIterator')
+//@Require('NotifyingObject')
+//@Require('NotifyingObjectIterator')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -23,15 +23,15 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                   = bugpack.require('Class');
-    var ReflectObject           = bugpack.require('ReflectObject');
-    var ReflectObjectIterator   = bugpack.require('ReflectObjectIterator');
+    var NotifyingObject           = bugpack.require('NotifyingObject');
+    var NotifyingObjectIterator   = bugpack.require('NotifyingObjectIterator');
     var TypeUtil                = bugpack.require('TypeUtil');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
     var TestTag                 = bugpack.require('bugunit.TestTag');
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) Instantiation of a new ReflectObjectIterator
+     * 1) Instantiation of a new NotifyingObjectIterator
      * 2) That the default values are set correctly
      */
     var reflectObjectIteratorInstantiationTest = {
@@ -60,8 +60,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.reflectObject              = new ReflectObject({});
-            this.reflectObjectIterator      = new ReflectObjectIterator(this.reflectObject);
+            this.reflectObject              = new NotifyingObject({});
+            this.reflectObjectIterator      = new NotifyingObjectIterator(this.reflectObject);
         },
 
 
@@ -69,22 +69,22 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertTrue(Class.doesExtend(this.reflectObjectIterator, ReflectObjectIterator),
-                "Assert instance of ReflectObjectIterator");
-            test.assertEqual(this.reflectObjectIterator.getReflectObject(), this.reflectObject,
-                "Assert ReflectObjectIterator.reflectObject was set correctly during instantiation");
+            test.assertTrue(Class.doesExtend(this.reflectObjectIterator, NotifyingObjectIterator),
+                'Assert instance of NotifyingObjectIterator');
+            test.assertEqual(this.reflectObjectIterator.getNotifyingObject(), this.reflectObject,
+                'Assert NotifyingObjectIterator.reflectObject was set correctly during instantiation');
             test.assertEqual(this.reflectObjectIterator.getIndex(), -1,
-                "Assert ReflectObjectIterator.index defaults to -1");
+                'Assert NotifyingObjectIterator.index defaults to -1');
             test.assertTrue(TypeUtil.isArray(this.reflectObjectIterator.getProperties()),
-                "Assert ReflectObjectIterator.properties is an array");
+                'Assert NotifyingObjectIterator.properties is an array');
             if (TypeUtil.isArray(this.reflectObjectIterator.getProperties())) {
                 test.assertEqual(this.reflectObjectIterator.getProperties().length, 0,
-                    "Assert ReflectObjectIterator.properties is empty");
+                    'Assert NotifyingObjectIterator.properties is empty');
             }
             test.assertEqual(this.reflectObjectIterator.getPropertyCount(), 0,
-                "Assert ReflectObjectIterator.propertyCount is 0");
+                'Assert NotifyingObjectIterator.propertyCount is 0');
             test.assertTrue(TypeUtil.isObject(this.reflectObjectIterator.getPropertySkipCountMap()),
-                "Assert ReflectObjectIterator.propertySkipCountMap is an reflectObject");
+                'Assert NotifyingObjectIterator.propertySkipCountMap is an reflectObject');
         }
     };
 
@@ -99,12 +99,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.reflectObject          = new ReflectObject({
-                A: "A",
-                B: "B",
-                C: "C"
+            this.reflectObject          = new NotifyingObject({
+                A: 'A',
+                B: 'B',
+                C: 'C'
             });
-            this.reflectObjectIterator  = new ReflectObjectIterator(this.reflectObject);
+            this.reflectObjectIterator  = new NotifyingObjectIterator(this.reflectObject);
         },
 
 
@@ -114,25 +114,25 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             test.assertEqual(this.reflectObjectIterator.hasNext(), true,
-                "Assert ReflectObjectIterator has next");
+                'Assert NotifyingObjectIterator has next');
             var iteration0 = this.reflectObjectIterator.next();
-            test.assertEqual(iteration0, this.reflectObject.getProperty("A"),
-                "Assert ReflectObjectIterator first iteration is reflectObject.A");
+            test.assertEqual(iteration0, this.reflectObject.getProperty('A'),
+                'Assert NotifyingObjectIterator first iteration is reflectObject.A');
             test.assertEqual(this.reflectObjectIterator.hasNext(), true,
-                "Assert ReflectObjectIterator has next");
+                'Assert NotifyingObjectIterator has next');
             var iteration1 = this.reflectObjectIterator.next();
-            test.assertEqual(iteration1, this.reflectObject.getProperty("B"),
-                "Assert ReflectObjectIterator second iteration is reflectObject.B");
+            test.assertEqual(iteration1, this.reflectObject.getProperty('B'),
+                'Assert NotifyingObjectIterator second iteration is reflectObject.B');
             test.assertEqual(this.reflectObjectIterator.hasNext(), true,
-                "Assert ReflectObjectIterator has next");
+                'Assert NotifyingObjectIterator has next');
             var iteration2 = this.reflectObjectIterator.next();
-            test.assertEqual(iteration2, this.reflectObject.getProperty("C"),
-                "Assert ReflectObjectIterator third item is reflectObject.C");
+            test.assertEqual(iteration2, this.reflectObject.getProperty('C'),
+                'Assert NotifyingObjectIterator third item is reflectObject.C');
             test.assertEqual(this.reflectObjectIterator.hasNext(), false,
-                "Assert ReflectObjectIterator no longer has next");
+                'Assert NotifyingObjectIterator no longer has next');
             test.assertThrows(function() {
                 _this.reflectObjectIterator.next();
-            }, "Assert exception is thrown by calling next when hasNext is false");
+            }, 'Assert exception is thrown by calling next when hasNext is false');
         }
     };
 
@@ -142,9 +142,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(reflectObjectIteratorInstantiationTest).with(
-        test().name("ReflectObjectIterator - instantiation test")
+        test().name('NotifyingObjectIterator - instantiation test')
     );
     bugmeta.tag(reflectObjectIteratorNextTest).with(
-        test().name("ReflectObjectIterator - next() test")
+        test().name('NotifyingObjectIterator - next() test')
     );
 });

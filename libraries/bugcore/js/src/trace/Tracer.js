@@ -16,7 +16,6 @@
 //@Require('Obj')
 //@Require('Proxy')
 //@Require('StackTraceUtil')
-//@Require('StringUtil')
 //@Require('Trace')
 //@Require('Tree')
 //@Require('TreeNode')
@@ -26,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -37,7 +36,6 @@ require('bugpack').context("*", function(bugpack) {
     var Obj             = bugpack.require('Obj');
     var Proxy           = bugpack.require('Proxy');
     var StackTraceUtil  = bugpack.require('StackTraceUtil');
-    var StringUtil      = bugpack.require('StringUtil');
     var Trace           = bugpack.require('Trace');
     var Tree            = bugpack.require('Tree');
     var TreeNode        = bugpack.require('TreeNode');
@@ -53,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Tracer = Class.extend(Obj, {
 
-        _name: "Tracer",
+        _name: 'Tracer',
 
 
         //-------------------------------------------------------------------------------
@@ -102,7 +100,7 @@ require('bugpack').context("*", function(bugpack) {
         init: function() {
             var _this = this._super();
             if (_this) {
-                _this.traceTree.setRootNode(new TreeNode(new Trace("", "ROOT_NODE")));
+                _this.traceTree.setRootNode(new TreeNode(new Trace('', 'ROOT_NODE')));
             }
             return _this;
         },
@@ -144,7 +142,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
 
                     var nodeStack       = this.generateNodeStack(this.currentNode);
-                    var currentStack    = error.stack + "\n" + nodeStack;
+                    var currentStack    = error.stack + '\n' + nodeStack;
                     error.stack = currentStack;
                 }
             }
@@ -173,7 +171,7 @@ require('bugpack').context("*", function(bugpack) {
                 var newNode = this.addTraceNode(stack);
 
                 if (callback.aCallback) {
-                    throw new Error("This callback has already been wrapped in a trace");
+                    throw new Error('This callback has already been wrapped in a trace');
                 }
                 var newCallback = function() {
                     newCallback.aCallback = true;
@@ -205,7 +203,7 @@ require('bugpack').context("*", function(bugpack) {
                 var newNode = this.addTraceNode(stack);
 
                 if (callback.aCallback) {
-                    throw new Error("This callback has already been wrapped in a trace");
+                    throw new Error('This callback has already been wrapped in a trace');
                 }
 
                 var newCallback = function() {
@@ -244,12 +242,12 @@ require('bugpack').context("*", function(bugpack) {
             while (!Obj.equals(currentNode, this.traceTree.getRootNode())) {
                 var trace   = currentNode.getValue();
                 var stack   = trace.getStack();
-                var stackParts = stack.split("\n");
-                nodeStack.push("-------- Async Break ---------");
+                var stackParts = stack.split('\n');
+                nodeStack.push('-------- Async Break ---------');
                 nodeStack = nodeStack.concat(stackParts);
                 currentNode = currentNode.getParentNode();
             }
-            return nodeStack.join("\n");
+            return nodeStack.join('\n');
         },
 
         /**
@@ -280,7 +278,7 @@ require('bugpack').context("*", function(bugpack) {
                 }
                 return this.generateNodeStack(currentNode);
             } else {
-                return "";
+                return '';
             }
         },
 
@@ -306,12 +304,12 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          */
         checkTraceNodeForRemoval: function(node) {
-            //console.log("check trace node - numberChildren:" + node.numberChildNodes() + " Obj.equals(node, this.traceTree.getRootNode()):" + Obj.equals(node, this.traceTree.getRootNode()) + " value:" + node.getValue());
+            //console.log('check trace node - numberChildren:' + node.numberChildNodes() + ' Obj.equals(node, this.traceTree.getRootNode()):' + Obj.equals(node, this.traceTree.getRootNode()) + ' value:' + node.getValue());
             if (node.numberChildNodes() === 0 && !Obj.equals(node, this.traceTree.getRootNode())) {
 
-                //console.log("removing trace node - value:" + node.getValue());
+                //console.log('removing trace node - value:' + node.getValue());
                 if (node.removed) {
-                    throw new Error("Trying to remove the same node TWICE!");
+                    throw new Error('Trying to remove the same node TWICE!');
                 }
                 var parentNode = node.getParentNode();
                 parentNode.removeChildNode(node);
@@ -351,12 +349,12 @@ require('bugpack').context("*", function(bugpack) {
     };
 
     Proxy.proxy(Tracer, Proxy.method(Tracer.getInstance), [
-        "$error",
-        "$name",
-        "$trace",
-        "$traceWithError",
-        "enable",
-        "getNamedStack"
+        '$error',
+        '$name',
+        '$trace',
+        '$traceWithError',
+        'enable',
+        'getNamedStack'
     ]);
 
 

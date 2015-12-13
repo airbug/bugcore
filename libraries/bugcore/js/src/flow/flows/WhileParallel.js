@@ -15,14 +15,13 @@
 //@Require('Class')
 //@Require('Flow')
 //@Require('Throwables')
-//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -32,7 +31,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var Flow        = bugpack.require('Flow');
     var Throwables  = bugpack.require('Throwables');
-    var TypeUtil    = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -45,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WhileParallel = Class.extend(Flow, {
 
-        _name: "WhileParallel",
+        _name: 'WhileParallel',
 
 
         //-------------------------------------------------------------------------------

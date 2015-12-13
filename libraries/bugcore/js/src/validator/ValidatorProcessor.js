@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,7 +40,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var $iterableSeries     = Flows.$iterableSeries;
-    var $series             = Flows.$series;
     var $task               = Flows.$task;
 
 
@@ -54,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ValidatorProcessor = Class.extend(Obj, /** @lends {ValidatorProcessor.prototype} */{
 
-        _name: "ValidatorProcessor",
+        _name: 'ValidatorProcessor',
 
 
         //-------------------------------------------------------------------------------
@@ -169,7 +168,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.validating = true;
                 this.doValidation(callback);
             } else {
-                throw new Exception("IllegalState", {}, "ValidatorProcessor is already validating. Cannot call validate twice.");
+                throw new Exception('IllegalState', {}, 'ValidatorProcessor is already validating. Cannot call validate twice.');
             }
         },
 

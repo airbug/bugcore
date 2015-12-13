@@ -12,29 +12,25 @@
 //@Export('WeightedListIterator')
 
 //@Require('Class')
-//@Require('Exception')
 //@Require('IIndexValueIterator')
 //@Require('Obj')
-//@Require('ReflectArrayIterator')
-//@Require('TypeUtil')
+//@Require('NotifyingArrayIterator')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                   = bugpack.require('Class');
-    var Exception               = bugpack.require('Exception');
     var IIndexValueIterator     = bugpack.require('IIndexValueIterator');
     var Obj                     = bugpack.require('Obj');
-    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
-    var TypeUtil                = bugpack.require('TypeUtil');
+    var NotifyingArrayIterator  = bugpack.require('NotifyingArrayIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -49,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WeightedListIterator = Class.extend(Obj, {
 
-        _name: "WeightedListIterator",
+        _name: 'WeightedListIterator',
 
 
         //-------------------------------------------------------------------------------
@@ -70,7 +66,7 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectArrayIterator.<V>}
+             * @type {NotifyingArrayIterator.<V>}
              */
             this.reflectArrayIterator   = null;
 
@@ -93,7 +89,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this._super();
             if (_this) {
                 this.weightedList = weightedList;
-                this.reflectArrayIterator = new ReflectArrayIterator(this.getWeightedList().getItemReflectArray());
+                this.reflectArrayIterator = new NotifyingArrayIterator(this.getWeightedList().getItemNotifyingArray());
             }
             return _this;
         },
@@ -104,9 +100,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ReflectArrayIterator.<V>}
+         * @return {NotifyingArrayIterator.<V>}
          */
-        getReflectArrayIterator: function() {
+        getNotifyingArrayIterator: function() {
             return this.reflectArrayIterator;
         },
 

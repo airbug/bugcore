@@ -13,7 +13,6 @@
 
 //@Require('Class')
 //@Require('StateEvent')
-//@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -22,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -30,7 +29,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var StateEvent  = bugpack.require('StateEvent');
-    var TypeUtil    = bugpack.require('TypeUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -53,9 +51,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testType           = "testType";
-            this.testPreviousState  = "testPreviousState";
-            this.testCurrentState   = "testCurrentState";
+            this.testType           = 'testType';
+            this.testPreviousState  = 'testPreviousState';
+            this.testCurrentState   = 'testCurrentState';
             this.testStateEVent     = new StateEvent(this.testType, this.testPreviousState, this.testCurrentState);
         },
 
@@ -65,13 +63,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testStateEVent, StateEvent),
-                "Assert instance of StateEvent");
+                'Assert instance of StateEvent');
             test.assertEqual(this.testStateEVent.getType(), this.testType,
-                "Assert .type was set correctly");
+                'Assert .type was set correctly');
             test.assertEqual(this.testStateEVent.getPreviousState(), this.testPreviousState,
-                "Assert .previousState was set correctly");
+                'Assert .previousState was set correctly');
             test.assertEqual(this.testStateEVent.getCurrentState(), this.testCurrentState,
-                "Assert .currentState was set correctly");
+                'Assert .currentState was set correctly');
         }
     };
 
@@ -81,6 +79,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(stateEventInstantiationWithArgsTest).with(
-        test().name("StateEvent - instantiation with args test")
+        test().name('StateEvent - instantiation with args test')
     );
 });

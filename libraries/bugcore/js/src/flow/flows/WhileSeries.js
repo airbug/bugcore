@@ -12,27 +12,23 @@
 //@Export('WhileSeries')
 
 //@Require('Assertion')
-//@Require('Bug')
 //@Require('Class')
 //@Require('Flow')
-//@Require('List')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Assertion   = bugpack.require('Assertion');
-    var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Flow        = bugpack.require('Flow');
-    var List        = bugpack.require('List');
 
 
     //-------------------------------------------------------------------------------
@@ -45,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WhileSeries = Class.extend(Flow, {
 
-        _name: "WhileSeries",
+        _name: 'WhileSeries',
 
 
         //-------------------------------------------------------------------------------
@@ -144,8 +140,8 @@ require('bugpack').context("*", function(bugpack) {
                 }
             });
             //NOTE BRN: This code will run before the above callback for the execute method only if the callback is fired async
-             if (!executed) {
-                this.syncCall  = false;
+            if (!executed) {
+                this.syncCall = false;
             }
         },
 

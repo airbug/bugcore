@@ -17,14 +17,14 @@
 //@Require('HashTableNode')
 //@Require('IKeyValueIterable')
 //@Require('Obj')
-//@Require('ReflectObject')
+//@Require('NotifyingObject')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var HashTableNode       = bugpack.require('HashTableNode');
     var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
     var Obj                 = bugpack.require('Obj');
-    var ReflectObject       = bugpack.require('ReflectObject');
+    var NotifyingObject       = bugpack.require('NotifyingObject');
 
 
     //-------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var HashTable = Class.extend(Obj, {
 
-        _name: "HashTable",
+        _name: 'HashTable',
 
 
         //-------------------------------------------------------------------------------
@@ -78,9 +78,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectObject.<HashTableNode.<K, V>>}
+             * @type {NotifyingObject.<HashTableNode.<K, V>>}
              */
-            this.hashTableNodeReflectObject     = new ReflectObject({});
+            this.hashTableNodeNotifyingObject     = new NotifyingObject({});
         },
 
 
@@ -96,10 +96,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectObject.<string, HashTableNode.<K, V>>}
+         * @return {NotifyingObject.<string, HashTableNode.<K, V>>}
          */
-        getHashTableNodeReflectObject: function() {
-            return this.hashTableNodeReflectObject;
+        getHashTableNodeNotifyingObject: function() {
+            return this.hashTableNodeNotifyingObject;
         },
 
 
@@ -171,7 +171,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         containsKey: function(key) {
             var keyHashCode = Obj.hashCode(key).toString();
-            var hashTableNode = this.hashTableNodeReflectObject.getProperty(keyHashCode);
+            var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (hashTableNode) {
                 return hashTableNode.containsKey(key);
             }
@@ -185,14 +185,14 @@ require('bugpack').context("*", function(bugpack) {
         containsValue: function(value) {
             var valueFound = false;
             try {
-                this.hashTableNodeReflectObject.forIn(function(keyHashCode, hashTableNode) {
+                this.hashTableNodeNotifyingObject.forIn(function(keyHashCode, hashTableNode) {
                     if (hashTableNode.containsValue(value)) {
                         valueFound = true;
-                        throw new Exception("BreakException");
+                        throw new Exception('BreakException');
                     }
                 });
             } catch(e) {
-                if (!Class.doesExtend(e, Exception) || e.getType() !== "BreakException") {
+                if (!Class.doesExtend(e, Exception) || e.getType() !== 'BreakException') {
                     throw e;
                 }
             }
@@ -205,7 +205,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         get: function(key) {
             var keyHashCode = Obj.hashCode(key).toString();
-            var hashTableNode = this.hashTableNodeReflectObject.getProperty(keyHashCode);
+            var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (hashTableNode) {
                 return hashTableNode.get(key);
             }
@@ -226,10 +226,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         put: function(key, value) {
             var keyHashCode = Obj.hashCode(key).toString();
-            var hashTableNode = this.hashTableNodeReflectObject.getProperty(keyHashCode);
+            var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (!hashTableNode) {
                 hashTableNode = new HashTableNode();
-                this.hashTableNodeReflectObject.setProperty(keyHashCode, hashTableNode);
+                this.hashTableNodeNotifyingObject.setProperty(keyHashCode, hashTableNode);
             }
             var returnValue = hashTableNode.put(key, value);
             if (returnValue === undefined) {
@@ -244,14 +244,14 @@ require('bugpack').context("*", function(bugpack) {
          */
         remove: function(key) {
             var keyHashCode     = Obj.hashCode(key).toString();
-            var hashTableNode   = this.hashTableNodeReflectObject.getProperty(keyHashCode);
+            var hashTableNode   = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             var returnValue     = undefined;
             if (hashTableNode) {
                 returnValue = hashTableNode.remove(key);
                 if (returnValue !== undefined) {
                     this.count--;
                     if (hashTableNode.getCount() === 0) {
-                        this.hashTableNodeReflectObject.deleteProperty(keyHashCode);
+                        this.hashTableNodeNotifyingObject.deleteProperty(keyHashCode);
                     }
                 }
             }
@@ -263,8 +263,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toKeyArray: function() {
             var keysArray = [];
-            this.hashTableNodeReflectObject.forIn(function(keyHashCode, hashTableNode) {
-                keysArray = keysArray.concat(hashTableNode.getKeyReflectArray().getArray());
+            this.hashTableNodeNotifyingObject.forIn(function(keyHashCode, hashTableNode) {
+                keysArray = keysArray.concat(hashTableNode.getKeyNotifyingArray().getArray());
             });
             return keysArray;
         },
@@ -274,8 +274,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toValueArray: function() {
             var valuesArray = [];
-            this.hashTableNodeReflectObject.forIn(function(keyHashCode, hashTableNode) {
-                valuesArray = valuesArray.concat(hashTableNode.getValueReflectArray().getArray());
+            this.hashTableNodeNotifyingObject.forIn(function(keyHashCode, hashTableNode) {
+                valuesArray = valuesArray.concat(hashTableNode.getValueNotifyingArray().getArray());
             });
             return valuesArray;
         }

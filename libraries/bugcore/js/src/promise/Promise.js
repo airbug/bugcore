@@ -11,7 +11,6 @@
 
 //@Export('Promise')
 
-//@Require('ArgUtil')
 //@Require('Bug')
 //@Require('CallbackHandler')
 //@Require('CatchHandler')
@@ -22,20 +21,18 @@
 //@Require('Obj')
 //@Require('Resolver')
 //@Require('ThenHandler')
-//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil             = bugpack.require('ArgUtil');
     var Bug                 = bugpack.require('Bug');
     var CallbackHandler     = bugpack.require('CallbackHandler');
     var CatchHandler        = bugpack.require('CatchHandler');
@@ -46,7 +43,6 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var Resolver            = bugpack.require('Resolver');
     var ThenHandler         = bugpack.require('ThenHandler');
-    var TypeUtil            = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -60,7 +56,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Promise = Class.extend(Obj, {
 
-        _name: "Promise",
+        _name: 'Promise',
 
 
         //-------------------------------------------------------------------------------
@@ -272,10 +268,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         rejectPromise: function(reasons) {
             if (!this.isPending()) {
-                throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot reject a promise that is not pending.");
+                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot reject a promise that is not pending.');
             }
             if (this.isResolving()) {
-                throw new Bug("IllegalState", {}, "Promise is already resolving. Cannot resolve a promise that is already resolving.");
+                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doRejectPromise(reasons);
         },
@@ -286,10 +282,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         resolvePromise: function(values) {
             if (!this.isPending()) {
-                throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot resolve a promise that is not pending.");
+                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot resolve a promise that is not pending.');
             }
             if (this.isResolving()) {
-                throw new Bug("IllegalState", {}, "Promise is already resolving. Cannot resolve a promise that is already resolving.");
+                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doResolvePromise(values);
         },
@@ -310,7 +306,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.valueList.addAll(values);
                 this.processHandlers();
             } else {
-                throw new Bug("Promise has already been resolved");
+                throw new Bug('Promise has already been resolved');
             }
         },
 
@@ -344,7 +340,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.reasonList.addAll(reasons);
                 this.processHandlers();
             } else {
-                throw new Bug("Promise has already been resolved");
+                throw new Bug('Promise has already been resolved');
             }
         },
 
@@ -496,9 +492,9 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     Promise.State = {
-        FULFILLED: "fulfilled",
-        PENDING: "pending",
-        REJECTED: "rejected"
+        FULFILLED: 'fulfilled',
+        PENDING: 'pending',
+        REJECTED: 'rejected'
     };
 
 

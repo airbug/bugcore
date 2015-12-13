@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -55,8 +55,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testIllegalValues      = ["illegalValue0"];
-            this.testValues             = ["testValue"];
+            this.testIllegalValues      = ['illegalValue0'];
+            this.testValues             = ['testValue'];
             this.testResolver           = new Resolver(this.testIllegalValues, this.testValues);
         },
 
@@ -66,15 +66,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testResolver, Resolver),
-                "Assert that testResolver is an instance of Resolver");
+                'Assert that testResolver is an instance of Resolver');
             test.assertEqual(this.testResolver.getIllegalValues().getCount(), 1,
-                "Assert that #getIllegalValues has 1 value");
+                'Assert that #getIllegalValues has 1 value');
             test.assertEqual(this.testResolver.getValues().getCount(), 1,
-                "Assert that #getValues has 1 value");
+                'Assert that #getValues has 1 value');
             test.assertEqual(this.testResolver.getResolved(), false,
-                "Assert that #getResolved defaults to false");
+                'Assert that #getResolved defaults to false');
             test.assertEqual(this.testResolver.getResolving(), false,
-                "Assert that #getResolving defaults to false");
+                'Assert that #getResolving defaults to false');
         }
     };
 
@@ -84,6 +84,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(resolverInstantiationTest).with(
-        test().name("Resolver - instantiation test")
+        test().name('Resolver - instantiation test')
     );
 });

@@ -15,7 +15,6 @@
 //@Require('Collection')
 //@Require('HashTable')
 //@Require('IKeyValueIterable')
-//@Require('Map')
 //@Require('Obj')
 //@Require('ObjectUtil')
 //@Require('TypeUtil')
@@ -25,7 +24,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -35,7 +34,6 @@ require('bugpack').context("*", function(bugpack) {
     var Collection          = bugpack.require('Collection');
     var HashTable           = bugpack.require('HashTable');
     var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
-    var Map                 = bugpack.require('Map');
     var Obj                 = bugpack.require('Obj');
     var ObjectUtil          = bugpack.require('ObjectUtil');
     var TypeUtil            = bugpack.require('TypeUtil');
@@ -59,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var BidiMap = Class.extend(Obj, {
 
-        _name: "BidiMap",
+        _name: 'BidiMap',
 
 
         //-------------------------------------------------------------------------------
@@ -166,7 +164,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         clear: function() {
             this.keyValueHashTable.clear();
-            this.valueKeyHashTable.clear()
+            this.valueKeyHashTable.clear();
         },
 
         /**

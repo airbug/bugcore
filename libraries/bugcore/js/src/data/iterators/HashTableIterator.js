@@ -12,29 +12,27 @@
 //@Export('HashTableIterator')
 
 //@Require('Class')
-//@Require('Exception')
 //@Require('IKeyValueIterator')
 //@Require('Obj')
-//@Require('ReflectArrayIterator')
-//@Require('ReflectObjectIterator')
+//@Require('NotifyingArrayIterator')
+//@Require('NotifyingObjectIterator')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class                   = bugpack.require('Class');
-    var Exception               = bugpack.require('Exception');
     var IKeyValueIterator       = bugpack.require('IKeyValueIterator');
     var Obj                     = bugpack.require('Obj');
-    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
-    var ReflectObjectIterator   = bugpack.require('ReflectObjectIterator');
+    var NotifyingArrayIterator  = bugpack.require('NotifyingArrayIterator');
+    var NotifyingObjectIterator = bugpack.require('NotifyingObjectIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -49,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var HashTableIterator = Class.extend(Obj, {
 
-        _name: "HashTableIterator",
+        _name: 'HashTableIterator',
 
 
         //-------------------------------------------------------------------------------
@@ -77,15 +75,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectObjectIterator.<HashTableNode.<K, V>>}
+             * @type {NotifyingObjectIterator.<HashTableNode.<K, V>>}
              */
-            this.hashTableNodeReflectObjectIterator     = new ReflectObjectIterator(this.hashTable.getHashTableNodeReflectObject());
+            this.hashTableNodeNotifyingObjectIterator     = new NotifyingObjectIterator(this.hashTable.getHashTableNodeNotifyingObject());
 
             /**
              * @private
-             * @type {ReflectArrayIterator.<K>}
+             * @type {NotifyingArrayIterator.<K>}
              */
-            this.hashTableKeyReflectArrayIterator       = null;
+            this.hashTableKeyNotifyingArrayIterator       = null;
         },
 
 
@@ -101,17 +99,17 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectObjectIterator.<HashTableNode.<K, V>>}
+         * @return {NotifyingObjectIterator.<HashTableNode.<K, V>>}
          */
-        getHashTableNodeReflectObjectIterator: function() {
-            return this.hashTableNodeReflectObjectIterator;
+        getHashTableNodeNotifyingObjectIterator: function() {
+            return this.hashTableNodeNotifyingObjectIterator;
         },
 
         /**
-         * @return {ReflectArrayIterator.<K>}
+         * @return {NotifyingArrayIterator.<K>}
          */
-        getHashTableKeyReflectArrayIterator: function() {
-            return this.hashTableKeyReflectArrayIterator;
+        getHashTableKeyNotifyingArrayIterator: function() {
+            return this.hashTableKeyNotifyingArrayIterator;
         },
 
 
@@ -123,11 +121,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasNext: function() {
-            if (this.hashTableNodeReflectObjectIterator.hasNext()) {
+            if (this.hashTableNodeNotifyingObjectIterator.hasNext()) {
                 return true;
             }
-            if (this.hashTableKeyReflectArrayIterator) {
-                return this.hashTableKeyReflectArrayIterator.hasNext()
+            if (this.hashTableKeyNotifyingArrayIterator) {
+                return this.hashTableKeyNotifyingArrayIterator.hasNext();
             }
             return false;
         },
@@ -144,16 +142,16 @@ require('bugpack').context("*", function(bugpack) {
          * @return {K}
          */
         nextKey: function() {
-            if (!this.hashTableKeyReflectArrayIterator) {
-                var hashTableNode = this.hashTableNodeReflectObjectIterator.next();
-                this.hashTableKeyReflectArrayIterator = new ReflectArrayIterator(hashTableNode.getKeyReflectArray());
-                return this.hashTableKeyReflectArrayIterator.next();
+            if (!this.hashTableKeyNotifyingArrayIterator) {
+                var hashTableNode = this.hashTableNodeNotifyingObjectIterator.next();
+                this.hashTableKeyNotifyingArrayIterator = new NotifyingArrayIterator(hashTableNode.getKeyNotifyingArray());
+                return this.hashTableKeyNotifyingArrayIterator.next();
             } else {
-                if (!this.hashTableKeyReflectArrayIterator.hasNext()) {
-                    this.hashTableKeyReflectArrayIterator = null;
+                if (!this.hashTableKeyNotifyingArrayIterator.hasNext()) {
+                    this.hashTableKeyNotifyingArrayIterator = null;
                     return this.nextKey();
                 } else {
-                    return this.hashTableKeyReflectArrayIterator.next();
+                    return this.hashTableKeyNotifyingArrayIterator.next();
                 }
             }
         },

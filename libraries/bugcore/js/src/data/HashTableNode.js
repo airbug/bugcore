@@ -13,14 +13,14 @@
 
 //@Require('Class')
 //@Require('Obj')
-//@Require('ReflectArray')
+//@Require('NotifyingArray')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var Obj             = bugpack.require('Obj');
-    var ReflectArray    = bugpack.require('ReflectArray');
+    var NotifyingArray    = bugpack.require('NotifyingArray');
 
 
     //-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var HashTableNode = Class.extend(Obj, {
 
-        _name: "HashTableNode",
+        _name: 'HashTableNode',
 
 
         //-------------------------------------------------------------------------------
@@ -69,15 +69,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectArray.<K>}
+             * @type {NotifyingArray.<K>}
              */
-            this.keyReflectArray    = new ReflectArray([]);
+            this.keyNotifyingArray    = new NotifyingArray([]);
 
             /**
              * @private
-             * @type {ReflectArray.<V>}
+             * @type {NotifyingArray.<V>}
              */
-            this.valueReflectArray  = new ReflectArray([]);
+            this.valueNotifyingArray  = new NotifyingArray([]);
         },
 
 
@@ -93,17 +93,17 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectArray.<K>}
+         * @return {NotifyingArray.<K>}
          */
-        getKeyReflectArray: function() {
-            return this.keyReflectArray;
+        getKeyNotifyingArray: function() {
+            return this.keyNotifyingArray;
         },
 
         /**
-         * @return {ReflectArray.<V>}
+         * @return {NotifyingArray.<V>}
          */
-        getValueReflectArray: function() {
-            return this.valueReflectArray;
+        getValueNotifyingArray: function() {
+            return this.valueNotifyingArray;
         },
 
 
@@ -115,19 +115,19 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "{";
-            output += "  count:" + this.getCount() + ",\n";
-            output += "  keyArray:[\n";
-            this.keyReflectArray.forEach(function(value) {
-                output += value.toString() + ",";
+            var output = '{';
+            output += '  count:' + this.getCount() + ',\n';
+            output += '  keyArray:[\n';
+            this.keyNotifyingArray.forEach(function(value) {
+                output += value.toString() + ',';
             });
-            output += "  ]";
-            output += "  valueArray:[\n";
-            this.valueReflectArray.forEach(function(value) {
-                output += value.toString() + ",";
+            output += '  ]';
+            output += '  valueArray:[\n';
+            this.valueNotifyingArray.forEach(function(value) {
+                output += value.toString() + ',';
             });
-            output += "  ]";
-            output += "}";
+            output += '  ]';
+            output += '}';
             return output;
         },
 
@@ -141,8 +141,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsKey: function(key) {
-            for (var i = 0, size = this.keyReflectArray.getLength(); i < size; i++) {
-                var hashTableKey = this.keyReflectArray.getAt(i);
+            for (var i = 0, size = this.keyNotifyingArray.getLength(); i < size; i++) {
+                var hashTableKey = this.keyNotifyingArray.getAt(i);
                 if (Obj.equals(key, hashTableKey)) {
                     return true;
                 }
@@ -155,8 +155,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         containsValue: function(value) {
-            for (var i = 0, size = this.valueReflectArray.getLength(); i < size; i++) {
-                var hashTableValue = this.valueReflectArray.getAt(i);
+            for (var i = 0, size = this.valueNotifyingArray.getLength(); i < size; i++) {
+                var hashTableValue = this.valueNotifyingArray.getAt(i);
                 if (Obj.equals(value, hashTableValue)) {
                     return true;
                 }
@@ -169,10 +169,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         get: function(key) {
-            for (var i = 0, size = this.keyReflectArray.getLength(); i < size; i++) {
-                var hashTableKey = this.keyReflectArray.getAt(i);
+            for (var i = 0, size = this.keyNotifyingArray.getLength(); i < size; i++) {
+                var hashTableKey = this.keyNotifyingArray.getAt(i);
                 if (Obj.equals(key, hashTableKey)) {
-                    return this.valueReflectArray.getAt(i);
+                    return this.valueNotifyingArray.getAt(i);
                 }
             }
             return undefined;
@@ -184,19 +184,19 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         put: function(key, value) {
-            for (var i = 0, size = this.keyReflectArray.getLength(); i < size; i++) {
-                var hashTableKey = this.keyReflectArray.getAt(i);
+            for (var i = 0, size = this.keyNotifyingArray.getLength(); i < size; i++) {
+                var hashTableKey = this.keyNotifyingArray.getAt(i);
                 if (Obj.equals(key, hashTableKey)) {
-                    var previousValue = this.valueReflectArray.getAt(i);
-                    this.valueReflectArray.setAt(i, value);
+                    var previousValue = this.valueNotifyingArray.getAt(i);
+                    this.valueNotifyingArray.setAt(i, value);
                     return previousValue;
                 }
             }
 
             //NOTE BRN: If we make it to here it means we did not find a hash table entry that already exists for this key.
 
-            this.keyReflectArray.push(key);
-            this.valueReflectArray.push(value);
+            this.keyNotifyingArray.push(key);
+            this.valueNotifyingArray.push(value);
             this.count++;
             return undefined;
         },
@@ -206,12 +206,12 @@ require('bugpack').context("*", function(bugpack) {
          * @return {V}
          */
         remove: function(key) {
-            for (var i = 0, size = this.keyReflectArray.getLength(); i < size; i++) {
-                var hashTableKey = this.keyReflectArray.getAt(i);
+            for (var i = 0, size = this.keyNotifyingArray.getLength(); i < size; i++) {
+                var hashTableKey = this.keyNotifyingArray.getAt(i);
                 if (Obj.equals(key, hashTableKey)) {
-                    var removedValue = this.valueReflectArray.getAt(i);
-                    this.keyReflectArray.splice(i, 1);
-                    this.valueReflectArray.splice(i, 1);
+                    var removedValue = this.valueNotifyingArray.getAt(i);
+                    this.keyNotifyingArray.splice(i, 1);
+                    this.valueNotifyingArray.splice(i, 1);
                     this.count--;
                     return removedValue;
                 }

@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Command = Class.extend(Obj, /** @lends {Command.prototype} */{
 
-        _name: "Command",
+        _name: 'Command',
 
 
         //-------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ require('bugpack').context("*", function(bugpack) {
             if (!this.isExecuted()) {
                 this.executeCommand(callback);
             } else {
-                callback(new Bug("IllegalState", {}, "Command has already been executed"));
+                callback(new Bug('IllegalState', {}, 'Command has already been executed'));
             }
         },
 
@@ -118,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(Throwable=, *...=)} callback
          */
         executeCommand: function(callback) {
-            callback(new Bug("AbstractMethodNotImplemented", {}, "Must implement executeCommand"));
+            callback(new Bug('AbstractMethodNotImplemented', {}, 'Must implement executeCommand'));
         }
     });
 

@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('StringUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -21,13 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var StringUtil  = bugpack.require('StringUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -55,8 +53,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "ABC";
-            this.testPadChar = "+";
+            this.testString = 'ABC';
+            this.testPadChar = '+';
             this.testLength = 10;
         },
 
@@ -66,8 +64,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.lpad(this.testString, this.testPadChar, this.testLength);
-            test.assertEqual(result, "+++++++ABC",
-                "Assert the string has been left padded correctly");
+            test.assertEqual(result, '+++++++ABC',
+                'Assert the string has been left padded correctly');
         }
     };
 
@@ -81,8 +79,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "ABC";
-            this.testPadChar = "+";
+            this.testString = 'ABC';
+            this.testPadChar = '+';
             this.testLength = 10;
         },
 
@@ -92,8 +90,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.pad(this.testString, this.testPadChar, this.testLength);
-            test.assertEqual(result, "++++ABC++++",
-                "Assert the string has been padded correctly");
+            test.assertEqual(result, '++++ABC++++',
+                'Assert the string has been padded correctly');
         }
     };
 
@@ -107,8 +105,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "ABC";
-            this.testPadChar = "+";
+            this.testString = 'ABC';
+            this.testPadChar = '+';
             this.testLength = 10;
         },
 
@@ -118,8 +116,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.rpad(this.testString, this.testPadChar, this.testLength);
-            test.assertEqual(result, "ABC+++++++",
-                "Assert the string has been right padded correctly");
+            test.assertEqual(result, 'ABC+++++++',
+                'Assert the string has been right padded correctly');
         }
     };
 
@@ -133,7 +131,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "\'ABC\"123";
+            this.testString = '\'ABC\'123';
         },
 
 
@@ -142,8 +140,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.escapeString(this.testString);
-            test.assertEqual(result, "\\\'ABC\\\"123",
-                "Assert the string has been escaped correctly");
+            test.assertEqual(result, '\\\'ABC\\\'123',
+                'Assert the string has been escaped correctly');
         }
     };
 
@@ -157,7 +155,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "ABC\n123\nEFG";
+            this.testString = 'ABC\n123\nEFG';
         },
 
 
@@ -165,15 +163,15 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var results = StringUtil.split(this.testString, "\n", function(line, index) {
+            var results = StringUtil.split(this.testString, '\n', function(line, index) {
                 return line + index;
             });
-            test.assertEqual(results[0], "ABC0",
-                "Assert that line 0 was set correctly");
-            test.assertEqual(results[1], "1231",
-                "Assert that line 1 was set correctly");
-            test.assertEqual(results[2], "EFG2",
-                "Assert that line 2 was set correctly");
+            test.assertEqual(results[0], 'ABC0',
+                'Assert that line 0 was set correctly');
+            test.assertEqual(results[1], '1231',
+                'Assert that line 1 was set correctly');
+            test.assertEqual(results[2], 'EFG2',
+                'Assert that line 2 was set correctly');
         }
     };
 
@@ -187,7 +185,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "  ABC  ";
+            this.testString = '  ABC  ';
         },
 
 
@@ -196,8 +194,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.ltrim(this.testString);
-            test.assertEqual(result, "ABC  ",
-                "Assert the string has been left trimmed correctly");
+            test.assertEqual(result, 'ABC  ',
+                'Assert the string has been left trimmed correctly');
         }
     };
 
@@ -211,7 +209,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "  ABC  ";
+            this.testString = '  ABC  ';
         },
 
 
@@ -220,8 +218,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.rtrim(this.testString);
-            test.assertEqual(result, "  ABC",
-                "Assert the string has been right trimmed correctly");
+            test.assertEqual(result, '  ABC',
+                'Assert the string has been right trimmed correctly');
         }
     };
 
@@ -235,7 +233,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "  ABC  ";
+            this.testString = '  ABC  ';
         },
 
 
@@ -244,8 +242,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.trim(this.testString);
-            test.assertEqual(result, "ABC",
-                "Assert the string has been trimmed correctly");
+            test.assertEqual(result, 'ABC',
+                'Assert the string has been trimmed correctly');
         }
     };
 
@@ -259,7 +257,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testString = "\nABC\n";
+            this.testString = '\nABC\n';
         },
 
 
@@ -268,8 +266,8 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var result = StringUtil.trim(this.testString);
-            test.assertEqual(result, "ABC",
-                "Assert the string has been trimmed correctly");
+            test.assertEqual(result, 'ABC',
+                'Assert the string has been trimmed correctly');
         }
     };
 
@@ -279,30 +277,30 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(stringUtilLpadTest).with(
-        test().name("StringUtil - #lpad test")
+        test().name('StringUtil - #lpad test')
     );
     bugmeta.tag(stringUtilPadTest).with(
-        test().name("StringUtil - #pad test")
+        test().name('StringUtil - #pad test')
     );
     bugmeta.tag(stringUtilRpadTest).with(
-        test().name("StringUtil - #rpad test")
+        test().name('StringUtil - #rpad test')
     );
     bugmeta.tag(stringUtilEscapeStringTest).with(
-        test().name("StringUtil - #escapeString test")
+        test().name('StringUtil - #escapeString test')
     );
     bugmeta.tag(stringUtilSplitWithLineProcessorTest).with(
-        test().name("StringUtil - #split with lineProcessor test")
+        test().name('StringUtil - #split with lineProcessor test')
     );
     bugmeta.tag(stringUtilLtrimTest).with(
-        test().name("StringUtil - #ltrim test")
+        test().name('StringUtil - #ltrim test')
     );
     bugmeta.tag(stringUtilRtrimTest).with(
-        test().name("StringUtil - #rtrim test")
+        test().name('StringUtil - #rtrim test')
     );
     bugmeta.tag(stringUtilTrimTest).with(
-        test().name("StringUtil - #trim test")
+        test().name('StringUtil - #trim test')
     );
     bugmeta.tag(stringUtilTrimNewLineTest).with(
-        test().name("StringUtil - #trim new line test")
+        test().name('StringUtil - #trim new line test')
     );
 });

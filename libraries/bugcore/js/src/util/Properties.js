@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Properties = Class.extend(Obj, {
 
-        _name: "Properties",
+        _name: 'Properties',
 
 
         //-------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ require('bugpack').context("*", function(bugpack) {
                 propertiesObject = {};
             }
             if (!TypeUtil.isObject(propertiesObject)) {
-                throw new Error("propertiesObject must be an object");
+                throw new Error('propertiesObject must be an object');
             }
 
             /**
@@ -150,7 +150,7 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isObject(currentValue) && TypeUtil.isObject(propertyValue)) {
                 for (var name in propertyValue) {
                     var subValue = propertyValue[name];
-                    var subName = propertyName + "." + name;
+                    var subName = propertyName + '.' + name;
                     this.updateProperty(subName, subValue);
                 }
             } else {
@@ -163,7 +163,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} propertyValue
          */
         setProperty: function(propertyName, propertyValue) {
-            var parts = propertyName.split(".");
+            var parts = propertyName.split('.');
             if (parts.length > 1) {
                 var subName = null;
                 var currentValue = this.propertiesObject;

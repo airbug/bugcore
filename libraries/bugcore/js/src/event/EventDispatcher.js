@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventDispatcher = Class.extend(EventReceiver, {
 
-        _name: "EventDispatcher",
+        _name: 'EventDispatcher',
 
 
         //-------------------------------------------------------------------------------

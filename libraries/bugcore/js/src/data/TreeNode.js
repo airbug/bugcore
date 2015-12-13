@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var TreeNode = Class.extend(Obj, {
 
-        _name: "TreeNode",
+        _name: 'TreeNode',
 
 
         //-------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {TreeNode}
          */
         getParentNode: function() {
-            return this.parentNode
+            return this.parentNode;
         },
 
         /**
@@ -125,21 +125,21 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "[TreeNode] {\n";
-            output += "\tchildren: [\n";
-            var childOutput = "";
+            var output = '[TreeNode] {\n';
+            output += '\tchildren: [\n';
+            var childOutput = '';
             this.getChildNodes().forEach(function(childNode) {
                 childOutput += childNode.toString();
             });
             if (childOutput) {
-                var childOutputParts = childOutput.split("\n");
+                var childOutputParts = childOutput.split('\n');
                 for (var i = 0, size = childOutputParts.length; i < size; i++) {
                     var childOutputPart = childOutputParts[i];
-                    output += "\t\t" + childOutputPart + "\n";
+                    output += '\t\t' + childOutputPart + '\n';
                 }
             }
-            output += "\t]\n";
-            output += "}\n";
+            output += '\t]\n';
+            output += '}\n';
             return output;
         },
 
@@ -161,14 +161,6 @@ require('bugpack').context("*", function(bugpack) {
             childNode.setParentNode(this);
         },
 
-        /**
-         * @param {number} index
-         * @param {TreeNode} childNode
-         */
-        addChildNodeAt: function(index, childNode) {
-            //TODO BRN (OIN)
-        },
-
         // QUESTION: Should this search recursively?
         /**
          * @param {TreeNode} childNode
@@ -188,7 +180,7 @@ require('bugpack').context("*", function(bugpack) {
             if (this.childNodes) {
                 return this.childNodes.getAt(index);
             }
-            throw new Error("Index out of bounds");
+            throw new Error('Index out of bounds');
         },
 
         /**

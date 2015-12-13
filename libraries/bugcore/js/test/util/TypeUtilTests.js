@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -56,16 +56,16 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            TypeUtilTests.runTypeTest("arguments", test);
-            TypeUtilTests.runTypeTest("array", test);
-            TypeUtilTests.runTypeTest("boolean", test);
-            TypeUtilTests.runTypeTest("function", test);
-            TypeUtilTests.runTypeTest("null", test);
-            TypeUtilTests.runTypeTest("number", test);
-            TypeUtilTests.runTypeTest("object", test);
-            TypeUtilTests.runTypeTest("regexp", test);
-            TypeUtilTests.runTypeTest("string", test);
-            TypeUtilTests.runTypeTest("undefined", test);
+            TypeUtilTests.runTypeTest('arguments', test);
+            TypeUtilTests.runTypeTest('array', test);
+            TypeUtilTests.runTypeTest('boolean', test);
+            TypeUtilTests.runTypeTest('function', test);
+            TypeUtilTests.runTypeTest('null', test);
+            TypeUtilTests.runTypeTest('number', test);
+            TypeUtilTests.runTypeTest('object', test);
+            TypeUtilTests.runTypeTest('regexp', test);
+            TypeUtilTests.runTypeTest('string', test);
+            TypeUtilTests.runTypeTest('undefined', test);
         }
 
     };
@@ -77,34 +77,34 @@ require('bugpack').context("*", function(bugpack) {
                 var typeValueSet = typeValueSets[type];
                 typeValueSet.forEach(function(typeValue) {
                     if (type === typeToTest) {
-                        runningTest.assertTrue(TypeUtilTests.testIsType(typeToTest, typeValue.value), "Assert " + typeValue.name + " is " + typeToTest);
+                        runningTest.assertTrue(TypeUtilTests.testIsType(typeToTest, typeValue.value), 'Assert ' + typeValue.name + ' is ' + typeToTest);
                     } else {
-                        runningTest.assertFalse(TypeUtilTests.testIsType(typeToTest, typeValue.value), "Assert " + typeValue.name + " is NOT " + typeToTest)
+                        runningTest.assertFalse(TypeUtilTests.testIsType(typeToTest, typeValue.value), 'Assert ' + typeValue.name + ' is NOT ' + typeToTest);
                     }
                 });
             }
         },
 
         testIsType: function(type, value) {
-            if (type === "arguments") {
+            if (type === 'arguments') {
                 return TypeUtil.isArguments(value);
-            } else if (type === "array") {
+            } else if (type === 'array') {
                 return TypeUtil.isArray(value);
-            } else if (type === "boolean") {
+            } else if (type === 'boolean') {
                 return TypeUtil.isBoolean(value);
-            } else if (type === "function") {
+            } else if (type === 'function') {
                 return TypeUtil.isFunction(value);
-            } else if (type === "null") {
+            } else if (type === 'null') {
                 return TypeUtil.isNull(value);
-            } else if (type === "number") {
+            } else if (type === 'number') {
                 return TypeUtil.isNumber(value);
-            } else if (type === "object") {
+            } else if (type === 'object') {
                 return TypeUtil.isObject(value);
-            } else if (type === "regexp") {
+            } else if (type === 'regexp') {
                 return TypeUtil.isRegExp(value);
-            } else if (type === "string") {
+            } else if (type === 'string') {
                 return TypeUtil.isString(value);
-            } else if (type === "undefined") {
+            } else if (type === 'undefined') {
                 return TypeUtil.isUndefined(value);
             }
         }
@@ -159,13 +159,13 @@ require('bugpack').context("*", function(bugpack) {
             ];
             this.testRegExps    = [
                 /./,
-                new RegExp(".")
+                new RegExp('.')
             ];
             this.testStrings    = [
-                "test",
-                new String("test2"),
+                'test',
+                new String('test2'),
                 new String(),
-                ""
+                ''
             ];
 
             this.testNull = null;
@@ -178,46 +178,46 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.testArguments.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "arguments",
-                        "Assert toType returns 'arguments' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'arguments',
+                        'Assert toType returns "arguments" for value - value:' + value);
             });
             this.testArrays.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "array",
-                    "Assert toType returns 'array' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'array',
+                    'Assert toType returns "array" for value - value:' + value);
             });
             this.testBooleans.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "boolean",
-                    "Assert toType returns 'boolean' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'boolean',
+                    'Assert toType returns "boolean" for value - value:' + value);
             });
             this.testDates.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "date",
-                    "Assert toType returns 'date' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'date',
+                    'Assert toType returns "date" for value - value:' + value);
             });
             this.testFunctions.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "function",
-                    "Assert toType returns 'function' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'function',
+                    'Assert toType returns "function" for value - value:' + value);
             });
             this.testNumbers.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "number",
-                    "Assert toType returns 'number' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'number',
+                    'Assert toType returns "number" for value - value:' + value);
             });
             this.testObjects.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "object",
-                        "Assert toType returns 'object' for value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'object',
+                        'Assert toType returns "object" for value:' + value);
             });
             this.testRegExps.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "regexp",
-                        "Assert toType returns 'regexp' for value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'regexp',
+                        'Assert toType returns "regexp" for value:' + value);
             });
             this.testStrings.forEach(function(value) {
-                test.assertEqual(TypeUtil.toType(value), "string",
-                    "Assert toType returns 'string' for value - value:" + value);
+                test.assertEqual(TypeUtil.toType(value), 'string',
+                    'Assert toType returns "string" for value - value:' + value);
             });
 
-            test.assertEqual(TypeUtil.toType(this.testNull), "null",
-                "Assert null returns type 'null'");
-            test.assertEqual(TypeUtil.toType(this.testUndefined), "undefined",
-                "Assert null returns type 'undefined'");
+            test.assertEqual(TypeUtil.toType(this.testNull), 'null',
+                'Assert null returns type "null"');
+            test.assertEqual(TypeUtil.toType(this.testUndefined), 'undefined',
+                'Assert null returns type "undefined"');
         }
     };
 
@@ -234,7 +234,7 @@ require('bugpack').context("*", function(bugpack) {
             this.testNotNaN = [
                 null,
                 undefined,
-                "some string",
+                'some string',
                 123,
                 0,
                 -123,
@@ -253,10 +253,10 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testNotNaN.forEach(function(notNaN) {
                 test.assertFalse(TypeUtil.isNaN(notNaN),
-                    "Assert non NaN value '" + notNaN + "' is not NaN");
+                    'Assert non NaN value "' + notNaN + '" is not NaN');
             });
             test.assertTrue(TypeUtil.isNaN(this.testNaN),
-                "Assert isNaN returns true for NaN");
+                'Assert isNaN returns true for NaN');
         }
     };
 
@@ -266,12 +266,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(typeComparisonTest).with(
-        test().name("TypeUtil - comparison test")
+        test().name('TypeUtil - comparison test')
     );
     bugmeta.tag(typeUtilToTypeTest).with(
-        test().name("TypeUtil - #toType test")
+        test().name('TypeUtil - #toType test')
     );
     bugmeta.tag(typeUtilIsNaNTest).with(
-        test().name("TypeUtil - #isNaN test")
+        test().name('TypeUtil - #isNaN test')
     );
 });

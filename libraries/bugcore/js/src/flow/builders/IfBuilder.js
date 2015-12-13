@@ -24,7 +24,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -49,7 +49,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IfBuilder = Class.extend(FlowBuilder, {
 
-        _name: "IfBuilder",
+        _name: 'IfBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(assertionMethod)) {
                 this.assertionMethod = assertionMethod;
             } else {
-                throw Throwables.illegalArgumentBug("assertionMethod", assertionMethod, "must be a function");
+                throw Throwables.illegalArgumentBug('assertionMethod', assertionMethod, 'must be a function');
             }
             if (TypeUtil.isFunction(assertPassFlowBuilder)) {
                 assertPassFlowBuilder = new TaskBuilder(assertPassFlowBuilder);
@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesExtend(assertPassFlowBuilder, FlowBuilder)) {
                 this.assertPassFlowBuilder = assertPassFlowBuilder;
             } else {
-                throw Throwables.illegalArgumentBug("assertPassFlowBuilder", assertPassFlowBuilder, "must be a function or a FlowBuilder");
+                throw Throwables.illegalArgumentBug('assertPassFlowBuilder', assertPassFlowBuilder, 'must be a function or a FlowBuilder');
             }
 
             return this;
@@ -166,7 +166,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         $else: function(elseFlowBuilder) {
             if (this.elseFlowBuilder) {
-                throw Throwables.bug("IllegalState", {}, "IfBuilder already has an elseFlowBuilder");
+                throw Throwables.bug('IllegalState', {}, 'IfBuilder already has an elseFlowBuilder');
             }
             if (TypeUtil.isFunction(elseFlowBuilder)) {
                 elseFlowBuilder = new TaskBuilder(elseFlowBuilder);
@@ -174,7 +174,7 @@ require('bugpack').context("*", function(bugpack) {
             if (Class.doesExtend(elseFlowBuilder, FlowBuilder)) {
                 this.elseFlowBuilder = elseFlowBuilder;
             } else {
-                throw Throwables.illegalArgumentBug("elseFlowBuilder", elseFlowBuilder, "must be a function or a FlowBuilder");
+                throw Throwables.illegalArgumentBug('elseFlowBuilder', elseFlowBuilder, 'must be a function or a FlowBuilder');
             }
             return this;
         },
@@ -186,16 +186,16 @@ require('bugpack').context("*", function(bugpack) {
          */
         $elseIf: function(assertionMethod, elseIfFlowBuilder) {
             if (this.elseFlowBuilder) {
-                throw Throwables.bug("IllegalState", {}, "IfFlowBuilder already has an elseFlowBuilder");
+                throw Throwables.bug('IllegalState', {}, 'IfFlowBuilder already has an elseFlowBuilder');
             }
             if (!TypeUtil.isFunction(assertionMethod)) {
-                throw Throwables.illegalArgumentBug("assertionMethod", assertionMethod, "must be a function");
+                throw Throwables.illegalArgumentBug('assertionMethod', assertionMethod, 'must be a function');
             }
             if (TypeUtil.isFunction(elseIfFlowBuilder)) {
                 elseIfFlowBuilder = new TaskBuilder(elseIfFlowBuilder);
             }
             if (!Class.doesExtend(elseIfFlowBuilder, FlowBuilder)) {
-                throw Throwables.illegalArgumentBug("elseIfFlowBuilder", elseIfFlowBuilder, "must be a function or a FlowBuilder");
+                throw Throwables.illegalArgumentBug('elseIfFlowBuilder', elseIfFlowBuilder, 'must be a function or a FlowBuilder');
             }
             var ifFlowBuilder = new IfBuilder(assertionMethod, elseIfFlowBuilder);
             this.elseIfBuilderList.add(ifFlowBuilder);

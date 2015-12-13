@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -65,14 +65,14 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertNotEqual(this.id1, this.id2,
-                "Assert the first id generated and the second id generated are not equal");
+                'Assert the first id generated and the second id generated are not equal');
             test.assertNotEqual(this.id2, this.id3,
-                "Assert the second id generated and the third id generated are not equal");
+                'Assert the second id generated and the third id generated are not equal');
             test.assertNotEqual(this.id1, this.id3,
-                "Assert the third id generated and the first id generated are not equal");
+                'Assert the third id generated and the first id generated are not equal');
         }
     };
     bugmeta.tag(generateIdTest).with(
-        test().name("IdGenerator generate id test")
+        test().name('IdGenerator generate id test')
     );
 });

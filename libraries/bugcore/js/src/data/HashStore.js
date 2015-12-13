@@ -17,14 +17,14 @@
 //@Require('IArrayable')
 //@Require('IIterable')
 //@Require('Obj')
-//@Require('ReflectObject')
+//@Require('NotifyingObject')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -36,7 +36,7 @@ require('bugpack').context("*", function(bugpack) {
     var IArrayable          = bugpack.require('IArrayable');
     var IIterable           = bugpack.require('IIterable');
     var Obj                 = bugpack.require('Obj');
-    var ReflectObject       = bugpack.require('ReflectObject');
+    var NotifyingObject       = bugpack.require('NotifyingObject');
 
 
     //-------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var HashStore = Class.extend(Obj, {
 
-        _name: "HashStore",
+        _name: 'HashStore',
 
 
         //-------------------------------------------------------------------------------
@@ -79,9 +79,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectObject.<string, HashStoreNode.<I>>}
+             * @type {NotifyingObject.<string, HashStoreNode.<I>>}
              */
-            this.hashStoreNodeReflectObject = new ReflectObject({});
+            this.hashStoreNodeNotifyingObject = new NotifyingObject({});
         },
 
 
@@ -97,10 +97,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectObject.<string, HashStoreNode.<I>>}
+         * @return {NotifyingObject.<string, HashStoreNode.<I>>}
          */
-        getHashStoreNodeReflectObject: function() {
-            return this.hashStoreNodeReflectObject;
+        getHashStoreNodeNotifyingObject: function() {
+            return this.hashStoreNodeNotifyingObject;
         },
 
 
@@ -113,8 +113,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         toArray: function() {
             var array = [];
-            this.hashStoreNodeReflectObject.forIn(function(valueHashCode, hashStoreNode) {
-                array = array.concat(hashStoreNode.getItemReflectArray().getArray());
+            this.hashStoreNodeNotifyingObject.forIn(function(valueHashCode, hashStoreNode) {
+                array = array.concat(hashStoreNode.getItemNotifyingArray().getArray());
             });
             return array;
         },
@@ -159,10 +159,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(item) {
             var hashCode = Obj.hashCode(item).toString();
-            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(hashCode);
+            var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             if (!hashStoreNode) {
                 hashStoreNode = new HashStoreNode();
-                this.hashStoreNodeReflectObject.setProperty(hashCode, hashStoreNode);
+                this.hashStoreNodeNotifyingObject.setProperty(hashCode, hashStoreNode);
             }
             hashStoreNode.add(item);
             this.count++;
@@ -185,7 +185,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         contains: function(item) {
             var hashCode        = Obj.hashCode(item).toString();
-            var hashStoreNode   = this.hashStoreNodeReflectObject.getProperty(hashCode);
+            var hashStoreNode   = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             if (hashStoreNode) {
                 return hashStoreNode.contains(item);
             }
@@ -198,7 +198,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         countValue: function(value) {
             var valueHashCode = Obj.hashCode(value).toString();
-            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(valueHashCode);
+            var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(valueHashCode);
             if (hashStoreNode) {
                 return hashStoreNode.countValue(value);
             }
@@ -218,14 +218,14 @@ require('bugpack').context("*", function(bugpack) {
          */
         remove: function(item) {
             var hashCode = Obj.hashCode(item).toString();
-            var hashStoreNode = this.hashStoreNodeReflectObject.getProperty(hashCode);
+            var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             var result = false;
             if (hashStoreNode) {
                 result = hashStoreNode.remove(item);
                 if (result) {
                     this.count--;
                     if (hashStoreNode.getCount() === 0) {
-                        this.hashStoreNodeReflectObject.deleteProperty(hashCode);
+                        this.hashStoreNodeNotifyingObject.deleteProperty(hashCode);
                     }
                 }
             }

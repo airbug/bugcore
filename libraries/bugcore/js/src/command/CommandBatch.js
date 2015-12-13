@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CommandBatch = Class.extend(Obj, /** @lends {CommandBatch.prototype} */{
 
-        _name: "CommandBatch",
+        _name: 'CommandBatch',
 
 
         //-------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.executeCallback = callback;
                 this.executeBatch();
             } else {
-                callback(new Bug("IllegalState", {}, "CommandBatch has already been executed"));
+                callback(new Bug('IllegalState', {}, 'CommandBatch has already been executed'));
             }
         },
 

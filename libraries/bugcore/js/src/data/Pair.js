@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -49,7 +49,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Pair = Class.extend(Obj, {
 
-        _name: "Pair",
+        _name: 'Pair',
 
 
         //-------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[Pair]" + Obj.hashCode(this.a) + Obj.hashCode(this.b));
+                this._hashCode = Obj.hashCode('[Pair]' + Obj.hashCode(this.a) + Obj.hashCode(this.b));
             }
             return this._hashCode;
         },
@@ -185,11 +185,11 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
-            output += "[Pair] {\n";
-            output += "  a: " + this.a + ",\n";
-            output += "  b: " + this.b + ",\n";
-            output += "}\n";
+            var output = '';
+            output += '[Pair] {\n';
+            output += '  a: ' + this.a + ',\n';
+            output += '  b: ' + this.b + ',\n';
+            output += '}\n';
             return output;
         },
 
@@ -218,7 +218,7 @@ require('bugpack').context("*", function(bugpack) {
                     return this.a;
                 }
             } else {
-                throw new Exception("value is not in Pair - '" + value + "'");
+                throw new Exception('value is not in Pair - "' + value + '"');
             }
         }
     });

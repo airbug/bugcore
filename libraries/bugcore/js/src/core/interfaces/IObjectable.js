@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,13 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @template K, V
      */
     var IObjectable = Interface.declare({
 
-        _name: "IObjectable",
+        _name: 'IObjectable',
 
 
         //-------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         toObject: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

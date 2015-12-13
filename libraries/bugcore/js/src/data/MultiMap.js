@@ -16,13 +16,14 @@
 //@Require('IMap')
 //@Require('IMultiMap')
 //@Require('Map')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,6 +34,7 @@ require('bugpack').context("*", function(bugpack) {
     var IMap        = bugpack.require('IMap');
     var IMultiMap   = bugpack.require('IMultiMap');
     var Map         = bugpack.require('Map');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -51,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MultiMap = Class.extend(Map, /** @lends {MultiMap.prototype} */{
 
-        _name: "MultiMap",
+        _name: 'MultiMap',
 
 
         //-------------------------------------------------------------------------------
@@ -76,7 +78,13 @@ require('bugpack').context("*", function(bugpack) {
          */
         clone: function(deep) {
             var cloneMultiMap = new MultiMap();
-            cloneMultiMap.putAll(this);
+            if (deep) {
+                this.forEachValue(function(value, key) {
+                    cloneMultiMap.put(Obj.clone(key, deep), Obj.clone(value, deep));
+                });
+            } else {
+                cloneMultiMap.putAll(this);
+            }
             return cloneMultiMap;
         },
 

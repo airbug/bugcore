@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Event = Class.extend(Obj, /** @lends {Event.prototype} */{
 
-        _name: "Event",
+        _name: 'Event',
 
 
         //-------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         isPropagationStopped: function() {
-            return this.propagationStopped
+            return this.propagationStopped;
         },
 
         /**

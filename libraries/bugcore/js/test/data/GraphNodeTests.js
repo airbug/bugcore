@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -55,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue = "some value";
+            this.testValue = 'some value';
             this.testGraphNode = new GraphNode(this.testValue);
         },
 
@@ -65,13 +65,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testGraphNode, GraphNode),
-                "Assert GraphNode instance extends GraphNode ");
+                'Assert GraphNode instance extends GraphNode ');
             test.assertEqual(this.testGraphNode.getValue(), this.testValue,
-                "Assert value was set correctly during instantiation");
+                'Assert value was set correctly during instantiation');
         }
     };
     bugmeta.tag(graphNodeInstantiationTest).with(
-        test().name("GraphNode instantiation test")
+        test().name('GraphNode instantiation test')
     );
 
 
@@ -86,8 +86,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue1 = "value1";
-            this.testValue2 = "value2";
+            this.testValue1 = 'value1';
+            this.testValue2 = 'value2';
             this.equalGraphNode1 = new GraphNode(this.testValue1);
             this.equalGraphNode2 = new GraphNode(this.testValue1);
             this.notEqualGraphNode1 = new GraphNode(this.testValue1);
@@ -100,13 +100,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.equalGraphNode1, this.equalGraphNode2,
-                "Assert GraphNodes with the same value are equal");
+                'Assert GraphNodes with the same value are equal');
             test.assertNotEqual(this.notEqualGraphNode1, this.notEqualGraphNode2,
-                "Assert GraphNodes with different values are not equal.");
+                'Assert GraphNodes with different values are not equal.');
         }
     };
     bugmeta.tag(graphNodeEqualityTest).with(
-        test().name("GraphNode equality test")
+        test().name('GraphNode equality test')
     );
 
 
@@ -120,7 +120,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue = "value";
+            this.testValue = 'value';
             this.graphNode1 = new GraphNode(this.testValue);
             this.graphNode2 = new GraphNode(this.testValue);
         },
@@ -131,10 +131,10 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.graphNode1.hashCode(), this.graphNode2.hashCode(),
-                "Assert GraphNodes with the same value have equal hash codes");
+                'Assert GraphNodes with the same value have equal hash codes');
         }
     };
     bugmeta.tag(graphNodeHashCodeEqualityTest).with(
-        test().name("GraphNode hash code equality test")
+        test().name('GraphNode hash code equality test')
     );
 });

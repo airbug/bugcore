@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var FlowBuilder = Class.extend(Obj, {
 
-        _name: "FlowBuilder",
+        _name: 'FlowBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -76,8 +76,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         execute: function(flowArgs, callback) {
             var args = ArgUtil.process(arguments, [
-                {name: "flowArgs", optional: true, type: "array", default: []},
-                {name: "callback", optional: false, type: "function"}
+                {name: 'flowArgs', optional: true, type: 'array', default: []},
+                {name: 'callback', optional: false, type: 'function'}
             ]);
             flowArgs    = args.flowArgs;
             callback    = args.callback;
@@ -115,7 +115,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Flow}
          */
         doFactoryFlow: function() {
-            throw Throwables.bug("AbstractMethodNotImplemented", {}, "Must implement doFactoryFlow method");
+            throw Throwables.bug('AbstractMethodNotImplemented', {}, 'Must implement doFactoryFlow method');
         }
     });
 

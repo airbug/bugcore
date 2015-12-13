@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Notifier = Class.extend(Obj, /** @lends {Notifier.prototype} */{
 
-        _name: "Notifier",
+        _name: 'Notifier',
 
 
         //-------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addObserver: function(callback, acceptList) {
             if (!acceptList) {
-                acceptList = ["add", "update", "delete", "reconfigure", "setPrototype", "preventExtensions"];
+                acceptList = ['add', 'update', 'delete', 'reconfigure', 'setPrototype', 'preventExtensions'];
             }
             this.observers.push({
                 acceptList: acceptList,

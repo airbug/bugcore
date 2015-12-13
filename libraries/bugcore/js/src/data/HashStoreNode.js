@@ -13,14 +13,14 @@
 
 //@Require('Class')
 //@Require('Obj')
-//@Require('ReflectArray')
+//@Require('NotifyingArray')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -28,7 +28,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var Obj             = bugpack.require('Obj');
-    var ReflectArray    = bugpack.require('ReflectArray');
+    var NotifyingArray    = bugpack.require('NotifyingArray');
 
 
     //-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var HashStoreNode = Class.extend(Obj, {
 
-        _name: "HashStoreNode",
+        _name: 'HashStoreNode',
 
 
         //-------------------------------------------------------------------------------
@@ -69,9 +69,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectArray.<I>}
+             * @type {NotifyingArray.<I>}
              */
-            this.itemReflectArray   = new ReflectArray([]);
+            this.itemNotifyingArray   = new NotifyingArray([]);
         },
 
 
@@ -87,10 +87,10 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @return {ReflectArray.<I>}
+         * @return {NotifyingArray.<I>}
          */
-        getItemReflectArray: function() {
-            return this.itemReflectArray;
+        getItemNotifyingArray: function() {
+            return this.itemNotifyingArray;
         },
 
 
@@ -105,8 +105,8 @@ require('bugpack').context("*", function(bugpack) {
         equals: function(value) {
             if (Class.doesExtend(value, HashStoreNode)) {
                 if (this.getCount() === value.getCount()) {
-                    for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                        var itemArrayValue = this.itemReflectArray.getAt(i);
+                    for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                        var itemArrayValue = this.itemNotifyingArray.getAt(i);
                         if (!value.containsValue(itemArrayValue)) {
                             return false;
                         }
@@ -121,14 +121,14 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "{";
-            output += "  count:" + this.getCount() + ",\n";
-            output += "  values:[\n";
-            this.itemReflectArray.forEach(function(item) {
-                output += item + ",";
+            var output = '{';
+            output += '  count:' + this.getCount() + ',\n';
+            output += '  values:[\n';
+            this.itemNotifyingArray.forEach(function(item) {
+                output += item + ',';
             });
-            output += "  ]";
-            output += "}";
+            output += '  ]';
+            output += '}';
             return output;
         },
 
@@ -141,7 +141,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {I} item
          */
         add: function(item) {
-            this.itemReflectArray.push(item);
+            this.itemNotifyingArray.push(item);
             this.count++;
         },
 
@@ -149,8 +149,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} item
          */
         contains: function(item) {
-            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                var itemArrayValue = this.itemReflectArray.getAt(i);
+            for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemNotifyingArray.getAt(i);
                 if (Obj.equals(item, itemArrayValue)) {
                     return true;
                 }
@@ -164,8 +164,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         countValue: function(value) {
             var count = 0;
-            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                var itemArrayValue = this.itemReflectArray.getAt(i);
+            for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemNotifyingArray.getAt(i);
                 if (Obj.equals(value, itemArrayValue)) {
                     count++;
                 }
@@ -178,10 +178,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         remove: function(item) {
-            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                var itemArrayValue = this.itemReflectArray.getAt(i);
+            for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                var itemArrayValue = this.itemNotifyingArray.getAt(i);
                 if (Obj.equals(item, itemArrayValue)) {
-                    this.itemReflectArray.splice(i, 1);
+                    this.itemNotifyingArray.splice(i, 1);
                     this.count--;
                     return true;
                 }

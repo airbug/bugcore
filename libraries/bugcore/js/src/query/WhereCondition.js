@@ -15,14 +15,13 @@
 //@Require('ICondition')
 //@Require('Obj')
 //@Require('ObjectUtil')
-//@Require('Set')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -32,7 +31,6 @@ require('bugpack').context("*", function(bugpack) {
     var ICondition  = bugpack.require('ICondition');
     var Obj         = bugpack.require('Obj');
     var ObjectUtil  = bugpack.require('ObjectUtil');
-    var Set         = bugpack.require('Set');
 
 
     //-------------------------------------------------------------------------------
@@ -46,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var WhereCondition = Class.extend(Obj, {
 
-        _name: "WhereCondition",
+        _name: 'WhereCondition',
 
 
         //-------------------------------------------------------------------------------

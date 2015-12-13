@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObjectPathMatcher = Class.extend(Obj, {
 
-        _name: "ObjectPathMatcher",
+        _name: 'ObjectPathMatcher',
 
 
         //-------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Array.<string>}
              */
-            this.objectPathPatternParts     = objectPathPattern.split(".");
+            this.objectPathPatternParts     = objectPathPattern.split('.');
         },
 
 
@@ -83,11 +83,11 @@ require('bugpack').context("*", function(bugpack) {
          */
         match: function(path) {
             var patternParts    = this.objectPathPatternParts;
-            var pathParts       = path.split(".");
+            var pathParts       = path.split('.');
             for (var i = 0, size = pathParts.length; i < size; i++) {
                 var pathPart    = pathParts[i];
                 var patternPart = patternParts[i];
-                if (patternPart === "*") {
+                if (patternPart === '*') {
                     return true;
                 } else if (pathPart !== patternPart) {
                     return false;

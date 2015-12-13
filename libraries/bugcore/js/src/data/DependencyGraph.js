@@ -13,11 +13,7 @@
 
 //@Require('Class')
 //@Require('Graph')
-//@Require('GraphEdge')
-//@Require('GraphNode')
 //@Require('List')
-//@Require('Map')
-//@Require('Obj')
 //@Require('Set')
 
 
@@ -25,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,11 +29,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Graph       = bugpack.require('Graph');
-    var GraphEdge   = bugpack.require('GraphEdge');
-    var GraphNode   = bugpack.require('GraphNode');
     var List        = bugpack.require('List');
-    var Map         = bugpack.require('Map');
-    var Obj         = bugpack.require('Obj');
     var Set         = bugpack.require('Set');
 
 
@@ -51,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var DependencyGraph = Class.extend(Graph, {
 
-        _name: "DependencyGraph",
+        _name: 'DependencyGraph',
 
 
         //-------------------------------------------------------------------------------
@@ -113,7 +105,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             // TODO BRN: We can find the chain of the circular dependency by trickling back out of the recursive stack.
             if (currentNodePathSet.contains(graphNode)) {
-                throw new Error("Cannot compute dependency order. Circular reference found.");
+                throw new Error('Cannot compute dependency order. Circular reference found.');
             } else {
                 currentNodePathSet.add(graphNode);
             }

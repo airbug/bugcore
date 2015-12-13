@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Iteration = Class.extend(Flow, {
 
-        _name: "Iteration",
+        _name: 'Iteration',
 
 
         //-------------------------------------------------------------------------------

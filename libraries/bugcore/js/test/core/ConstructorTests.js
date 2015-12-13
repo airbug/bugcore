@@ -13,8 +13,6 @@
 
 //@Require('Class')
 //@Require('Constructor')
-//@Require('Obj')
-//@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -23,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,8 +29,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class           = bugpack.require('Class');
     var Constructor     = bugpack.require('Constructor');
-    var Obj             = bugpack.require('Obj');
-    var TypeUtil        = bugpack.require('TypeUtil');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
 
@@ -54,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function (test) {
+        setup: function () {
             this.testConstructor = new Constructor();
         },
 
@@ -64,7 +60,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function (test) {
             test.assertTrue(Class.doesExtend(this.testConstructor, Constructor),
-                "Assert instance of Constructor");
+                'Assert instance of Constructor');
         }
     };
 
@@ -73,7 +69,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.instance = Constructor.alloc();
         },
 
@@ -83,7 +79,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.instance, Constructor),
-                "Assert instance of Constructor extends Constructor");
+                'Assert instance of Constructor extends Constructor');
         }
     };
 
@@ -92,7 +88,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.instance = Constructor.allocWithArray([]);
         },
 
@@ -102,7 +98,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.instance, Constructor),
-                "Assert instance of Constructor extends Constructor");
+                'Assert instance of Constructor extends Constructor');
         }
     };
 
@@ -111,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.instance = Constructor.newInstance();
         },
 
@@ -121,7 +117,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.instance, Constructor),
-                "Assert instance of Constructor extends Constructor");
+                'Assert instance of Constructor extends Constructor');
         }
     };
 
@@ -130,7 +126,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.instance = Constructor.newInstanceWithArray([]);
         },
 
@@ -140,7 +136,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.instance, Constructor),
-                "Assert instance of Constructor extends Constructor");
+                'Assert instance of Constructor extends Constructor');
         }
     };
 
@@ -151,18 +147,18 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(constructorInstantiationTest).with(
-        test().name("Constructor - instantiation test")
+        test().name('Constructor - instantiation test')
     );
     bugmeta.tag(constructorAllocTest).with(
-        test().name("Constructor - #alloc test")
+        test().name('Constructor - #alloc test')
     );
     bugmeta.tag(constructorAllocWithArrayTest).with(
-        test().name("Constructor - #allocWithArray test")
+        test().name('Constructor - #allocWithArray test')
     );
     bugmeta.tag(constructorNewInstanceTest).with(
-        test().name("Constructor - #newInstance test")
+        test().name('Constructor - #newInstance test')
     );
     bugmeta.tag(constructorNewInstanceWithArrayTest).with(
-        test().name("Constructor - #newInstanceWithArray test")
+        test().name('Constructor - #newInstanceWithArray test')
     );
 });

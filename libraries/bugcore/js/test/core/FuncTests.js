@@ -11,10 +11,7 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('Func')
-//@Require('TypeUtil')
-//@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -23,16 +20,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
     var Func            = bugpack.require('Func');
-    var TypeUtil        = bugpack.require('TypeUtil');
-    var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
 
@@ -43,7 +37,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var bugmeta         = BugMeta.context();
     var test            = TestTag.test;
-    var spyOnFunction   = BugDouble.spyOnFunction;
 
 
     //-------------------------------------------------------------------------------
@@ -62,13 +55,13 @@ require('bugpack').context("*", function(bugpack) {
         setup: function(test) {
             var _this           = this;
             this.testObject     = {};
-            this.testArgument   = "testArgument";
-            this.testReturn     = "testReturn";
+            this.testArgument   = 'testArgument';
+            this.testReturn     = 'testReturn';
             this.testFunction   = function(testParam) {
                 test.assertEqual(this, _this.testObject,
-                    "Assert that 'this' matches the testObject");
+                    'Assert that "this" matches the testObject');
                 test.assertEqual(testParam, _this.testArgument,
-                    "Assert that the testParam was set correctly");
+                    'Assert that the testParam was set correctly');
                 return _this.testReturn;
             };
         },
@@ -81,7 +74,7 @@ require('bugpack').context("*", function(bugpack) {
             var boundFunction = Func.bind(this.testFunction, this.testObject);
             var returnedValue = boundFunction(this.testArgument);
             test.assertEqual(returnedValue, this.testReturn,
-                "Assert that the testReturn value was correctly returned");
+                'Assert that the testReturn value was correctly returned');
         }
     };
 
@@ -100,14 +93,14 @@ require('bugpack').context("*", function(bugpack) {
         setup: function(test) {
             var _this           = this;
             this.testObject     = {};
-            this.testArgument   = "testArgument";
+            this.testArgument   = 'testArgument';
             this.testFunctionCalled = false;
             this.testFunction   = function(testParam) {
                 _this.testFunctionCalled = true;
                 test.assertEqual(this, _this.testObject,
-                    "Assert that 'this' matches the testObject");
+                    'Assert that "this" matches the testObject');
                 test.assertEqual(testParam, _this.testArgument,
-                    "Assert that the testParam was set correctly");
+                    'Assert that the testParam was set correctly');
                 test.completeTest();
             };
             test.completeSetup();
@@ -119,15 +112,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertFalse(this.testFunctionCalled,
-                "Assert testFunction was not called");
+                'Assert testFunction was not called');
             Func.deferCall(this.testFunction, this.testObject, this.testArgument);
             test.assertFalse(this.testFunctionCalled,
-                "Assert testFunction was not called");
+                'Assert testFunction was not called');
         },
 
         final: function(test) {
             test.assertTrue(this.testFunctionCalled,
-                "Assert testFunction was called");
+                'Assert testFunction was called');
             test.completeFinalize();
         }
     };
@@ -138,9 +131,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(funcStaticBindTest).with(
-        test().name("Func - #bind test")
+        test().name('Func - #bind test')
     );
     bugmeta.tag(funcStaticDeferCallTest).with(
-        test().name("Func - #deferCall test")
+        test().name('Func - #deferCall test')
     );
 });

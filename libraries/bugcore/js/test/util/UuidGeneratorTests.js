@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -65,14 +65,14 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isString(this.testUuid1),
-                "Assert uuid1 is a string");
+                'Assert uuid1 is a string');
             test.assertTrue(TypeUtil.isString(this.testUuid2),
-                "Assert uuid2 is a string");
+                'Assert uuid2 is a string');
             test.assertTrue(this.testUuid1 !== this.testUuid2,
-                "Assert uuid1 and uuid2 are not equal");
+                'Assert uuid1 and uuid2 are not equal');
         }
     };
     bugmeta.tag(generateTwoUuidsTest).with(
-        test().name("UuidGenerator - generate two uuids test")
+        test().name('UuidGenerator - generate two uuids test')
     );
 });

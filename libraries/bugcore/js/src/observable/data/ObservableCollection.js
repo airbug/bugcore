@@ -21,7 +21,6 @@
 //@Require('IIterable')
 //@Require('Obj')
 //@Require('Observable')
-//@Require('Proxy')
 //@Require('RemoveChange')
 //@Require('TypeUtil')
 
@@ -30,7 +29,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +45,6 @@ require('bugpack').context("*", function(bugpack) {
     var IIterable       = bugpack.require('IIterable');
     var Obj             = bugpack.require('Obj');
     var Observable      = bugpack.require('Observable');
-    var Proxy           = bugpack.require('Proxy');
     var RemoveChange    = bugpack.require('RemoveChange');
     var TypeUtil        = bugpack.require('TypeUtil');
 
@@ -63,7 +61,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableCollection = Class.extend(Observable, /** @lends {ObservableCollection.prototype} */{
 
-        _name: "ObservableCollection",
+        _name: 'ObservableCollection',
 
 
         //-------------------------------------------------------------------------------
@@ -127,7 +125,7 @@ require('bugpack').context("*", function(bugpack) {
         add: function(value) {
             var result = this.observed.add(value);
             if (result) {
-                this.notifyObservers(new AddChange(value))
+                this.notifyObservers(new AddChange(value));
             }
             return result;
         },
@@ -142,7 +140,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.add(value);
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must implement ICollection or be an Array');
             }
         },
 
@@ -222,7 +220,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.remove(value);
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'items', items, 'parameter must implement ICollection or be an Array');
             }
         },
 

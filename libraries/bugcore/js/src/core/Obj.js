@@ -25,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Obj = Class.declare(/** @lends {Obj.prototype} */{
 
-        _name: "Obj",
+        _name: 'Obj',
 
 
         //-------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ require('bugpack').context("*", function(bugpack) {
              */
             this._internalId    = null;
 
-            ObjectUtil.defineProperty(this, "_hashCode", {
+            ObjectUtil.defineProperty(this, '_hashCode', {
                 value : null,
                 writable : true,
                 enumerable : false,
@@ -258,22 +258,22 @@ require('bugpack').context("*", function(bugpack) {
         var type2 = TypeUtil.toType(value2);
         if (type1 === type2) {
             switch (type1) {
-                case "boolean":
-                    value1 = value1.valueOf();
-                    value2 = value2.valueOf();
-                    break;
-                case "date":
-                    value1 = value1.getTime();
-                    value2 = value2.getTime();
-                    break;
-                case "number":
-                    value1 = value1 - 0;
-                    value2 = value2 - 0;
-                    break;
-                case "string":
-                    value1 = value1 + "";
-                    value2 = value2 + "";
-                    break;
+            case 'boolean':
+                value1 = value1.valueOf();
+                value2 = value2.valueOf();
+                break;
+            case 'date':
+                value1 = value1.getTime();
+                value2 = value2.getTime();
+                break;
+            case 'number':
+                value1 = value1 - 0;
+                value2 = value2 - 0;
+                break;
+            case 'string':
+                value1 = value1 + '';
+                value2 = value2 + '';
+                break;
             }
         }
         return value1 === value2;

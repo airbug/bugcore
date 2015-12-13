@@ -12,7 +12,6 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('Obj')
 //@Require('Pair')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -22,14 +21,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Obj         = bugpack.require('Obj');
     var Pair        = bugpack.require('Pair');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -66,15 +64,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testPair.getA(), undefined,
-                "Assert that Pair.a is undefined");
+                'Assert that Pair.a is undefined');
             test.assertEqual(this.testPair.getB(), undefined,
-                "Assert that Pair.b is undefined");
+                'Assert that Pair.b is undefined');
             test.assertTrue(Class.doesExtend(this.testPair, Pair),
-                "Assert that the testPair extends Pair");
+                'Assert that the testPair extends Pair');
         }
     };
     bugmeta.tag(pairInstantiationTest).with(
-        test().name("Pair - instantiation test")
+        test().name('Pair - instantiation test')
     );
 
     /**
@@ -87,8 +85,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testA          = "testA";
-            this.testB          = "testB";
+            this.testA          = 'testA';
+            this.testB          = 'testB';
             this.testPair       = new Pair(this.testA, this.testB);
             this.testNewPair    = new Pair(this.testPair);
         },
@@ -99,13 +97,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testNewPair.getA(), this.testPair.getA(),
-                "Assert that testPair.a and testNewPair.a are equal");
+                'Assert that testPair.a and testNewPair.a are equal');
             test.assertEqual(this.testNewPair.getB(), this.testPair.getB(),
-                "Assert that testPair.b and testNewPair.b are equal");
+                'Assert that testPair.b and testNewPair.b are equal');
         }
     };
     bugmeta.tag(pairInstantiationWithPairTest).with(
-        test().name("Pair - instantiation with Pair test")
+        test().name('Pair - instantiation with Pair test')
     );
 
 
@@ -119,8 +117,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testA    = "testA";
-            this.testB    = "testB";
+            this.testA    = 'testA';
+            this.testB    = 'testB';
             this.testPair = new Pair(this.testA, this.testB);
         },
 
@@ -130,13 +128,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testPair.getA(), this.testA,
-                "Assert that Pair.a is testA");
+                'Assert that Pair.a is testA');
             test.assertEqual(this.testPair.getB(), this.testB,
-                "Assert that Pair.b is testB");
+                'Assert that Pair.b is testB');
         }
     };
     bugmeta.tag(pairInstantiationWithValuesTest).with(
-        test().name("Pair - instantiation with values test")
+        test().name('Pair - instantiation with values test')
     );
 
 
@@ -150,9 +148,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testA    = "testA";
-            this.testB    = "testB";
-            this.testC    = "testC";
+            this.testA    = 'testA';
+            this.testB    = 'testB';
+            this.testC    = 'testC';
             this.testPair = new Pair(this.testA, this.testB);
         },
 
@@ -162,16 +160,16 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testPair.contains(this.testA), true,
-                "Assert that Pair#contains returns true when checked for 'testA'");
+                'Assert that Pair#contains returns true when checked for "testA"');
             test.assertEqual(this.testPair.contains(this.testB), true,
-                "Assert that Pair#contains returns true when checked for 'testB'");
+                'Assert that Pair#contains returns true when checked for "testB"');
             test.assertEqual(this.testPair.contains(this.testC), false,
-                "Assert that Pair#contains returns false when checked for 'testC'");
+                'Assert that Pair#contains returns false when checked for "testC"');
 
         }
     };
     bugmeta.tag(pairContainsTest).with(
-        test().name("Pair - #contains test")
+        test().name('Pair - #contains test')
     );
 
     /**
@@ -184,9 +182,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testA      = "testA";
-            this.testB      = "testB";
-            this.testC      = "testC";
+            this.testA      = 'testA';
+            this.testB      = 'testB';
+            this.testC      = 'testC';
             this.testPair = new Pair(this.testA, this.testB);
         },
 
@@ -198,16 +196,16 @@ require('bugpack').context("*", function(bugpack) {
             var _this   = this;
             var otherA  = this.testPair.getOther(this.testA);
             test.assertEqual(otherA, this.testB,
-                "Assert that #getOther returns testB when called with testA");
+                'Assert that #getOther returns testB when called with testA');
             var otherB  = this.testPair.getOther(this.testB);
             test.assertEqual(otherB, this.testA,
-                "Assert that #getOther returns testA when called with testB");
+                'Assert that #getOther returns testA when called with testB');
             test.assertThrows(function() {
                 _this.testPair.getOther(_this.testC);
-            }, "Assert calling getOther with a value that does not exist in the pair throws an Exception");
+            }, 'Assert calling getOther with a value that does not exist in the pair throws an Exception');
         }
     };
     bugmeta.tag(pairGetOtherTest).with(
-        test().name("Pair - #getOther test")
+        test().name('Pair - #getOther test')
     );
 });

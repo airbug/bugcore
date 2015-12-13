@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var FilterOperation = Class.extend(Obj, {
 
-        _name: "FilterOperation",
+        _name: 'FilterOperation',
 
 
         //-------------------------------------------------------------------------------

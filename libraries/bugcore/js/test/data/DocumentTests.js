@@ -14,7 +14,6 @@
 //@Require('Class')
 //@Require('Document')
 //@Require('IDocument')
-//@Require('Obj')
 //@Require('TypeUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -24,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,7 +32,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var Document    = bugpack.require('Document');
     var IDocument   = bugpack.require('IDocument');
-    var Obj         = bugpack.require('Obj');
     var TypeUtil    = bugpack.require('TypeUtil');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
@@ -66,15 +64,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.document, Document),
-                "Assert instance of Document");
+                'Assert instance of Document');
             test.assertTrue(Class.doesImplement(this.document, IDocument),
-                "Assert implements IDocument");
+                'Assert implements IDocument');
             test.assertEqual(this.document.getData(), undefined,
-                "Assert data is undefined");
+                'Assert data is undefined');
         }
     };
     bugmeta.tag(documentInstantiationTest).with(
-        test().name("Document - instantiation test")
+        test().name('Document - instantiation test')
     );
 
     var documentInstantiationWithParamsTest = {
@@ -83,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testData = "abc123";
+            this.testData = 'abc123';
             this.document = new Document(this.testData);
         },
 
@@ -93,11 +91,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.document.getData(), this.testData,
-                "Assert data is testData");
+                'Assert data is testData');
         }
     };
     bugmeta.tag(documentInstantiationWithParamsTest).with(
-        test().name("Document - instantiation with params test")
+        test().name('Document - instantiation with params test')
     );
 
     var documentGetPathNoStringThrowsTest = {
@@ -116,26 +114,26 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             test.assertThrows(function() {
                 this.getPath(1);
-            }, "Assert getPath with a number throws ArgumentBug");
+            }, 'Assert getPath with a number throws ArgumentBug');
             test.assertThrows(function() {
                 this.getPath(null);
-            }, "Assert getPath with a null throws ArgumentBug");
+            }, 'Assert getPath with a null throws ArgumentBug');
             test.assertThrows(function() {
                 this.getPath(undefined);
-            }, "Assert getPath with undefined string throws ArgumentBug");
+            }, 'Assert getPath with undefined string throws ArgumentBug');
             test.assertThrows(function() {
                 this.getPath({});
-            }, "Assert getPath with Object throws ArgumentBug");
+            }, 'Assert getPath with Object throws ArgumentBug');
             test.assertThrows(function() {
                 this.getPath([]);
-            }, "Assert getPath with Array throws ArgumentBug");
+            }, 'Assert getPath with Array throws ArgumentBug');
             test.assertThrows(function() {
                 this.getPath(false);
-            }, "Assert getPath with boolean throws ArgumentBug");
+            }, 'Assert getPath with boolean throws ArgumentBug');
         }
     };
     bugmeta.tag(documentGetPathNoStringThrowsTest).with(
-        test().name("Document - getPath with non string test")
+        test().name('Document - getPath with non string test')
     );
 
     var documentGetPathUndefinedDocTest = {
@@ -152,18 +150,18 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.document.getPath(""), undefined,
-                "Assert blank path path is undefined");
-            test.assertEqual(this.document.getPath("abc"), undefined,
-                "Assert single path path is undefined");
-            test.assertEqual(this.document.getPath("abc.edf"), undefined,
-                "Assert double path path is undefined");
-            test.assertEqual(this.document.getPath("abc.edf.ghi"), undefined,
-                "Assert triple path path is undefined");
+            test.assertEqual(this.document.getPath(''), undefined,
+                'Assert blank path path is undefined');
+            test.assertEqual(this.document.getPath('abc'), undefined,
+                'Assert single path path is undefined');
+            test.assertEqual(this.document.getPath('abc.edf'), undefined,
+                'Assert double path path is undefined');
+            test.assertEqual(this.document.getPath('abc.edf.ghi'), undefined,
+                'Assert triple path path is undefined');
         }
     };
     bugmeta.tag(documentGetPathUndefinedDocTest).with(
-        test().name("Document - #getPath with undefined doc test")
+        test().name('Document - #getPath with undefined doc test')
     );
 
     var documentGetPathSimpleTest = {
@@ -172,12 +170,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPath  = "testPath";
-            this.testValue = "abc123";
-            this.testDoublePath = "testDoublePath.testSubPath";
-            this.testDoubleValue = "bcd234";
-            this.testTriplePath = "testTriplePath.testSubPath.testSubSubPath";
-            this.testTripleValue = "cde345";
+            this.testPath  = 'testPath';
+            this.testValue = 'abc123';
+            this.testDoublePath = 'testDoublePath.testSubPath';
+            this.testDoubleValue = 'bcd234';
+            this.testTriplePath = 'testTriplePath.testSubPath.testSubSubPath';
+            this.testTripleValue = 'cde345';
             this.testData = {
                 testPath: this.testValue,
                 testDoublePath: {
@@ -197,24 +195,24 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.document.getPath(""), this.testData,
-                "Assert blank path path is testData");
+            test.assertEqual(this.document.getPath(''), this.testData,
+                'Assert blank path path is testData');
             test.assertEqual(this.document.getPath(this.testPath), this.testValue,
-                "Assert testPath is testValue");
+                'Assert testPath is testValue');
             test.assertEqual(this.document.getPath(this.testDoublePath), this.testDoubleValue,
-                "Assert testDoublePath is testDoubleValue");
+                'Assert testDoublePath is testDoubleValue');
             test.assertEqual(this.document.getPath(this.testTriplePath), this.testTripleValue,
-                "Assert testTriplePath is testTripleValue");
-            test.assertEqual(this.document.getPath("abc"), undefined,
-                "Assert single path path is undefined");
-            test.assertEqual(this.document.getPath("abc.edf"), undefined,
-                "Assert double path path is undefined");
-            test.assertEqual(this.document.getPath("abc.edf.ghi"), undefined,
-                "Assert triple path path is undefined");
+                'Assert testTriplePath is testTripleValue');
+            test.assertEqual(this.document.getPath('abc'), undefined,
+                'Assert single path path is undefined');
+            test.assertEqual(this.document.getPath('abc.edf'), undefined,
+                'Assert double path path is undefined');
+            test.assertEqual(this.document.getPath('abc.edf.ghi'), undefined,
+                'Assert triple path path is undefined');
         }
     };
     bugmeta.tag(documentGetPathSimpleTest).with(
-        test().name("Document - #getPath simple test")
+        test().name('Document - #getPath simple test')
     );
 
     var documentSetPathUndefinedDocTest = {
@@ -223,8 +221,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPath = "";
-            this.testValue = "testValue";
+            this.testPath = '';
+            this.testValue = 'testValue';
             this.document = new Document();
         },
 
@@ -235,11 +233,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.document.setPath(this.testPath, this.testValue);
             test.assertEqual(this.document.getPath(this.testPath), this.testValue,
-                "Assert value was set correctly at base path");
+                'Assert value was set correctly at base path');
         }
     };
     bugmeta.tag(documentSetPathUndefinedDocTest).with(
-        test().name("Document - #setPath undefined doc test")
+        test().name('Document - #setPath undefined doc test')
     );
 
     var documentSetPathSimpleTest = {
@@ -248,8 +246,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPath = "abc.def.ghi";
-            this.testValue = "testValue";
+            this.testPath = 'abc.def.ghi';
+            this.testValue = 'testValue';
             this.document = new Document();
         },
 
@@ -260,15 +258,15 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.document.setPath(this.testPath, this.testValue);
             test.assertEqual(this.document.getPath(this.testPath), this.testValue,
-                "Assert value was set correctly at triple path");
-            test.assertTrue(TypeUtil.isObject(this.document.getPath("abc")),
-                "Assert object was created at path 'abc'");
-            test.assertTrue(TypeUtil.isObject(this.document.getPath("abc")),
-                "Assert object was created at path 'abc.def'");
+                'Assert value was set correctly at triple path');
+            test.assertTrue(TypeUtil.isObject(this.document.getPath('abc')),
+                'Assert object was created at path "abc"');
+            test.assertTrue(TypeUtil.isObject(this.document.getPath('abc.def')),
+                'Assert object was created at path "abc.def"');
         }
     };
     bugmeta.tag(documentSetPathSimpleTest).with(
-        test().name("Document - #setPath simple test")
+        test().name('Document - #setPath simple test')
     );
 
     var documentSetPathExistingPathTest = {
@@ -277,12 +275,12 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testPath = "abc.def.ghi";
-            this.testValue = "testValue";
+            this.testPath = 'abc.def.ghi';
+            this.testValue = 'testValue';
             this.document = new Document({
                 abc: {
                     def: {
-                        ghi: "existingValue"
+                        ghi: 'existingValue'
                     }
                 }
             });
@@ -293,14 +291,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.document.getPath(this.testPath), "existingValue",
-                "Assert value is existing value");
+            test.assertEqual(this.document.getPath(this.testPath), 'existingValue',
+                'Assert value is existing value');
             this.document.setPath(this.testPath, this.testValue);
             test.assertEqual(this.document.getPath(this.testPath), this.testValue,
-                "Assert value was updated correctly at path");
+                'Assert value was updated correctly at path');
         }
     };
     bugmeta.tag(documentSetPathExistingPathTest).with(
-        test().name("Document - #setPath existing path test")
+        test().name('Document - #setPath existing path test')
     );
 });

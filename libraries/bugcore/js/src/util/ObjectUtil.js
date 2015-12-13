@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -48,12 +48,13 @@ require('bugpack').context("*", function(bugpack) {
      * @private
      * @type {boolean}
      */
-    ObjectUtil.isDontEnumSkipped = true;
-
-    // test if properties that shadow DontEnum ones are enumerated
-    for (var prop in { toString: true }) {
-        ObjectUtil.isDontEnumSkipped = false;
-    }
+    ObjectUtil.isDontEnumSkipped = (function() {
+        var obj = { toString: false };
+        for (var prop in obj) {
+            return obj[prop];
+        }
+        return true;
+    });
 
     /**
      * @static
@@ -97,10 +98,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.deleteProperty = function(object, propertyName) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("parameter 'object' must be an object");
+            throw new TypeError('parameter "object" must be an object');
         }
         if (!TypeUtil.isString(propertyName)) {
-            throw new TypeError("parameter 'propertyName' must be an string");
+            throw new TypeError('parameter "propertyName" must be an string');
         }
         try {
             if (ObjectUtil.hasProperty(object, propertyName)) {
@@ -108,7 +109,7 @@ require('bugpack').context("*", function(bugpack) {
                 return true;
             }
         } catch(error) {
-            //do nothing
+            return false;
         }
         return false;
     };
@@ -121,12 +122,12 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.hasNestedProperty = function(object, propertyQuery) {
         if (!TypeUtil.isObject(object)) {
-            throw new Error("'object' must be an Object");
+            throw new Error('"object" must be an Object');
         }
         if (!TypeUtil.isString(propertyQuery)) {
-            throw new Error("'propertyQuery' must be a string");
+            throw new Error('"propertyQuery" must be a string');
         }
-        var parts           = propertyQuery.split(".");
+        var parts           = propertyQuery.split('.');
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
@@ -151,12 +152,12 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.hasOwnNestedProperty = function(object, propertyQuery) {
         if (!TypeUtil.isObject(object)) {
-            throw new Error("'object' must be an Object");
+            throw new Error('"object" must be an Object');
         }
         if (!TypeUtil.isString(propertyQuery)) {
-            throw new Error("'propertyQuery' must be a string");
+            throw new Error('"propertyQuery" must be a string');
         }
-        var parts           = propertyQuery.split(".");
+        var parts           = propertyQuery.split('.');
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
@@ -184,13 +185,13 @@ require('bugpack').context("*", function(bugpack) {
         // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
         // {
         //     name: {
-        //         subName: "someValue"
+        //         subName: 'someValue'
         //     }
         // }
-        // and we request a property named "name.subName", then "someValue" should be returned. If we request the property
-        // "name" then the object {subName: "someValue"} will be returned.
+        // and we request a property named 'name.subName', then 'someValue' should be returned. If we request the property
+        // 'name' then the object {subName: 'someValue'} will be returned.
 
-        var parts           = propertyQuery.split(".");
+        var parts           = propertyQuery.split('.');
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
@@ -214,13 +215,13 @@ require('bugpack').context("*", function(bugpack) {
         // NOTE BRN: We're trying to dig down in to the property object. So if we have a property Object like this
         // {
         //     name: {
-        //         subName: "someValue"
+        //         subName: 'someValue'
         //     }
         // }
-        // and we request a property named "name.subName", then "someValue" should be returned. If we request the property
-        // "name" then the object {subName: "someValue"} will be returned.
+        // and we request a property named 'name.subName', then 'someValue' should be returned. If we request the property
+        // 'name' then the object {subName: 'someValue'} will be returned.
 
-        var parts           = propertyQuery.split(".");
+        var parts           = propertyQuery.split('.');
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
@@ -253,7 +254,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.forIn = function(object, func, context) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("'object' must be an Object");
+            throw new TypeError('"object" must be an Object');
         }
         if (!func || (func && !func.call)) {
             throw new Error('Iterator function is required');
@@ -293,7 +294,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.forInOwn = function(object, func, context) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("'object' must be an Object");
+            throw new TypeError('"object" must be an Object');
         }
         if (!func || (func && !func.call)) {
             throw new Error('Iterator function is required');
@@ -371,7 +372,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.hasOwnProperty = function(object, propertyName) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("'object' must be an Object");
+            throw new TypeError('"object" must be an Object');
         }
         return Object.prototype.hasOwnProperty.call(object, propertyName);
     };
@@ -383,7 +384,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.hasProperty = function(object, propertyName) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("'object' must be an Object");
+            throw new TypeError('"object" must be an Object');
         }
         return (propertyName in object);
     };
@@ -404,14 +405,14 @@ require('bugpack').context("*", function(bugpack) {
      * @param {boolean=} deep
      * @return {boolean}
      */
-    ObjectUtil.isEqual = function(object1, object2, deep) {
+    ObjectUtil.isEqual = function(object1, object2) {
         //TODO BRN: Implement deep parameter
 
         if (!TypeUtil.isObject(object1)) {
-            throw new TypeError( "'object1' must be an Object");
+            throw new TypeError( '"object1" must be an Object');
         }
         if (!TypeUtil.isObject(object2)) {
-            throw new TypeError( "'object2' must be an Object");
+            throw new TypeError( '"object2" must be an Object');
         }
         if (object1 === object2) {
             return true;
@@ -442,11 +443,11 @@ require('bugpack').context("*", function(bugpack) {
     ObjectUtil.merge = function(from, into) {
         if (TypeUtil.isObject(from) && TypeUtil.isObject(into)) {
             ObjectUtil.forIn(from, function(prop, value) {
-                ObjectUtil.setProperty(into, prop, from[prop]);
+                ObjectUtil.setProperty(into, prop, value);
             });
             return into;
         } else {
-            throw new Error("both from and into parameters must be Objects");
+            throw new Error('both from and into parameters must be Objects');
         }
     };
 
@@ -458,10 +459,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.pick = function(object, properties) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("parameter 'object' must be an Object");
+            throw new TypeError('parameter "object" must be an Object');
         }
         if (!TypeUtil.isArray(properties)) {
-            throw new TypeError("parameter 'properties' must be an Array");
+            throw new TypeError('parameter "properties" must be an Array');
         }
         var picked = {};
         properties.forEach(function(property) {
@@ -480,12 +481,12 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.setNestedProperty = function(object, propertyQuery, value) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("parameter 'object' must be an object");
+            throw new TypeError('parameter "object" must be an object');
         }
         if (!TypeUtil.isString(propertyQuery)) {
-            throw new TypeError("parameter 'propertyQuery' must be an string");
+            throw new TypeError('parameter "propertyQuery" must be an string');
         }
-        var parts           = propertyQuery.split(".");
+        var parts           = propertyQuery.split('.');
         var propertyValue   = object;
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
@@ -508,10 +509,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.setProperty = function(object, propertyName, value) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("parameter 'object' must be an object");
+            throw new TypeError('parameter "object" must be an object');
         }
         if (!TypeUtil.isString(propertyName)) {
-            throw new TypeError("parameter 'propertyName' must be an string");
+            throw new TypeError('parameter "propertyName" must be an string');
         }
         try {
             object[propertyName] = value;
@@ -528,7 +529,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     ObjectUtil.toConstructorName = function(object) {
         if (!TypeUtil.isObject(object)) {
-            throw new TypeError("parameter 'object' must be an object");
+            throw new TypeError('parameter "object" must be an object');
         }
         return FunctionUtil.toName(object.constructor);
     };

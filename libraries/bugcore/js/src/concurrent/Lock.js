@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Lock = Class.extend(EventDispatcher, {
 
-        _name: "Lock",
+        _name: 'Lock',
 
 
         //-------------------------------------------------------------------------------
@@ -186,8 +186,8 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     Lock.EventTypes = {
-        EMPTY: "Lock:Empty",
-        RELEASED: "Lock:Released"
+        EMPTY: 'Lock:Empty',
+        RELEASED: 'Lock:Released'
     };
 
 

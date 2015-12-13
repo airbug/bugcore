@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ValidatorGroup = Class.extend(Obj, /** @lends {ValidatorGroup.prototype} */{
 
-        _name: "ValidatorGroup",
+        _name: 'ValidatorGroup',
 
 
         //-------------------------------------------------------------------------------

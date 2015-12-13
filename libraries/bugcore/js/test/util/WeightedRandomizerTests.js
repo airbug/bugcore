@@ -11,8 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
-//@Require('Obj')
 //@Require('WeightedRandomizer')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -22,14 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class               = bugpack.require('Class');
-    var Obj                 = bugpack.require('Obj');
     var WeightedRandomizer  = bugpack.require('WeightedRandomizer');
     var BugMeta             = bugpack.require('bugmeta.BugMeta');
     var TestTag             = bugpack.require('bugunit.TestTag');
@@ -57,9 +53,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.weightedRandomizer = new WeightedRandomizer();
-            this.value1 = "value1";
+            this.value1 = 'value1';
             this.weight1 =  1;
-            this.value2 = "value2";
+            this.value2 = 'value2';
             this.weight2 = 3;
         },
 
@@ -85,10 +81,10 @@ require('bugpack').context("*", function(bugpack) {
             var roundedRatio = Math.round(ratio);
 
             test.assertEqual(roundedRatio, 3,
-                "Assert getRandom respected the weights. Actual ratio:" + ratio);
+                'Assert getRandom respected the weights. Actual ratio:' + ratio);
         }
     };
     bugmeta.tag(weightedRandomizerGetRandomTest).with(
-        test().name("WeightedRandomizer get random test")
+        test().name('WeightedRandomizer get random test')
     );
 });

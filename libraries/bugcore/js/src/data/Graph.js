@@ -12,7 +12,6 @@
 //@Export('Graph')
 
 //@Require('Class')
-//@Require('Exception')
 //@Require('GraphEdge')
 //@Require('GraphNode')
 //@Require('Map')
@@ -24,14 +23,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Exception   = bugpack.require('Exception');
     var GraphEdge   = bugpack.require('GraphEdge');
     var GraphNode   = bugpack.require('GraphNode');
     var Map         = bugpack.require('Map');
@@ -54,7 +52,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Graph = Class.extend(Obj, {
 
-        _name: "Graph",
+        _name: 'Graph',
 
 
         //-------------------------------------------------------------------------------
@@ -113,7 +111,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
+            var output = '';
             return output;
         },
 

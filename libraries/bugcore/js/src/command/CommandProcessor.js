@@ -25,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CommandProcessor = Class.extend(Obj, {
 
-        _name: "CommandProcessor",
+        _name: 'CommandProcessor',
 
 
         //-------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ require('bugpack').context("*", function(bugpack) {
             } else if (Class.doesImplement(commands, IList) || TypeUtil.isArray(commands)) {
                 commandBatch = this.factoryCommandBatch(commands, callback);
             } else {
-                return callback(new ArgumentBug(ArgumentBug.ILLEGAL, "commands", commands, "parameter must be a Command, array of Commands, a List of Commands, or a CommandBatch"));
+                return callback(new ArgumentBug(ArgumentBug.ILLEGAL, 'commands', commands, 'parameter must be a Command, array of Commands, a List of Commands, or a CommandBatch'));
             }
             this.queueCommandBatch(commandBatch);
             this.processCommandQueue();

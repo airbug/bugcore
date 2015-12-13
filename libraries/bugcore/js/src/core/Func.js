@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Func = Class.extend(Obj, {
 
-        _name: "Func",
+        _name: 'Func',
 
 
         //-------------------------------------------------------------------------------
@@ -173,10 +173,6 @@ require('bugpack').context("*", function(bugpack) {
         delayCall: function(wait) {
             var args = Array.prototype.slice.call(arguments, 1);
             this.delayApply(wait, args);
-        },
-
-        wrap: function(wrapper) {
-
         }
     });
 
@@ -187,16 +183,6 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param count
-     * @param method
-     * @param context
-     */
-    Func.after = function(count, method, context) {
-
-    };
-
-    /**
-     * @static
      * @param {function(...):*} method
      * @param {Object} context
      * @param {...} arguments
@@ -204,7 +190,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     Func.bind = function(method, context) {
         if (!TypeUtil.isFunction(method)) {
-            throw new TypeError("Func.bind - what is trying to be bound is not callable");
+            throw new TypeError('Func.bind - what is trying to be bound is not callable');
         }
         var func        = Func.func(method);
         var argsBound   = Array.prototype.slice.call(arguments, 2);
@@ -220,10 +206,6 @@ require('bugpack').context("*", function(bugpack) {
         funcBound.prototype = new funcNOP();
 
         return funcBound;
-    };
-
-    Func.debounce = function(wait, method, context) {
-
     };
 
     /**
@@ -278,32 +260,6 @@ require('bugpack').context("*", function(bugpack) {
      */
     Func.func = function(method, context) {
         return (new Func(method)).bind(context);
-    };
-
-    /**
-     * @static
-     * @param {function(...):*} method
-     * @param {Object} context
-     * @return {function(...):*}
-     */
-    Func.memoize = function(method, context) {
-
-    };
-
-    Func.once = function(method, context) {
-
-    };
-
-    Func.partialApply = function(method, args) {
-
-    };
-
-    Func.partialCall = function(method, args) {
-
-    };
-
-    Func.throttle = function(wait, method, context) {
-
     };
 
 

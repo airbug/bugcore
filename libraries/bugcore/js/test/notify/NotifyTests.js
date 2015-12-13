@@ -12,8 +12,7 @@
 //@TestFile
 
 //@Require('Class')
-//@Require('Reflect')
-//@Require('TypeUtil')
+//@Require('Notifying')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -22,15 +21,14 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var Reflect     = bugpack.require('Reflect');
-    var TypeUtil    = bugpack.require('TypeUtil');
+    var Notifying   = bugpack.require('Notifying');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
     var TestTag     = bugpack.require('bugunit.TestTag');
 
@@ -49,7 +47,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) Instantiation of Reflect instance
+     * 1) Instantiation of Notifying instance
      */
     var reflectInstantiationTest = {
 
@@ -57,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.reflect = new Reflect();
+            this.reflect = new Notifying();
         },
 
 
@@ -65,10 +63,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertTrue(Class.doesExtend(this. reflect, Reflect),
-                "Assert instance of Reflect");
+            test.assertTrue(Class.doesExtend(this. reflect, Notifying),
+                'Assert instance of Notifying');
             test.assertEqual(this.reflect.hasNotifier(), false,
-                "Assert Reflect does not start with a Notifier");
+                'Assert Notifying does not start with a Notifier');
         }
     };
 
@@ -78,6 +76,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(reflectInstantiationTest).with(
-        test().name("Reflect - instantiation test")
+        test().name('Notifying - instantiation test')
     );
 });

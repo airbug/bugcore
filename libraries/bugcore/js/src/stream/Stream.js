@@ -15,12 +15,9 @@
 //@Require('Class')
 //@Require('CollectConsumer')
 //@Require('EachOperation')
-//@Require('Exception')
 //@Require('FilterOperation')
 //@Require('Func')
 //@Require('IConsumer')
-//@Require('IStreamable')
-//@Require('ISupplier')
 //@Require('MapOperation')
 //@Require('ReduceConsumer')
 //@Require('Supplier')
@@ -30,7 +27,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,12 +37,9 @@ require('bugpack').context("*", function(bugpack) {
     var Class               = bugpack.require('Class');
     var CollectConsumer     = bugpack.require('CollectConsumer');
     var EachOperation       = bugpack.require('EachOperation');
-    var Exception           = bugpack.require('Exception');
     var FilterOperation     = bugpack.require('FilterOperation');
     var Func                = bugpack.require('Func');
     var IConsumer           = bugpack.require('IConsumer');
-    var IStreamable         = bugpack.require('IStreamable');
-    var ISupplier           = bugpack.require('ISupplier');
     var MapOperation        = bugpack.require('MapOperation');
     var ReduceConsumer      = bugpack.require('ReduceConsumer');
     var Supplier            = bugpack.require('Supplier');
@@ -63,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Stream = Class.extend(Supplier, {
 
-        _name: "Stream",
+        _name: 'Stream',
 
 
         //-------------------------------------------------------------------------------
@@ -182,8 +176,8 @@ require('bugpack').context("*", function(bugpack) {
          */
         collectSync: function(collection, autoConsume) {
             var args = ArgUtil.process(arguments, [
-                {name: "collection", optional: false},
-                {name: "autoConsume", optional: true, type: "boolean", 'default': true}
+                {name: 'collection', optional: false},
+                {name: 'autoConsume', optional: true, type: 'boolean', 'default': true}
             ]);
             collection     = args.collection;
             autoConsume     = args.autoConsume;
@@ -256,9 +250,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         reduceSync: function(memo, reduceMethod, autoConsume) {
             var args = ArgUtil.process(arguments, [
-                {name: "memo", optional: false},
-                {name: "reduceMethod", optional: false, type: "function"},
-                {name: "autoConsume", optional: true, type: "boolean", 'default': true}
+                {name: 'memo', optional: false},
+                {name: 'reduceMethod', optional: false, type: 'function'},
+                {name: 'autoConsume', optional: true, type: 'boolean', 'default': true}
             ]);
             memo            = args.memo;
             reduceMethod    = args.reduceMethod;
@@ -295,21 +289,6 @@ require('bugpack').context("*", function(bugpack) {
         var stream = new Stream(supplier, operation);
         supplier.addConsumer(stream);
         return stream;
-    };
-
-    /**
-     * @static
-     * @param {(IStreamable.<I> | ISupplier.<I>)} streamable
-     * @return {Stream.<I>}
-     */
-    Stream.stream = function(streamable) {
-        if (Class.doesImplement(streamable, IStreamable)) {
-            return streamable.stream();
-        } else if (Class.doesImplement(streamable, ISupplier)){
-            return Stream.newStream(streamable)
-        } else {
-            throw new Exception("IllegalArgument", {}, "streamable does not implement IStreamable or does not implement ISupplier");
-        }
     };
 
 

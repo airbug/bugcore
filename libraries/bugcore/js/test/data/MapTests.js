@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -57,9 +57,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new Map();
-            this.value1 = "value1";
-            this.value2 = "value2";
-            this.value3 = "value3";
+            this.value1 = 'value1';
+            this.value2 = 'value2';
+            this.value3 = 'value3';
             this.map.put('key1', this.value1);
             this.map.put('key2', this.value2);
         },
@@ -70,11 +70,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.map.containsValue(this.value1), true,
-                "Assert containsValue returns true for value1.");
+                'Assert containsValue returns true for value1.');
             test.assertEqual(this.map.containsValue(this.value2), true,
-                "Assert containsValue returns true for value2.");
+                'Assert containsValue returns true for value2.');
             test.assertEqual(this.map.containsValue(this.value3), false,
-                "Assert containsValue returns false for value that hasn't been added to the map.");
+                'Assert containsValue returns false for value that hasn\'t been added to the map.');
         }
     };
 
@@ -88,8 +88,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new Map();
-            this.key1 = "key1";
-            this.value1 = "value1";
+            this.key1 = 'key1';
+            this.value1 = 'value1';
             this.map.put(this.key1, this.value1);
         },
 
@@ -99,7 +99,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.map.get(this.key1), this.value1,
-                "Assert value mapped to key is correct.");
+                'Assert value mapped to key is correct.');
         }
     };
 
@@ -124,9 +124,9 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.emptyKeyCollection, Collection),
-                "Assert toKeyCollection returned a Collection when called on an empty Map");
+                'Assert toKeyCollection returned a Collection when called on an empty Map');
             test.assertEqual(this.emptyKeyCollection.getCount(), 0,
-                "Assert key Collection count is 0");
+                'Assert key Collection count is 0');
         }
     };
 
@@ -142,12 +142,12 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function()  {
             this.map = new Map();
-            this.key1 = "key1";
-            this.key2 = "key2";
-            this.key3 = "key3";
-            this.value1 = "value1";
-            this.value2 = "value2";
-            this.value3 = "value3";
+            this.key1 = 'key1';
+            this.key2 = 'key2';
+            this.key3 = 'key3';
+            this.value1 = 'value1';
+            this.value2 = 'value2';
+            this.value3 = 'value3';
             this.map.put(this.key1, this.value1);
             this.map.put(this.key2, this.value2);
             this.map.put(this.key3, this.value3);
@@ -160,15 +160,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.keyCollection, Collection),
-                "Assert toKeyCollection returned a Collection");
+                'Assert toKeyCollection returned a Collection');
             test.assertEqual(this.keyCollection.getCount(), 3,
-                "Assert key Collection count is 3");
+                'Assert key Collection count is 3');
             test.assertEqual(this.keyCollection.contains(this.key1), true,
-                "Assert key Collection contains key1");
+                'Assert key Collection contains key1');
             test.assertEqual(this.keyCollection.contains(this.key2), true,
-                "Assert key Collection contains key2");
+                'Assert key Collection contains key2');
             test.assertEqual(this.keyCollection.contains(this.key3), true,
-                "Assert key Collection contains key3");
+                'Assert key Collection contains key3');
         }
     };
 
@@ -210,19 +210,19 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(this.map.containsKey(this.keys[0]),
-                "Assert plain javascript object can be used as a key.");
+                'Assert plain javascript object can be used as a key.');
             test.assertTrue(this.map.containsKey(this.keys[1]),
-                "Assert plain javascript array can be used as a key.");
+                'Assert plain javascript array can be used as a key.');
             test.assertTrue(this.map.containsKey(this.keys[2]),
-                "Assert plain javascript string can be used as a key.");
+                'Assert plain javascript string can be used as a key.');
             test.assertTrue(this.map.containsKey(this.keys[3]),
-                "Assert plain javascript number can be used as a key.");
+                'Assert plain javascript number can be used as a key.');
             test.assertTrue(this.map.containsKey(this.keys[4]),
-                "Assert plain javascript boolean can be used as a key.");
+                'Assert plain javascript boolean can be used as a key.');
             test.assertFalse(this.map.containsKey({}),
-                "Assert that different plain javascript objects are treated as different keys.");
+                'Assert that different plain javascript objects are treated as different keys.');
             test.assertFalse(this.map.containsKey([]),
-                "Assert that different plain javascript arrays are treated as different keys.");
+                'Assert that different plain javascript arrays are treated as different keys.');
         }
     };
 
@@ -256,8 +256,8 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.keys.forEach(function(key) {
                 test.assertEqual(_this.map.get(key), undefined,
-                    "Assert value mapped to native key '" + key + "' is undefined.");
-            })
+                    'Assert value mapped to native key "' + key + '" is undefined.');
+            });
         }
     };
 
@@ -281,13 +281,13 @@ require('bugpack').context("*", function(bugpack) {
                 'constructor'
             ];
             this.values = [
-                "value1",
-                "value2",
-                "value3",
-                "value4",
-                "value5",
-                "value6",
-                "value7"
+                'value1',
+                'value2',
+                'value3',
+                'value4',
+                'value5',
+                'value6',
+                'value7'
             ];
             for (var i = 0, size = this.keys.length; i < size; i++) {
                 this.map.put(this.keys[i], this.values[i]);
@@ -301,7 +301,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             for (var i = 0, size = this.keys.length; i < size; i++) {
                 test.assertEqual(this.map.get(this.keys[i]), this.values[i],
-                    "Assert that key '" + this.keys[i] + "' correctly mapped to value '" + this.values[i] + "'");
+                    'Assert that key "' + this.keys[i] + '" correctly mapped to value "' + this.values[i] + '"');
             }
         }
     };
@@ -321,8 +321,8 @@ require('bugpack').context("*", function(bugpack) {
                 'key2'
             ];
             this.values = [
-                "value1",
-                "value2"
+                'value1',
+                'value2'
             ];
             for (var i = 0, size = this.keys.length; i < size; i++) {
                 this.map.put(this.keys[i], this.values[i]);
@@ -339,9 +339,9 @@ require('bugpack').context("*", function(bugpack) {
             this.map.forEach(function(value, key) {
                 i++;
                 test.assertEqual(key, _this.keys[i],
-                    "Assert key is correct in forEach iteration");
+                    'Assert key is correct in forEach iteration');
                 test.assertEqual(value, _this.values[i],
-                    "Assert value is correct in forEach iteration");
+                    'Assert value is correct in forEach iteration');
             });
         }
     };
@@ -357,8 +357,8 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.map = new Map();
             this.testObject = {
-                value1: "value1",
-                value2: "value2"
+                value1: 'value1',
+                value2: 'value2'
             };
             this.map.putAll(this.testObject);
         },
@@ -369,9 +369,9 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.map.containsValue(this.testObject.value1), true,
-                "Assert containsValue returns true for value1.");
+                'Assert containsValue returns true for value1.');
             test.assertEqual(this.map.containsValue(this.testObject.value2), true,
-                "Assert containsValue returns true for value2.");
+                'Assert containsValue returns true for value2.');
         }
     };
 
@@ -385,9 +385,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.map = new Map();
-            this.map.put("key1", "value1");
-            this.map.put("key2", "value2");
-            this.map.put("key3", "value3");
+            this.map.put('key1', 'value1');
+            this.map.put('key2', 'value2');
+            this.map.put('key3', 'value3');
         },
 
 
@@ -395,25 +395,25 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.map.get("key1"), "value1",
-                "Assert map contains value1 at key1");
-            test.assertEqual(this.map.get("key2"), "value2",
-                "Assert map contains value2 at key2");
-            test.assertEqual(this.map.get("key3"), "value3",
-                "Assert map contains value3 at key3");
+            test.assertEqual(this.map.get('key1'), 'value1',
+                'Assert map contains value1 at key1');
+            test.assertEqual(this.map.get('key2'), 'value2',
+                'Assert map contains value2 at key2');
+            test.assertEqual(this.map.get('key3'), 'value3',
+                'Assert map contains value3 at key3');
             test.assertEqual(this.map.getCount(), 3,
-                "Assert map count is 3 after adding four values");
+                'Assert map count is 3 after adding four values');
 
             this.map.clear();
 
-            test.assertEqual(this.map.get("key1"), undefined,
-                "Assert map no longer contains key1");
-            test.assertEqual(this.map.get("key2"), undefined,
-                "Assert map no longer contains key2");
-            test.assertEqual(this.map.get("key3"), undefined,
-                "Assert map no longer contains key3");
+            test.assertEqual(this.map.get('key1'), undefined,
+                'Assert map no longer contains key1');
+            test.assertEqual(this.map.get('key2'), undefined,
+                'Assert map no longer contains key2');
+            test.assertEqual(this.map.get('key3'), undefined,
+                'Assert map no longer contains key3');
             test.assertEqual(this.map.getCount(), 0,
-                "Assert map count is 0 after calling clear");
+                'Assert map count is 0 after calling clear');
         }
     };
 
@@ -425,33 +425,33 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(mapSimplePutContainsValueTest).with(
-        test().name("Map - simple put/containsValue test")
+        test().name('Map - simple put/containsValue test')
     );
     bugmeta.tag(mapSimplePutGetTest).with(
-        test().name("Map - simple put/get test")
+        test().name('Map - simple put/get test')
     );
     bugmeta.tag(mapGetKeyCollectionOnEmptyMapTest).with(
-        test().name("Map - toKeyCollection called on an empty Map test")
+        test().name('Map - toKeyCollection called on an empty Map test')
     );
     bugmeta.tag(mapGetKeyCollectionTest).with(
-        test().name("Map - toKeyCollection test")
+        test().name('Map - toKeyCollection test')
     );
     bugmeta.tag(mapDataTypeKeyTest).with(
-        test().name("Map - data type key test")
+        test().name('Map - data type key test')
     );
     bugmeta.tag(mapGetNativeJavascriptObjectNamesOfEmptyMapTest).with(
-        test().name("Map - get() native javascript object names on empty map test")
+        test().name('Map - get() native javascript object names on empty map test')
     );
     bugmeta.tag(mapNativeJavascriptObjectNamesPutGetTest).with(
-        test().name("Map - native javascript object names put/get test")
+        test().name('Map - native javascript object names put/get test')
     );
     bugmeta.tag(mapForEachTest).with(
-        test().name("Map - forEach test")
+        test().name('Map - forEach test')
     );
     bugmeta.tag(mapSimplePutAllContainsValueTest).with(
-        test().name("Map - simple putAll/containsValue test")
+        test().name('Map - simple putAll/containsValue test')
     );
     bugmeta.tag(mapClearTest).with(
-        test().name("Map - clear test")
+        test().name('Map - clear test')
     );
 });

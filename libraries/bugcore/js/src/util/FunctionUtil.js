@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -48,11 +48,11 @@ require('bugpack').context("*", function(bugpack) {
      */
     FunctionUtil.toName = function(func) {
         if (!TypeUtil.isFunction(func)) {
-            throw new TypeError( "'func' must be an Function");
+            throw new TypeError( '"func" must be an Function');
         }
         var funcNameRegex = /function (.{1,})\(/;
         var results = (funcNameRegex).exec(func.toString());
-        return (results && results.length > 1) ? results[1] : "";
+        return (results && results.length > 1) ? results[1] : '';
     };
 
 

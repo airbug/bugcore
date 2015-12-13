@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,14 +33,16 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {ICollection.<I>}
      * @template I
      */
     var ISet = Interface.extend(ICollection, {
-        _name: "ISet"
+        _name: 'ISet'
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

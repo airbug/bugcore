@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('Lock')
 //@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
@@ -22,13 +21,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class           = bugpack.require('Class');
     var Lock            = bugpack.require('Lock');
     var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
@@ -67,9 +65,9 @@ require('bugpack').context("*", function(bugpack) {
             this.testMethod1 = function() {
                 setTimeout(function() {
                     test.assertTrue(_this.testMethod2Spy.wasNotCalled(),
-                        "Assert method 2 has not been called");
+                        'Assert method 2 has not been called');
                     test.assertTrue(_this.testMethod3Spy.wasNotCalled(),
-                        "Assert method 3 has not been called");
+                        'Assert method 3 has not been called');
                     _this.testLock.unlock();
                 }, 0);
             };
@@ -77,9 +75,9 @@ require('bugpack').context("*", function(bugpack) {
             this.testMethod2 = function() {
                 setTimeout(function() {
                     test.assertTrue(_this.testMethod1Spy.wasCalled(),
-                        "Assert method 1 has been called");
+                        'Assert method 1 has been called');
                     test.assertTrue(_this.testMethod3Spy.wasNotCalled(),
-                        "Assert method 3 has not been called");
+                        'Assert method 3 has not been called');
                     _this.testLock.unlock();
                 }, 0);
             };
@@ -87,9 +85,9 @@ require('bugpack').context("*", function(bugpack) {
             this.testMethod3 = function() {
                 setTimeout(function() {
                     test.assertTrue(_this.testMethod1Spy.wasCalled(),
-                        "Assert method 1 has not been called");
+                        'Assert method 1 has not been called');
                     test.assertTrue(_this.testMethod2Spy.wasCalled(),
-                        "Assert method 2 has not been called");
+                        'Assert method 2 has not been called');
                     _this.testLock.unlock();
                     test.completeTest();
                 }, 0);
@@ -105,7 +103,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testLock.waitLock(this.testMethod1Spy);
             test.assertTrue(this.testMethod2Spy.wasNotCalled(),
-                "Assert testMethod2 was not called");
+                'Assert testMethod2 was not called');
 
             this.testLock.waitLock(this.testMethod2Spy);
             this.testLock.waitLock(this.testMethod3Spy);
@@ -118,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(lockWaitLockTest).with(
-        test().name("Lock - #waitLock test")
+        test().name('Lock - #waitLock test')
     );
 
 //TODO BRN: Write a stack overflow test

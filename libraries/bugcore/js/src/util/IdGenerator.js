@@ -16,7 +16,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // Constructor
@@ -79,14 +79,14 @@ require('bugpack').context("*", function(bugpack) {
     IdGenerator.injectId = function(obj) {
         if (obj !== null && obj !== undefined) {
             if (!obj._internalId) {
-                Object.defineProperty(obj, "_internalId", {
+                Object.defineProperty(obj, '_internalId', {
                     value : IdGenerator.generateId(),
                     writable : false,
                     enumerable : false,
                     configurable : false
                 });
             } else {
-                throw new Error("Trying to inject an id in to a object that already has one.");
+                throw new Error('Trying to inject an id in to a object that already has one.');
             }
         }
     };

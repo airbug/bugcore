@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,13 +33,14 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {IObservationPropagator}
      */
     var IObservable = Interface.extend(IObservationPropagator, {
 
-        _name: "IObservable",
+        _name: 'IObservable',
 
 
         //-------------------------------------------------------------------------------
@@ -89,6 +90,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

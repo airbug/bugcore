@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,13 +31,14 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @template I
      */
     var IArrayable = Interface.declare({
 
-        _name: "IArrayable",
+        _name: 'IArrayable',
 
 
         //-------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         toArray: function() {}
     });
-
+    /*eslint-enable no-unused-vars */
 
     //-------------------------------------------------------------------------------
     // Exports

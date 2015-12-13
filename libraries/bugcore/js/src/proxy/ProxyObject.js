@@ -13,7 +13,6 @@
 
 //@Require('Class')
 //@Require('IProxy')
-//@Require('Interface')
 //@Require('Obj')
 
 
@@ -21,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -29,7 +28,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var IProxy      = bugpack.require('IProxy');
-    var Interface   = bugpack.require('Interface');
     var Obj         = bugpack.require('Obj');
 
 
@@ -44,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ProxyObject = Class.extend(Obj, {
 
-        _name: "ProxyObject",
+        _name: 'ProxyObject',
 
 
         //-------------------------------------------------------------------------------

@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -68,11 +68,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var properties = this.testConfig.getProperties();
             test.assertTrue(Class.doesExtend(properties, Properties),
-                "Assert Config#getProperties returns a Properties instance when there were no parameters passed to the constructor");
+                'Assert Config#getProperties returns a Properties instance when there were no parameters passed to the constructor');
         }
     };
     bugmeta.tag(configInstantiationTest).with(
-        test().name("Config - instantiation test")
+        test().name('Config - instantiation test')
     );
 
     /**
@@ -85,7 +85,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue              = "testValue";
+            this.testValue              = 'testValue';
             this.testPropertiesObject   = {
                 testProperty: this.testValue
             };
@@ -97,14 +97,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(this.testConfig.getProperties().getProperty("testProperty"), this.testValue,
-                "Assert 'testProperty' is present in the Config and returns testValue");
-            test.assertEqual(this.testConfig.getProperties().getProperty("nonProperty"), undefined,
-                "Assert 'nonProperty' does not exist and returns undefined");
+            test.assertEqual(this.testConfig.getProperties().getProperty('testProperty'), this.testValue,
+                'Assert "testProperty" is present in the Config and returns testValue');
+            test.assertEqual(this.testConfig.getProperties().getProperty('nonProperty'), undefined,
+                'Assert "nonProperty" does not exist and returns undefined');
         }
     };
     bugmeta.tag(configInstantiationWithPropertiesObjectTest).with(
-        test().name("Config - instantiation with propertiesObject test")
+        test().name('Config - instantiation with propertiesObject test')
     );
 
 
@@ -119,8 +119,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue      = "testValue";
-            this.testName       = "testName";
+            this.testValue      = 'testValue';
+            this.testName       = 'testName';
             this.testConfig     = new Config();
             this.testConfig.setProperty(this.testName, this.testValue);
         },
@@ -131,10 +131,10 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testConfig.getProperty(this.testName), this.testValue,
-                "Assert 'testName' is present in the Config and returns 'testValue'");
+                'Assert "testName" is present in the Config and returns "testValue"');
         }
     };
     bugmeta.tag(configSetGetPropertyTest).with(
-        test().name("Config - set/get property test")
+        test().name('Config - set/get property test')
     );
 });

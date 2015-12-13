@@ -16,15 +16,15 @@
 //@Require('Exception')
 //@Require('IIndexValueIterable')
 //@Require('Obj')
-//@Require('ReflectArray')
-//@Require('ReflectArrayIterator')
+//@Require('NotifyingArray')
+//@Require('NotifyingArrayIterator')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -35,8 +35,8 @@ require('bugpack').context("*", function(bugpack) {
     var Exception               = bugpack.require('Exception');
     var IIndexValueIterable     = bugpack.require('IIndexValueIterable');
     var Obj                     = bugpack.require('Obj');
-    var ReflectArray            = bugpack.require('ReflectArray');
-    var ReflectArrayIterator    = bugpack.require('ReflectArrayIterator');
+    var NotifyingArray            = bugpack.require('NotifyingArray');
+    var NotifyingArrayIterator    = bugpack.require('NotifyingArrayIterator');
 
 
     //-------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Queue = Class.extend(Collection, {
 
-        _name: "Queue",
+        _name: 'Queue',
 
 
         //-------------------------------------------------------------------------------
@@ -72,9 +72,9 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {ReflectArray.<I>}
+             * @type {NotifyingArray.<I>}
              */
-            this.itemReflectArray = new ReflectArray([]);
+            this.itemNotifyingArray = new NotifyingArray([]);
         },
 
 
@@ -83,10 +83,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ReflectArray.<I>}
+         * @return {NotifyingArray.<I>}
          */
-        getItemReflectArray: function() {
-            return this.itemReflectArray;
+        getItemNotifyingArray: function() {
+            return this.itemNotifyingArray;
         },
 
 
@@ -113,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         add: function(item) {
             this._super(item);
-            this.itemReflectArray.push(item);
+            this.itemNotifyingArray.push(item);
         },
 
         /**
@@ -136,7 +136,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {Array.<I>}
          */
         toArray: function() {
-            return Obj.clone(this.itemReflectArray.getArray());
+            return Obj.clone(this.itemNotifyingArray.getArray());
         },
 
 
@@ -172,7 +172,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {IIndexValueIterator.<I>}
          */
         iterator: function() {
-            return new ReflectArrayIterator(this.itemReflectArray);
+            return new NotifyingArrayIterator(this.itemNotifyingArray);
         },
 
 
@@ -187,7 +187,7 @@ require('bugpack').context("*", function(bugpack) {
             if (this.getCount() > 0) {
                 return this.removeAt(0);
             } else {
-                throw new Exception("QueueEmpty", {}, "Queue is empty");
+                throw new Exception('QueueEmpty', {}, 'Queue is empty');
             }
         },
 
@@ -210,9 +210,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         getAt: function(index) {
             if (index < this.getCount()) {
-                return this.itemReflectArray.getAt(index);
+                return this.itemNotifyingArray.getAt(index);
             } else {
-                throw new Exception("IndexOutOfBounds", {}, "Index out of bounds");
+                throw new Exception('IndexOutOfBounds', {}, 'Index out of bounds');
             }
         },
 
@@ -222,8 +222,8 @@ require('bugpack').context("*", function(bugpack) {
          * @return {number}
          */
         indexOfFirst: function(value) {
-            for (var i = 0, size = this.itemReflectArray.getLength(); i < size; i++) {
-                if (Obj.equals(this.itemReflectArray.getAt(i), value)) {
+            for (var i = 0, size = this.itemNotifyingArray.getLength(); i < size; i++) {
+                if (Obj.equals(this.itemNotifyingArray.getAt(i), value)) {
                     return i;
                 }
             }
@@ -239,7 +239,7 @@ require('bugpack').context("*", function(bugpack) {
             var value = this.getAt(index);
             var result = this.getHashStore().remove(value);
             if (result) {
-                this.itemReflectArray.splice(index, 1);
+                this.itemNotifyingArray.splice(index, 1);
             }
             return value;
         }

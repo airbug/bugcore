@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MultiSetMap = Class.extend(MultiMap, {
 
-        _name: "MultiSetMap",
+        _name: 'MultiSetMap',
 
 
         //-------------------------------------------------------------------------------

@@ -24,7 +24,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObjectIterator = Class.extend(Obj, {
 
-        _name: "ObjectIterator",
+        _name: 'ObjectIterator',
 
 
         //-------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ require('bugpack').context("*", function(bugpack) {
                     _this.properties = ObjectUtil.getOwnProperties(object);
                     _this.propertyCount = _this.properties.length;
                 } else {
-                    throw new ArgumentBug(ArgumentBug.ILLEGAL, "object", object, "parameter must be an Object");
+                    throw new ArgumentBug(ArgumentBug.ILLEGAL, 'object', object, 'parameter must be an Object');
                 }
             }
 
@@ -187,7 +187,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.index++;
                 return this.properties[this.index];
             } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+                throw new Exception('NoSuchElement', {}, 'End of iteration reached.');
             }
         },
 

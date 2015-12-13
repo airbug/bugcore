@@ -12,7 +12,6 @@
 //@Export('GraphEdge')
 
 //@Require('Class')
-//@Require('GraphNode')
 //@Require('Obj')
 
 
@@ -20,14 +19,13 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
     var Class       = bugpack.require('Class');
-    var GraphNode   = bugpack.require('GraphNode');
     var Obj         = bugpack.require('Obj');
 
 
@@ -41,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var GraphEdge = Class.extend(Obj, {
 
-        _name: "GraphEdge",
+        _name: 'GraphEdge',
 
 
         //-------------------------------------------------------------------------------
@@ -115,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[GraphEdge]" + Obj.hashCode(this.fromNode) + "_" + Obj.hashCode(this.toNode));
+                this._hashCode = Obj.hashCode('[GraphEdge]' + Obj.hashCode(this.fromNode) + '_' + Obj.hashCode(this.toNode));
             }
             return this._hashCode;
         },
@@ -124,10 +122,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
-            output += "{\n";
+            var output = '';
+            output += '{\n';
 
-            output += "}\n";
+            output += '}\n';
             return output;
         }
     });

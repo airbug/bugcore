@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var UuidGenerator = Class.extend(Obj, {
-        _name: "UuidGenerator"
+        _name: 'UuidGenerator'
     });
 
 

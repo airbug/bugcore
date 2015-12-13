@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {IIterable.<V>}
@@ -40,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IIndexValueIterable = Interface.extend(IIterable, {
 
-        _name: "IIterableIndex",
+        _name: 'IIterableIndex',
 
 
         //-------------------------------------------------------------------------------
@@ -64,6 +65,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         iterator: function() {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

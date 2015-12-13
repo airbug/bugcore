@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -55,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testChangeType = "testChangeType";
+            this.testChangeType = 'testChangeType';
             this.testChange     = new Change(this.testChangeType);
         },
 
@@ -65,9 +65,9 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testChange, Change),
-                "Assert instance of Change");
+                'Assert instance of Change');
             test.assertEqual(this.testChange.getChangeType(), this.testChangeType,
-                "Assert .changeType was set correctly");
+                'Assert .changeType was set correctly');
         }
     };
 
@@ -77,6 +77,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(changeInstantiationTest).with(
-        test().name("Change - instantiation test")
+        test().name('Change - instantiation test')
     );
 });

@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ForInParallel = Class.extend(IterableFlow, {
 
-        _name: "ForInParallel",
+        _name: 'ForInParallel',
 
 
         //-------------------------------------------------------------------------------

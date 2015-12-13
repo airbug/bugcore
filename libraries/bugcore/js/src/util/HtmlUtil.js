@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -42,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var HtmlUtil = Class.extend(Obj, {
-        _name: "HtmlUtil"
+        _name: 'HtmlUtil'
     });
 
 
@@ -80,7 +80,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     HtmlUtil.stringToHtml = function(value) {
         var args = ArgUtil.process(arguments, [
-            {name: "value", optional: false, type: "string"}
+            {name: 'value', optional: false, type: 'string'}
         ]);
         value       = args.value;
         var html    = HtmlUtil.escapeHtml(value);

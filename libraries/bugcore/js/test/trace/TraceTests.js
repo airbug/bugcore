@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -48,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
     // BugYarn
     //-------------------------------------------------------------------------------
 
-    bugyarn.registerWeaver("testTrace", function(yarn, args) {
+    bugyarn.registerWeaver('testTrace', function(yarn, args) {
         return new Trace(args[0], args[1]);
     });
 
@@ -63,9 +63,9 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
-            this.testName   = "testName";
-            this.testStack  = "testStack";
+        setup: function() {
+            this.testName   = 'testName';
+            this.testStack  = 'testStack';
             this.testTrace  = new Trace(this.testStack, this.testName);
         },
 
@@ -75,11 +75,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testTrace, Trace),
-                "Assert instance of Trace");
+                'Assert instance of Trace');
             test.assertEqual(this.testTrace.getName(), this.testName,
-                "Assert .name was set correctly");
+                'Assert .name was set correctly');
             test.assertEqual(this.testTrace.getStack(), this.testStack,
-                "Assert .stack was set correctly");
+                'Assert .stack was set correctly');
         }
     };
 
@@ -89,6 +89,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(traceInstantiationTest).with(
-        test().name("Trace - instantiation test")
+        test().name('Trace - instantiation test')
     );
 });

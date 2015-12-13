@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -65,7 +65,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.hashTable.getCount(), 0,
-                "Assert HashTable count is 0 after instantiation");
+                'Assert HashTable count is 0 after instantiation');
         }
     };
 
@@ -92,15 +92,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.keyArray),
-                "Assert value returned from toKeyArray is an array");
+                'Assert value returned from toKeyArray is an array');
             test.assertEqual(this.keyArray.length, 3,
-                "Assert key array length is 3");
+                'Assert key array length is 3');
             test.assertTrue((this.keyArray.indexOf('key1') >= 0),
-                "Assert key1 is in the key array");
+                'Assert key1 is in the key array');
             test.assertTrue((this.keyArray.indexOf('key2') >= 0),
-                "Assert key2 is in the key array");
+                'Assert key2 is in the key array');
             test.assertTrue((this.keyArray.indexOf('key3') >= 0),
-                "Assert key3 is in the key array");
+                'Assert key3 is in the key array');
         }
     };
 
@@ -127,15 +127,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isArray(this.valueArray),
-                "Assert value returned from toValueArray is an array");
+                'Assert value returned from toValueArray is an array');
             test.assertEqual(this.valueArray.length, 3,
-                "Assert value array length is 3");
+                'Assert value array length is 3');
             test.assertTrue((this.valueArray.indexOf('value1') >= 0),
-                "Assert value1 is in the value array");
+                'Assert value1 is in the value array');
             test.assertTrue((this.valueArray.indexOf('value2') >= 0),
-                "Assert value2 is in the value array");
+                'Assert value2 is in the value array');
             test.assertTrue((this.valueArray.indexOf('value3') >= 0),
-                "Assert value3 is in the value array");
+                'Assert value3 is in the value array');
         }
     };
 
@@ -145,12 +145,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(hashTableInstantiationTest).with(
-        test().name("HashTable - instantiation test")
+        test().name('HashTable - instantiation test')
     );
     bugmeta.tag(hashTableToKeyArrayTest).with(
-        test().name("HashTable - #toKeyArray test")
+        test().name('HashTable - #toKeyArray test')
     );
     bugmeta.tag(hashTableToValueArrayTest).with(
-        test().name("HashTable - #toValueArray test")
+        test().name('HashTable - #toValueArray test')
     );
 });

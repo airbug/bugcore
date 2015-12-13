@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -68,11 +68,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.eventDispatcherWithoutTarget.getParentPropagator(), null,
-                "Assert parentPropagator defaults to null");
+                'Assert parentPropagator defaults to null');
             test.assertEqual(this.eventDispatcherWithoutTarget.getTarget(), this.eventDispatcherWithoutTarget,
-                "Assert dispatcher target is set to itself if no target is passed in during instantiation");
+                'Assert dispatcher target is set to itself if no target is passed in during instantiation');
             test.assertEqual(this.eventDispatcherWithTarget.getTarget(), this.testTarget,
-                "Assert dispatcher target is set to the target passed in during instantiation");
+                'Assert dispatcher target is set to the target passed in during instantiation');
         }
     };
 
@@ -88,12 +88,12 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.eventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
 
             this.calledVar = false;
-            this.testContextVar = "some value";
+            this.testContextVar = 'some value';
             this.testListenerContext = {
                 testContextVar: this.testContextVar
             };
@@ -108,17 +108,17 @@ require('bugpack').context("*", function(bugpack) {
             this.testListenerFunction = function(event) {
                 _this.calledVar = true;
                 test.assertEqual(this.testContextVar, _this.testContextVar,
-                    "Assert the listener function was called in the listener context");
+                    'Assert the listener function was called in the listener context');
                 test.assertEqual(event.getType(), _this.testEventType,
-                    "Assert event type received was the event type published");
+                    'Assert event type received was the event type published');
                 test.assertEqual(event.getData(), _this.testEventData,
-                    "Assert event data received was the event data published");
+                    'Assert event data received was the event data published');
                 test.assertEqual(event.getTarget(), _this.eventDispatcher,
-                    "Assert event target is the dispatcher that dispatched the event");
+                    'Assert event target is the dispatcher that dispatched the event');
             };
             this.eventDispatcher.addEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
             this.eventDispatcher.dispatchEvent(this.testEvent);
-            test.assertTrue(this.calledVar, "Assert listener function was called.");
+            test.assertTrue(this.calledVar, 'Assert listener function was called.');
         }
     };
 
@@ -134,8 +134,8 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.eventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.calledVar = false;
         },
@@ -149,15 +149,15 @@ require('bugpack').context("*", function(bugpack) {
             this.testListenerFunction = function(event) {
                 _this.calledVar = true;
                 test.assertEqual(event.getType(), _this.testEventType,
-                    "Assert event type received was the event type published");
+                    'Assert event type received was the event type published');
                 test.assertEqual(event.getData(), _this.testEventData,
-                    "Assert event data received was the event data published");
+                    'Assert event data received was the event data published');
                 test.assertEqual(event.getTarget(), _this.eventDispatcher,
-                    "Assert event target is the dispatcher that dispatched the event");
+                    'Assert event target is the dispatcher that dispatched the event');
             };
             this.eventDispatcher.addEventListener(this.testEventType, this.testListenerFunction);
             this.eventDispatcher.dispatchEvent(this.testEvent);
-            test.assertTrue(this.calledVar, "Assert listener function was called.");
+            test.assertTrue(this.calledVar, 'Assert listener function was called.');
         }
     };
 
@@ -173,17 +173,17 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testChildEventDispatcher = new EventDispatcher();
             this.testParentEventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.testBubbles = false;
             this.childCalledVar = false;
             var _this = this;
-            this.testChildListenerFunction = function(event) {
+            this.testChildListenerFunction = function() {
                 _this.childCalledVar = true;
             };
             this.parentCalledVar = false;
-            this.testParentListenerFunction = function(event) {
+            this.testParentListenerFunction = function() {
                 _this.parentCalledVar = true;
             };
         },
@@ -198,9 +198,9 @@ require('bugpack').context("*", function(bugpack) {
             this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
             this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
             test.assertTrue(this.childCalledVar,
-                "Assert listener function on child dispatcher was called when bubbles is false.");
+                'Assert listener function on child dispatcher was called when bubbles is false.');
             test.assertFalse(this.parentCalledVar,
-                "Assert listener function on parent dispatcher was not called when bubbles is false.");
+                'Assert listener function on parent dispatcher was not called when bubbles is false.');
         }
     };
 
@@ -217,16 +217,16 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testChildEventDispatcher = new EventDispatcher();
             this.testParentEventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.testBubbles = true;
             this.childCalledVar = false;
-            this.testChildListenerFunction = function(event) {
+            this.testChildListenerFunction = function() {
                 _this.childCalledVar = true;
             };
             this.parentCalledVar = false;
-            this.testParentListenerFunction = function(event) {
+            this.testParentListenerFunction = function() {
                 _this.parentCalledVar = true;
             };
         },
@@ -241,9 +241,9 @@ require('bugpack').context("*", function(bugpack) {
             this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
             this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
             test.assertTrue(this.childCalledVar,
-                "Assert listener function on child dispatcher was called when bubbles is true.");
+                'Assert listener function on child dispatcher was called when bubbles is true.');
             test.assertTrue(this.parentCalledVar,
-                "Assert listener function on parent dispatcher was called when bubbles is true.");
+                'Assert listener function on parent dispatcher was called when bubbles is true.');
         }
     };
 
@@ -260,8 +260,8 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testChildEventDispatcher = new EventDispatcher();
             this.testParentEventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.testBubbles = true;
             this.childCalledVar = false;
@@ -270,7 +270,7 @@ require('bugpack').context("*", function(bugpack) {
                 event.stopPropagation();
             };
             this.parentCalledVar = false;
-            this.testParentListenerFunction = function(event) {
+            this.testParentListenerFunction = function() {
                 _this.parentCalledVar = true;
             };
         },
@@ -285,10 +285,10 @@ require('bugpack').context("*", function(bugpack) {
             this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
             this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
             test.assertTrue(this.childCalledVar,
-                "Assert listener function on child dispatcher was called");
+                'Assert listener function on child dispatcher was called');
             test.assertFalse(this.parentCalledVar,
-                "Assert listener function on parent dispatcher was not called when stopPropagation was called on a child " +
-                    "EventDispatcher");
+                'Assert listener function on parent dispatcher was not called when stopPropagation was called on a child ' +
+                    'EventDispatcher');
         }
     };
 
@@ -306,9 +306,9 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function() {
             this.eventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
+            this.testEventType = 'testEventType';
             this.testListenerContext = {};
-            this.testListenerFunction = function(event) {};
+            this.testListenerFunction = function() {};
         },
 
 
@@ -320,14 +320,14 @@ require('bugpack').context("*", function(bugpack) {
             var hasListenerAfterAdd = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction,
                 this.testListenerContext);
             test.assertTrue(hasListenerAfterAdd,
-                "Assert hasEventListener returns true after adding an event listener.");
+                'Assert hasEventListener returns true after adding an event listener.');
 
             this.eventDispatcher.removeEventListener(this.testEventType, this.testListenerFunction,
                 this.testListenerContext);
             var hasListenerAfterRemove = this.eventDispatcher.hasEventListener(this.testEventType,
                 this.testListenerFunction, this.testListenerContext);
             test.assertFalse(hasListenerAfterRemove,
-                "Assert hasEventListener returns false after removing the event listener.");
+                'Assert hasEventListener returns false after removing the event listener.');
         }
     };
 
@@ -344,11 +344,11 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.callCount = 0;
             this.eventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
-            this.testEventData = "testEventData";
+            this.testEventType = 'testEventType';
+            this.testEventData = 'testEventData';
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.testListenerContext = {};
-            this.testListenerFunction = function(event) {
+            this.testListenerFunction = function() {
                 _this.callCount++;
             };
         },
@@ -362,21 +362,21 @@ require('bugpack').context("*", function(bugpack) {
             var hasListenerAfterAdd = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction,
                 this.testListenerContext);
             test.assertTrue(hasListenerAfterAdd,
-                "Assert the eventDispatcher has the eventListener after it is added via the onceOn method.");
+                'Assert the eventDispatcher has the eventListener after it is added via the onceOn method.');
             test.assertEqual(this.callCount, 0,
-                "Assert onceOn listener function has not been called before the event has been dispatched");
+                'Assert onceOn listener function has not been called before the event has been dispatched');
 
             this.eventDispatcher.dispatchEvent(this.testEvent);
             test.assertEqual(this.callCount, 1,
-                "Assert onceOn listener function has been called once");
+                'Assert onceOn listener function has been called once');
 
             this.eventDispatcher.dispatchEvent(this.testEvent);
             test.assertEqual(this.callCount, 1,
-                "Assert onceOn listener function has only been called once");
+                'Assert onceOn listener function has only been called once');
 
             var hasEventListener = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
             test.assertFalse(hasEventListener,
-                "Assert that the event dispatcher no longer has the event listener registered");
+                'Assert that the event dispatcher no longer has the event listener registered');
         }
     };
 
@@ -394,13 +394,13 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.callCount = 0;
             this.eventDispatcher = new EventDispatcher();
-            this.testEventType = "testEventType";
+            this.testEventType = 'testEventType';
             this.testEventData = {
-                key: "testEventData"
+                key: 'testEventData'
             };
             this.testEvent = new Event(this.testEventType, this.testEventData);
             this.testListenerContext = {};
-            this.testListenerFunction = function(event) {
+            this.testListenerFunction = function() {
                 _this.callCount++;
             };
         },
@@ -412,25 +412,25 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.eventDispatcher
                 .on(this.testEventType)
-                .where("data.key")
+                .where('data.key')
                 .in([this.testEventData.key])
                 .call(this.testListenerFunction, this.testListenerContext);
 
             var hasListenerAfterAdd = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction,
                 this.testListenerContext);
             test.assertTrue(hasListenerAfterAdd,
-                "Assert the eventDispatcher has the eventListener after it is added with an EventQueryListener.");
+                'Assert the eventDispatcher has the eventListener after it is added with an EventQueryListener.');
             test.assertEqual(this.callCount, 0,
-                "Assert EventQueryListener function has not been called before the event has been dispatched");
+                'Assert EventQueryListener function has not been called before the event has been dispatched');
 
             this.eventDispatcher.dispatchEvent(this.testEvent);
             test.assertEqual(this.callCount, 1,
-                "Assert EventQueryListener function has been called once");
+                'Assert EventQueryListener function has been called once');
 
             this.eventDispatcher.removeEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
             var hasEventListener = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
             test.assertFalse(hasEventListener,
-                "Assert that the event dispatcher no longer has the EventQueryListener registered");
+                'Assert that the event dispatcher no longer has the EventQueryListener registered');
         }
     };
 
@@ -440,30 +440,30 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(eventDispatcherInstantiationTest).with(
-        test().name("EventDispatcher instantiation test")
+        test().name('EventDispatcher instantiation test')
     );
     bugmeta.tag(eventDispatcherSimpleAddEventListenerDispatchEventTest).with(
-        test().name("EventDispatcher simple add event listener and dispatch event test")
+        test().name('EventDispatcher simple add event listener and dispatch event test')
     );
     bugmeta.tag(eventDispatcherAddAnonymousEventListenerDispatchEventTest).with(
-        test().name("EventDispatcher add anonymous event listener and dispatch event test")
+        test().name('EventDispatcher add anonymous event listener and dispatch event test')
     );
     bugmeta.tag(eventDispatcherDispatchEventBubblesFalseTest).with(
-        test().name("EventDispatcher dispatch event with bubbles false test")
+        test().name('EventDispatcher dispatch event with bubbles false test')
     );
     bugmeta.tag(eventDispatcherDispatchEventBubblesTrueTest).with(
-        test().name("EventDispatcher dispatch event with bubbles true test")
+        test().name('EventDispatcher dispatch event with bubbles true test')
     );
     bugmeta.tag(eventDispatcherDispatchEventStopPropagationTest).with(
-        test().name("EventDispatcher dispatch event stopPropagation test")
+        test().name('EventDispatcher dispatch event stopPropagation test')
     );
     bugmeta.tag(eventDispatcherSimpleAddAndRemoveEventListenerTest).with(
-        test().name("EventDispatcher simple add and remove event listener test")
+        test().name('EventDispatcher simple add and remove event listener test')
     );
     bugmeta.tag(eventDispatcherOnceOnTest).with(
-        test().name("EventDispatcher #onceOn test")
+        test().name('EventDispatcher #onceOn test')
     );
     bugmeta.tag(eventDispatcherSimpleEventQueryListenerAddAndRemoveTest).with(
-        test().name("EventDispatcher - EventQueryListener add and remove test")
+        test().name('EventDispatcher - EventQueryListener add and remove test')
     );
 });

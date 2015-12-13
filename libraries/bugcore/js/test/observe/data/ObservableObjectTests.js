@@ -26,7 +26,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -75,7 +75,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isObject(this.testObservableObject.getObservedObject()),
-                "Assert ObservableObject.observedObject defaults to an object")
+                'Assert ObservableObject.observedObject defaults to an object');
         }
     };
 
@@ -89,7 +89,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue              = "testValue";
+            this.testValue              = 'testValue';
             this.testObject             = {
                 someProperty: this.testValue
             };
@@ -102,9 +102,9 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(TypeUtil.isObject(this.testObservableObject.getObservedObject()),
-                "Assert ObservableObject.observedObject is an object");
+                'Assert ObservableObject.observedObject is an object');
             test.assertEqual(this.testObservableObject.getObservedObject().someProperty, this.testValue,
-                "Assert that the object was set correctly");
+                'Assert that the object was set correctly');
         }
     };
 
@@ -120,26 +120,26 @@ require('bugpack').context("*", function(bugpack) {
         setup: function(test) {
             var _this                   = this;
             this.testObject             = {};
-            this.testPropertyName       = "testPropertyName";
-            this.testPropertyValue      = "testPropertyValue";
+            this.testPropertyName       = 'testPropertyName';
+            this.testPropertyValue      = 'testPropertyValue';
             this.testObservableObject   = new ObservableObject(this.testObject);
             this.testObserver           = {
                 observeObservation: function(observation) {
                     test.assertTrue(Class.doesExtend(observation, Observation),
-                        "Assert that observeObservation receives an Observation");
+                        'Assert that observeObservation receives an Observation');
                     var change = /** @type {SetPropertyChange} */(observation.getChange());
                     test.assertTrue(Class.doesExtend(change, SetPropertyChange),
-                        "Assert that the change observed is a SetPropertyChange");
+                        'Assert that the change observed is a SetPropertyChange');
                     test.assertEqual(change.getPropertyName(), _this.testPropertyName,
-                        "Assert change.getPropertyName() returns the testPropertyName");
+                        'Assert change.getPropertyName() returns the testPropertyName');
                     test.assertEqual(change.getPropertyValue(), _this.testPropertyValue,
-                        "Assert change.getPropertyValue() returns the testPropertyValue");
+                        'Assert change.getPropertyValue() returns the testPropertyValue');
                     test.assertEqual(change.getPreviousValue(), undefined,
-                        "Assert change.getPreviousValue() returns the undefined")
+                        'Assert change.getPreviousValue() returns the undefined');
                 }
             };
             this.testObserverSpy = spyOnObject(this.testObserver);
-            this.testObservableObject.observe(SetPropertyChange.CHANGE_TYPE, "*", this.testObserver.observeObservation, this.testObserver);
+            this.testObservableObject.observe(SetPropertyChange.CHANGE_TYPE, '*', this.testObserver.observeObservation, this.testObserver);
         },
 
 
@@ -148,10 +148,10 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.testObservableObject.setProperty(this.testPropertyName, this.testPropertyValue);
-            test.assertTrue(this.testObserverSpy.getSpy("observeObservation").wasCalled(),
-                "Assert that observeObservation was called");
+            test.assertTrue(this.testObserverSpy.getSpy('observeObservation').wasCalled(),
+                'Assert that observeObservation was called');
             test.assertEqual(this.testObservableObject.getProperty(this.testPropertyName), this.testPropertyValue,
-                "Assert that getProperty() returns the testPropertyValue");
+                'Assert that getProperty() returns the testPropertyValue');
         }
     };
 
@@ -165,23 +165,22 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function(test) {
-            var _this                   = this;
             this.testObject             = {};
-            this.testPropertyName       = "testPropertyName";
-            this.testPropertyValue      = "testPropertyValue";
+            this.testPropertyName       = 'testPropertyName';
+            this.testPropertyValue      = 'testPropertyValue';
             this.testObject[this.testPropertyName] = this.testPropertyValue;
             this.testObservableObject   = new ObservableObject(this.testObject);
             this.testObserver           = {
                 observeObservation: function(observation) {
                     test.assertTrue(Class.doesExtend(observation, Observation),
-                        "Assert that observeObservation receives an Observation");
+                        'Assert that observeObservation receives an Observation');
                     var change = /** @type {ClearChange} */(observation.getChange());
                     test.assertTrue(Class.doesExtend(change, ClearChange),
-                        "Assert that the change observed is a ClearChange");
+                        'Assert that the change observed is a ClearChange');
                 }
             };
             this.testObserverSpy = spyOnObject(this.testObserver);
-            this.testObservableObject.observe(ClearChange.CHANGE_TYPE, "*", this.testObserver.observeObservation, this.testObserver);
+            this.testObservableObject.observe(ClearChange.CHANGE_TYPE, '*', this.testObserver.observeObservation, this.testObserver);
         },
 
 
@@ -190,12 +189,12 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testObservableObject.getProperty(this.testPropertyName), this.testPropertyValue,
-                "Sanity check that property value is set correctly");
+                'Sanity check that property value is set correctly');
             this.testObservableObject.clearProperties();
-            test.assertTrue(this.testObserverSpy.getSpy("observeObservation").wasCalled(),
-                "Assert that observeObservation was called");
+            test.assertTrue(this.testObserverSpy.getSpy('observeObservation').wasCalled(),
+                'Assert that observeObservation was called');
             test.assertEqual(this.testObservableObject.getProperty(this.testPropertyName), undefined,
-                "Assert that getProperty() returns undefined");
+                'Assert that getProperty() returns undefined');
         }
     };
 
@@ -205,15 +204,15 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(observableObjectInstantiationTest).with(
-        test().name("ObservableObject - instantiation test")
+        test().name('ObservableObject - instantiation test')
     );
     bugmeta.tag(observableObjectInstantiationWithParametersTest).with(
-        test().name("ObservableObject - instantiation with parameters test")
+        test().name('ObservableObject - instantiation with parameters test')
     );
     bugmeta.tag(observableObjectSetPropertyTest).with(
-        test().name("ObservableObject - #setProperty test")
+        test().name('ObservableObject - #setProperty test')
     );
     bugmeta.tag(observableObjectClearPropertiesTest).with(
-        test().name("ObservableObject - #clearProperties test")
+        test().name('ObservableObject - #clearProperties test')
     );
 });

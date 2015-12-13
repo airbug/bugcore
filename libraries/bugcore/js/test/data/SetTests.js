@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -66,13 +66,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(this.testSet.isEmpty(),
-                "Assert that the Set is empty");
+                'Assert that the Set is empty');
             test.assertTrue(Class.doesExtend(this.testSet, Set),
-                "Assert that the testSet extends Set");
+                'Assert that the testSet extends Set');
         }
     };
     bugmeta.tag(setInstantiationTest).with(
-        test().name("Set instantiation test")
+        test().name('Set instantiation test')
     );
 
     /**
@@ -97,13 +97,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(this.testSet.contains(this.testObject),
-                "Assert that the Set contains the testObject");
+                'Assert that the Set contains the testObject');
             test.assertTrue(this.testSetClone.contains(this.testObject),
-                "Assert that the cloned Set contains the testObject");
+                'Assert that the cloned Set contains the testObject');
         }
     };
     bugmeta.tag(setShallowCloneTest).with(
-        test().name("Set shallow clone test")
+        test().name('Set shallow clone test')
     );
 
     /**
@@ -118,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
         setup: function() {
             this.testSet = new Set();
             this.testObject = {
-                key: "value"
+                key: 'value'
             };
             this.testSet.add(this.testObject);
             this.testSetClone = this.testSet.clone(true);
@@ -131,19 +131,19 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var testObjectClone = this.testSetClone.toArray()[0];
             test.assertTrue(this.testSet.contains(this.testObject),
-                "Assert that the Set contains the testObject");
+                'Assert that the Set contains the testObject');
             test.assertFalse(this.testSet.contains(testObjectClone),
-                "Assert that the Set does not contain the cloned object");
+                'Assert that the Set does not contain the cloned object');
             test.assertTrue(this.testSetClone.contains(testObjectClone),
-                "Assert that the cloned Set contains the testObjectClone");
+                'Assert that the cloned Set contains the testObjectClone');
             test.assertFalse(this.testSetClone.contains(this.testObject),
-                "Assert that the cloned Set contains the testObjectClone");
-            test.assertEqual(testObjectClone.key, "value",
-                "Assert that the cloned object has key:'value'");
+                'Assert that the cloned Set contains the testObjectClone');
+            test.assertEqual(testObjectClone.key, 'value',
+                'Assert that the cloned object has key:"value"');
         }
     };
     bugmeta.tag(setDeepCloneTest).with(
-        test().name("Set - deep clone test")
+        test().name('Set - deep clone test')
     );
 
     /**
@@ -157,8 +157,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue1     = "value1";
-            this.testValue2     = "value2";
+            this.testValue1     = 'value1';
+            this.testValue2     = 'value2';
             this.set            = new Set();
         },
 
@@ -169,25 +169,25 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var result1 = this.set.add(this.testValue1);
             test.assertTrue(this.set.contains(this.testValue1),
-                "Assert first item added to the set is contained within the set.");
+                'Assert first item added to the set is contained within the set.');
             test.assertEqual(this.set.getCount(), 1,
-                "Assert count is 1 after adding 1 item.");
+                'Assert count is 1 after adding 1 item.');
             test.assertTrue(result1,
-                "Assert that true was returned when adding value1");
+                'Assert that true was returned when adding value1');
 
             var result2 = this.set.add(this.testValue2);
             test.assertTrue(this.set.contains(this.testValue1),
-                "Assert first item added to the list is still contained within the set after adding a second item.");
+                'Assert first item added to the list is still contained within the set after adding a second item.');
             test.assertTrue(this.set.contains(this.testValue2),
-                "Assert second item added to the set is contained within the set.");
+                'Assert second item added to the set is contained within the set.');
             test.assertEqual(this.set.getCount(), 2,
-                "Assert count is 2 after adding 2 items.");
+                'Assert count is 2 after adding 2 items.');
             test.assertTrue(result2,
-                "Assert that true was returned when adding value2");
+                'Assert that true was returned when adding value2');
         }
     };
     bugmeta.tag(setAddTest).with(
-        test().name("Set add test")
+        test().name('Set add test')
     );
 
 
@@ -208,25 +208,25 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var result1 = this.set.add("value1");
+            var result1 = this.set.add('value1');
             test.assertTrue(this.set.contains('value1'),
-                "Assert first item added to the set is contained within the set.");
+                'Assert first item added to the set is contained within the set.');
             test.assertEqual(this.set.getCount(), 1,
-                "Assert count is 1 after adding 1 item.");
+                'Assert count is 1 after adding 1 item.');
             test.assertTrue(result1,
-                "Assert that true was returned when adding value1");
+                'Assert that true was returned when adding value1');
 
-            var result2 = this.set.add("value1");
+            var result2 = this.set.add('value1');
             test.assertEqual(this.set.getCount(), 1,
-                "Assert count is still 1 after adding the same item a second time.");
-            test.assertTrue(this.set.contains("value1"),
-                "Assert set still contains the item after adding it twice.");
+                'Assert count is still 1 after adding the same item a second time.');
+            test.assertTrue(this.set.contains('value1'),
+                'Assert set still contains the item after adding it twice.');
             test.assertFalse(result2,
-                "Assert that false was returned when adding value1 again");
+                'Assert that false was returned when adding value1 again');
         }
     };
     bugmeta.tag(setAddRepeatTest).with(
-        test().name("Set add repeat test")
+        test().name('Set add repeat test')
     );
 
 
@@ -266,17 +266,17 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.set.add(this.instance1);
             test.assertTrue(this.set.contains(this.instance1),
-                "Assert instance 1 is contained within the set after adding it to the set.");
-            test.assertEqual(this.set.getCount(), 1, "Assert count is 1 after adding instance 1.");
+                'Assert instance 1 is contained within the set after adding it to the set.');
+            test.assertEqual(this.set.getCount(), 1, 'Assert count is 1 after adding instance 1.');
             test.assertTrue(this.set.contains(this.instance2),
-                "Assert contains returns true for instance 2 even though instance 2 hasn't been added but is equal to instance1.");
+                'Assert contains returns true for instance 2 even though instance 2 hasn\'t been added but is equal to instance1.');
 
             this.set.add(this.instance2);
             test.assertEqual(this.set.getCount(), 1, 'Assert count is still 1 after adding instance 2.');
         }
     };
     bugmeta.tag(setAddEqualObjectsTest).with(
-        test().name("Set add equal objects test")
+        test().name('Set add equal objects test')
     );
 
 
@@ -322,20 +322,20 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.set.add(this.instance1);
             test.assertEqual(this.set.contains(this.instance1), true,
-                "Assert sanity check that set contains instance1");
+                'Assert sanity check that set contains instance1');
             test.assertEqual(this.set.contains(this.instance2), false,
-                "Assert set does not contain instance2 since instance1 and instance2 are not equal");
+                'Assert set does not contain instance2 since instance1 and instance2 are not equal');
 
             this.set.add(this.instance2);
             test.assertEqual(this.set.getCount(), 2,
-                "Set count is 2 after adding instance2");
+                'Set count is 2 after adding instance2');
             test.assertEqual(this.set.contains(this.instance1), true,
-                "Assert set contains instance1");
+                'Assert set contains instance1');
             test.assertEqual(this.set.contains(this.instance2), true,
-                "Assert set contains instance2");
+                'Assert set contains instance2');
         }
     };
     bugmeta.tag(setContainsNonEqualObjectsWithSameHashCodesTest).with(
-        test().name("Set contains non equal objects that have the same hashCodes test")
+        test().name('Set contains non equal objects that have the same hashCodes test')
     );
 });

@@ -16,7 +16,6 @@
 //@Require('HashTable')
 //@Require('IKeyValueIterable')
 //@Require('IMap')
-//@Require('IObjectable')
 //@Require('Obj')
 //@Require('ObjectUtil')
 //@Require('TypeUtil')
@@ -26,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -37,7 +36,6 @@ require('bugpack').context("*", function(bugpack) {
     var HashTable           = bugpack.require('HashTable');
     var IKeyValueIterable   = bugpack.require('IKeyValueIterable');
     var IMap                = bugpack.require('IMap');
-    var IObjectable         = bugpack.require('IObjectable');
     var Obj                 = bugpack.require('Obj');
     var ObjectUtil          = bugpack.require('ObjectUtil');
     var TypeUtil            = bugpack.require('TypeUtil');
@@ -56,12 +54,11 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      * @implements {IKeyValueIterable.<K, V>}
      * @implements {IMap.<K, V>}
-     * @implements {IObjectable}
      * @template K, V
      */
     var Map = Class.extend(Obj, /** @lends {Map.prototype} */ {
 
-        _name: "Map",
+        _name: 'Map',
 
 
         //-------------------------------------------------------------------------------

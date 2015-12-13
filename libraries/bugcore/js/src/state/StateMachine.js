@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var StateMachine = Class.extend(EventDispatcher, /** @lends {StateMachine.prototype} */{
 
-        _name: "StateMachine",
+        _name: 'StateMachine',
 
 
         //-------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         changeState: function(state) {
             if (!this.availableStateSet.contains(state)) {
-                throw new Exception("StateDoesNotExist", {}, "state '" + state + "' does not exist in the StateMachine");
+                throw new Exception('StateDoesNotExist', {}, 'state "' + state + '" does not exist in the StateMachine');
             }
             if (this.currentState !== state) {
                 var previousState = this.currentState;

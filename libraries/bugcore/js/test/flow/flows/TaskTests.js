@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('Task')
 //@Require('Throwables')
 //@Require('bugmeta.BugMeta')
@@ -22,13 +21,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var Task        = bugpack.require('Task');
     var Throwables  = bugpack.require('Throwables');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
@@ -62,17 +60,17 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this = this;
-            this.arg1 = "arg1";
-            this.arg2 = "arg2";
+            this.arg1 = 'arg1';
+            this.arg2 = 'arg2';
             this.taskContext = {
-                contextCheck: "contextCheck",
+                contextCheck: 'contextCheck',
                 taskMethod: function(flow, arg1, arg2) {
                     test.assertEqual(this.contextCheck, _this.taskContext.contextCheck,
-                        "Assert taskMethod was executed within the taskContext");
+                        'Assert taskMethod was executed within the taskContext');
                     test.assertEqual(arg1, _this.arg1,
-                        "Assert arg1 was 'arg1'");
+                        'Assert arg1 was "arg1"');
                     test.assertEqual(arg2, _this.arg2,
-                        "Assert arg2 was 'arg2'");
+                        'Assert arg2 was "arg2"');
                     flow.complete();
                 }
             };
@@ -86,7 +84,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.task.execute([this.arg1, this.arg2], function() {
-                test.assertTrue(true, "Task execute callback was executed");
+                test.assertTrue(true, 'Task execute callback was executed');
                 test.completeTest();
             });
         }
@@ -102,7 +100,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             var _this = this;
             this.taskMethodExecuted = false;
             this.taskMethod = function(flow) {
@@ -119,7 +117,7 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.task.execute();
             test.assertTrue(this.taskMethodExecuted,
-                "Assert task method was executed");
+                'Assert task method was executed');
         }
     };
 
@@ -152,9 +150,9 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             this.task.execute(function() {
-                test.assertTrue(_this.task.hasCompleted(), "Assert Task is in the completed state");
-                test.assertFalse(_this.task.isResolving(), "Assert Task is not in the resolving state");
-                test.assertFalse(_this.task.hasErrored(), "Assert Task is not in the errored state");
+                test.assertTrue(_this.task.hasCompleted(), 'Assert Task is in the completed state');
+                test.assertFalse(_this.task.isResolving(), 'Assert Task is not in the resolving state');
+                test.assertFalse(_this.task.hasErrored(), 'Assert Task is not in the errored state');
                 test.completeTest();
             });
         }
@@ -176,7 +174,7 @@ require('bugpack').context("*", function(bugpack) {
 
         setup: function(test) {
             var _this = this;
-            this.testException = Throwables.exception("TestException");
+            this.testException = Throwables.exception('TestException');
             this.taskMethod = function(flow) {
                 flow.complete(_this.testException);
             };
@@ -192,10 +190,10 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.task.execute(function(throwable) {
                 test.assertEqual(throwable, _this.testException,
-                    "Assert throwable passed to execute callback is testException");
-                test.assertFalse(_this.task.hasCompleted(), "Assert Task is NOT in the completed state");
-                test.assertFalse(_this.task.isResolving(), "Assert Task is not in the resolving state");
-                test.assertTrue(_this.task.hasErrored(), "Assert Task is in the errored state");
+                    'Assert throwable passed to execute callback is testException');
+                test.assertFalse(_this.task.hasCompleted(), 'Assert Task is NOT in the completed state');
+                test.assertFalse(_this.task.isResolving(), 'Assert Task is not in the resolving state');
+                test.assertTrue(_this.task.hasErrored(), 'Assert Task is in the errored state');
                 test.completeTest();
             });
         }
@@ -230,9 +228,9 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             this.task.execute(function() {
-                test.assertFalse(_this.task.hasCompleted(), "Assert Task is NOT in the completed state");
-                test.assertFalse(_this.task.isResolving(), "Assert Task is NOT in the resolving state");
-                test.assertTrue(_this.task.hasErrored(), "Assert Task IS in the errored state");
+                test.assertFalse(_this.task.hasCompleted(), 'Assert Task is NOT in the completed state');
+                test.assertFalse(_this.task.isResolving(), 'Assert Task is NOT in the resolving state');
+                test.assertTrue(_this.task.hasErrored(), 'Assert Task IS in the errored state');
                 test.completeTest();
             });
         }
@@ -247,10 +245,10 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             var _this = this;
             this.taskMethodExecuted = false;
-            this.testReturnValue  = "testReturnValue";
+            this.testReturnValue  = 'testReturnValue';
             this.taskMethod = function() {
                 _this.taskMethodExecuted = true;
                 return _this.testReturnValue;
@@ -266,12 +264,12 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.task.execute(function(throwable, value) {
                 test.assertEqual(throwable, null,
-                    "Assert throwable is null");
+                    'Assert throwable is null');
                 test.assertEqual(value, _this.testReturnValue,
-                    "Assert return value was passed to callback")
+                    'Assert return value was passed to callback');
             });
             test.assertTrue(this.taskMethodExecuted,
-                "Assert task method was executed");
+                'Assert task method was executed');
         }
     };
 
@@ -281,21 +279,21 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(taskExecuteTest).with(
-        test().name("Task - #execute test")
+        test().name('Task - #execute test')
     );
     bugmeta.tag(taskExecuteWithoutCallbackTest).with(
-        test().name("Task - #execute without callback test")
+        test().name('Task - #execute without callback test')
     );
     bugmeta.tag(taskCompleteTest).with(
-        test().name("Task - #complete test")
+        test().name('Task - #complete test')
     );
     bugmeta.tag(taskCompleteWithExceptionTest).with(
-        test().name("Task - #complete with Exception test")
+        test().name('Task - #complete with Exception test')
     );
     bugmeta.tag(taskErrorTest).with(
-        test().name("Task - #error test")
+        test().name('Task - #error test')
     );
     bugmeta.tag(taskReturnValueTest).with(
-        test().name("Task - return value test")
+        test().name('Task - return value test')
     );
 });

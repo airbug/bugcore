@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ReduceConsumer = Class.extend(Consumer, {
 
-        _name: "ReduceConsumer",
+        _name: 'ReduceConsumer',
 
 
         //-------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(reduceMethod)) {
                 this.reduceMethod = reduceMethod;
             } else {
-                throw Throwables.illegalArgumentBug("reduceMethod", reduceMethod, "'reduceMethod' must be a function");
+                throw Throwables.illegalArgumentBug('reduceMethod', reduceMethod, '"reduceMethod" must be a function');
             }
             return this;
         },

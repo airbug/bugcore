@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -68,11 +68,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testRateLimiter, RateLimiter),
-                "Assert instances of RateLimiter");
+                'Assert instances of RateLimiter');
             test.assertTrue(this.testRateLimiter.getAcquisitionQueue().isEmpty(),
-                "Assert that the RateLimiter acquisition queue is empty");
+                'Assert that the RateLimiter acquisition queue is empty');
             test.assertEqual(this.testRateLimiter.getPermitsPerSecond(), this.testPermitsPerSecond,
-                "Assert RateLimiter.permitsPerSecond was set correctly");
+                'Assert RateLimiter.permitsPerSecond was set correctly');
         }
     };
 
@@ -102,11 +102,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testRateLimiter.acquire(this.testMethodSpy);
             test.assertTrue(this.testRateLimiter.getAcquisitionQueue().isEmpty(),
-                "Assert acquisition queue is empty");
+                'Assert acquisition queue is empty');
             test.assertTrue(this.testMethodSpy.wasCalled(),
-                "Assert test method was called");
+                'Assert test method was called');
             test.assertTrue(this.testRateLimiter.getLastAcquisitionTime() > Date.now() - 1000,
-                "Assert last acquisition time was within the last second");
+                'Assert last acquisition time was within the last second');
         }
     };
 
@@ -116,9 +116,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(rateLimiterInstantiationTest).with(
-        test().name("RateLimiter - instantiation test")
+        test().name('RateLimiter - instantiation test')
     );
     bugmeta.tag(rateLimiterAcquireFirstPermitTest).with(
-        test().name("RateLimiter - #acquire first permit test")
+        test().name('RateLimiter - #acquire first permit test')
     );
 });

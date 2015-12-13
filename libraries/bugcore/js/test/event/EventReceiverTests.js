@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Event')
 //@Require('EventReceiver')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
@@ -21,13 +20,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Event           = bugpack.require('Event');
     var EventReceiver   = bugpack.require('EventReceiver');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
@@ -68,15 +66,15 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.eventReceiverrWithoutTarget.getParentPropagator(), null,
-                "Assert parentPropagator defaults to null");
+                'Assert parentPropagator defaults to null');
             test.assertEqual(this.eventReceiverrWithoutTarget.getTarget(), this.eventReceiverrWithoutTarget,
-                "Assert eventReceiver target is set to itself if no target is passed in during instantiation");
+                'Assert eventReceiver target is set to itself if no target is passed in during instantiation');
             test.assertEqual(this.eventReceiverWithTarget.getTarget(), this.testTarget,
-                "Assert eventReceiver target is set to the target passed in during instantiation");
+                'Assert eventReceiver target is set to the target passed in during instantiation');
         }
     };
     bugmeta.tag(eventReceiverInstantiationTest).with(
-        test().name("EventReceiver - instantiation test")
+        test().name('EventReceiver - instantiation test')
     );
 
 
@@ -91,7 +89,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testEventType = "testEventType";
+            this.testEventType = 'testEventType';
             this.eventReceiver = new EventReceiver();
             this.testListenerFunction = function() {};
             this.testListenerContext = {};
@@ -104,14 +102,14 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(this.eventReceiver.hasEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext),
-                "Assert eventReceiver has the correct event listener after using the #on function");
+                'Assert eventReceiver has the correct event listener after using the #on function');
 
             this.eventReceiver.off(this.testEventType, this.testListenerFunction, this.testListenerContext);
             test.assertFalse(this.eventReceiver.hasEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext),
-                "Assert eventReceiver no longer has the event listener after using the #off function");
+                'Assert eventReceiver no longer has the event listener after using the #off function');
         }
     };
     bugmeta.tag(eventReceiverOnOffTest).with(
-        test().name("EventReceiver - #on #off test")
+        test().name('EventReceiver - #on #off test')
     );
 });

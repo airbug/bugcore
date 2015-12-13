@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -48,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
     /**
      * This tests
      * 1) Instantiation of a new Event
-     * 2) That the "target" value is null after instantiation since the target is set when the event is dispatched
+     * 2) That the 'target' value is null after instantiation since the target is set when the event is dispatched
      */
     var eventInstantiationTest = {
 
@@ -56,8 +56,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testType = "testEventType";
-            this.testData = "testEventData";
+            this.testType = 'testEventType';
+            this.testData = 'testEventData';
             this.event = new Event(this.testType, this.testData);
         },
 
@@ -67,19 +67,19 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.event, Event),
-                "Assert instance of Event");
+                'Assert instance of Event');
             test.assertEqual(this.event.getClass().getConstructor(), Event,
-                "Assert #getClass#getConstructor returns Event");
+                'Assert #getClass#getConstructor returns Event');
             test.assertEqual(this.event.getBubbles(), true,
-                "Assert event bubbles by default after instantiation");
+                'Assert event bubbles by default after instantiation');
             test.assertEqual(this.event.getData(), this.testData,
-                "Assert event data was set correctly during instantiation");
+                'Assert event data was set correctly during instantiation');
             test.assertEqual(this.event.isPropagationStopped(), false,
-                "Assert propagation is not stopped by default");
+                'Assert propagation is not stopped by default');
             test.assertEqual(this.event.getTarget(), null,
-                "Assert target is null after instantiation");
+                'Assert target is null after instantiation');
             test.assertEqual(this.event.getType(), this.testType,
-                "Assert event type was set correctly during instantiation");
+                'Assert event type was set correctly during instantiation');
         }
     };
 
@@ -89,6 +89,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(eventInstantiationTest).with(
-        test().name("Event instantiation test")
+        test().name('Event instantiation test')
     );
 });

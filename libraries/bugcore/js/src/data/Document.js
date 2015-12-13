@@ -14,7 +14,6 @@
 //@Require('ArgUtil')
 //@Require('Bug')
 //@Require('Class')
-//@Require('IClone')
 //@Require('IDocument')
 //@Require('IList')
 //@Require('IMap')
@@ -28,7 +27,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -37,7 +36,6 @@ require('bugpack').context("*", function(bugpack) {
     var ArgUtil         = bugpack.require('ArgUtil');
     var Bug             = bugpack.require('Bug');
     var Class           = bugpack.require('Class');
-    var IClone          = bugpack.require('IClone');
     var IDocument       = bugpack.require('IDocument');
     var IList           = bugpack.require('IList');
     var IMap            = bugpack.require('IMap');
@@ -59,7 +57,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Document = Class.extend(Obj, {
 
-        _name: "Document",
+        _name: 'Document',
 
 
         //-------------------------------------------------------------------------------
@@ -114,13 +112,6 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @param {*} data
          */
-        mergeData: function(data) {
-            //TODO
-        },
-
-        /**
-         * @param {*} data
-         */
         setData: function(data) {
             this.data = data;
         },
@@ -131,15 +122,15 @@ require('bugpack').context("*", function(bugpack) {
          */
         getPath: function(path) {
             var args = ArgUtil.process(arguments, [
-                {name: "path", optional: false, type: "string"}
+                {name: 'path', optional: false, type: 'string'}
             ]);
             path  = args.path;
-            var pathParts = path.split(".");
+            var pathParts = path.split('.');
             var target = undefined;
             var currentData = this.data;
             for (var i = 0, size = pathParts.length; i < size; i++ ) {
                 var pathPart = pathParts[i];
-                if (pathPart === "") {
+                if (pathPart === '') {
                     target = currentData;
                 } else {
                     if (Class.doesImplement(currentData, IMap)) {
@@ -153,7 +144,7 @@ require('bugpack').context("*", function(bugpack) {
                     }
                 }
 
-                //TODO BRN: implement support for "[somevalue]"
+                //TODO BRN: implement support for '[somevalue]'
             }
             return target;
         },
@@ -163,13 +154,13 @@ require('bugpack').context("*", function(bugpack) {
          * @param {*} value
          */
         setPath: function(path, value) {
-            if (path === "") {
+            if (path === '') {
                 this.data = value;
             } else {
                 if (!TypeUtil.isObject(this.data) && !TypeUtil.isArray(this.data)) {
                     this.data = {};
                 }
-                var pathParts   = path.split(".");
+                var pathParts   = path.split('.');
                 var currentData = this.data;
                 var nextData    = null;
 
@@ -180,23 +171,23 @@ require('bugpack').context("*", function(bugpack) {
                             currentData.put(pathPart, value);
                         } else if (Class.doesImplement(currentData, IList)) {
 
-                            //TODO BRN: implement support for "[someValue]"
+                            //TODO BRN: implement support for '[someValue]'
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported List in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported List in path');
                         } else if (Class.doesImplement(currentData, ISet)) {
 
                             //TODO BRN: Figure out how to support Set
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported Set in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported Set in path');
                         } else if (TypeUtil.isObject(currentData)) {
                             currentData[pathPart] = value;
                         } else if (TypeUtil.isArray(currentData)) {
 
-                            //TODO BRN: implement support for "[someValue]"
+                            //TODO BRN: implement support for '[someValue]'
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported array in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported array in path');
                         } else {
-                            throw new Bug("UnsupportedType", {}, "Unsupported type in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported type in path');
                         }
                     } else {
 
@@ -206,21 +197,21 @@ require('bugpack').context("*", function(bugpack) {
 
                             //TODO BRN: Figure out how to support Set
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported Set in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported Set in path');
                         } else if (Class.doesImplement(currentData, IList)) {
 
-                            //TODO BRN: implement support for "[someValue]"
+                            //TODO BRN: implement support for '[someValue]'
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported List in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported List in path');
                         } else if (TypeUtil.isObject(currentData)) {
                             nextData = currentData[pathPart];
                         } else if (TypeUtil.isArray(currentData)) {
 
-                            //TODO BRN: implement support for "[someValue]"
+                            //TODO BRN: implement support for '[someValue]'
 
-                            throw new Bug("UnsupportedType", {}, "Unsupported array in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported array in path');
                         } else {
-                            throw new Bug("UnsupportedType", {}, "Unsupported type in path");
+                            throw new Bug('UnsupportedType', {}, 'Unsupported type in path');
                         }
 
                         if (!TypeUtil.isObject(nextData)) {

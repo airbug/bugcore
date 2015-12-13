@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var StateEvent = Class.extend(Event, /** @lends {StateEvent.prototype} */{
 
-        _name: "StateEvent",
+        _name: 'StateEvent',
 
 
         //-------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     StateEvent.EventTypes = {
-        STATE_CHANGED: "StateEvent:EventTypes:StateChanged"
+        STATE_CHANGED: 'StateEvent:EventTypes:StateChanged'
     };
 
 

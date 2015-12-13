@@ -14,13 +14,14 @@
 //@Require('Class')
 //@Require('List')
 //@Require('MultiMap')
+//@Require('Obj')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -29,6 +30,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var List        = bugpack.require('List');
     var MultiMap    = bugpack.require('MultiMap');
+    var Obj         = bugpack.require('Obj');
 
 
     //-------------------------------------------------------------------------------
@@ -46,7 +48,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var MultiListMap = Class.extend(MultiMap, /** @lends {MultiListMap.prototype} */{
 
-        _name: "MultiListMap",
+        _name: 'MultiListMap',
 
 
         //-------------------------------------------------------------------------------
@@ -58,12 +60,15 @@ require('bugpack').context("*", function(bugpack) {
          * @return {MultiListMap.<K, V>}
          */
         clone: function(deep) {
-
-            //TODO BRN: Implement "deep" cloning
-
             /** @type {MultiListMap.<K, V>} */
             var cloneMultiListMap = new MultiListMap();
-            cloneMultiListMap.putAll(this);
+            if (deep) {
+                this.forEachValue(function(value, key) {
+                    cloneMultiListMap.put(Obj.clone(key, deep), Obj.clone(value, deep));
+                });
+            } else {
+                cloneMultiListMap.putAll(this);
+            }
             return cloneMultiListMap;
         },
 

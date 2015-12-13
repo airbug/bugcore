@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -40,7 +40,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var StackTraceUtil = Class.extend(Obj, {
-        _name: "StackTraceUtil"
+        _name: 'StackTraceUtil'
     });
 
 
@@ -93,7 +93,7 @@ require('bugpack').context("*", function(bugpack) {
         if (!isCallstackPopulated) { //IE
             callstack = StackTraceUtil.generateStackFromCaller();
         }
-        return callstack.join("\n");
+        return callstack.join('\n');
     };
 
 
@@ -112,14 +112,14 @@ require('bugpack').context("*", function(bugpack) {
             var currentFunction = arguments.callee.caller;
             while (currentFunction) {
                 var fn = currentFunction.toString();
-                var fname = fn.substring(0, fn.indexOf("{")) || 'anonymous';
+                var fname = fn.substring(0, fn.indexOf('{')) || 'anonymous';
                 fname = StringUtil.trim(fname);
                 callstack.push(fname);
                 currentFunction = currentFunction.caller;
             }
         } catch(error) {
             //TODO BRN: Verify this error is from strict mode
-            console.log("Cannot create stack trace in strict mode");
+            throw new Error('Cannot create stack trace in strict mode');
         }
         return callstack;
     };

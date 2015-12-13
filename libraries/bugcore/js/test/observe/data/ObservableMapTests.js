@@ -14,9 +14,6 @@
 //@Require('Class')
 //@Require('Map')
 //@Require('ObservableMap')
-//@Require('PutChange')
-//@Require('TypeUtil')
-//@Require('bugdouble.BugDouble')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 
@@ -25,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,9 +31,6 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var Map             = bugpack.require('Map');
     var ObservableMap   = bugpack.require('ObservableMap');
-    var PutChange       = bugpack.require('PutChange');
-    var TypeUtil        = bugpack.require('TypeUtil');
-    var BugDouble       = bugpack.require('bugdouble.BugDouble');
     var BugMeta         = bugpack.require('bugmeta.BugMeta');
     var TestTag         = bugpack.require('bugunit.TestTag');
 
@@ -46,7 +40,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var bugmeta         = BugMeta.context();
-    var spyOnObject     = BugDouble.spyOnObject;
     var test            = TestTag.test;
 
 
@@ -73,11 +66,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testObservableMap.getObserved(), Map),
-                "Assert ObservableMap.observed defaults to a Map")
+                'Assert ObservableMap.observed defaults to a Map');
         }
     };
     bugmeta.tag(observableMapInstantiationTest).with(
-        test().name("ObservableMap - instantiation test")
+        test().name('ObservableMap - instantiation test')
     );
 
     /**
@@ -90,8 +83,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testKey                = "testKey";
-            this.testValue              = "testValue";
+            this.testKey                = 'testKey';
+            this.testValue              = 'testValue';
             this.testMap                = new Map();
             this.testMap.put(this.testKey, this.testValue);
             this.testObservableMap      = new ObservableMap(this.testMap);
@@ -103,12 +96,12 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testObservableMap.getObserved(), Map),
-                "Assert ObservableMap.observed was set to a Map");
+                'Assert ObservableMap.observed was set to a Map');
             test.assertEqual(this.testObservableMap.getObserved().get(this.testKey), this.testValue,
-                "Assert ObservableMap.observed was set correctly");
+                'Assert ObservableMap.observed was set correctly');
         }
     };
     bugmeta.tag(observableMapInstantiationWithParametersTest).with(
-        test().name("ObservableMap - instantiation with parameters test")
+        test().name('ObservableMap - instantiation with parameters test')
     );
 });

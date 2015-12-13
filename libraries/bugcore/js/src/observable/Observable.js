@@ -26,7 +26,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Observable = Class.extend(ObservationPropagator, {
 
-        _name: "Observable",
+        _name: 'Observable',
 
 
         //-------------------------------------------------------------------------------
@@ -105,10 +105,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         addObserver: function(changeTypes, pathPatterns, observerFunction, observerContext) {
             if (!TypeUtil.isArray(changeTypes) && !TypeUtil.isString(changeTypes)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "changeTypes", changeTypes, "parameter must either be an Array or a string");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'changeTypes', changeTypes, 'parameter must either be an Array or a string');
             }
             if (!TypeUtil.isArray(pathPatterns) && !TypeUtil.isString(pathPatterns)) {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "observationPathPatterns", pathPatterns, "parameter must either be an Array or a string");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, 'observationPathPatterns', pathPatterns, 'parameter must either be an Array or a string');
             }
             this.buildObservers(changeTypes, pathPatterns, observerFunction, observerContext);
         },
@@ -153,7 +153,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {string=} observationPath
          */
         notifyObservers: function(change, observationPath) {
-            observationPath = observationPath || "";
+            observationPath = observationPath || '';
             var observation = this.factoryObservation(change, observationPath);
             observation.setChangingObservable(this);
             observation.setReportingObservable(this);

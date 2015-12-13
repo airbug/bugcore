@@ -25,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -51,7 +51,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ValuesResolver = Class.extend(Obj, {
 
-        _name: "ValuesResolver",
+        _name: 'ValuesResolver',
 
 
         //-------------------------------------------------------------------------------
@@ -206,9 +206,9 @@ require('bugpack').context("*", function(bugpack) {
                 }, function() {
                     var args = ArgUtil.toArray(arguments);
                     callback(args, []);
-                })
+                });
             } else {
-                throw new Exception("IllegalState", {}, "Resolver is already resolving.");
+                throw new Exception('IllegalState', {}, 'Resolver is already resolving.');
             }
         },
 
@@ -267,7 +267,7 @@ require('bugpack').context("*", function(bugpack) {
                     valueFulfilledCallback(value);
                 }
             } else {
-                valueRejectedCallback(new Bug("TypeError", {}, "Promise received itself as one of the values to resolve"));
+                valueRejectedCallback(new Bug('TypeError', {}, 'Promise received itself as one of the values to resolve'));
             }
         },
 
@@ -299,7 +299,7 @@ require('bugpack').context("*", function(bugpack) {
                         }, function () {
                             if (!complete) {
                                 complete = true;
-                                valueRejectedCallback.apply(null, arguments)
+                                valueRejectedCallback.apply(null, arguments);
                             }
                         });
                     } catch(e) {
@@ -309,10 +309,10 @@ require('bugpack').context("*", function(bugpack) {
                         }
                     }
                 } else {
-                    valueFulfilledCallback(object)
+                    valueFulfilledCallback(object);
                 }
             } catch(e) {
-                valueRejectedCallback(e)
+                valueRejectedCallback(e);
             }
         },
 

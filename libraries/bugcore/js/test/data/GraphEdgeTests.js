@@ -11,7 +11,6 @@
 
 //@TestFile
 
-//@Require('Class')
 //@Require('GraphEdge')
 //@Require('GraphNode')
 //@Require('bugmeta.BugMeta')
@@ -22,13 +21,12 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var Class       = bugpack.require('Class');
     var GraphEdge   = bugpack.require('GraphEdge');
     var GraphNode   = bugpack.require('GraphNode');
     var BugMeta     = bugpack.require('bugmeta.BugMeta');
@@ -57,8 +55,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testFromNode = new GraphNode("fromValue");
-            this.testToNode = new GraphNode("toValue");
+            this.testFromNode = new GraphNode('fromValue');
+            this.testToNode = new GraphNode('toValue');
             this.testGraphEdge = new GraphEdge(this.testFromNode, this.testToNode);
         },
 
@@ -68,13 +66,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.testGraphEdge.getFromNode(), this.testFromNode,
-                "Assert fromNode was set correct during instantiation");
+                'Assert fromNode was set correct during instantiation');
             test.assertEqual(this.testGraphEdge.getToNode(), this.testToNode,
-                "Assert toNode was set correct during instantiation");
+                'Assert toNode was set correct during instantiation');
         }
     };
     bugmeta.tag(graphEdgeInstantiationWithGoodArgumentsTest).with(
-        test().name("GraphEdge instantiation test")
+        test().name('GraphEdge instantiation test')
     );
 
 
@@ -91,10 +89,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testFromNode1 = new GraphNode("fromNode1");
-            this.testFromNode2 = new GraphNode("fromNode2");
-            this.testToNode1 = new GraphNode("toNode1");
-            this.testToNode2 = new GraphNode("toNode2");
+            this.testFromNode1 = new GraphNode('fromNode1');
+            this.testFromNode2 = new GraphNode('fromNode2');
+            this.testToNode1 = new GraphNode('toNode1');
+            this.testToNode2 = new GraphNode('toNode2');
 
             this.equalGraphEdge1 = new GraphEdge(this.testFromNode1, this.testToNode1);
             this.equalGraphEdge2 = new GraphEdge(this.testFromNode1, this.testToNode1);
@@ -111,17 +109,17 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.equalGraphEdge1, this.equalGraphEdge2,
-                "Assert GraphEdges with the same fromNode and the same toNode are equal");
+                'Assert GraphEdges with the same fromNode and the same toNode are equal');
             test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge2,
-                "Assert GraphEdges with the same fromNode but different toNodes are not equal");
+                'Assert GraphEdges with the same fromNode but different toNodes are not equal');
             test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge3,
-                "Assert GraphEdges with different fromNodes but the same toNode are not equal");
+                'Assert GraphEdges with different fromNodes but the same toNode are not equal');
             test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge4,
-                "Assert GraphEdges with different fromNodes and different toNodes are not equal");
+                'Assert GraphEdges with different fromNodes and different toNodes are not equal');
         }
     };
     bugmeta.tag(graphEdgeEqualityTest).with(
-        test().name("GraphEdge equality test")
+        test().name('GraphEdge equality test')
     );
 
 
@@ -135,8 +133,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testFromNode = new GraphNode("fromNode");
-            this.testToNode = new GraphNode("toNode");
+            this.testFromNode = new GraphNode('fromNode');
+            this.testToNode = new GraphNode('toNode');
 
             this.graphEdge1 = new GraphEdge(this.testFromNode, this.testToNode);
             this.graphEdge2 = new GraphEdge(this.testFromNode, this.testToNode);
@@ -147,10 +145,10 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.graphEdge1.hashCode(), this.graphEdge2.hashCode(),
-                "Assert GraphNodes with the same value have equal hash codes");
+                'Assert GraphNodes with the same value have equal hash codes');
         }
     };
     bugmeta.tag(graphNodeHashCodeEqualityTest).with(
-        test().name("GraphEdge hash code equality test")
+        test().name('GraphEdge hash code equality test')
     );
 });

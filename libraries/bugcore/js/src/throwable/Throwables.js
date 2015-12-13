@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Throwables = Class.extend(Obj, {
-        _name: "Throwables"
+        _name: 'Throwables'
     });
 
 

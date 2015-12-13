@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IterableFlowBuilder = Class.extend(FlowBuilder, {
 
-        _name: "IterableFlowBuilder",
+        _name: 'IterableFlowBuilder',
 
 
         //-------------------------------------------------------------------------------
@@ -89,12 +89,12 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isArray(data) || TypeUtil.isObject(data)) {
                 this.data = data;
             } else {
-                throw Throwables.illegalArgumentBug("data", data, "must be an Array or an Object");
+                throw Throwables.illegalArgumentBug('data', data, 'must be an Array or an Object');
             }
             if (TypeUtil.isFunction(iteratorMethod)) {
                 this.iteratorMethod = iteratorMethod;
             } else {
-                throw Throwables.illegalArgumentBug("iteratorMethod", iteratorMethod, "must be a function");
+                throw Throwables.illegalArgumentBug('iteratorMethod', iteratorMethod, 'must be a function');
             }
             return this;
         },

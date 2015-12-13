@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +46,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ObservableSet = Class.extend(ObservableCollection, /** @lends {ObservableSet.prototype} */{
 
-        _name: "ObservableSet",
+        _name: 'ObservableSet',
 
 
         //-------------------------------------------------------------------------------

@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -68,18 +68,18 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertThrows(function() {
-                var testObserver = new Observer(undefined, function() {}, {});
-            }, "Assert that passing undefined for objectPathPattern throws an error");
+                new Observer(undefined, function() {}, {});
+            }, 'Assert that passing undefined for objectPathPattern throws an error');
             test.assertThrows(function() {
-                var testObserver = new Observer("test", undefined, {});
-            }, "Assert that passing undefined for observerFunction throws an error");
+                new Observer('test', undefined, {});
+            }, 'Assert that passing undefined for observerFunction throws an error');
             test.assertNotThrows(function() {
-                var testObserver = new Observer("test", function() {});
-            }, "Assert that passing undefined for observerContext does NOT throw an error");
+                new Observer('test', function() {});
+            }, 'Assert that passing undefined for observerContext does NOT throw an error');
         }
     };
     bugmeta.tag(observerInstantiationBadParametersTest).with(
-        test().name("Observer - instantiation with bad parameters test")
+        test().name('Observer - instantiation with bad parameters test')
     );
 
 
@@ -94,7 +94,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testObjectPathPattern  = "test";
+            this.testObjectPathPattern  = 'test';
             this.testObserverFunction   = function() {};
             this.testObserverContext    = {};
             this.testObserver           = new Observer(this.testObjectPathPattern, this.testObserverFunction, this.testObserverContext);
@@ -106,19 +106,19 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testObserver, Observer),
-                "Assert that testObserver is an instance of Observable");
+                'Assert that testObserver is an instance of Observable');
             test.assertEqual(this.testObserver.getObservationPathPattern(), this.testObjectPathPattern,
-                "Assert that Observer.objectPathPattern is undefined");
+                'Assert that Observer.objectPathPattern is undefined');
             test.assertEqual(this.testObserver.getObserverContext(), this.testObserverContext,
-                "Assert that Observer.observerContext is undefined");
+                'Assert that Observer.observerContext is undefined');
             test.assertEqual(this.testObserver.getObserverFunction(), this.testObserverFunction,
-                "Assert that Observer.observerFunction is undefined");
+                'Assert that Observer.observerFunction is undefined');
             var objectPathMatcher = this.testObserver.getObjectPathMatcher();
             test.assertTrue(Class.doesExtend(objectPathMatcher, ObjectPathMatcher),
-                "Assert that objectPathMatcher is an instance of ObjectPathMatcher");
+                'Assert that objectPathMatcher is an instance of ObjectPathMatcher');
         }
     };
     bugmeta.tag(observerInstantiationWithParametersTest).with(
-        test().name("Observer - instantiation with parameters test")
+        test().name('Observer - instantiation with parameters test')
     );
 });

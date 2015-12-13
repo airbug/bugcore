@@ -27,7 +27,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -58,7 +58,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Arr = Class.extend(Obj, /** @lends {Arr.prototype} */{
 
-        _name: "Arr",
+        _name: 'Arr',
 
 
         //-------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ require('bugpack').context("*", function(bugpack) {
                 } else if (Class.doesImplement(items, IArrayable)) {
                     this.array = items.toArray();
                 } else {
-                    throw new Exception("IllegalArgument", {}, "'items' must either be an Array or implement IArrayable");
+                    throw new Exception('IllegalArgument', {}, '"items" must either be an Array or implement IArrayable');
                 }
             }
             return _this;

@@ -16,14 +16,13 @@
 //@Require('Collections')
 //@Require('Flow')
 //@Require('Throwables')
-//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,7 +33,6 @@ require('bugpack').context("*", function(bugpack) {
     var Collections     = bugpack.require('Collections');
     var Flow            = bugpack.require('Flow');
     var Throwables      = bugpack.require('Throwables');
-    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -47,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var If = Class.extend(Flow, {
 
-        _name: "If",
+        _name: 'If',
 
 
         //-------------------------------------------------------------------------------
@@ -131,7 +129,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         setElseFlowBuilder: function(elseFlowBuilder) {
             if (this.elseFlowBuilder) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
+                throw Throwables.bug('IllegalState', {}, 'IfFlow already has an ElseFlowBuilder');
             }
             this.elseFlowBuilder = elseFlowBuilder;
         },
@@ -146,7 +144,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addAllElseIfBuilders: function(elseIfFlowBuilders) {
             if (this.elseFlowBuilder) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
+                throw Throwables.bug('IllegalState', {}, 'IfFlow already has an ElseFlowBuilder');
             }
             this.elseIfBuilderList.addAll(elseIfFlowBuilders);
         },
@@ -156,7 +154,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         addElseIfBuilder: function(elseIfBuilder) {
             if (this.elseFlowBuilder) {
-                throw Throwables.bug("IllegalState", {}, "IfFlow already has an ElseFlowBuilder");
+                throw Throwables.bug('IllegalState', {}, 'IfFlow already has an ElseFlowBuilder');
             }
             this.elseIfBuilderList.add(elseIfBuilder);
         },

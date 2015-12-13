@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -111,14 +111,14 @@ require('bugpack').context("*", function(bugpack) {
      */
     Interface.extend = function(implementable, declaration) {
         var prototype       = new implementable();
-        var interfaceName   = declaration["_name"] || "";
-        delete declaration["_name"];
+        var interfaceName   = declaration['_name'] || '';
+        delete declaration['_name'];
         for (var name in declaration) {
             if (Object.prototype.hasOwnProperty.call(declaration, name)) {
                 if (TypeUtil.isFunction(declaration[name])) {
                     prototype[name] = declaration[name];
                 } else {
-                    throw new Error("Interface can only declare functions");
+                    throw new Error('Interface can only declare functions');
                 }
             }
         }
@@ -127,7 +127,7 @@ require('bugpack').context("*", function(bugpack) {
         newImplementable.constructor = newImplementable;
         Interface.static(newImplementable, Implementable);
         var newInterface = new Interface(newImplementable, interfaceName, implementable.getInterface());
-        Object.defineProperty(newImplementable, "_interface", {
+        Object.defineProperty(newImplementable, '_interface', {
             value : newInterface,
             writable : false,
             enumerable : false,

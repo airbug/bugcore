@@ -15,6 +15,7 @@
 //@Require('Class')
 //@Require('Exception')
 //@Require('IStreamable')
+//@Require('ISupplier')
 //@Require('Obj')
 //@Require('Stream')
 //@Require('TypeUtil')
@@ -24,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -34,6 +35,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class           = bugpack.require('Class');
     var Exception       = bugpack.require('Exception');
     var IStreamable     = bugpack.require('IStreamable');
+    var ISupplier       = bugpack.require('ISupplier');
     var Obj             = bugpack.require('Obj');
     var Stream          = bugpack.require('Stream');
     var TypeUtil        = bugpack.require('TypeUtil');
@@ -48,7 +50,7 @@ require('bugpack').context("*", function(bugpack) {
      * @extends {Obj}
      */
     var Streams = Class.extend(Obj, {
-        _name: "Streams"
+        _name: 'Streams'
     });
 
 
@@ -67,7 +69,22 @@ require('bugpack').context("*", function(bugpack) {
         } else if (TypeUtil.isArray(value)) {
             return new Arr(value);
         } else {
-            throw new Exception("IllegalArgument", {}, "'value' cannot be made streamable - value:" + value);
+            throw new Exception('IllegalArgument', {}, '"value" cannot be made streamable - value:' + value);
+        }
+    };
+
+    /**
+     * @static
+     * @param {(IStreamable.<I> | ISupplier.<I>)} streamable
+     * @return {Stream.<I>}
+     */
+    Streams.stream = function(streamable) {
+        if (Class.doesImplement(streamable, IStreamable)) {
+            return streamable.stream();
+        } else if (Class.doesImplement(streamable, ISupplier)){
+            return Stream.newStream(streamable);
+        } else {
+            throw new Exception('IllegalArgument', {}, 'streamable does not implement IStreamable or does not implement ISupplier');
         }
     };
 

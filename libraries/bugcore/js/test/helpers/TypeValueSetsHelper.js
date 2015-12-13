@@ -16,7 +16,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -32,63 +32,63 @@ require('bugpack').context("*", function(bugpack) {
         getTypeValueSets: function() {
             var typeValueSets = {
                 arguments: [
-                    {name: "arguments literal", value: arguments}
+                    {name: 'arguments literal', value: arguments}
                 ],
                 array: [
-                    {name: "array literal", value: []},
-                    {name: "Array object", value: new Array()}
+                    {name: 'array literal', value: []},
+                    {name: 'Array object', value: new Array()}
                 ],
                 boolean: [
-                    {name: "boolean literal false", value: false},
-                    {name: "boolean literal true", value: true},
-                    {name: "Boolean object false", value: new Boolean(false)},
-                    {name: "Boolean object true", value: new Boolean(true)}
+                    {name: 'boolean literal false', value: false},
+                    {name: 'boolean literal true', value: true},
+                    {name: 'Boolean object false', value: new Boolean(false)},
+                    {name: 'Boolean object true', value: new Boolean(true)}
                 ],
                 date: [
-                    {name: "Date object", value: new Date(Date.now())}
+                    {name: 'Date object', value: new Date(Date.now())}
                 ],
                 function: [
-                    {name: "function literal", value: function() {}},
-                    {name: "Function object", value: new Function()}
+                    {name: 'function literal', value: function() {}},
+                    {name: 'Function object', value: new Function()}
                 ],
                 null: [
-                    {name: "null", value: null}
+                    {name: 'null', value: null}
                 ],
                 number: [
-                    {name: "NaN", value: NaN},
-                    {name: "number literal 0", value: 0},
-                    {name: "number literal", value: 123},
-                    {name: "negative number literal", value: -123},
-                    {name: "decimal number literal", value: 123.456},
-                    {name: "negative decmial number literal", value: -123.456},
-                    {name: "Number object 0", value: new Number(0)},
-                    {name: "Number object", value: new Number(123)},
-                    {name: "negative Number object", value: new Number(-123)},
-                    {name: "decimal Number object", value: new Number(123.456)},
-                    {name: "negative decimal Number object", value: new Number(-123.456)},
-                    {name: "positive infinity", value: Infinity},
-                    {name: "negative infinity", value: -Infinity},
-                    {name: "positive infinity property", value: Number.POSITIVE_INFINITY},
-                    {name: "negative infinity property", value: Number.NEGATIVE_INFINITY}
+                    {name: 'NaN', value: NaN},
+                    {name: 'number literal 0', value: 0},
+                    {name: 'number literal', value: 123},
+                    {name: 'negative number literal', value: -123},
+                    {name: 'decimal number literal', value: 123.456},
+                    {name: 'negative decmial number literal', value: -123.456},
+                    {name: 'Number object 0', value: new Number(0)},
+                    {name: 'Number object', value: new Number(123)},
+                    {name: 'negative Number object', value: new Number(-123)},
+                    {name: 'decimal Number object', value: new Number(123.456)},
+                    {name: 'negative decimal Number object', value: new Number(-123.456)},
+                    {name: 'positive infinity', value: Infinity},
+                    {name: 'negative infinity', value: -Infinity},
+                    {name: 'positive infinity property', value: Number.POSITIVE_INFINITY},
+                    {name: 'negative infinity property', value: Number.NEGATIVE_INFINITY}
                 ],
                 object: [
-                    {name: "object literal", value: {}},
-                    {name: "Object object", value: new Object()}
+                    {name: 'object literal', value: {}},
+                    {name: 'Object object', value: new Object()}
                 ],
                 regexp: [
-                    {name: "regexp literal .", value: /./},
-                    {name: "RegExp object .", value: new RegExp("")}
+                    {name: 'regexp literal .', value: /./},
+                    {name: 'RegExp object .', value: new RegExp('')}
                 ],
                 string: [
-                    {name: "empty string literal", value: ""},
-                    {name: "string literal", value: "abc123"},
-                    {name: "numeric string literal", value: "123"},
-                    {name: "empty String object", value: new String("")},
-                    {name: "String object", value: new String("abc123")},
-                    {name: "numeric String object", value: new String("123")}
+                    {name: 'empty string literal', value: ''},
+                    {name: 'string literal', value: 'abc123'},
+                    {name: 'numeric string literal', value: '123'},
+                    {name: 'empty String object', value: new String('')},
+                    {name: 'String object', value: new String('abc123')},
+                    {name: 'numeric String object', value: new String('123')}
                 ],
                 undefined: [
-                    {name: "undefined", value: void 0}
+                    {name: 'undefined', value: void 0}
                 ]
             };
             return typeValueSets;

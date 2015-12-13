@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -54,8 +54,8 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
-            this.testAssertionMethod    = function(flow) {};
+        setup: function() {
+            this.testAssertionMethod    = function() {};
             this.testAssertion          = new Assertion(this.testAssertionMethod);
         },
 
@@ -65,11 +65,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testAssertion, Assertion),
-                "Assert testAssertion extends Assertion");
+                'Assert testAssertion extends Assertion');
             test.assertEqual(this.testAssertion.getAssertionMethod(), this.testAssertionMethod,
-                "Assert Assertion.assertionMethod was set correctly");
+                'Assert Assertion.assertionMethod was set correctly');
             test.assertEqual(this.testAssertion.getAssertCalled(), false,
-                "Assert Assertion.assertedCalled defaults to false");
+                'Assert Assertion.assertedCalled defaults to false');
         }
     };
 
@@ -83,7 +83,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             var _this = this;
             this.assertionMethodCalled  = false;
             this.callbackCalled         = false;
@@ -104,14 +104,14 @@ require('bugpack').context("*", function(bugpack) {
             this.testAssertion.execute(function(throwable, result) {
                 _this.callbackCalled = true;
                 test.assertEqual(throwable, null,
-                    "Assert throwable is null");
+                    'Assert throwable is null');
                 test.assertEqual(result, _this.testAssertValue,
-                    "Assert value was passed to callback correctly");
+                    'Assert value was passed to callback correctly');
             });
             test.assertTrue(this.assertionMethodCalled,
-                "Assert assertion method called");
+                'Assert assertion method called');
             test.assertTrue(this.callbackCalled,
-                "Assert callback was called");
+                'Assert callback was called');
         }
     };
 
@@ -121,9 +121,9 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(assertionInstantiationTest).with(
-        test().name("Assertion - instantiation test")
+        test().name('Assertion - instantiation test')
     );
     bugmeta.tag(assertionAssertTest).with(
-        test().name("Assertion - #assert test")
+        test().name('Assertion - #assert test')
     );
 });

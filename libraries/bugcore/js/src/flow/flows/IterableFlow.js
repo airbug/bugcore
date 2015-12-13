@@ -26,7 +26,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -53,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IterableFlow = Class.extend(Flow, {
 
-        _name: "IterableFlow",
+        _name: 'IterableFlow',
 
 
         //-------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ require('bugpack').context("*", function(bugpack) {
             } else if (TypeUtil.isObject(this.data)) {
                 this.iterator = new ObjectIterator(this.data);
             } else {
-                throw Throwables.illegalArgumentBug("data", data, "must be an Array, Object, or implement IIterable");
+                throw Throwables.illegalArgumentBug('data', data, 'must be an Array, Object, or implement IIterable');
             }
             return this;
         },
@@ -197,14 +197,16 @@ require('bugpack').context("*", function(bugpack) {
         // Abstract Methods
         //-------------------------------------------------------------------------------
 
+        /*eslint-disable no-unused-vars */
         /**
          * @abstract
          * @param {Throwable} throwable
          * @param {Iteration} iteration
          */
         iterationCallback: function(throwable, iteration) {
-            throw Throwables.bug("AbstractMethodNotImplemented", {}, "Must implement iterationCallback");
+            throw Throwables.bug('AbstractMethodNotImplemented', {}, 'Must implement iterationCallback');
         }
+        /*eslint-enable no-unused-vars */
     });
 
 

@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ClearChange = Class.extend(Change, /** @lends {ClearChange.prototype} */ {
 
-        _name: "ClearChange",
+        _name: 'ClearChange',
 
 
         //-------------------------------------------------------------------------------
@@ -65,10 +65,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {boolean=} deep
          * @return {ClearChange}
          */
-        clone: function(deep) {
+        clone: function() {
             return new ClearChange();
         }
     });
@@ -82,7 +81,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @const {string}
      */
-    ClearChange.CHANGE_TYPE = "Clear";
+    ClearChange.CHANGE_TYPE = 'Clear';
 
 
     //-------------------------------------------------------------------------------

@@ -13,7 +13,6 @@
 
 //@Require('Class')
 //@Require('IProxy')
-//@Require('Interface')
 //@Require('Obj')
 
 
@@ -21,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -29,7 +28,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var IProxy      = bugpack.require('IProxy');
-    var Interface   = bugpack.require('Interface');
     var Obj         = bugpack.require('Obj');
 
 
@@ -44,7 +42,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ProxyMethod = Class.extend(Obj, {
 
-        _name: "ProxyMethod",
+        _name: 'ProxyMethod',
 
 
         //-------------------------------------------------------------------------------
@@ -92,7 +90,7 @@ require('bugpack').context("*", function(bugpack) {
             if (target) {
                 return target[functionName].apply(target, args);
             } else {
-                throw new Error("Method did not return a value that could be proxied.");
+                throw new Error('Method did not return a value that could be proxied.');
             }
         }
     });

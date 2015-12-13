@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -53,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var DualMap = Class.extend(Obj, {
 
-        _name: "DualMap",
+        _name: 'DualMap',
 
 
         //-------------------------------------------------------------------------------
@@ -194,14 +194,15 @@ require('bugpack').context("*", function(bugpack) {
          * @param {(Map.<*, *>|DualMap.<*, *>)} map
          */
         putAll: function(map) {
+            var keys = null;
             if (Class.doesExtend(map, Map)) {
-                var keys = map.toKeyArray();
+                keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.get(key);
                     this.put(key, value);
                 });
             } else if (Class.doesExtend(map, DualMap)) {
-                var keys = map.toKeyArray();
+                keys = map.toKeyArray();
                 keys.forEach(function(key) {
                     var value = map.getValue(key);
                     this.put(key, value);

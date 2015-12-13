@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -45,7 +45,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var CallbackHandler = Class.extend(Handler, {
 
-        _name: "CallbackHandler",
+        _name: 'CallbackHandler',
 
 
         //-------------------------------------------------------------------------------
@@ -117,11 +117,11 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(this.getCallbackFunction())) {
                 var exception = null;
                 if (reasons.length > 1) {
-                    exception = new ParallelException("MultipleRejectionsException", {}, "Multiple rejection reasons", reasons);
+                    exception = new ParallelException('MultipleRejectionsException', {}, 'Multiple rejection reasons', reasons);
                 } else if (reasons.length === 1) {
                     exception = reasons[0];
                 } else {
-                    exception = new Exception("PromiseRejected", {}, "Promise was rejected with no reasons given");
+                    exception = new Exception('PromiseRejected', {}, 'Promise was rejected with no reasons given');
                 }
                 try {
                     var result = this.callbackFunction.call(null, exception);

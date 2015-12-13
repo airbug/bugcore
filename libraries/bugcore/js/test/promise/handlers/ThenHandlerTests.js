@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -72,13 +72,13 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testThenHandler, ThenHandler),
-                "Assert that testThenHandler is an instance of ThenHandler");
+                'Assert that testThenHandler is an instance of ThenHandler');
             test.assertEqual(this.testThenHandler.getFulfilledFunction(), this.testFulfilledFunction,
-                "Assert that #getFulfilledFunction returns the method passed in during instantiation");
+                'Assert that #getFulfilledFunction returns the method passed in during instantiation');
             test.assertEqual(this.testThenHandler.getRejectedFunction(), this.testRejectedFunction,
-                "Assert that #getRejectedFunction returns the method passed in during instantiation");
+                'Assert that #getRejectedFunction returns the method passed in during instantiation');
             test.assertEqual(this.testThenHandler.getForwardPromise(), this.testForwardPromise,
-                "Assert that #getForwardPromise returns the Promise passed in during instantiation");
+                'Assert that #getForwardPromise returns the Promise passed in during instantiation');
         }
     };
 
@@ -95,7 +95,7 @@ require('bugpack').context("*", function(bugpack) {
             this.testValues                 = [];
             this.testFulfilledFunction      = function() {
                 test.assertEqual(arguments.length, 0,
-                    "Assert no arguments were passed to the fulfilled function");
+                    'Assert no arguments were passed to the fulfilled function');
             };
             this.testFulfilledFunctionSpy   = spyOnFunction(this.testFulfilledFunction);
             this.testRejectedFunction       = function() {};
@@ -111,13 +111,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testThenHandler.handleFulfilled(this.testValues);
             test.assertTrue(this.testFulfilledFunctionSpy.wasCalled(),
-                "Assert testFulfilledFunction was called");
+                'Assert testFulfilledFunction was called');
             test.assertTrue(this.testRejectedFunctionSpy.wasNotCalled(),
-                "Assert testRejectedFunction was not called");
+                'Assert testRejectedFunction was not called');
             test.assertTrue(this.testForwardPromise.isFulfilled(),
-                "Assert testForwardPromise is resolved");
+                'Assert testForwardPromise is resolved');
             test.assertEqual(this.testForwardPromise.getValueList().getCount(), 0,
-                "Assert testForwardPromise was resolved with 0 values");
+                'Assert testForwardPromise was resolved with 0 values');
         }
     };
 
@@ -130,7 +130,7 @@ require('bugpack').context("*", function(bugpack) {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        setup: function(test) {
+        setup: function() {
             this.testValues                 = [];
             this.testRejectedFunction       = function() {};
             this.testRejectedFunctionSpy    = spyOnFunction(this.testRejectedFunction);
@@ -145,11 +145,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testThenHandler.handleFulfilled(this.testValues);
             test.assertTrue(this.testRejectedFunctionSpy.wasNotCalled(),
-                "Assert testRejectedFunction was not called");
+                'Assert testRejectedFunction was not called');
             test.assertTrue(this.testForwardPromise.isFulfilled(),
-                "Assert testForwardPromise is resolved");
+                'Assert testForwardPromise is resolved');
             test.assertEqual(this.testForwardPromise.getValueList().getCount(), 0,
-                "Assert testForwardPromise was resolved with 0 values");
+                'Assert testForwardPromise was resolved with 0 values');
         }
     };
 
@@ -159,12 +159,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(thenHandlerInstantiationTest).with(
-        test().name("ThenHandler - instantiation test")
+        test().name('ThenHandler - instantiation test')
     );
     bugmeta.tag(thenHandlerHandleFulfilledNoValuesTest).with(
-        test().name("ThenHandler - #handleFulfilled no values test")
+        test().name('ThenHandler - #handleFulfilled no values test')
     );
     bugmeta.tag(thenHandlerNoFulfilledFunctionHandleFulfilledNoValuesTest).with(
-        test().name("ThenHandler - no fulfilledFunction call #handleFulfilled with no values test")
+        test().name('ThenHandler - no fulfilledFunction call #handleFulfilled with no values test')
     );
 });

@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -52,55 +52,54 @@ require('bugpack').context("*", function(bugpack) {
      * @return {number}
      */
     HashUtil.hash = function(value) {
-        var key     = "";
+        var key     = '';
         var type    = TypeUtil.toType(value);
         switch (type) {
-            case "arguments":
-                IdGenerator.ensureId(value);
-                key += "ar_" + value._internalId;
-                break;
-                break;
-            case "array":
-                IdGenerator.ensureId(value);
-                key += "a_" + value._internalId;
-                break;
-            case "boolean":
-                key += "b_" + value;
-                break;
+        case 'arguments':
+            IdGenerator.ensureId(value);
+            key += 'ar_' + value._internalId;
+            break;
+        case 'array':
+            IdGenerator.ensureId(value);
+            key += 'a_' + value._internalId;
+            break;
+        case 'boolean':
+            key += 'b_' + value;
+            break;
 
-                // TODO BRN: Dates are not immutable. Therefore we can run in to issues here if a Date is stored as
-                // a key and then is changed later. We should rethink this and perhaps implement our own immutable
-                // Date class.
+            // TODO BRN: Dates are not immutable. Therefore we can run in to issues here if a Date is stored as
+            // a key and then is changed later. We should rethink this and perhaps implement our own immutable
+            // Date class.
 
-            case "date":
-                key += "d_" + value;
-                break;
-            case "function":
-                IdGenerator.ensureId(value);
-                key += "f_" + value._internalId;
-                break;
-            case "number":
-                key += "n_" + value;
-                break;
-            case "null":
-                key += "null";
-                break;
-            case "object":
-                IdGenerator.ensureId(value);
-                key += "o_" + value._internalId;
-                break;
-            case "regexp":
-                IdGenerator.ensureId(value);
-                key += "r_" + value._internalId;
-                break;
-            case "string":
-                key += "s_" + value;
-                break;
-            case "undefined":
-                key += "undefined";
-                break;
-            default:
-                throw new Error("Unrecognized type to hash: " + value);
+        case 'date':
+            key += 'd_' + value;
+            break;
+        case 'function':
+            IdGenerator.ensureId(value);
+            key += 'f_' + value._internalId;
+            break;
+        case 'number':
+            key += 'n_' + value;
+            break;
+        case 'null':
+            key += 'null';
+            break;
+        case 'object':
+            IdGenerator.ensureId(value);
+            key += 'o_' + value._internalId;
+            break;
+        case 'regexp':
+            IdGenerator.ensureId(value);
+            key += 'r_' + value._internalId;
+            break;
+        case 'string':
+            key += 's_' + value;
+            break;
+        case 'undefined':
+            key += 'undefined';
+            break;
+        default:
+            throw new Error('Unrecognized type to hash: ' + value);
         }
 
         var hash = 0;

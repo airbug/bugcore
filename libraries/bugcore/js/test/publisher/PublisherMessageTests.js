@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -54,8 +54,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testTopic = "testTopic";
-            this.testData = "testData";
+            this.testTopic = 'testTopic';
+            this.testData = 'testData';
             this.publisherMessage = new PublisherMessage(this.testTopic, this.testData);
         },
 
@@ -65,12 +65,12 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.publisherMessage.getTopic(), this.testTopic,
-                "Assert message topic was set correctly during instantiation");
+                'Assert message topic was set correctly during instantiation');
             test.assertEqual(this.publisherMessage.getData(), this.testData,
-                "Assert message data was set correctly during instantiation");
+                'Assert message data was set correctly during instantiation');
         }
     };
     bugmeta.tag(instantiatePublisherMessageTest).with(
-        test().name("PublisherMessage instantiation test")
+        test().name('PublisherMessage instantiation test')
     );
 });

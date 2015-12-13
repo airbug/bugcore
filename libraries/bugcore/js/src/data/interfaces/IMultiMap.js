@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -33,6 +33,7 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      * @extends {IMap.<K,V>}
@@ -40,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var IMultiMap = Interface.extend(IMap, /** @lends {IMultiMap.prototype} */{
 
-        _name: "IMultiMap",
+        _name: 'IMultiMap',
 
 
         //-------------------------------------------------------------------------------
@@ -83,6 +84,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         removeKeyValuePair: function(key, value) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

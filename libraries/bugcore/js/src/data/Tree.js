@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Tree = Class.extend(Obj, {
 
-        _name: "Tree",
+        _name: 'Tree',
 
 
         //-------------------------------------------------------------------------------
@@ -133,9 +133,9 @@ require('bugpack').context("*", function(bugpack) {
                 var childNodes = node.getChildNodes();
                 for (var i = 0, size = childNodes.getCount(); i < size; i++) {
                     var childNode = childNodes.getAt(i);
-                    var result = this.findRecursive(childNode, func);
-                    if (result) {
-                        return result;
+                    var foundResult = this.findRecursive(childNode, func);
+                    if (foundResult) {
+                        return foundResult;
                     }
                 }
                 return null;

@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -55,7 +55,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testListenerFunction = function(event) {};
+            this.testListenerFunction = function() {};
             this.testListenerContext = {};
             this.eventListener = new EventListener(this.testListenerFunction, this.testListenerContext);
         },
@@ -66,11 +66,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.eventListener, EventListener),
-                "Assert EventListener instance extends EventListener ");
+                'Assert EventListener instance extends EventListener ');
         }
     };
     bugmeta.tag(eventListenerInstantiationTest).with(
-        test().name("EventListener instantiation test")
+        test().name('EventListener instantiation test')
     );
 
 
@@ -87,9 +87,9 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testListenerFunction1 = function(event) {};
+            this.testListenerFunction1 = function() {};
             this.testListenerContext1 = {};
-            this.testListenerFunction2 = function(event) {};
+            this.testListenerFunction2 = function() {};
             this.testListenerContext2 = {};
 
             this.equalEventListener1 = new EventListener(this.testListenerFunction1, this.testListenerContext1);
@@ -107,17 +107,17 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.equalEventListener1, this.equalEventListener2,
-                "Assert EventListeners with the same function and context are equal");
+                'Assert EventListeners with the same function and context are equal');
             test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener2,
-                "Assert EventListeners with the same function but different contexts are not equal.");
+                'Assert EventListeners with the same function but different contexts are not equal.');
             test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener3,
-                "Assert EventListeners with different functions but the same context are not equal.");
+                'Assert EventListeners with different functions but the same context are not equal.');
             test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener4,
-                "Assert EventListeners with different functions and different contexts are not equal.");
+                'Assert EventListeners with different functions and different contexts are not equal.');
         }
     };
     bugmeta.tag(eventListenerEqualityTest).with(
-        test().name("EventListener equality test")
+        test().name('EventListener equality test')
     );
 
 
@@ -131,7 +131,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testListenerFunction = function(event) {};
+            this.testListenerFunction = function() {};
             this.testListenerContext = {};
             this.eventListener1 = new EventListener(this.testListenerFunction, this.testListenerContext);
             this.eventListener2 = new EventListener(this.testListenerFunction, this.testListenerContext);
@@ -143,11 +143,11 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertEqual(this.eventListener1.hashCode(), this.eventListener2.hashCode(),
-                "Assert EventListeners with the same function and context have equal hash codes");
+                'Assert EventListeners with the same function and context have equal hash codes');
         }
     };
     bugmeta.tag(eventListenerHashCodeEqualityTest).with(
-        test().name("EventListener hash code equality test")
+        test().name('EventListener hash code equality test')
     );
 
     var eventListenerIsOnceTest = {
@@ -156,7 +156,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testListenerFunction = function(event) {};
+            this.testListenerFunction = function() {};
             this.testListenerContext = {};
             this.eventListener1 = new EventListener(this.testListenerFunction, this.testListenerContext);
             this.eventListener2 = new EventListener(this.testListenerFunction, this.testListenerContext, true);
@@ -168,14 +168,14 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertFalse(this.eventListener1.isOnce(),
-                "Assert EventListeners #isOnce returns the default value of false");
+                'Assert EventListeners #isOnce returns the default value of false');
             test.assertTrue(this.eventListener2.isOnce(),
-                "Assert EventListeners' #isOnce function returns the proper value when the once property is set to true");
+                'Assert EventListeners\' #isOnce function returns the proper value when the once property is set to true');
 
         }
     };
     bugmeta.tag(eventListenerIsOnceTest).with(
-        test().name("EventListener isOnce test")
+        test().name('EventListener isOnce test')
     );
 
     //TODO BRN: Add a hearEvent test

@@ -20,7 +20,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -41,7 +41,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var SetPropertyChange = Class.extend(Change, /** @lends {SetPropertyChange.prototype} */{
 
-        _name: "SetPropertyChange",
+        _name: 'SetPropertyChange',
 
 
         //-------------------------------------------------------------------------------
@@ -139,7 +139,7 @@ require('bugpack').context("*", function(bugpack) {
      * @static
      * @const {string}
      */
-    SetPropertyChange.CHANGE_TYPE = "SetProperty";
+    SetPropertyChange.CHANGE_TYPE = 'SetProperty';
 
 
     //-------------------------------------------------------------------------------

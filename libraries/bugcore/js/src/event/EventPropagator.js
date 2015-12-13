@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventPropagator = Class.extend(Obj, {
 
-        _name: "EventPropagator",
+        _name: 'EventPropagator',
 
 
         //-------------------------------------------------------------------------------

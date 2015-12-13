@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var EventQueryListener = Class.extend(EventListener, {
 
-        _name: "EventQueryListener",
+        _name: 'EventQueryListener',
 
 
         //-------------------------------------------------------------------------------

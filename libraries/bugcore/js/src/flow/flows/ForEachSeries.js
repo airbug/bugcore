@@ -21,7 +21,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ForEachSeries = Class.extend(IterableFlow, {
 
-        _name: "ForEachSeries",
+        _name: 'ForEachSeries',
 
 
         //-------------------------------------------------------------------------------
@@ -70,9 +70,8 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @protected
          * @param {Throwable} throwable
-         * @param {Iteration} iteration
          */
-        iterationCallback: function(throwable, iteration) {
+        iterationCallback: function(throwable) {
             if (throwable) {
                 if (!this.hasErrored()) {
                     this.error(throwable);

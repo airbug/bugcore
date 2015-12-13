@@ -18,7 +18,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -31,12 +31,13 @@ require('bugpack').context("*", function(bugpack) {
     // Declare Interface
     //-------------------------------------------------------------------------------
 
+    /*eslint-disable no-unused-vars */
     /**
      * @interface
      */
     var IProxy = Interface.declare({
 
-        _name: "IProxy",
+        _name: 'IProxy',
 
 
         //-------------------------------------------------------------------------------
@@ -50,6 +51,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         proxy: function(functionName, args) {}
     });
+    /*eslint-enable no-unused-vars */
 
 
     //-------------------------------------------------------------------------------

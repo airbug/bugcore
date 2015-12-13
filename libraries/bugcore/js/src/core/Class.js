@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
 
     //-------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ require('bugpack').context("*", function(bugpack) {
          * @private
          * @type {string}
          */
-        this.name           = name || "";
+        this.name           = name || '';
 
         /**
          * @private
@@ -227,9 +227,9 @@ require('bugpack').context("*", function(bugpack) {
         Class.extending = true;
         var prototype = new constructor();
         Class.extending = false;
-        var className   = declaration["_name"];
+        var className   = declaration['_name'];
         var newClass    = null;
-        delete declaration["_name"];
+        delete declaration['_name'];
         for (var name in declaration) {
             if (Object.prototype.hasOwnProperty.call(declaration, name)) {
                 prototype[name] = TypeUtil.isFunction(prototype[name]) ?
@@ -248,7 +248,7 @@ require('bugpack').context("*", function(bugpack) {
         var newConstructor = function() {
             if (!Class.extending) {
                 var _this = this;
-                Object.defineProperty(this, "_class", {
+                Object.defineProperty(this, '_class', {
                     value : newClass,
                     writable : false,
                     enumerable : false,
@@ -274,7 +274,7 @@ require('bugpack').context("*", function(bugpack) {
             });
         }
         newClass = new Class(newConstructor, interfaces, className, superclass);
-        Object.defineProperty(newConstructor, "_class", {
+        Object.defineProperty(newConstructor, '_class', {
             value : newClass,
             writable : false,
             enumerable : false,
@@ -291,14 +291,14 @@ require('bugpack').context("*", function(bugpack) {
     Class.implement = function(constructor, implementable) {
         constructor.getClass().getInterfaces().forEach(function(implementedInterface) {
             if (implementedInterface === implementable.getInterface()) {
-                throw new Error("Interface '" + implementedInterface.getName() + "' has already been implemented by " +
-                    "the class '" + constructor.getClass().getName() + "'");
+                throw new Error('Interface "' + implementedInterface.getName() + '" has already been implemented by ' +
+                    'the class "' + constructor.getClass().getName() + '"');
             }
         });
         for (var methodName in implementable.prototype) {
             if (!TypeUtil.isFunction(constructor.prototype[methodName])) {
-                throw new Error("Class '" + constructor.getClass().getName() + "' does not implement method '" +
-                    methodName + "' of interface '" + implementable.getInterface().getName() + "'");
+                throw new Error('Class "' + constructor.getClass().getName() + '" does not implement method "' +
+                    methodName + '" of interface "' + implementable.getInterface().getName() + '"');
             }
         }
         constructor.getClass().getInterfaces().push(implementable.getInterface());

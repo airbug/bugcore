@@ -23,7 +23,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -49,7 +49,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var ArrayIterator = Class.extend(Obj, {
 
-        _name: "ArrayIterator",
+        _name: 'ArrayIterator',
 
 
         //-------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ require('bugpack').context("*", function(bugpack) {
                 if (TypeUtil.isArray(array)) {
                     _this.array = array;
                 } else {
-                    throw new ArgumentBug(ArgumentBug.ILLEGAL, "array", array, "parameter must be an Array");
+                    throw new ArgumentBug(ArgumentBug.ILLEGAL, 'array', array, 'parameter must be an Array');
                 }
             }
             return _this;
@@ -149,7 +149,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.index++;
                 return this.index;
             } else {
-                throw new Exception("NoSuchElement", {}, "End of iteration reached.");
+                throw new Exception('NoSuchElement', {}, 'End of iteration reached.');
             }
         },
 

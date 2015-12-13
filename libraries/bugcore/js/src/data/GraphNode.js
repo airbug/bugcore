@@ -19,7 +19,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -39,7 +39,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var GraphNode = Class.extend(Obj, {
 
-        _name: "GraphNode",
+        _name: 'GraphNode',
 
 
         //-------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         hashCode: function() {
             if (!this._hashCode) {
-                this._hashCode = Obj.hashCode("[GraphNode]" + Obj.hashCode(this.value));
+                this._hashCode = Obj.hashCode('[GraphNode]' + Obj.hashCode(this.value));
             }
             return this._hashCode;
         },
@@ -108,10 +108,10 @@ require('bugpack').context("*", function(bugpack) {
          * @return {string}
          */
         toString: function() {
-            var output = "";
-            output += "{\n";
-            output += "  " + this.value.toString() + "\n";
-            output += "}\n";
+            var output = '';
+            output += '{\n';
+            output += '  ' + this.value.toString() + '\n';
+            output += '}\n';
             return output;
         }
     });

@@ -22,7 +22,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -53,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testType       = "testType";
+            this.testType       = 'testType';
             this.testThrowable  = new Throwable(this.testType);
         },
 
@@ -63,18 +63,18 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testThrowable, Throwable),
-                "Assert instance of Throwable");
+                'Assert instance of Throwable');
             test.assertEqual(this.testThrowable.getType(), this.testType,
-                "Assert .type was set correctly");
+                'Assert .type was set correctly');
             var isArray = TypeUtil.isArray(this.testThrowable.getCauses());
             test.assertTrue(isArray,
-                "Assert .causes defaulted to an Array");
+                'Assert .causes defaulted to an Array');
             if (isArray) {
                 test.assertEqual(this.testThrowable.getCauses().length, 0,
-                    "Assert causes array is empty");
+                    'Assert causes array is empty');
             }
-            test.assertEqual(this.testThrowable.getMessage(), "",
-                "Assert .message was set to an empty string");
+            test.assertEqual(this.testThrowable.getMessage(), '',
+                'Assert .message was set to an empty string');
         }
     };
 
@@ -84,6 +84,6 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     bugmeta.tag(throwableInstantiationWithoutOptionalArgsTest).with(
-        test().name("Throwable - instantiation without optional args test")
+        test().name('Throwable - instantiation without optional args test')
     );
 });

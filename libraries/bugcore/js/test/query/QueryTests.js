@@ -25,7 +25,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -64,7 +64,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-           this.testQuery   = new Query();
+            this.testQuery   = new Query();
         },
 
 
@@ -73,16 +73,16 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             test.assertTrue(Class.doesExtend(this.testQuery, Query),
-                "Assert instance extends Query class");
+                'Assert instance extends Query class');
             var conditionSet = this.testQuery.getConditionSet();
             test.assertTrue(Class.doesExtend(conditionSet, Set),
-                "Assert getConditionSet returns a Set");
+                'Assert getConditionSet returns a Set');
             test.assertTrue(conditionSet.isEmpty(),
-                "Assert conditionSet is empty");
+                'Assert conditionSet is empty');
         }
     };
     bugmeta.tag(queryInstantiationTest).with(
-        test().name("Query - instantiation test")
+        test().name('Query - instantiation test')
     );
 
 
@@ -111,13 +111,13 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             this.testQuery.addCondition(this.testCondition);
             test.assertEqual(this.testQuery.getConditionSet().getCount(), 1,
-                "Assert conditionSet has one item");
+                'Assert conditionSet has one item');
             test.assertTrue(this.testQuery.getConditionSet().contains(this.testCondition),
-                "Assert conditionSet contains the testCondition");
+                'Assert conditionSet contains the testCondition');
         }
     };
     bugmeta.tag(queryAddConditionTest).with(
-        test().name("Query - #addCondition test")
+        test().name('Query - #addCondition test')
     );
 
 
@@ -145,11 +145,11 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             test.assertThrows(function() {
                 _this.testQuery.addCondition(_this.testNonCondition);
-            }, "Assert adding a non condition throws an error")
+            }, 'Assert adding a non condition throws an error');
         }
     };
     bugmeta.tag(queryAddNonConditionTest).with(
-        test().name("Query - #addCondition non Condition test")
+        test().name('Query - #addCondition non Condition test')
     );
 
 
@@ -163,14 +163,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue          = "testValue";
+            this.testValue          = 'testValue';
             this.testObject         = {
                 testProp: {
                     subProp: this.testValue
                 }
             };
             this.testQuery          = new Query();
-            this.testPropertyQuery  = "testProp.subProp";
+            this.testPropertyQuery  = 'testProp.subProp';
             this.testInSet          = new Set([
                 this.testValue
             ]);
@@ -185,11 +185,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var result = this.testQuery.run(this.testObject);
             test.assertEqual(result, true,
-                "Assert #run returns a true result for matching WhereCondition Query");
+                'Assert #run returns a true result for matching WhereCondition Query');
         }
     };
     bugmeta.tag(queryRunMatchingWhereConditionTest).with(
-        test().name("Query - #run matching WhereCondition test")
+        test().name('Query - #run matching WhereCondition test')
     );
 
     /**
@@ -202,10 +202,10 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue          = "testValue";
+            this.testValue          = 'testValue';
             this.testObject         = {};
             this.testQuery          = new Query();
-            this.testPropertyQuery  = "testProp.subProp";
+            this.testPropertyQuery  = 'testProp.subProp';
             this.testInSet          = new Set([
                 this.testValue
             ]);
@@ -220,11 +220,11 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var result = this.testQuery.run(this.testObject);
             test.assertEqual(result, false,
-                "Assert #run returns a false result for matching WhereCondition Query");
+                'Assert #run returns a false result for matching WhereCondition Query');
         }
     };
     bugmeta.tag(queryRunEmptyObjectWhereConditionTest).with(
-        test().name("Query - #run WhereCondition Query against an empty Object test")
+        test().name('Query - #run WhereCondition Query against an empty Object test')
     );
 
 
@@ -238,16 +238,16 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
-            this.testValue          = "testValue";
+            this.testValue          = 'testValue';
             this.testObject         = {
                 testProp: {
                     subProp: this.testValue
                 }
             };
             this.testQuery          = new Query();
-            this.testPropertyQuery  = "testProp.subProp";
+            this.testPropertyQuery  = 'testProp.subProp';
             this.testInSet          = new Set([
-                "nonMatch"
+                'nonMatch'
             ]);
             this.testWhereCondition = new WhereCondition(this.testPropertyQuery, this.testInSet);
             this.testQuery.addCondition(this.testWhereCondition);
@@ -260,10 +260,10 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var result = this.testQuery.run(this.testObject);
             test.assertEqual(result, false,
-                "Assert #run returns a false result for non matching WhereCondition Query");
+                'Assert #run returns a false result for non matching WhereCondition Query');
         }
     };
     bugmeta.tag(queryRunNonMatchingWhereConditionQueryTest).with(
-        test().name("Query - #run non matching WhereCondition Query test")
+        test().name('Query - #run non matching WhereCondition Query test')
     );
 });
