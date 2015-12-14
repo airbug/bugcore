@@ -100,7 +100,7 @@ require('bugpack').context('*', function(bugpack) {
         if (!TypeUtil.isObject(object)) {
             throw new TypeError('parameter "object" must be an object');
         }
-        if (!TypeUtil.isString(propertyName)) {
+        if (!(TypeUtil.isString(propertyName) || TypeUtil.isNumber(propertyName))) {
             throw new TypeError('parameter "propertyName" must be an string');
         }
         try {
@@ -289,7 +289,7 @@ require('bugpack').context('*', function(bugpack) {
      *
      * @static
      * @param {Object} object
-     * @param {function(string, *)} func
+     * @param {function(string|number, *)} func
      * @param {Object=} context
      */
     ObjectUtil.forInOwn = function(object, func, context) {
@@ -511,7 +511,7 @@ require('bugpack').context('*', function(bugpack) {
         if (!TypeUtil.isObject(object)) {
             throw new TypeError('parameter "object" must be an object');
         }
-        if (!TypeUtil.isString(propertyName)) {
+        if (!(TypeUtil.isString(propertyName) || TypeUtil.isNumber(propertyName))) {
             throw new TypeError('parameter "propertyName" must be an string');
         }
         try {

@@ -87,7 +87,7 @@ require('bugpack').context('*', function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {string} name
+         * @param {string|number} name
          * @returns {boolean}
          */
         deleteProperty: function(name) {
@@ -128,7 +128,7 @@ require('bugpack').context('*', function(bugpack) {
         },
 
         /**
-         * @param {string} name
+         * @param {string|number} name
          * @return {*}
          */
         getProperty: function(name) {
@@ -137,7 +137,7 @@ require('bugpack').context('*', function(bugpack) {
 
         /**
          * DOES include inherited properties
-         * @param {string} name
+         * @param {string|number} name
          * @return {boolean}
          */
         hasProperty: function(name) {
@@ -145,7 +145,7 @@ require('bugpack').context('*', function(bugpack) {
         },
 
         /**
-         * @param {string} name
+         * @param {string|number} name
          * @param {*} value
          * @return {boolean}
          */

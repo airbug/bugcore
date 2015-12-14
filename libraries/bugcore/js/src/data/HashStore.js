@@ -158,7 +158,7 @@ require('bugpack').context('*', function(bugpack) {
          * @param {I} item
          */
         add: function(item) {
-            var hashCode = Obj.hashCode(item).toString();
+            var hashCode = Obj.hashCode(item);
             var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             if (!hashStoreNode) {
                 hashStoreNode = new HashStoreNode();
@@ -184,7 +184,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {boolean}
          */
         contains: function(item) {
-            var hashCode        = Obj.hashCode(item).toString();
+            var hashCode        = Obj.hashCode(item);
             var hashStoreNode   = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             if (hashStoreNode) {
                 return hashStoreNode.contains(item);
@@ -197,7 +197,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {number}
          */
         countValue: function(value) {
-            var valueHashCode = Obj.hashCode(value).toString();
+            var valueHashCode = Obj.hashCode(value);
             var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(valueHashCode);
             if (hashStoreNode) {
                 return hashStoreNode.countValue(value);
@@ -217,7 +217,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {boolean}
          */
         remove: function(item) {
-            var hashCode = Obj.hashCode(item).toString();
+            var hashCode = Obj.hashCode(item);
             var hashStoreNode = this.hashStoreNodeNotifyingObject.getProperty(hashCode);
             var result = false;
             if (hashStoreNode) {

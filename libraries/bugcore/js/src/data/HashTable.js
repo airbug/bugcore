@@ -170,7 +170,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {boolean}
          */
         containsKey: function(key) {
-            var keyHashCode = Obj.hashCode(key).toString();
+            var keyHashCode = Obj.hashCode(key);
             var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (hashTableNode) {
                 return hashTableNode.containsKey(key);
@@ -204,7 +204,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {V}
          */
         get: function(key) {
-            var keyHashCode = Obj.hashCode(key).toString();
+            var keyHashCode = Obj.hashCode(key);
             var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (hashTableNode) {
                 return hashTableNode.get(key);
@@ -225,7 +225,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {V} Returns undefined if no value already existed at this key
          */
         put: function(key, value) {
-            var keyHashCode = Obj.hashCode(key).toString();
+            var keyHashCode = Obj.hashCode(key);
             var hashTableNode = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             if (!hashTableNode) {
                 hashTableNode = new HashTableNode();
@@ -243,7 +243,7 @@ require('bugpack').context('*', function(bugpack) {
          * @return {V} Returns undefined if no value already existed at this key
          */
         remove: function(key) {
-            var keyHashCode     = Obj.hashCode(key).toString();
+            var keyHashCode     = Obj.hashCode(key);
             var hashTableNode   = this.hashTableNodeNotifyingObject.getProperty(keyHashCode);
             var returnValue     = undefined;
             if (hashTableNode) {
