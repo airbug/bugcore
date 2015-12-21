@@ -126,6 +126,34 @@ require('bugpack').context('*', function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
+        // Init Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {function(function(*...), function(*...))=} promiseMethod
+         * @return {Promise}
+         */
+        init: function(promiseMethod) {
+            var _this = this._super();
+
+            if (_this) {
+                if (TypeUtil.isFunction(promiseMethod)) {
+                    promiseMethod.call(_this,
+                        function() {
+                            _this.resolvePromise(ArgUtil.toArray(arguments));
+                        },
+                        function() {
+                             _this.rejectPromise(ArgUtil.toArray(arguments));
+                        }
+                    );
+                }
+            }
+
+            return _this;
+        },
+
+
+        //-------------------------------------------------------------------------------
         // Getters and Setters
         //-------------------------------------------------------------------------------
 
@@ -265,6 +293,7 @@ require('bugpack').context('*', function(bugpack) {
         /**
          * @protected
          * @param {Array.<*>} reasons
+         * @return {Promise}
          */
         rejectPromise: function(reasons) {
             if (!this.isPending()) {
@@ -274,11 +303,13 @@ require('bugpack').context('*', function(bugpack) {
                 throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doRejectPromise(reasons);
+            return this;
         },
 
         /**
          * @protected
          * @param {Array.<*>} values
+         * @return {Promise}
          */
         resolvePromise: function(values) {
             if (!this.isPending()) {
@@ -288,6 +319,7 @@ require('bugpack').context('*', function(bugpack) {
                 throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doResolvePromise(values);
+            return this;
         },
 
 

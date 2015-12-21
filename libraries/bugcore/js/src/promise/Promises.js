@@ -11,6 +11,7 @@
 
 //@Export('Promises')
 
+//@Require('ArgUtil')
 //@Require('Class')
 //@Require('Deferred')
 //@Require('IPromise')
@@ -29,6 +30,7 @@ require('bugpack').context('*', function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
     var Deferred    = bugpack.require('Deferred');
     var IPromise    = bugpack.require('IPromise');
@@ -80,13 +82,41 @@ require('bugpack').context('*', function(bugpack) {
 
     /**
      * @static
-     * @param {function(...):*} promiseMethod
+     * @param {function(function(*...), function(*...))=} promiseMethod
      * @return {Promise}
      */
     Promises.promise = function(promiseMethod) {
-        var promise = new Promise();
-        promise.resolvePromise([]);
-        return promise.then(promiseMethod);
+        return new Promise(promiseMethod);
+    };
+
+    /**
+     * @static
+     * @param {*...} reasons
+     */
+    Promises.reject = function() {
+        return Promises.promise()
+            .rejectPromise(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {*...} values
+     * @returns {Promise}
+     */
+    Promises.resolve = function() {
+        return Promises.promise()
+            .resolvePromise(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {function(...):*} promiseMethod
+     * @returns {Promise}
+     */
+    Promises.try = function(promiseMethod) {
+        return Promises.promise()
+            .resolvePromise([])
+            .then(promiseMethod);
     };
 
 

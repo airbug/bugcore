@@ -19,6 +19,7 @@
 //@Require('Collections')
 //@Require('Constructor')
 //@Require('DateUtil')
+//@Require('Deferred')
 //@Require('Event')
 //@Require('EventDispatcher')
 //@Require('EventPropagator')
@@ -26,6 +27,7 @@
 //@Require('Exception')
 //@Require('Flows')
 //@Require('Func')
+//@Require('Handler')
 //@Require('HashStore')
 //@Require('HashTable')
 //@Require('HashUtil')
@@ -51,6 +53,8 @@
 //@Require('Obj')
 //@Require('ObjectUtil')
 //@Require('Pair')
+//@Require('Promise')
+//@Require('Promises')
 //@Require('Proxy')
 //@Require('ProxyMethod')
 //@Require('ProxyObject')
@@ -58,6 +62,7 @@
 //@Require('Queue')
 //@Require('RandomUtil')
 //@Require('RateLimiter')
+//@Require('Resolver')
 //@Require('Semaphore')
 //@Require('Set')
 //@Require('Stack')
@@ -92,6 +97,7 @@ require('bugpack').context('*', function(bugpack) {
     var Collections         = bugpack.require('Collections');
     var Constructor         = bugpack.require('Constructor');
     var DateUtil            = bugpack.require('DateUtil');
+    var Deferred            = bugpack.require('Deferred');
     var Event               = bugpack.require('Event');
     var EventDispatcher     = bugpack.require('EventDispatcher');
     var EventPropagator     = bugpack.require('EventPropagator');
@@ -99,6 +105,7 @@ require('bugpack').context('*', function(bugpack) {
     var Exception           = bugpack.require('Exception');
     var Flows               = bugpack.require('Flows');
     var Func                = bugpack.require('Func');
+    var Handler             = bugpack.require('Handler');
     var HashStore           = bugpack.require('HashStore');
     var HashTable           = bugpack.require('HashTable');
     var HashUtil            = bugpack.require('HashUtil');
@@ -124,6 +131,8 @@ require('bugpack').context('*', function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var ObjectUtil          = bugpack.require('ObjectUtil');
     var Pair                = bugpack.require('Pair');
+    var Promise             = bugpack.require('Promise');
+    var Promises            = bugpack.require('Promises');
     var Proxy               = bugpack.require('Proxy');
     var ProxyMethod         = bugpack.require('ProxyMethod');
     var ProxyObject         = bugpack.require('ProxyObject');
@@ -131,6 +140,7 @@ require('bugpack').context('*', function(bugpack) {
     var Queue               = bugpack.require('Queue');
     var RandomUtil          = bugpack.require('RandomUtil');
     var RateLimiter         = bugpack.require('RateLimiter');
+    var Resolver            = bugpack.require('Resolver');
     var Semaphore           = bugpack.require('Semaphore');
     var Set                 = bugpack.require('Set');
     var Stack               = bugpack.require('Stack');
@@ -217,6 +227,11 @@ require('bugpack').context('*', function(bugpack) {
             this.DateUtil           = DateUtil;
 
             /**
+             * @type {function(new:Deferred)}
+             */
+            this.Deferred           = Deferred;
+
+            /**
              * @type {function(new:Event)}
              */
             this.Event              = Event;
@@ -250,6 +265,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:Func)}
              */
             this.Func               = Func;
+
+            /**
+             * @type {function(new:Handler)}
+             */
+            this.Handler            = Handler;
 
             /**
              * @type {function(new:HashStore)}
@@ -377,6 +397,16 @@ require('bugpack').context('*', function(bugpack) {
             this.Pair               = Pair;
 
             /**
+             * @type {function(new:Promise)}
+             */
+            this.Promise            = Promise;
+
+            /**
+             * @type {function(new:Promises)}
+             */
+            this.Promises           = Promises;
+
+            /**
              * @type {function(new:Proxy)}
              */
             this.Proxy              = Proxy;
@@ -410,6 +440,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:RateLimiter)}
              */
             this.RateLimiter        = RateLimiter;
+
+            /**
+             * @type {function(new:Resolver)}
+             */
+            this.Resolver           = Resolver;
 
             /**
              * @type {function(new:Semaphore)}
