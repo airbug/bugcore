@@ -66,6 +66,7 @@
 //@Require('Striped')
 //@Require('Suppliers')
 //@Require('Throwable')
+//@Require('Throwables')
 //@Require('TypeUtil')
 //@Require('ValidationMachine')
 //@Require('Validator')
@@ -138,6 +139,7 @@ require('bugpack').context("*", function(bugpack) {
     var Striped             = bugpack.require('Striped');
     var Suppliers           = bugpack.require('Suppliers');
     var Throwable           = bugpack.require('Throwable');
+    var Throwables          = bugpack.require('Throwables');
     var TypeUtil            = bugpack.require('TypeUtil');
     var ValidationMachine   = bugpack.require('ValidationMachine');
     var Validator           = bugpack.require('Validator');
@@ -448,6 +450,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Throwable)}
              */
             this.Throwable          = Throwable;
+
+            /**
+             * @type {function(new:Throwables)}
+             */
+            this.Throwables         = Throwables;
 
             /**
              * @type {function(new:TypeUtil)}
