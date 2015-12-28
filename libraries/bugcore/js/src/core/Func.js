@@ -13,6 +13,7 @@
 
 //@Require('Class')
 //@Require('Obj')
+//@Require('Tracer')
 //@Require('TypeUtil')
 
 
@@ -28,7 +29,15 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
+    var Tracer      = bugpack.require('Tracer');
     var TypeUtil    = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Simplify References
+    //-------------------------------------------------------------------------------
+
+    var $trace      = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -142,9 +151,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         deferApply: function(args) {
             var _this = this;
-            setTimeout(function() {
+            setTimeout($trace(function() {
                 _this.apply(args);
-            }, 0);
+            }), 0);
         },
 
         /**
@@ -161,9 +170,9 @@ require('bugpack').context("*", function(bugpack) {
          */
         delayApply: function(wait, args) {
             var _this = this;
-            setTimeout(function() {
+            setTimeout($trace(function() {
                 _this.apply(args);
-            }, wait);
+            }), wait);
         },
 
         /**

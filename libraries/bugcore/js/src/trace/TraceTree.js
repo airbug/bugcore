@@ -9,12 +9,10 @@
 // Annotations
 //-------------------------------------------------------------------------------
 
-//@Export('Semaphore')
+//@Export('TraceTree')
 
 //@Require('Class')
 //@Require('Obj')
-//@Require('Queue')
-//@Require('Tracer')
 
 
 //-------------------------------------------------------------------------------
@@ -29,15 +27,6 @@ require('bugpack').context("*", function(bugpack) {
 
     var Class   = bugpack.require('Class');
     var Obj     = bugpack.require('Obj');
-    var Queue   = bugpack.require('Queue');
-    var Tracer  = bugpack.require('Tracer');
-
-
-    //-------------------------------------------------------------------------------
-    // Simplify References
-    //-------------------------------------------------------------------------------
-
-    var $trace  = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -48,9 +37,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      */
-    var Semaphore = Class.extend(Obj, {
+    var TraceTree = Class.extend(Obj, {
 
-        _name: "Semaphore",
+        _name: "TraceTree",
 
 
         //-------------------------------------------------------------------------------
@@ -59,9 +48,8 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {number} numberPermits
          */
-        _constructor: function(numberPermits) {
+        _constructor: function() {
 
             this._super();
 
@@ -72,21 +60,28 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Queue.<function()>}
+             * @type {Trace}
              */
-            this.acquisitionQueue       = new Queue();
+            this.rootTrace = null;
+        },
 
-            /**
-             * @private
-             * @type {number}
-             */
-            this.numberPermitsAcquired  = 0;
 
-            /**
-             * @private
-             * @type {number}
-             */
-            this.numberPermits          = numberPermits;
+        //-------------------------------------------------------------------------------
+        // Getters and Setters
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Trace}
+         */
+        getRootTrace: function() {
+            return this.rootTrace;
+        },
+
+        /**
+         * @param {Trace} rootTrace
+         */
+        setRootTrace: function(rootTrace) {
+            this.rootTrace = rootTrace;
         },
 
 
@@ -95,18 +90,16 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function()} method
+         * @param {function()} func
+         * @return {Trace}
          */
-        acquire: function(method) {
-            this.queueAcquisition(method);
-            this.processQueue();
-        },
-
-        /**
-         *
-         */
-        release: function() {
-            this.releasePermit();
+        findFirstTrace: function(func) {
+            var rootTrace = this.getRootTrace();
+            if (rootTrace) {
+                return this.findRecursive(rootTrace, func);
+            } else {
+                return null;
+            }
         },
 
 
@@ -116,50 +109,32 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
+         * @param {Trace} trace
+         * @param {function(*)} func
+         * @return {Trace}
          */
-        acquirePermit: function(method) {
-            this.numberPermitsAcquired++;
-            method();
-        },
-
-        /**
-         * @private
-         */
-        processQueue: function() {
-            while (this.numberPermitsAcquired < this.numberPermits && this.acquisitionQueue.getCount() > 0) {
-                var nextMethod = this.acquisitionQueue.dequeue();
-                this.acquirePermit(nextMethod);
+        findRecursive: function(trace, func) {
+            var result = func(trace);
+            if (result) {
+                return trace;
+            } else {
+                var childTraces = trace.getChildTraces();
+                for (var i = 0, size = childTraces.length; i < size; i++) {
+                    var childTrace = childTraces[i];
+                    var foundTrace = this.findRecursive(childTrace, func);
+                    if (foundTrace) {
+                        return foundTrace;
+                    }
+                }
+                return null;
             }
-        },
-
-        /**
-         * @private
-         * @param {function()} method
-         */
-        queueAcquisition: function(method) {
-            this.acquisitionQueue.enqueue(method);
-        },
-
-        /**
-         * @private
-         */
-        releasePermit: function() {
-            this.numberPermitsAcquired--;
-            var _this = this;
-
-            // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
-            // queue.
-
-            setTimeout($trace(function() {
-                _this.processQueue();
-            }), 0);
         }
     });
 
 
     //-------------------------------------------------------------------------------
-    // Exports
+    // Export
     //-------------------------------------------------------------------------------
 
-    bugpack.export('Semaphore', Semaphore);
+    bugpack.export('TraceTree', TraceTree);
 });

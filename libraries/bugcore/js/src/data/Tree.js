@@ -133,9 +133,9 @@ require('bugpack').context("*", function(bugpack) {
                 var childNodes = node.getChildNodes();
                 for (var i = 0, size = childNodes.getCount(); i < size; i++) {
                     var childNode = childNodes.getAt(i);
-                    var result = this.findRecursive(childNode, func);
-                    if (result) {
-                        return result;
+                    var foundNode = this.findRecursive(childNode, func);
+                    if (foundNode) {
+                        return foundNode;
                     }
                 }
                 return null;

@@ -22,6 +22,7 @@
 //@Require('Obj')
 //@Require('Resolver')
 //@Require('ThenHandler')
+//@Require('Tracer')
 //@Require('TypeUtil')
 
 
@@ -29,7 +30,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -46,7 +47,16 @@ require('bugpack').context("*", function(bugpack) {
     var Obj                 = bugpack.require('Obj');
     var Resolver            = bugpack.require('Resolver');
     var ThenHandler         = bugpack.require('ThenHandler');
+    var Tracer              = bugpack.require('Tracer');
     var TypeUtil            = bugpack.require('TypeUtil');
+
+
+    //-------------------------------------------------------------------------------
+    // Simplify References
+    //-------------------------------------------------------------------------------
+
+    var $error              = Tracer.$error;
+    var $trace              = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -60,7 +70,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var Promise = Class.extend(Obj, {
 
-        _name: "Promise",
+        _name: 'Promise',
 
 
         //-------------------------------------------------------------------------------
@@ -279,8 +289,8 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {function(...):*=} fulfilledFunction
-         * @param {function(...):*=} rejectedFunction
+         * @param {function(...*):*=} fulfilledFunction
+         * @param {function(...*):*=} rejectedFunction
          * @return {Promise}
          */
         then: function(fulfilledFunction, rejectedFunction) {
@@ -301,10 +311,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         rejectPromise: function(reasons) {
             if (!this.isPending()) {
-                throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot reject a promise that is not pending.");
+                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot reject a promise that is not pending.');
             }
             if (this.isResolving()) {
-                throw new Bug("IllegalState", {}, "Promise is already resolving. Cannot resolve a promise that is already resolving.");
+                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doRejectPromise(reasons);
             return this;
@@ -317,10 +327,10 @@ require('bugpack').context("*", function(bugpack) {
          */
         resolvePromise: function(values) {
             if (!this.isPending()) {
-                throw new Bug("IllegalState", {}, "Promise is no longer pending. Cannot resolve a promise that is not pending.");
+                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot resolve a promise that is not pending.');
             }
             if (this.isResolving()) {
-                throw new Bug("IllegalState", {}, "Promise is already resolving. Cannot resolve a promise that is already resolving.");
+                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
             }
             this.doResolvePromise(values);
             return this;
@@ -342,7 +352,7 @@ require('bugpack').context("*", function(bugpack) {
                 this.valueList.addAll(values);
                 this.processHandlers();
             } else {
-                throw new Bug("Promise has already been resolved");
+                throw new Bug('PromiseAlreadyResolved', 'Promise has already been resolved');
             }
         },
 
@@ -356,13 +366,13 @@ require('bugpack').context("*", function(bugpack) {
             //NOTE BRN: This setTimeout fulfills the 2.2.4 portion of the Promises A+ spec
             //2.2.4: onFulfilled or onRejected must not be called until the execution context stack contains only platform code.
 
-            setTimeout(function() {
+            setTimeout($trace(function() {
                 while (_this.processIndex < _this.handlerList.getCount()) {
                     _this.processHandler(_this.processIndex);
                     _this.processIndex++;
                 }
                 _this.processing = false;
-            }, 0);
+            }), 0);
         },
 
         /**
@@ -371,12 +381,15 @@ require('bugpack').context("*", function(bugpack) {
          */
         doRejectPromise: function(reasons) {
             if (this.isPending()) {
+                reasons.forEach(function(reason) {
+                    $error(reason);
+                });
                 this.resolving  = false;
                 this.state      = Promise.State.REJECTED;
                 this.reasonList.addAll(reasons);
                 this.processHandlers();
             } else {
-                throw new Bug("Promise has already been resolved");
+                throw new Bug('PromiseAlreadyResolved', 'Promise has already been resolved');
             }
         },
 
@@ -473,6 +486,7 @@ require('bugpack').context("*", function(bugpack) {
             this.handlerList.add(handler);
             return handler;
         },
+
         /**
          * @private
          * @param {function(*...):*} fulfilledFunction
@@ -528,9 +542,9 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     Promise.State = {
-        FULFILLED: "fulfilled",
-        PENDING: "pending",
-        REJECTED: "rejected"
+        FULFILLED: 'fulfilled',
+        PENDING: 'pending',
+        REJECTED: 'rejected'
     };
 
 

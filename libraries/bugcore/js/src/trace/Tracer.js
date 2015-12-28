@@ -18,8 +18,8 @@
 //@Require('StackTraceUtil')
 //@Require('StringUtil')
 //@Require('Trace')
-//@Require('Tree')
-//@Require('TreeNode')
+//@Require('TraceTree')
+//@Require('TypeUtil')
 
 
 //-------------------------------------------------------------------------------
@@ -39,8 +39,8 @@ require('bugpack').context("*", function(bugpack) {
     var StackTraceUtil  = bugpack.require('StackTraceUtil');
     var StringUtil      = bugpack.require('StringUtil');
     var Trace           = bugpack.require('Trace');
-    var Tree            = bugpack.require('Tree');
-    var TreeNode        = bugpack.require('TreeNode');
+    var TraceTree       = bugpack.require('TraceTree');
+    var TypeUtil        = bugpack.require('TypeUtil');
 
 
     //-------------------------------------------------------------------------------
@@ -80,15 +80,15 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {Tree}
+             * @type {TraceTree}
              */
-            this.traceTree      = new Tree();
+            this.traceTree      = new TraceTree();
 
             /**
              * @private
-             * @type {TreeNode}
+             * @type {Trace}
              */
-            this.currentNode    = this.traceTree.getRootNode();
+            this.currentTrace   = null;
         },
 
 
@@ -102,7 +102,8 @@ require('bugpack').context("*", function(bugpack) {
         init: function() {
             var _this = this._super();
             if (_this) {
-                _this.traceTree.setRootNode(new TreeNode(new Trace("", "ROOT_NODE")));
+                _this.currentTrace = new Trace("", "ROOT_TRACE");
+                _this.traceTree.setRootTrace(_this.currentTrace);
             }
             return _this;
         },
@@ -113,17 +114,17 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {TreeNode}
+         * @return {Trace}
          */
-        getCurrentNode: function() {
-            return this.currentNode;
+        getCurrentTrace: function() {
+            return this.currentTrace;
         },
 
         /**
-         * @param {TreeNode} currentNode
+         * @param {Trace} currentTrace
          */
-        setCurrentNode: function(currentNode) {
-            this.currentNode = currentNode;
+        setCurrentTrace: function(currentTrace) {
+            this.currentTrace = currentTrace;
         },
 
 
@@ -132,20 +133,18 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Throwable} error
-         * @return {Throwable}
+         * @param {Throwable | Error} error
+         * @return {Throwable | Error}
          */
         $error: function(error) {
             if (this.enabled) {
-                if (!error.bugTraced) {
+                if (TypeUtil.isObject(error) && !error.bugTraced) {
                     error.bugTraced = true;
                     if (!error.stack) {
                         error.stack = StackTraceUtil.generateStackTrace();
                     }
-
-                    var nodeStack       = this.generateNodeStack(this.currentNode);
-                    var currentStack    = error.stack + "\n" + nodeStack;
-                    error.stack = currentStack;
+                    var traceStack      = this.generateTraceStack(this.currentTrace);
+                    error.stack         = error.stack + "\n" + traceStack;
                 }
             }
             return error;
@@ -155,10 +154,8 @@ require('bugpack').context("*", function(bugpack) {
          * @param {string} name
          */
         $name: function(name) {
-            var currentNode = this.currentNode;
-            if (currentNode) {
-                var trace   = currentNode.getValue();
-                trace.setName(name);
+            if (this.currentTrace) {
+                this.currentTrace.setName(name);
             }
         },
 
@@ -170,7 +167,7 @@ require('bugpack').context("*", function(bugpack) {
             if (this.enabled) {
                 var _this = this;
                 var stack = StackTraceUtil.generateStackTrace();
-                var newNode = this.addTraceNode(stack);
+                var trace = this.addTraceStack(stack);
 
                 if (callback.aCallback) {
                     throw new Error("This callback has already been wrapped in a trace");
@@ -178,15 +175,15 @@ require('bugpack').context("*", function(bugpack) {
                 var newCallback = function() {
                     newCallback.aCallback = true;
                     var args = ArgUtil.toArray(arguments);
-                    _this.currentNode = newNode;
+                    _this.currentTrace = trace;
                     callback.apply(null, args);
 
                     //NOTE BRN: If one async thread ends and a new one starts that we have not wrapped in our own trace callback
-                    //we do not want any new nodes that the thread creates to attach to the previous current node (since they
-                    //are unrelated). So, we reset the current node to the root node after the completion of every callback.
+                    //we do not want any new traces that the thread creates to attach to the previous current trace (since they
+                    //are unrelated). So, we reset the current trace to the root trace after the completion of every callback.
 
-                    _this.currentNode = _this.traceTree.getRootNode();
-                    _this.checkTraceNodeForRemoval(newNode);
+                    _this.currentTrace = _this.traceTree.getRootTrace();
+                    _this.checkTraceForRemoval(trace);
                 };
                 return newCallback;
             } else {
@@ -202,7 +199,7 @@ require('bugpack').context("*", function(bugpack) {
             if (this.enabled) {
                 var _this = this;
                 var stack = StackTraceUtil.generateStackTrace();
-                var newNode = this.addTraceNode(stack);
+                var trace = this.addTraceStack(stack);
 
                 if (callback.aCallback) {
                     throw new Error("This callback has already been wrapped in a trace");
@@ -216,10 +213,10 @@ require('bugpack').context("*", function(bugpack) {
                     if (error) {
                         args[0] = _this.$error(error);
                     }
-                    _this.currentNode = newNode;
+                    _this.currentTrace = trace;
                     callback.apply(null, args);
-                    _this.currentNode = _this.traceTree.getRootNode();
-                    _this.checkTraceNodeForRemoval(newNode);
+                    _this.currentTrace = _this.traceTree.getRootTrace();
+                    _this.checkTraceForRemoval(trace);
                 };
                 return newCallback;
             } else {
@@ -235,53 +232,52 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {TreeNode} traceNode
-         * @return {string}
-         */
-        generateNodeStack: function(traceNode) {
-            var nodeStack   = [];
-            var currentNode = traceNode;
-            while (!Obj.equals(currentNode, this.traceTree.getRootNode())) {
-                var trace   = currentNode.getValue();
-                var stack   = trace.getStack();
-                var stackParts = stack.split("\n");
-                nodeStack.push("-------- Async Break ---------");
-                nodeStack = nodeStack.concat(stackParts);
-                currentNode = currentNode.getParentNode();
-            }
-            return nodeStack.join("\n");
-        },
-
-        /**
          * @param {string} name
          * @return {string}
          */
-        getNamedStack: function(name) {
-            var firstNamedNode = this.traceTree.findFirst(function(trace) {
+        generateNamedTraceStack: function(name) {
+            var firstNamedTrace = this.traceTree.findFirstTrace(function(trace) {
                 return (trace.getName() === name);
             });
 
-            if (firstNamedNode) {
-                var currentNode = null;
-                var nextNode    = firstNamedNode;
-                while (nextNode) {
-                    currentNode = nextNode;
-                    nextNode    = null;
-                    if (currentNode.getChildNodes().getCount() > 0) {
-                        var childNodes = currentNode.getChildNodes();
-                        for (var i = childNodes.getCount() - 1; i >= 0; i--) {
-                            var childNode = childNodes.getAt(i);
-                            if (childNode.getValue().getName() === name) {
-                                nextNode = childNode;
+            if (firstNamedTrace) {
+                var currentTrace    = null;
+                var nextTrace       = firstNamedTrace;
+                while (nextTrace) {
+                    currentTrace = nextTrace;
+                    nextTrace    = null;
+                    if (currentTrace.numberChildTraces() > 0) {
+                        var childTraces = currentTrace.getChildTraces();
+                        for (var i = childTraces.length - 1; i >= 0; i--) {
+                            var childTrace = childTraces[i];
+                            if (childTrace.getName() === name) {
+                                nextTrace = childTrace;
                                 break;
                             }
                         }
                     }
                 }
-                return this.generateNodeStack(currentNode);
+                return this.generateTraceStack(currentTrace);
             } else {
                 return "";
             }
+        },
+
+        /**
+         * @param {Trace} trace
+         * @return {string}
+         */
+        generateTraceStack: function(trace) {
+            var traceStack   = [];
+            var currentTrace = trace;
+            while (!Obj.equals(currentTrace, this.traceTree.getRootTrace())) {
+                var stack   = trace.getStack();
+                var stackParts = stack.split("\n");
+                traceStack.push("-------- Async Break ---------");
+                traceStack = traceStack.concat(stackParts);
+                currentTrace = currentTrace.getParentTrace();
+            }
+            return traceStack.join("\n");
         },
 
 
@@ -291,33 +287,34 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param stack
+         * @param {string} stack
          * @return {*}
          */
-        addTraceNode: function(stack) {
+        addTraceStack: function(stack) {
             var trace   = new Trace(stack);
-            var newNode = new TreeNode(trace);
-            trace.setName(this.currentNode.getValue().getName());
-            this.currentNode.addChildNode(newNode);
-            return newNode;
+            trace.setName(this.currentTrace.getName());
+            this.currentTrace.addChildTrace(trace);
+            return trace;
         },
 
         /**
          * @private
+         * @param {Trace} trace
          */
-        checkTraceNodeForRemoval: function(node) {
-            //console.log("check trace node - numberChildren:" + node.numberChildNodes() + " Obj.equals(node, this.traceTree.getRootNode()):" + Obj.equals(node, this.traceTree.getRootNode()) + " value:" + node.getValue());
-            if (node.numberChildNodes() === 0 && !Obj.equals(node, this.traceTree.getRootNode())) {
+        checkTraceForRemoval: function(trace) {
+            //console.log("check trace - numberChildren:" + node.numberChildTraces() + " Obj.equals(trace, this.traceTree.getRootTrace()):" + Obj.equals(trace, this.traceTree.getRootTrace()) + " trace:" + trace);
+            if (trace.numberChildTraces() === 0 && !Obj.equals(trace, this.traceTree.getRootTrace())) {
 
-                //console.log("removing trace node - value:" + node.getValue());
-                if (node.removed) {
-                    throw new Error("Trying to remove the same node TWICE!");
+                //TEST
+                //console.log("removing trace - trace:" + trace);
+                if (trace.removed) {
+                    throw new Error("Trying to remove the same trace TWICE!");
                 }
-                var parentNode = node.getParentNode();
-                parentNode.removeChildNode(node);
-                node.removed = true;
+                var parentTrace = trace.getParentTrace();
+                parentTrace.removeChildTrace(trace);
+                trace.removed = true;
 
-                this.checkTraceNodeForRemoval(parentNode);
+                this.checkTraceForRemoval(parentTrace);
             }
         }
     });
@@ -356,7 +353,7 @@ require('bugpack').context("*", function(bugpack) {
         "$trace",
         "$traceWithError",
         "enable",
-        "getNamedStack"
+        "generateNamedTraceStack"
     ]);
 
 

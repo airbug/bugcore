@@ -62,21 +62,40 @@ require('bugpack').context("*", function(bugpack) {
 
             /**
              * @private
-             * @type {string}
+             * @type {Array.<Trace>}
              */
-            this.name       = name;
+            this.childTraces    = [];
 
             /**
              * @private
              * @type {string}
              */
-            this.stack      = stack;
+            this.name           = name;
+
+            /**
+             * @private
+             * @type {Trace}
+             */
+            this.parentTrace    = null;
+
+            /**
+             * @private
+             * @type {string}
+             */
+            this.stack          = stack;
         },
 
 
         //-------------------------------------------------------------------------------
         // Getters and Setters
         //-------------------------------------------------------------------------------
+
+        /**
+         * @return {Array.<Trace>}
+         */
+        getChildTraces: function() {
+            return this.childTraces;
+        },
 
         /**
          * @return {string}
@@ -93,6 +112,20 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
+         * @return {Trace}
+         */
+        getParentTrace: function() {
+            return this.parentTrace;
+        },
+
+        /**
+         * @param {Trace} parentTrace
+         */
+        setParentTrace: function(parentTrace) {
+            this.parentTrace = parentTrace;
+        },
+
+        /**
          * @return {string}
          */
         getStack: function() {
@@ -104,6 +137,72 @@ require('bugpack').context("*", function(bugpack) {
          */
         setStack: function(stack) {
             this.stack = stack;
+        },
+
+
+        //-------------------------------------------------------------------------------
+        // Public Methods
+        //-------------------------------------------------------------------------------
+
+        /**
+         * @param {Trace} childTrace
+         */
+        addChildTrace: function(childTrace) {
+            if (childTrace.hasParentTrace()) {
+                childTrace.removeParentTrace();
+            }
+            this.childTraces.push(childTrace);
+            childTrace.setParentTrace(this);
+        },
+
+        /**
+         * @return {boolean}
+         */
+        hasParentTrace: function() {
+            return !!this.parentTrace;
+        },
+
+        /**
+         * @param {Trace} childTrace
+         * @return {number}
+         */
+        indexOfChildTrace: function(childTrace) {
+            for (var i = 0, size = this.childTraces.length; i < size; i++) {
+                if (Obj.equals(this.childTraces[i], childTrace)) {
+                    return i;
+                }
+            }
+            return -1;
+        },
+
+        /**
+         * @return {number}
+         */
+        numberChildTraces: function() {
+            return this.childTraces.length;
+        },
+
+        /**
+         * @param {Trace} childTrace
+         * @return {Trace}
+         */
+        removeChildTrace: function(childTrace) {
+            if (Obj.equals(this, childTrace.getParentTrace())) {
+                var childIndex = this.indexOfChildTrace(childTrace);
+                if (childIndex > -1) {
+                    childTrace.setParentTrace(null);
+                    return this.childTraces.splice(childIndex, 1)[0];
+                } else {
+                    throw new Error("CouldNotFindChildTrace");
+                }
+            }
+        },
+
+        /**
+         *
+         */
+        removeParentTrace: function() {
+            this.parentTrace.removeChildTrace(this);
         }
     });
 

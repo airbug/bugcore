@@ -16,6 +16,7 @@
 //@Require('Class')
 //@Require('List')
 //@Require('Obj')
+//@Require('Tracer')
 
 
 //-------------------------------------------------------------------------------
@@ -33,6 +34,15 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var List        = bugpack.require('List');
     var Obj         = bugpack.require('Obj');
+    var Tracer      = bugpack.require('Tracer');
+
+
+    //-------------------------------------------------------------------------------
+    // Simplify References
+    //-------------------------------------------------------------------------------
+
+    var $error      = Tracer.$error;
+    var $trace      = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -187,7 +197,7 @@ require('bugpack').context("*", function(bugpack) {
             //NOTE BRN: Prevent stack overflows
 
             var _this = this;
-            setTimeout(function() {
+            setTimeout($trace(function() {
                 try {
                     command.execute(function() {
                         var args        = ArgUtil.toArray(arguments);
@@ -196,13 +206,13 @@ require('bugpack').context("*", function(bugpack) {
                         if (!throwable) {
                             _this.nextCommand();
                         } else {
-                            _this.completeBatch(throwable);
+                            _this.completeBatch($error(throwable));
                         }
                     });
                 } catch(throwable) {
-                    _this.completeBatch(throwable);
+                    _this.completeBatch($error(throwable));
                 }
-            }, 0);
+            }), 0);
         },
 
         /**

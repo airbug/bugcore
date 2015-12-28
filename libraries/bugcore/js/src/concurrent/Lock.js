@@ -15,6 +15,7 @@
 //@Require('Event')
 //@Require('EventDispatcher')
 //@Require('Queue')
+//@Require('Tracer')
 
 
 //-------------------------------------------------------------------------------
@@ -31,6 +32,14 @@ require('bugpack').context("*", function(bugpack) {
     var Event               = bugpack.require('Event');
     var EventDispatcher     = bugpack.require('EventDispatcher');
     var Queue               = bugpack.require('Queue');
+    var Tracer              = bugpack.require('Tracer');
+
+
+    //-------------------------------------------------------------------------------
+    // Simplify References
+    //-------------------------------------------------------------------------------
+
+    var $trace              = Tracer.$trace;
 
 
     //-------------------------------------------------------------------------------
@@ -170,9 +179,9 @@ require('bugpack').context("*", function(bugpack) {
             // NOTE BRN: We use a setTimeout here to help prevent stack overflows when it comes to the processing of the
             // queue.
 
-            setTimeout(function() {
+            setTimeout($trace(function() {
                 _this.processQueue();
-            }, 0);
+            }), 0);
         }
     });
 
