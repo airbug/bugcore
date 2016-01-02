@@ -56,6 +56,8 @@
 //@Require('Pair')
 //@Require('Promise')
 //@Require('Promises')
+//@Require('Properties')
+//@Require('PropertiesChain')
 //@Require('Proxy')
 //@Require('ProxyMethod')
 //@Require('ProxyObject')
@@ -136,6 +138,8 @@ require('bugpack').context("*", function(bugpack) {
     var Pair                = bugpack.require('Pair');
     var Promise             = bugpack.require('Promise');
     var Promises            = bugpack.require('Promises');
+    var Properties          = bugpack.require('Properties');
+    var PropertiesChain     = bugpack.require('PropertiesChain');
     var Proxy               = bugpack.require('Proxy');
     var ProxyMethod         = bugpack.require('ProxyMethod');
     var ProxyObject         = bugpack.require('ProxyObject');
@@ -414,6 +418,16 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Promises)}
              */
             this.Promises           = Promises;
+
+            /**
+             * @type {function(new:Properties)}
+             */
+            this.Properties         = Properties;
+
+            /**
+             * @type {function(new:PropertiesChain)}
+             */
+            this.PropertiesChain    = PropertiesChain;
 
             /**
              * @type {function(new:Proxy)}
