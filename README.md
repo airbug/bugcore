@@ -140,8 +140,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.3.15.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.3.15.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.3.16.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.3.16.min.js
 
 
 ## Install
@@ -154,7 +154,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.2.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.15.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.16.min.js"></script>
 ```
 
 
@@ -174,7 +174,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.2.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.15.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.16.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
@@ -538,7 +538,7 @@ TODO
 TODO
 
 
-<br /><a name="Class" />
+<br /><a name="Class"></a>
 ## Class
 
 Core class used to build other classes.
@@ -601,7 +601,7 @@ static public | <code>[implement](#Class-implement)({function(new:[Constructor](
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Class_constructor" />
+<a name="Class_constructor"></a>
 ### Class(constructor, interfaces, name, superclass)
 
 
@@ -639,7 +639,7 @@ var myClass = new Class(constructor, interfaces, name, superclass);
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Class_getConstructor" />
+<a name="Class_getConstructor"></a>
 ### Class#getConstructor()
 
 Get the Class's Constructor function
@@ -681,7 +681,7 @@ console.log(MyClassConstructor === MyClass.getConstructor());   // true
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Class_getInterfaces" />
+<a name="Class_getInterfaces"></a>
 ### Class#getInterfaces()
 
 Get the Class's implemented Interfaces
@@ -1556,7 +1556,7 @@ static public | <code>[getInterface](#Implementable-getInterface)()</code> | <co
 ------------------------------------------------------------------------------------
 <br />
 
-<a name="Implementable-getInterface" />
+<a name="Implementable-getInterface"></a>
 ### Implementable.getInterface()
 
 Get the [Interface](#Interface) for this Implementable.
