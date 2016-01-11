@@ -11,7 +11,6 @@
 
 //@Export('Promises')
 
-//@Require('ArgUtil')
 //@Require('Class')
 //@Require('Deferred')
 //@Require('IPromise')
@@ -30,7 +29,6 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
-    var ArgUtil     = bugpack.require('ArgUtil');
     var Class       = bugpack.require('Class');
     var Deferred    = bugpack.require('Deferred');
     var IPromise    = bugpack.require('IPromise');
@@ -58,6 +56,15 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {...(Array<*> | IIterable<*>)} iterable
+     * @return {Promise}
+     */
+    Promises.all = function(iterable) {
+        return Promise.all.apply(Promise, arguments);
+    };
+
+    /**
+     * @static
      * @return {Deferred}
      */
     Promises.deferred = function() {
@@ -82,42 +89,58 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {function(function(*...), function(*...))=} promiseMethod
+     * @param {function(function(...*), function(...*))=} promiseMethod
      * @return {Promise}
      */
     Promises.promise = function(promiseMethod) {
-        return new Promise(promiseMethod);
+        return Promise.promise(promiseMethod);
     };
 
     /**
      * @static
-     * @param {*...} reasons
+     * @param {...(Object<*, *> | IMap<*, *>)} object
+     * @return {Promise}
      */
-    Promises.reject = function() {
-        return Promises.promise()
-            .rejectPromise(ArgUtil.toArray(arguments));
+    Promises.props = function(object) {
+        return Promise.props.apply(Promise, arguments);
     };
 
     /**
      * @static
-     * @param {*...} values
+     * @param {...(Array<*> | IIterable<*>)} iterable
+     * @return {Promise}
+     */
+    Promises.race = function(iterable) {
+        return Promise.race.apply(Promise, arguments);
+    };
+
+    /**
+     * @static
+     * @param {...*} reason
+     * @return {Promise}
+     */
+    Promises.reject = function(reason) {
+        return Promise.reject.apply(Promise, arguments);
+    };
+
+    /**
+     * @static
+     * @param {...*} value
      * @returns {Promise}
      */
-    Promises.resolve = function() {
-        return Promises.promise()
-            .resolvePromise(ArgUtil.toArray(arguments));
+    Promises.resolve = function(value) {
+        return Promise.resolve.apply(Promise, arguments);
     };
 
     /**
      * @static
-     * @param {function(...):*} promiseMethod
+     * @param {function(...*):*} promiseMethod
      * @returns {Promise}
      */
     Promises.try = function(promiseMethod) {
-        return Promises.promise()
-            .resolvePromise([])
-            .then(promiseMethod);
+        return Promise.try(promiseMethod);
     };
+
 
 
     //-------------------------------------------------------------------------------
@@ -126,3 +149,4 @@ require('bugpack').context("*", function(bugpack) {
 
     bugpack.export('Promises', Promises);
 });
+

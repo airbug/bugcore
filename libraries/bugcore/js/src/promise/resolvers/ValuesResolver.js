@@ -16,8 +16,7 @@
 //@Require('Class')
 //@Require('Exception')
 //@Require('IPromise')
-//@Require('List')
-//@Require('Obj')
+//@Require('Resolver')
 //@Require('TypeUtil')
 
 
@@ -36,8 +35,7 @@ require('bugpack').context("*", function(bugpack) {
     var Class       = bugpack.require('Class');
     var Exception   = bugpack.require('Exception');
     var IPromise    = bugpack.require('IPromise');
-    var List        = bugpack.require('List');
-    var Obj         = bugpack.require('Obj');
+    var Resolver    = bugpack.require('Resolver');
     var TypeUtil    = bugpack.require('TypeUtil');
 
 
@@ -47,168 +45,81 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @class
-     * @extends {Obj}
+     * @extends {Resolver}
      */
-    var ValuesResolver = Class.extend(Obj, {
+    var ValuesResolver = Class.extend(Resolver, {
 
         _name: "ValuesResolver",
 
 
         //-------------------------------------------------------------------------------
-        // Constructor
+        // Resolver Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @constructs
-         * @param {(Array.<*> | Collection.<*>)} illegalValues
-         * @param {(Array.<*> | Collection.<*>)} values
+         * @protected
+         * @param {function(Array<*>)} fulfilledCallback
+         * @param {function(Array<*>)} rejectedCallback
          */
-        _constructor: function(illegalValues, values) {
-
-            this._super();
-
-
-            //-------------------------------------------------------------------------------
-            // Private Properties
-            //-------------------------------------------------------------------------------
-
-            /**
-             * @private
-             * @type {List.<*>}
-             */
-            this.illegalValues          = new List(illegalValues);
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.numberExpectedValues   = 0;
-
-            /**
-             * @private
-             * @type {number}
-             */
-            this.numberResolvedValues   = 0;
-
-            /**
-             * @private
-             * @type {boolean}
-             */
-            this.resolved               = false;
-
-            /**
-             * @private
-             * @type {List.<*>}
-             */
-            this.resolvedReasonList     = new List();
-
-            /**
-             * @private
-             * @type {List.<*>}
-             */
-            this.resolvedValueList      = new List();
-
-            /**
-             * @private
-             * @type {boolean}
-             */
-            this.resolving              = false;
-
-            /**
-             * @private
-             * @type {List.<*>}
-             */
-            this.values                 = new List(values);
+        doResolve: function(fulfilledCallback, rejectedCallback) {
+            this.resolveValues(fulfilledCallback, rejectedCallback);
         },
 
 
         //-------------------------------------------------------------------------------
-        // Init Methods
+        // Protected Methods
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {ValuesResolver}
+         * @protected
+         * @param {function(Array<*>)} fulfilledCallback
+         * @param {function(Array<*>)} rejectedCallback
          */
-        init: function() {
-            this._super();
-            this.numberExpectedValues = this.values.getCount();
-            return this;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Getters and Setters
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @return {List.<*>}
-         */
-        getIllegalValues: function() {
-            return this.illegalValues;
-        },
-
-        /**
-         * @return {number}
-         */
-        getNumberExpectedValues: function() {
-            return this.numberExpectedValues;
-        },
-
-        /**
-         * @return {number}
-         */
-        getNumberResolvedValues: function() {
-            return this.numberResolvedValues;
-        },
-
-        /**
-         * @return {boolean}
-         */
-        getResolved: function() {
-            return this.resolved;
-        },
-
-        /**
-         * @return {List.<*>}
-         */
-        getResolvedReasonList: function() {
-            return this.resolvedReasonList;
-        },
-
-        /**
-         * @return {List.<*>}
-         */
-        getResolvedValueList: function() {
-            return this.resolvedValueList;
-        },
-
-        /**
-         * @return {List.<*>}
-         */
-        getValues: function() {
-            return this.values;
-        },
-
-
-        //-------------------------------------------------------------------------------
-        // Public Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @param {function(Array.<*>, Array.<*>)} callback
-         */
-        resolve: function(callback) {
-            if (!this.resolved && !this.resolving) {
-                this.resolving = true;
-                this.resolveValues(function() {
-                    var args = ArgUtil.toArray(arguments);
-                    callback([], args);
-                }, function() {
-                    var args = ArgUtil.toArray(arguments);
-                    callback(args, []);
-                })
+        resolveValues: function(fulfilledCallback, rejectedCallback) {
+            var _this = this;
+            if (this.getValues().getCount() > 0) {
+                this.getValues().forEach(function(value, index) {
+                    _this.getResolvedValueList().add(undefined);
+                    _this.getResolvedReasonList().add(undefined);
+                    _this.resolveValue(value, function(values) {
+                        if (values.length === 1) {
+                            values = values[0];
+                        }
+                        _this.getResolvedValueList().set(index, values);
+                        _this.incrementResolvedValues();
+                        _this.tryResolving(fulfilledCallback, rejectedCallback);
+                    }, function(reasons) {
+                        if (reasons.length === 1) {
+                            reasons = reasons[0];
+                        }
+                        _this.getResolvedReasonList().set(index, reasons);
+                        _this.incrementResolvedValues();
+                        _this.tryResolving(fulfilledCallback, rejectedCallback);
+                    });
+                });
             } else {
-                throw new Exception("IllegalState", {}, "Resolver is already resolving.");
+                this.tryResolving(fulfilledCallback, rejectedCallback);
+            }
+        },
+
+        /**
+         * @protected
+         * @param {*} value
+         * @param {function(Array.<*>)} fulfilledCallback
+         * @param {function(Array.<*>)} rejectedCallback
+         */
+        resolveValue: function(value, fulfilledCallback, rejectedCallback) {
+            try {
+                this.validateValue(value);
+                if (Class.doesImplement(value, IPromise)) {
+                    this.resolveValueAsPromise(value, fulfilledCallback, rejectedCallback);
+                } else if (TypeUtil.isFunction(value) || TypeUtil.isObject(value)) {
+                    this.resolveValueAsObject(value, fulfilledCallback, rejectedCallback);
+                } else {
+                    fulfilledCallback([value]);
+                }
+            } catch(error) {
+                rejectedCallback([error]);
             }
         },
 
@@ -219,65 +130,12 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @private
-         * @param {function(*...)} valuesFulfilledCallback
-         * @param {function(*...)} valuesRejectedCallback
-         */
-        resolveValues: function(valuesFulfilledCallback, valuesRejectedCallback) {
-            var _this = this;
-            if (this.values.getCount() > 0) {
-                this.values.forEach(function(value, index) {
-                    _this.resolvedValueList.add(null);
-                    _this.resolvedReasonList.add(null);
-                    _this.resolveValue(value, function () {
-                        var values = ArgUtil.toArray(arguments);
-                        if (values.length === 1) {
-                            values = values[0];
-                        }
-                        _this.resolvedValueList.set(index, values);
-                        _this.numberResolvedValues++;
-                        _this.tryResolving(valuesFulfilledCallback, valuesRejectedCallback);
-                    }, function () {
-                        var reasons = ArgUtil.toArray(arguments);
-                        if (reasons.length === 1) {
-                            reasons = reasons[0];
-                        }
-                        _this.resolvedReasonList.set(index, reasons);
-                        _this.numberResolvedValues++;
-                        _this.tryResolving(valuesFulfilledCallback, valuesRejectedCallback);
-                    });
-                });
-            } else {
-                _this.tryResolving(valuesFulfilledCallback, valuesRejectedCallback);
-            }
-        },
-
-        /**
-         * @private
-         * @param {*} value
-         * @param {function(*...)} valueFulfilledCallback
-         * @param {function(*...)} valueRejectedCallback
-         */
-        resolveValue: function(value, valueFulfilledCallback, valueRejectedCallback) {
-            if (this.validateValue(value)) {
-                if (Class.doesImplement(value, IPromise)) {
-                    this.resolveValueAsPromise(value, valueFulfilledCallback, valueRejectedCallback);
-                } else if (TypeUtil.isFunction(value) || TypeUtil.isObject(value)) {
-                    this.resolveValueAsObject(value, valueFulfilledCallback, valueRejectedCallback);
-                } else {
-                    valueFulfilledCallback(value);
-                }
-            } else {
-                valueRejectedCallback(new Bug("TypeError", {}, "Promise received itself as one of the values to resolve"));
-            }
-        },
-
-        /**
-         * @private
          * @param {Object} object
-         * @param {function(*...)} valueFulfilledCallback
-         * @param {function(*...)} valueRejectedCallback
+         * @param {function(Array.<*>)} fulfilledCallback
+         * @param {function(Array.<*>)} rejectedCallback
          */
-        resolveValueAsObject: function(object, valueFulfilledCallback, valueRejectedCallback) {
+        resolveValueAsObject: function(object, fulfilledCallback, rejectedCallback) {
+            var _this = this;
             try {
                 var then = object.then;
                 if (TypeUtil.isFunction(then)) {
@@ -287,76 +145,43 @@ require('bugpack').context("*", function(bugpack) {
                             if (!complete) {
                                 complete = true;
                                 var values = ArgUtil.toArray(arguments);
-                                var valuesResolver = new ValuesResolver(values, valueFulfilledCallback, valueRejectedCallback);
-                                valuesResolver.resolve(function(reasons, values) {
-                                    if (reasons.length > 0) {
-                                        valueRejectedCallback.apply(null, reasons);
-                                    } else {
-                                        valueFulfilledCallback.apply(null, values);
-                                    }
-                                });
+                                var valuesResolver = new ValuesResolver(_this.getIllegalValues(), values);
+                                valuesResolver.resolve(fulfilledCallback, rejectedCallback);
                             }
                         }, function () {
                             if (!complete) {
                                 complete = true;
-                                valueRejectedCallback.apply(null, arguments)
+                                rejectedCallback(ArgUtil.toArray(arguments));
                             }
                         });
                     } catch(e) {
                         if (!complete) {
                             complete = true;
-                            valueRejectedCallback(e);
+                            rejectedCallback([e]);
                         }
                     }
                 } else {
-                    valueFulfilledCallback(object)
+                    fulfilledCallback([object]);
                 }
-            } catch(e) {
-                valueRejectedCallback(e)
+            } catch(error) {
+                rejectedCallback([error]);
             }
         },
 
         /**
          * @private
          * @param {IPromise} promise
-         * @param {function(*...)} valueFulfilledCallback
-         * @param {function(*...)} valueRejectedCallback
+         * @param {function(Array.<*>)} fulfilledCallback
+         * @param {function(Array.<*>)} rejectedCallback
          */
-        resolveValueAsPromise: function(promise, valueFulfilledCallback, valueRejectedCallback) {
-            promise.then(valueFulfilledCallback, valueRejectedCallback);
-        },
-
-        /**
-         * @private
-         * @param {function(*...)} valuesFulfilledCallback
-         * @param {function(*...)} valuesRejectedCallback
-         */
-        tryResolving: function(valuesFulfilledCallback, valuesRejectedCallback) {
-            if (this.numberResolvedValues === this.numberExpectedValues) {
-                var fulfill = true;
-
-                for (var i = 0; i < this.numberExpectedValues; i++) {
-                    var resolvedReason = this.resolvedReasonList.getAt(i);
-                    if (resolvedReason) {
-                        fulfill = false;
-                    }
-                }
-
-                if (fulfill) {
-                    valuesFulfilledCallback.apply(null, this.resolvedValueList.toArray());
-                } else {
-                    valuesRejectedCallback.apply(null, this.resolvedReasonList.toArray());
-                }
-            }
-        },
-
-        /**
-         * @private
-         * @param {*} value
-         * @returns {boolean}
-         */
-        validateValue: function(value) {
-            return !this.illegalValues.contains(value);
+        resolveValueAsPromise: function(promise, fulfilledCallback, rejectedCallback) {
+            promise.then(function() {
+                var values = ArgUtil.toArray(arguments);
+                fulfilledCallback(values);
+            }, function() {
+                var reasons = ArgUtil.toArray(arguments);
+                rejectedCallback(reasons);
+            });
         }
     });
 

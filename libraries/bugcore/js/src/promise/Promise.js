@@ -12,16 +12,18 @@
 //@Export('Promise')
 
 //@Require('ArgUtil')
-//@Require('Bug')
 //@Require('CallbackHandler')
 //@Require('CatchHandler')
 //@Require('Class')
 //@Require('FinallyHandler')
+//@Require('IIterable')
+//@Require('IMap')
 //@Require('IPromise')
 //@Require('List')
 //@Require('Obj')
-//@Require('Resolver')
+//@Require('Resolvers')
 //@Require('ThenHandler')
+//@Require('Throwables')
 //@Require('Tracer')
 //@Require('TypeUtil')
 
@@ -37,16 +39,18 @@ require('bugpack').context('*', function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var ArgUtil             = bugpack.require('ArgUtil');
-    var Bug                 = bugpack.require('Bug');
     var CallbackHandler     = bugpack.require('CallbackHandler');
     var CatchHandler        = bugpack.require('CatchHandler');
     var Class               = bugpack.require('Class');
     var FinallyHandler      = bugpack.require('FinallyHandler');
+    var IIterable           = bugpack.require('IIterable');
+    var IMap                = bugpack.require('IMap');
     var IPromise            = bugpack.require('IPromise');
     var List                = bugpack.require('List');
     var Obj                 = bugpack.require('Obj');
-    var Resolver            = bugpack.require('Resolver');
+    var Resolvers           = bugpack.require('Resolvers');
     var ThenHandler         = bugpack.require('ThenHandler');
+    var Throwables          = bugpack.require('Throwables');
     var Tracer              = bugpack.require('Tracer');
     var TypeUtil            = bugpack.require('TypeUtil');
 
@@ -91,7 +95,7 @@ require('bugpack').context('*', function(bugpack) {
 
             /**
              * @private
-             * @type {List.<Handler>}
+             * @type {List<Handler>}
              */
             this.handlerList            = new List();
 
@@ -109,7 +113,7 @@ require('bugpack').context('*', function(bugpack) {
 
             /**
              * @private
-             * @type {List.<*>}
+             * @type {List<*>}
              */
             this.reasonList             = new List();
 
@@ -133,7 +137,7 @@ require('bugpack').context('*', function(bugpack) {
 
             /**
              * @private
-             * @type {List.<*>}
+             * @type {List<*>}
              */
             this.valueList              = new List();
         },
@@ -144,7 +148,7 @@ require('bugpack').context('*', function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function(function(*...), function(*...))=} promiseMethod
+         * @param {function(function(...*), function(...*))=} promiseMethod
          * @return {Promise}
          */
         init: function(promiseMethod) {
@@ -154,10 +158,10 @@ require('bugpack').context('*', function(bugpack) {
                 if (TypeUtil.isFunction(promiseMethod)) {
                     promiseMethod.call(_this,
                         function() {
-                            _this.resolvePromise(ArgUtil.toArray(arguments));
+                            _this.resolve(ArgUtil.toArray(arguments));
                         },
                         function() {
-                             _this.rejectPromise(ArgUtil.toArray(arguments));
+                             _this.reject(ArgUtil.toArray(arguments));
                         }
                     );
                 }
@@ -172,14 +176,14 @@ require('bugpack').context('*', function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {List.<Handler>}
+         * @return {List<Handler>}
          */
         getHandlerList: function() {
             return this.handlerList;
         },
 
         /**
-         * @return {List.<*>}
+         * @return {List<*>}
          */
         getReasonList: function() {
             return this.reasonList;
@@ -207,7 +211,7 @@ require('bugpack').context('*', function(bugpack) {
         },
 
         /**
-         * @return {List.<*>}
+         * @return {List<*>}
          */
         getValueList: function() {
             return this.valueList;
@@ -259,7 +263,7 @@ require('bugpack').context('*', function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {function(Throwable, *...=)} callback
+         * @param {function(Throwable, ...*=)} callback
          * @return {Promise}
          */
         callback: function(callback) {
@@ -269,10 +273,10 @@ require('bugpack').context('*', function(bugpack) {
         },
 
         /**
-         * @param {function(...):*=} catchFunction
+         * @param {function(...*):*=} catchFunction
          * @return {Promise}
          */
-        'catch': function(catchFunction) {
+        catch: function(catchFunction) {
             var handler = this.generateCatchHandler(catchFunction);
             this.processHandlers();
             return handler.getForwardPromise();
@@ -282,10 +286,63 @@ require('bugpack').context('*', function(bugpack) {
          * @param {function():*=} finallyFunction
          * @return {Promise}
          */
-        'finally': function(finallyFunction) {
+        finally: function(finallyFunction) {
             var handler = this.generateFinallyHandler(finallyFunction);
             this.processHandlers();
             return handler.getForwardPromise();
+        },
+
+        /**
+         * @param {Array<*>} reasons
+         * @return {Promise}
+         */
+        reject: function(reasons) {
+            this.validatePromiseState();
+            this.doRejectPromise(reasons);
+            return this;
+        },
+
+        /**
+         * @param {Array<*>} values
+         * @return {Promise}
+         */
+        resolve: function(values) {
+            this.validatePromiseState();
+            this.doResolveValues(values);
+            return this;
+        },
+
+        /**
+         * @param {Array<(Array<*> | IIterable<*>)>} iterables
+         * @return {Promise}
+         */
+        resolveAll: function(iterables) {
+            this.validatePromiseState();
+            this.validateIterables(iterables);
+            this.doResolveAll(iterables);
+            return this;
+        },
+
+        /**
+         * @param {Array<(Object<*, *> | Map<*, *>)>} objects
+         * @return {Promise}
+         */
+        resolveProps: function(objects) {
+            this.validatePromiseState();
+            this.validateObjects(objects);
+            this.doResolveProps(objects);
+            return this;
+        },
+
+        /**
+         * @param {Array<(Array<*> | IIterable<*>)>} iterables
+         * @return {Promise}
+         */
+        resolveRace: function(iterables) {
+            this.validatePromiseState();
+            this.validateIterables(iterables);
+            this.doResolveRace(iterables);
+            return this;
         },
 
         /**
@@ -301,49 +358,12 @@ require('bugpack').context('*', function(bugpack) {
 
 
         //-------------------------------------------------------------------------------
-        // Protected Methods
-        //-------------------------------------------------------------------------------
-
-        /**
-         * @protected
-         * @param {Array.<*>} reasons
-         * @return {Promise}
-         */
-        rejectPromise: function(reasons) {
-            if (!this.isPending()) {
-                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot reject a promise that is not pending.');
-            }
-            if (this.isResolving()) {
-                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
-            }
-            this.doRejectPromise(reasons);
-            return this;
-        },
-
-        /**
-         * @protected
-         * @param {Array.<*>} values
-         * @return {Promise}
-         */
-        resolvePromise: function(values) {
-            if (!this.isPending()) {
-                throw new Bug('IllegalState', {}, 'Promise is no longer pending. Cannot resolve a promise that is not pending.');
-            }
-            if (this.isResolving()) {
-                throw new Bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
-            }
-            this.doResolvePromise(values);
-            return this;
-        },
-
-
-        //-------------------------------------------------------------------------------
         // Private Methods
         //-------------------------------------------------------------------------------
 
         /**
          * @protected
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doFulfillPromise: function(values) {
             if (this.isPending()) {
@@ -352,7 +372,7 @@ require('bugpack').context('*', function(bugpack) {
                 this.valueList.addAll(values);
                 this.processHandlers();
             } else {
-                throw new Bug('PromiseAlreadyResolved', 'Promise has already been resolved');
+                throw Throwables.bug('PromiseAlreadyResolved', 'Promise has already been resolved');
             }
         },
 
@@ -377,7 +397,7 @@ require('bugpack').context('*', function(bugpack) {
 
         /**
          * @protected
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doRejectPromise: function(reasons) {
             if (this.isPending()) {
@@ -389,25 +409,57 @@ require('bugpack').context('*', function(bugpack) {
                 this.reasonList.addAll(reasons);
                 this.processHandlers();
             } else {
-                throw new Bug('PromiseAlreadyResolved', 'Promise has already been resolved');
+                throw Throwables.bug('PromiseAlreadyResolved', 'Promise has already been resolved');
             }
         },
 
         /**
          * @private
-         * @param {Array.<*>} values
          */
-        doResolvePromise: function(values) {
+        doResolve: function() {
             var _this       = this;
             this.resolving  = true;
-            this.resolver   = new Resolver([this], values);
-            this.resolver.resolve(function(reasons, values) {
-                if (reasons.length > 0) {
-                    _this.doRejectPromise(reasons);
-                } else {
-                    _this.doFulfillPromise(values);
-                }
+            this.resolver.resolve(function(values) {
+                _this.doFulfillPromise(values);
+            }, function(reasons) {
+                _this.doRejectPromise(reasons);
             });
+        },
+
+        /**
+         * @private
+         * @param {Array<(Array<*> | IIterable<*>)>} iterables
+         */
+        doResolveAll: function(iterables) {
+            this.resolver   = Resolvers.resolveAll([this], iterables);
+            this.doResolve();
+        },
+
+        /**
+         * @private
+         * @param {Array<(Object<*, *> | IMap<*, *>)>} objects
+         */
+        doResolveProps: function(objects) {
+            this.resolver   = Resolvers.resolveProps([this], objects);
+            this.doResolve();
+        },
+
+        /**
+         * @private
+         * @param {Array<(Array<*> | IIterable<*>)>} iterables
+         */
+        doResolveRace: function(iterables) {
+            this.resolver   = Resolvers.resolveRace([this], iterables);
+            this.doResolve();
+        },
+
+        /**
+         * @private
+         * @param {Array<*>} values
+         */
+        doResolveValues: function(values) {
+            this.resolver   = Resolvers.resolveValues([this], values);
+            this.doResolve();
         },
 
         /**
@@ -522,6 +574,44 @@ require('bugpack').context('*', function(bugpack) {
             if (!this.isPending() && !this.isProcessing()) {
                 this.doProcessHandlers();
             }
+        },
+
+        /**
+         * @private
+         * @param {Array.<(Array.<*> | IIterable<*>)>} iterables
+         */
+        validateIterables: function(iterables) {
+            iterables.forEach(function(iterable) {
+                if (!TypeUtil.isArray(iterable) && !Class.doesImplement(iterable, IIterable)) {
+                    throw Throwables.bug('TypeError', {}, 'Expecting an array or an iterable object but got ' + iterable);
+                }
+            })
+        },
+
+        /**
+         * @private
+         * @param {Array<(Object<*, *> | IMap<*, *>)>} objects
+         * @throws {Bug}
+         */
+        validateObjects: function(objects) {
+            objects.forEach(function(object) {
+                if (!TypeUtil.isObject(object) && !Class.doesImplement(object, IMap)) {
+                    throw Throwables.bug('TypeError', {}, 'Expecting an object or an IMap but got ' + object);
+                }
+            })
+        },
+
+        /**
+         * @private
+         * @throws {Bug}
+         */
+        validatePromiseState: function() {
+            if (!this.isPending()) {
+                throw Throwables.bug('IllegalState', {}, 'Promise is no longer pending. Cannot resolve a promise that is not pending.');
+            }
+            if (this.isResolving()) {
+                throw Throwables.bug('IllegalState', {}, 'Promise is already resolving. Cannot resolve a promise that is already resolving.');
+            }
         }
     });
 
@@ -545,6 +635,81 @@ require('bugpack').context('*', function(bugpack) {
         FULFILLED: 'fulfilled',
         PENDING: 'pending',
         REJECTED: 'rejected'
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Static Mehtods
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @param {...(Array<*> | IIterable<*>)} iterable
+     * @return {Promise}
+     */
+    Promise.all = function(iterable) {
+        return Promise.promise()
+            .resolveAll(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {function(function(...*), function(...*))=} promiseMethod
+     * @return {Promise}
+     */
+    Promise.promise = function(promiseMethod) {
+        return new Promise(promiseMethod);
+    };
+
+    /**
+     * @static
+     * @param {...(Object<*, *> | IMap<*, *>)} object
+     * @return {Promise}
+     */
+    Promise.props = function(object) {
+        return Promise.promise()
+            .resolveProps(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {...(Array<*> | IIterable<*>)} iterable
+     * @return {Promise}
+     */
+    Promise.race = function(iterable) {
+        return Promise.promise()
+            .resolveRace(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {...*} reason
+     * @return {Promise}
+     */
+    Promise.reject = function(reason) {
+        return Promise.promise()
+            .reject(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {...*} value
+     * @returns {Promise}
+     */
+    Promise.resolve = function(value) {
+        return Promise.promise()
+            .resolve(ArgUtil.toArray(arguments));
+    };
+
+    /**
+     * @static
+     * @param {function(...*):*} promiseMethod
+     * @returns {Promise}
+     */
+    Promise.try = function(promiseMethod) {
+        return Promise.promise()
+            .resolve([])
+            .then(promiseMethod);
     };
 
 

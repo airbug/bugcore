@@ -87,14 +87,14 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doHandleFulfilled: function(values) {
             this.doHandleFinally();
         },
 
         /**
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doHandleRejected: function(reasons) {
             this.doHandleFinally();
@@ -112,7 +112,7 @@ require('bugpack').context("*", function(bugpack) {
             if (TypeUtil.isFunction(this.getFinallyFunction())) {
                 this.fireHandleMethod(this.getFinallyFunction(), []);
             } else {
-                this.getForwardPromise().resolvePromise([]);
+                this.getForwardPromise().resolve([]);
             }
         }
     });

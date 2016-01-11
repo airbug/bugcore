@@ -99,7 +99,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         reject: function() {
             var args = ArgUtil.toArray(arguments);
-            this.deferredPromise.rejectPromise(args);
+            this.deferredPromise.reject(args);
         },
 
         /**
@@ -107,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
          */
         resolve: function() {
             var args = ArgUtil.toArray(arguments);
-            this.deferredPromise.resolvePromise(args);
+            this.deferredPromise.resolve(args);
         },
 
         /**

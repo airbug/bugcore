@@ -1,3 +1,7 @@
+<br />
+------------------------------------------------------------------------------------
+<br />
+
 # bugcore
 
 bugcore is a JavaScript library that provides a foundational architecture for

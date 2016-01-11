@@ -101,24 +101,24 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doHandleFulfilled: function(values) {
             if (TypeUtil.isFunction(this.getFulfilledFunction())) {
                 this.fireHandleMethod(this.getFulfilledFunction(), values);
             } else {
-                this.getForwardPromise().resolvePromise(values);
+                this.getForwardPromise().resolve(values);
             }
         },
 
         /**
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doHandleRejected: function(reasons) {
             if (TypeUtil.isFunction(this.getRejectedFunction())) {
                 this.fireHandleMethod(this.getRejectedFunction(), reasons);
             } else {
-                this.getForwardPromise().rejectPromise(reasons);
+                this.getForwardPromise().reject(reasons);
             }
         }
     });

@@ -91,27 +91,27 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doHandleFulfilled: function(values) {
             if (TypeUtil.isFunction(this.getCallbackFunction())) {
                 try {
                     var result = this.callbackFunction.apply(null, [null].concat(values));
                     if (TypeUtil.isUndefined(result)) {
-                        this.getForwardPromise().resolvePromise([]);
+                        this.getForwardPromise().resolve([]);
                     } else {
-                        this.getForwardPromise().resolvePromise([result]);
+                        this.getForwardPromise().resolve([result]);
                     }
                 } catch(e) {
-                    this.getForwardPromise().rejectPromise([e]);
+                    this.getForwardPromise().reject([e]);
                 }
             } else {
-                this.getForwardPromise().resolvePromise(values);
+                this.getForwardPromise().resolve(values);
             }
         },
 
         /**
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doHandleRejected: function(reasons) {
             if (TypeUtil.isFunction(this.getCallbackFunction())) {
@@ -126,15 +126,15 @@ require('bugpack').context("*", function(bugpack) {
                 try {
                     var result = this.callbackFunction.call(null, exception);
                     if (TypeUtil.isUndefined(result)) {
-                        this.getForwardPromise().resolvePromise([]);
+                        this.getForwardPromise().resolve([]);
                     } else {
-                        this.getForwardPromise().resolvePromise([result]);
+                        this.getForwardPromise().resolve([result]);
                     }
                 } catch(e) {
-                    this.getForwardPromise().rejectPromise([e]);
+                    this.getForwardPromise().reject([e]);
                 }
             } else {
-                this.getForwardPromise().rejectPromise(reasons);
+                this.getForwardPromise().reject(reasons);
             }
         }
     });

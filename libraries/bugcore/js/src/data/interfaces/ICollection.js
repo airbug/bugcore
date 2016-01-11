@@ -35,7 +35,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @interface
-     * @extends {IArrayable.<I>}
+     * @extends {IArrayable<I>}
      * @template I
      */
     var ICollection = Interface.extend(IArrayable, {
@@ -54,7 +54,7 @@ require('bugpack').context("*", function(bugpack) {
         add: function(item) {},
 
         /**
-         * @param {(ICollection.<I> | Array.<I>)} items
+         * @param {(IIterable<I> | IArrayable<I> | Array<I>)} items
          */
         addAll: function(items) {},
 
@@ -75,13 +75,13 @@ require('bugpack').context("*", function(bugpack) {
          * If you want to check for exact equality, use the equals function.
          * Empty collections are always contained by another collection
          * e.g. Collection[0,1] containsAll Collection[] is true
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          * @return {boolean}
          */
         containsAll: function(values) {},
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          * @return {boolean}
          */
         containsEqual: function(values) {},
@@ -109,7 +109,7 @@ require('bugpack').context("*", function(bugpack) {
         remove: function(value) {},
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          */
         removeAll: function(values) {}
     });

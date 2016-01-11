@@ -217,7 +217,7 @@ require('bugpack').context("*", function(bugpack) {
             setTimeout(function() {
                 test.assertTrue(_this.testFunctionSpy.wasNotCalled(),
                     "Assert that the testFunction was not called after setTimeout since the passed in promise has not been resolved");
-                _this.testPromise.resolvePromise([_this.testValue]);
+                _this.testPromise.resolve([_this.testValue]);
 
                 //TODO BRN: This is a bit of a broken test
 

@@ -101,7 +101,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         handleFulfilled: function(values) {
             if (!this.getExecuted()) {
@@ -113,7 +113,7 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         handleRejected: function(reasons) {
             if (!this.getExecuted()) {
@@ -132,18 +132,18 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @protected
          * @param {function(*...)} method
-         * @param {Array.<*>} args
+         * @param {Array<*>} args
          */
         fireHandleMethod: function(method, args) {
             try {
                 var result = method.apply(null, args);
                 if (TypeUtil.isUndefined(result)) {
-                    this.forwardPromise.resolvePromise([]);
+                    this.forwardPromise.resolve([]);
                 } else {
-                    this.forwardPromise.resolvePromise([result]);
+                    this.forwardPromise.resolve([result]);
                 }
             } catch(e) {
-                this.forwardPromise.rejectPromise([e]);
+                this.forwardPromise.reject([e]);
             }
         },
 
@@ -154,7 +154,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @abstract
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doHandleFulfilled: function(values) {
             throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleFulfilled");
@@ -162,7 +162,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @abstract
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doHandleRejected: function(reasons) {
             throw new Bug("AbstractMethodNotImplemented", {}, "Must implement doHandleRejected");

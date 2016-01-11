@@ -179,7 +179,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) calling #resolvePromise twice throws a Bug
+     * 1) calling #resolve twice throws a Bug
      */
     var promiseResolvePromiseTwiceBugTest = {
 
@@ -196,10 +196,10 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            this.testPromise.resolvePromise([]);
+            this.testPromise.resolve([]);
             test.assertThrows(function() {
-                _this.testPromise.resolvePromise([]);
-            }, "Assert that calling #resolvePromise again throws a Bug");
+                _this.testPromise.resolve([]);
+            }, "Assert that calling #resolve again throws a Bug");
         }
     };
 
@@ -222,16 +222,16 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            this.testPromise.rejectPromise([]);
+            this.testPromise.reject([]);
             test.assertThrows(function() {
-                _this.testPromise.rejectPromise([]);
-            }, "Assert that calling #rejectPromise again throws a Bug");
+                _this.testPromise.reject([]);
+            }, "Assert that calling #reject again throws a Bug");
         }
     };
 
     /**
      * This tests
-     * 1) calling #rejectProcess and then #resolvePromise throws a Bug
+     * 1) calling #rejectProcess and then #resolve throws a Bug
      */
     var promiseRejectPromiseAndResolvePromiseBugTest = {
 
@@ -248,16 +248,16 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            this.testPromise.rejectPromise([]);
+            this.testPromise.reject([]);
             test.assertThrows(function() {
-                _this.testPromise.resolvePromise([]);
-            }, "Assert that calling #resolvePromise after rejectPromise has already been called throws a Bug");
+                _this.testPromise.resolve([]);
+            }, "Assert that calling #resolve after reject has already been called throws a Bug");
         }
     };
 
     /**
      * This tests
-     * 1) calling #resolvePromise and passing two references of the promises self as args should reject promise once with two reasons
+     * 1) calling #resolve and passing two references of the promises self as args should reject promise once with two reasons
      */
     var promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest = {
 
@@ -273,7 +273,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([this.testPromise, this.testPromise]);
+            this.testPromise.resolve([this.testPromise, this.testPromise]);
             test.assertTrue(this.testPromise.isRejected(),
                 "Assert that the promise has been rejected");
             test.assertEqual(this.testPromise.getReasonList().getCount(), 2,
@@ -291,7 +291,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) calling #resolvePromise with empty values test
+     * 1) calling #resolve with empty values test
      */
     var promiseResolvePromiseWithEmptyValuesTest = {
 
@@ -307,7 +307,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([]);
+            this.testPromise.resolve([]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the promise has been fulfilled");
             test.assertTrue(this.testPromise.getValueList().isEmpty(),
@@ -317,7 +317,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) calling #resolvePromise with a single value test
+     * 1) calling #resolve with a single value test
      */
     var promiseResolvePromiseWithSingleValueTest = {
 
@@ -334,7 +334,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([this.testValueA]);
+            this.testPromise.resolve([this.testValueA]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the promise has been fulfilled");
             test.assertEqual(this.testPromise.getValueList().getCount(), 1,
@@ -346,7 +346,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) calling #resolvePromise with a single Promise test
+     * 1) calling #resolve with a single Promise test
      */
     var promiseResolvePromiseWithSinglePromiseTest = {
 
@@ -381,7 +381,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([this.testPromiseA]);
+            this.testPromise.resolve([this.testPromiseA]);
             test.assertFalse(this.testPromise.isFulfilled(),
                 "Assert that the testPromise has NOT been fulfilled");
             test.assertFalse(this.testPromiseA.isFulfilled(),
@@ -390,7 +390,7 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert that the testPromise is pending");
             test.assertTrue(this.testPromiseA.isPending(),
                 "Assert that the testPromiseA is pending");
-            this.testPromiseA.resolvePromise([this.testValueA]);
+            this.testPromiseA.resolve([this.testValueA]);
 
             test.assertTrue(this.testPromiseA.isFulfilled(),
                 "Assert that testPromiseA is fulfilled");
@@ -449,7 +449,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.testForwardPromise.then(this.testForwardFulfilledFunctionSpy);
-            this.testFulfilledPromise.resolvePromise([this.testValueA]);
+            this.testFulfilledPromise.resolve([this.testValueA]);
             test.assertTrue(this.testFulfilledPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
         },
@@ -489,7 +489,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([this.testValueA]);
+            this.testPromise.resolve([this.testValueA]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the promise has been fulfilled");
             test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
@@ -550,12 +550,12 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.testFulfilledPromise.then(this.testFulfilledFunctionSpy, null);
-            this.testFulfilledPromise.resolvePromise([]);
+            this.testFulfilledPromise.resolve([]);
             test.assertTrue(this.testFulfilledPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
 
             this.testRejectedPromise.then(null, this.testRejectedFunctionSpy);
-            this.testRejectedPromise.rejectPromise([]);
+            this.testRejectedPromise.reject([]);
             test.assertTrue(this.testRejectedPromise.isRejected(),
                 "Assert that the rejected promise has been rejected");
         },
@@ -596,7 +596,7 @@ require('bugpack').context("*", function(bugpack) {
                     "Assert returned promise 1 and returned promise 2 are not the same promise");
             }, "Assert calling then() twice in a row does not throw an exception");
 
-            this.testPromise.resolvePromise([]);
+            this.testPromise.resolve([]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
 
@@ -648,7 +648,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testPromise.then(this.testFulfilledFunction1Spy);
             this.testPromise.then(this.testFulfilledFunction2Spy);
-            this.testPromise.resolvePromise([this.testValueA]);
+            this.testPromise.resolve([this.testValueA]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
         },
@@ -704,7 +704,7 @@ require('bugpack').context("*", function(bugpack) {
             var _this = this;
             this.testPromise.then(null, this.testRejectedFunction1Spy);
             this.testPromise.then(null, this.testRejectedFunction2Spy);
-            this.testPromise.rejectPromise([this.testValueA]);
+            this.testPromise.reject([this.testValueA]);
             test.assertTrue(this.testPromise.isRejected(),
                 "Assert that the promise has been rejected");
         },
@@ -765,12 +765,12 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             this.forwardFulfilledPromise.then(this.forwardFulfilledPromiseOnFulfilledSpy);
-            this.testFulfilledPromise.resolvePromise([]);
+            this.testFulfilledPromise.resolve([]);
             test.assertTrue(this.testFulfilledPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
 
             this.forwardRejectedPromise.then(this.forwardRejectedPromiseOnFulfilledSpy);
-            this.testRejectedPromise.rejectPromise([]);
+            this.testRejectedPromise.reject([]);
             test.assertTrue(this.testRejectedPromise.isRejected(),
                 "Assert that the rejected promise has been rejected");
         },
@@ -831,12 +831,12 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             this.forwardFulfilledPromise.then(null, this.forwardFulfilledPromiseOnRejectedSpy);
-            this.testFulfilledPromise.resolvePromise([]);
+            this.testFulfilledPromise.resolve([]);
             test.assertTrue(this.testFulfilledPromise.isFulfilled(),
                 "Assert that the fulfilled promise has been fulfilled");
 
             this.forwardRejectedPromise.then(null, this.forwardRejectedPromiseOnRejectedSpy);
-            this.testRejectedPromise.rejectPromise([]);
+            this.testRejectedPromise.reject([]);
             test.assertTrue(this.testRejectedPromise.isRejected(),
                 "Assert that the rejected promise has been rejected");
         },
@@ -876,7 +876,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            this.testPromise.resolvePromise([this.testValueA]);
+            this.testPromise.resolve([this.testValueA]);
             test.assertTrue(this.testPromise.isFulfilled(),
                 "Assert that the promise has been fulfilled");
             test.assertEqual(this.testPromise.getValueList().getAt(0), this.testValueA,
@@ -918,7 +918,7 @@ require('bugpack').context("*", function(bugpack) {
 
         test: function(test) {
             var _this = this;
-            this.testPromise.rejectPromise([this.testReasonA]);
+            this.testPromise.reject([this.testReasonA]);
             test.assertTrue(this.testPromise.isRejected(),
                 "Assert that the promise has been rejected");
             test.assertEqual(this.testPromise.getReasonList().getAt(0), this.testReasonA,
@@ -936,7 +936,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
-     * 1) calling #resolvePromise and passing the promises self as an arg rejects the promise with a TypeError Bug
+     * 1) calling #resolve and passing the promises self as an arg rejects the promise with a TypeError Bug
      * 2) Promises A+ - 2.3.1: If promise and x refer to the same object, reject promise with a TypeError as the reason.
      */
     var promiseResolvePromiseWithSelfShouldRejectPromiseTest = {
@@ -953,7 +953,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            this.testPromise.resolvePromise([this.testPromise]);
+            this.testPromise.resolve([this.testPromise]);
             test.assertTrue(this.testPromise.isRejected(),
                 "Assert that the promise has been rejected");
             test.assertEqual(this.testPromise.getReasonList().getCount(), 1,
@@ -984,25 +984,25 @@ require('bugpack').context("*", function(bugpack) {
         test().name("Promise - #then rejectedArgument only test")
     );
     bugmeta.tag(promiseResolvePromiseTwiceBugTest).with(
-        test().name("Promise - #resolvePromise twice should throw a Bug test")
+        test().name("Promise - #resolve twice should throw a Bug test")
     );
     bugmeta.tag(promiseRejectPromiseTwiceBugTest).with(
-        test().name("Promise - #rejectProcess twice should throw a Bug test")
+        test().name("Promise - #reject twice should throw a Bug test")
     );
     bugmeta.tag(promiseRejectPromiseAndResolvePromiseBugTest).with(
-        test().name("Promise - #rejectProcess and resolvePromise should throw a Bug test")
+        test().name("Promise - #reject and resolve should throw a Bug test")
     );
     bugmeta.tag(promiseResolvePromiseWithTwoCopiesOfSelfShouldRejectOnceTest).with(
-        test().name("Promise - #resolvePromise and passing two references of the promises self as args should reject promise once")
+        test().name("Promise - #resolve and passing two references of the promises self as args should reject promise once")
     );
     bugmeta.tag(promiseResolvePromiseWithEmptyValuesTest).with(
-        test().name("Promise - #resolvePromise with empty values")
+        test().name("Promise - #resolve with empty values")
     );
     bugmeta.tag(promiseResolvePromiseWithSingleValueTest).with(
-        test().name("Promise - #resolvePromise with a single value")
+        test().name("Promise - #resolve with a single value")
     );
     bugmeta.tag(promiseResolvePromiseWithSinglePromiseTest).with(
-        test().name("Promise - #resolvePromise with a single Promise")
+        test().name("Promise - #resolve with a single Promise")
     );
     bugmeta.tag(promiseRejectHandlerOnlyForwardPromiseTest).with(
         test().name("Promise - reject handler only forward promise test")
@@ -1035,6 +1035,6 @@ require('bugpack').context("*", function(bugpack) {
         test().name("Promise - #then with rejectedFunction after promise is rejected test")
     );
     bugmeta.tag(promiseResolvePromiseWithSelfShouldRejectPromiseTest).with(
-        test().name("Promise - #resolvePromise with self as arg should reject the promise with a TypeError Bug test")
+        test().name("Promise - #resolve with self as arg should reject the promise with a TypeError Bug test")
     );
 });

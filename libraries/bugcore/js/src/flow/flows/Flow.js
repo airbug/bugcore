@@ -14,7 +14,7 @@
 //@Require('ArgUtil')
 //@Require('Class')
 //@Require('Obj')
-//@Require('Resolver')
+//@Require('Resolvers')
 //@Require('Throwables')
 //@Require('Tracer')
 //@Require('TypeUtil')
@@ -34,7 +34,7 @@ require('bugpack').context("*", function(bugpack) {
     var Bug         = bugpack.require('Bug');
     var Class       = bugpack.require('Class');
     var Obj         = bugpack.require('Obj');
-    var Resolver    = bugpack.require('Resolver');
+    var Resolvers   = bugpack.require('Resolvers');
     var Throwables  = bugpack.require('Throwables');
     var Tracer      = bugpack.require('Tracer');
     var TypeUtil    = bugpack.require('TypeUtil');
@@ -331,14 +331,13 @@ require('bugpack').context("*", function(bugpack) {
         resolveFlow: function(args) {
             var _this       = this;
             this.resolving  = true;
-            var resolver    = new Resolver([this], args);
-            resolver.resolve(function(reasons, values) {
+            var resolver    = Resolvers.resolveValues([this], args);
+            resolver.resolve(function(values) {
                 _this.resolving = false;
-                if (reasons.length > 0) {
-                    _this.errorFlow(Throwables.parallelException("ResolveException", {}, "Exceptions occurred during resolution of Flow", reasons));
-                } else {
-                    _this.completeFlow(values);
-                }
+                _this.completeFlow(values);
+            }, function(reasons) {
+                _this.resolving = false;
+                _this.errorFlow(Throwables.parallelException("ResolveException", {}, "Exceptions occurred during resolution of Flow", reasons));
             });
         },
 

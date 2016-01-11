@@ -87,20 +87,20 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {Array.<*>} values
+         * @param {Array<*>} values
          */
         doHandleFulfilled: function(values) {
-            this.getForwardPromise().resolvePromise(values);
+            this.getForwardPromise().resolve(values);
         },
 
         /**
-         * @param {Array.<*>} reasons
+         * @param {Array<*>} reasons
          */
         doHandleRejected: function(reasons) {
             if (TypeUtil.isFunction(this.getCatchFunction())) {
                 this.fireHandleMethod(this.getCatchFunction(), reasons);
             } else {
-                this.getForwardPromise().resolvePromise([]);
+                this.getForwardPromise().resolve([]);
             }
         }
     });

@@ -13,6 +13,7 @@
 
 //@Require('ArgumentBug')
 //@Require('Class')
+//@Require('Exception')
 //@Require('HashStore')
 //@Require('IArrayable')
 //@Require('ICollection')
@@ -36,6 +37,7 @@ require('bugpack').context("*", function(bugpack) {
 
     var ArgumentBug     = bugpack.require('ArgumentBug');
     var Class           = bugpack.require('Class');
+    var Exception       = bugpack.require('Exception');
     var HashStore       = bugpack.require('HashStore');
     var IArrayable      = bugpack.require('IArrayable');
     var ICollection     = bugpack.require('ICollection');
@@ -55,9 +57,9 @@ require('bugpack').context("*", function(bugpack) {
      * @class
      * @extends {Obj}
      * @implements {IArrayable}
-     * @implements {ICollection.<I>}
-     * @implements {IIterable.<I>}
-     * @implements {IStreamable.<I>}
+     * @implements {ICollection<I>}
+     * @implements {IIterable<I>}
+     * @implements {IStreamable<I>}
      * @template I
      */
     var Collection = Class.extend(Obj, /** @lends {Collection.prototype} */{
@@ -94,8 +96,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @param {(IArrayable.<I> | Array.<I>)=} items
-         * @return {Collection.<I>}
+         * @param {(IArrayable<I> | Array<I>)=} items
+         * @return {Collection<I>}
          */
         init: function(items) {
             var _this = this._super();
@@ -127,7 +129,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @override
-         * @return (Array.<I>)
+         * @return (Array<I>)
          */
         toArray: function() {
             return this.hashStore.toArray();
@@ -148,19 +150,19 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(IArrayable.<I> | Array.<I>)} items
+         * @param {(IIterable<I> | IArrayable<I> | Array<I>)} items
          */
         addAll: function(items) {
             if (Class.doesImplement(items, IArrayable) && !Class.doesImplement(items, ICollection)) {
                 items = items.toArray();
             }
-            if (Class.doesImplement(items, ICollection) || TypeUtil.isArray(items)) {
+            if (Class.doesImplement(items, ICollection) || Class.doesImplement(items, IIterable) || TypeUtil.isArray(items)) {
                 var _this = this;
                 items.forEach(function(item) {
                     _this.add(item);
                 });
             } else {
-                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement ICollection or be an Array");
+                throw new ArgumentBug(ArgumentBug.ILLEGAL, "items", items, "parameter must implement IArrayable or IIterable or be an Array");
             }
         },
 
@@ -185,20 +187,24 @@ require('bugpack').context("*", function(bugpack) {
          * If you want to check for exact equality, use the equals function.
          * Empty collections are always contained by another collection
          * e.g. Collection[0,1] containsAll Collection[] is true
-         * @param {(IArrayable.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          * @return {boolean}
          */
         containsAll: function(values) {
-            if (Class.doesImplement(values, IArrayable) || TypeUtil.isArray(values)) {
+            var _this = this;
+            if (Class.doesImplement(values, IArrayable) || Class.doesImplement(values, IIterable) || TypeUtil.isArray(values)) {
                 var valueArray = values;
                 if (Class.doesImplement(values, IArrayable)) {
                     valueArray = values.toArray();
                 }
-                for (var i = 0, size = valueArray.length; i < size; i++) {
-                    var value = valueArray[i];
-                    if (!this.contains(value)) {
-                        return false;
-                    }
+                try {
+                    valueArray.forEach(function(value) {
+                        if (!_this.contains(value)) {
+                            throw false;
+                        }
+                    });
+                } catch(error) {
+                    return false;
                 }
                 return true;
             } else {
@@ -207,12 +213,12 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(ICollection.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          * @return {boolean}
          */
         containsEqual: function(values) {
             var collection = undefined;
-            if (TypeUtil.isArray(values) || (Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
+            if (TypeUtil.isArray(values) || ((Class.doesImplement(values, IArrayable) || Class.doesImplement(values, IIterable)) && !Class.doesImplement(values, ICollection))) {
                 collection = new Collection(values);
             } else {
                 collection = values;
@@ -265,17 +271,17 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(IArrayable.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          */
         removeAll: function(values) {
-            /** @type {ICollection.<*> | Array.<*>} */
+            /** @type {ICollection<*> | Array<*>} */
             var collection = null;
             if ((Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
                 collection = new Collection(values);
             } else {
-                collection = /** @type {ICollection.<*>} */(values);
+                collection = /** @type {ICollection<*>} */(values);
             }
-            if (Class.doesImplement(collection, ICollection) || TypeUtil.isArray(collection)) {
+            if (Class.doesImplement(collection, ICollection) || Class.doesImplement(values, IIterable) || TypeUtil.isArray(collection)) {
                 var _this = this;
                 collection.forEach(function(value) {
                     _this.remove(value);
@@ -286,12 +292,12 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {(IArrayable.<*> | Array.<*>)} values
+         * @param {(IIterable<I> | IArrayable<I> | Array<*>)} values
          */
         retainAll: function(values) {
             /** @type {ICollection} */
             var collection = null;
-            if (TypeUtil.isArray(values) || (Class.doesImplement(values, IArrayable) && !Class.doesImplement(values, ICollection))) {
+            if (TypeUtil.isArray(values) || ((Class.doesImplement(values, IArrayable) || Class.doesImplement(values, IIterable)) && !Class.doesImplement(values, ICollection))) {
                 collection = new Collection(values);
             } else {
                 collection = /** @type {ICollection} */(values);
@@ -329,7 +335,7 @@ require('bugpack').context("*", function(bugpack) {
          * its value at that later time. A value that is deleted before it has been visited will not be visited later.
          * Values added to the Collection over which iteration is occurring may either be visited or omitted from iteration.
          *
-         * @return {IIterator.<I>}
+         * @return {IIterator<I>}
          */
         iterator: function() {
             return this.hashStore.iterator();
@@ -341,7 +347,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Stream.<I>}
+         * @return {Stream<I>}
          */
         stream: function() {
             return Stream.newStream(Suppliers.iterable(this));
@@ -354,7 +360,7 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {boolean=} deep
-         * @return {Collection.<I>}
+         * @return {Collection<I>}
          */
         clone: function(deep) {
             var cloneCollection = new Collection();
