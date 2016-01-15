@@ -53,6 +53,59 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
+     * 1) The static hasProperty method of the Obj class
+     * 2) Basic hasProperty check
+     */
+    var objectUtilHasPropertyBasicTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testObject = {
+                prop1: "value1"
+            }
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(ObjectUtil.hasProperty(this.testObject, "prop1"), true,
+                "Assert .hasProperty() check returns true for 'prop1'");
+            test.assertEqual(ObjectUtil.hasProperty(this.testObject, "prop2"), false,
+                "Assert .hasProperty() check returns false for 'prop2'");
+        }
+    };
+
+    /**
+     * This tests
+     * 1) hasProperty returns true when a property has been set to undefined
+     */
+    var objectUtilHasPropertyUndefinedValueTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testObject = {
+                prop1: undefined
+            }
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            test.assertEqual(ObjectUtil.hasProperty(this.testObject, "prop1"), true,
+                "Assert .hasProperty() check returns true for 'prop1' with undefined value");
+        }
+    };
+
+    /**
+     * This tests
      * 1) The static hasNestedProperty method of the Obj class
      * 2) Basic hasNestedProperty check
      */
@@ -135,7 +188,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests...
-     * 1) That ObjectUtil.hasOwnNestedProperty check returns FALSE when the property is an inherited property
+     * 1) That ObjectUtil.hasNestedProperty({own:true}) check returns FALSE when the property is an inherited property
      */
     var objectUtilHasOwnNestedPropertyInheritedPropertyTest = {
 
@@ -155,8 +208,8 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            test.assertEqual(ObjectUtil.hasOwnNestedProperty(this.testObject, "inheritedProperty"), false,
-                "Assert .hasOwnNestedProperty() check returns false for inherited property");
+            test.assertEqual(ObjectUtil.hasNestedProperty(this.testObject, "inheritedProperty", {own: true}), false,
+                "Assert .hasNestedProperty({own: true})) check returns false for inherited property");
         }
     };
 
@@ -195,7 +248,7 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests...
-     * 1) That ObjectUtil.getOwnNestedProperty returns undefined when given a built in property
+     * 1) That ObjectUtil.getNestedProperty returns undefined when given a built in property
      */
     var objectUtilGetOwnNestedPropertyBuiltInPropertyIgnoredTest = {
 
@@ -225,8 +278,8 @@ require('bugpack').context("*", function(bugpack) {
         test: function(test) {
             var _this = this;
             this.builtInProperties.forEach(function(builtInProperty) {
-                test.assertEqual(ObjectUtil.getOwnNestedProperty(_this.testObject, builtInProperty), undefined,
-                        "Assert .getOwnNestedProperty() returns undefined for built in property '" + builtInProperty + "'");
+                test.assertEqual(ObjectUtil.getNestedProperty(_this.testObject, builtInProperty, {own: true}), undefined,
+                        "Assert .getNestedProperty({own: true}) returns undefined for built in property '" + builtInProperty + "'");
             });
         }
     };
@@ -332,16 +385,18 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         setup: function() {
+            var _this = this;
             this.testObject = {
                 prop1: "value1",
                 prop2: "value2",
                 prop3: "value3"
             };
-            ObjectUtil.hasOwnProperty = function(prop) {
+            this.originalHasProperty = ObjectUtil.hasProperty;
+            ObjectUtil.hasProperty = function(prop) {
                 if (prop === 'toString') {
                     return true;
                 } else {
-                    return this.hasOwnProperty(prop);
+                    return _this.originalHasProperty(prop);
                 }
             };
             this.originalIsDontEnumSkipped = ObjectUtil.isDontEnumSkipped;
@@ -387,7 +442,7 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         tearDown: function() {
-            ObjectUtil.hasOwnProperty = Object.prototype.hasOwnProperty;
+            ObjectUtil.hasProperty = this.originalHasProperty;
             ObjectUtil.isDontEnumSkipped = this.originalIsDontEnumSkipped;
         }
     };
@@ -561,6 +616,12 @@ require('bugpack').context("*", function(bugpack) {
     // BugMeta
     //-------------------------------------------------------------------------------
 
+    bugmeta.tag(objectUtilHasPropertyBasicTest).with(
+        test().name("ObjectUtil - .hasProperty() basic test")
+    );
+    bugmeta.tag(objectUtilHasPropertyUndefinedValueTest).with(
+        test().name("ObjectUtil - .hasProperty() undefined value test")
+    );
     bugmeta.tag(objectUtilHasNestedPropertyBasicTest).with(
         test().name("ObjectUtil - .hasNestedProperty() basic test")
     );
@@ -571,7 +632,7 @@ require('bugpack').context("*", function(bugpack) {
         test().name("ObjectUtil - .hasNestedProperty() inherited property test")
     );
     bugmeta.tag(objectUtilHasOwnNestedPropertyInheritedPropertyTest).with(
-        test().name("ObjectUtil - .hasOwnNestedProperty() inherited property test")
+        test().name("ObjectUtil - .hasNestedProperty({own: true}) inherited property test")
     );
     bugmeta.tag(objectUtilGetNestedPropertyBasicTest).with(
         test().name("ObjectUtil - .getNestedProperty() basic test")
@@ -580,7 +641,7 @@ require('bugpack').context("*", function(bugpack) {
         test().name("ObjectUtil - .getNestedProperty() built in property observed test")
     );
     bugmeta.tag(objectUtilGetOwnNestedPropertyBuiltInPropertyIgnoredTest).with(
-        test().name("ObjectUtil - .getOwnNestedProperty() built in property ignored test")
+        test().name("ObjectUtil - .getNestedProperty({own: true}) built in property ignored test")
     );
     bugmeta.tag(objectUtilForInIterationTest).with(
         test().name("ObjectUtil - .forIn() iteration test")

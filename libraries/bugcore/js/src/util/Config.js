@@ -56,9 +56,9 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @constructs
-         * @param {Object} config
+         * @param {Object} configObject
          */
-        _constructor: function(config) {
+        _constructor: function(configObject) {
 
             this._super();
 
@@ -71,7 +71,7 @@ require('bugpack').context("*", function(bugpack) {
              * @private
              * @type {Properties}
              */
-            this.properties = new Properties(config);
+            this.properties = new Properties(configObject);
         },
 
 
@@ -85,6 +85,14 @@ require('bugpack').context("*", function(bugpack) {
          */
         absorbConfig: function(config, propertyNames) {
             this.properties.absorbProperties(config.getProperties(), propertyNames);
+        },
+
+        /**
+         * @param {string} propertyName
+         * @return {boolean}
+         */
+        deleteProperty: function(propertyName) {
+            return this.properties.deleteProperty(propertyName);
         },
 
         /**

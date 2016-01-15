@@ -80,6 +80,65 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests...
+     * 1) Deleting a property that exists
+     */
+    var propertiesDeletePropertyExistingPropertyTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testPropertiesObject = {
+                someProperty: "someValue"
+            };
+            this.testProperties = new Properties(this.testPropertiesObject);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testProperties.deleteProperty('someProperty');
+
+            var someProperty = this.testProperties.getProperty("someProperty");
+            test.assertEqual(someProperty, undefined,
+                "Assert 'someProperty' has been deleted and is undefined");
+        }
+    };
+
+    /**
+     * This tests...
+     * 1) Setting a property that already exists
+     */
+    var propertiesSetPropertyExistingPropertyTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testPropertiesObject = {
+                someProperty: "someValue"
+            };
+            this.testSetValue = 'testSetValue';
+            this.testProperties = new Properties(this.testPropertiesObject);
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testProperties.setProperty('someProperty', this.testSetValue);
+
+            var someProperty = this.testProperties.getProperty("someProperty");
+            test.assertEqual(someProperty, this.testSetValue,
+                "Assert 'someProperty' has been set to the testSetValue");
+        }
+    };
+
+    /**
+     * This tests...
      */
     var propertiesUpdatePropertiesTest = {
 
@@ -151,6 +210,12 @@ require('bugpack').context("*", function(bugpack) {
 
     bugmeta.tag(propertiesInstantiationTest).with(
         test().name("Properties instantiation test")
+    );
+    bugmeta.tag(propertiesDeletePropertyExistingPropertyTest).with(
+        test().name("Properties - #deleteProperty existing property test")
+    );
+    bugmeta.tag(propertiesSetPropertyExistingPropertyTest).with(
+        test().name("Properties - #setProperty existing property test")
     );
     bugmeta.tag(propertiesUpdatePropertiesTest).with(
         test().name("Properties - #updateProperties test")

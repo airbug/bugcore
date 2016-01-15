@@ -107,10 +107,18 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} propertyQuery
+         * @return {boolean}
+         */
+        deleteProperty: function(propertyQuery) {
+            return ObjectUtil.deleteNestedProperty(this.propertiesObject, propertyQuery, {own: true});
+        },
+
+        /**
+         * @param {string} propertyQuery
          * @return {*}
          */
         getProperty: function(propertyQuery) {
-            return ObjectUtil.getOwnNestedProperty(this.propertiesObject, propertyQuery);
+            return ObjectUtil.getNestedProperty(this.propertiesObject, propertyQuery,  {own: true});
         },
 
         /**
@@ -118,7 +126,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasProperty: function(propertyQuery) {
-            return ObjectUtil.hasOwnNestedProperty(this.propertiesObject, propertyQuery);
+            return ObjectUtil.hasNestedProperty(this.propertiesObject, propertyQuery, {own: true});
         },
 
         /**
@@ -159,30 +167,11 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {string} propertyName
+         * @param {string} propertyQuery
          * @param {*} propertyValue
          */
-        setProperty: function(propertyName, propertyValue) {
-            var parts = propertyName.split(".");
-            if (parts.length > 1) {
-                var subName = null;
-                var currentValue = this.propertiesObject;
-                var nextValue = null;
-                for (var i = 0, size = parts.length; i < size; i++) {
-                    subName = parts[i];
-                    if (i === size - 1) {
-                        currentValue[subName] = propertyValue;
-                    } else {
-                        nextValue = currentValue[subName];
-                        if (!(TypeUtil.isObject(nextValue))) {
-                            nextValue = currentValue[subName] = {};
-                        }
-                        currentValue = nextValue;
-                    }
-                }
-            } else {
-                this.propertiesObject[propertyName] = propertyValue;
-            }
+        setProperty: function(propertyQuery, propertyValue) {
+            return ObjectUtil.setNestedProperty(this.propertiesObject, propertyQuery, propertyValue);
         }
     });
 

@@ -146,7 +146,7 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(Array<*>)} rejectedCallback
          */
         resolveObjectAsObject: function(object, fulfilledCallback, rejectedCallback) {
-            var properties = ObjectUtil.getOwnProperties(object);
+            var properties = ObjectUtil.getProperties(object, {own: true});
             var values = [];
             properties.forEach(function(property) {
                 values.push(object[property]);

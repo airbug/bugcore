@@ -116,7 +116,7 @@ require('bugpack').context("*", function(bugpack) {
             if (_this) {
                 if (TypeUtil.isObject(object)) {
                     _this.object = object;
-                    _this.properties = ObjectUtil.getOwnProperties(object);
+                    _this.properties = ObjectUtil.getProperties(object, {own: true});
                     _this.propertyCount = _this.properties.length;
                 } else {
                     throw new ArgumentBug(ArgumentBug.ILLEGAL, "object", object, "parameter must be an Object");

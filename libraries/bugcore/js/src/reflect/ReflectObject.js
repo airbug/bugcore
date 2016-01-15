@@ -96,7 +96,7 @@ require('bugpack').context("*", function(bugpack) {
             try {
                 if (this.hasProperty(name)) {
                     var oldValue = this.object[name];
-                    var result = ObjectUtil.deleteProperty(this.object, name);
+                    var result = ObjectUtil.deleteProperty(this.object, name, {own: true});
                     if (result) {
                         if (this.hasNotifier()) {
                             this.getNotifier().notify({
@@ -119,14 +119,14 @@ require('bugpack').context("*", function(bugpack) {
          * @param {function(string, *)} func
          */
         forIn: function(func) {
-            ObjectUtil.forInOwn(this.object, func);
+            ObjectUtil.forIn(this.object, func, {own: true});
         },
 
         /**
          * @return {Array.<string>}
          */
         keys: function() {
-            return ObjectUtil.getOwnProperties(this.object);
+            return ObjectUtil.getProperties(this.object, {own: true});
         },
 
         /**
@@ -134,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {*}
          */
         getProperty: function(name) {
-            return ObjectUtil.getOwnProperty(this.object, name);
+            return ObjectUtil.getProperty(this.object, name, {own: true});
         },
 
         /**
@@ -143,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
          * @return {boolean}
          */
         hasProperty: function(name) {
-            return ObjectUtil.hasOwnProperty(this.object, name);
+            return ObjectUtil.hasProperty(this.object, name, {own: true});
         },
 
         /**
