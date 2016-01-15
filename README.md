@@ -142,8 +142,8 @@ The source is available for download from [GitHub](https://github.com/airbug/bug
 
 From the web, you can download the packaged scripts here
 
-    https://s3.amazonaws.com/public-airbug/bugcore-0.3.18.js
-    https://s3.amazonaws.com/public-airbug/bugcore-0.3.18.min.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.3.19.js
+    https://s3.amazonaws.com/public-airbug/bugcore-0.3.19.min.js
 
 
 ## Install
@@ -156,7 +156,7 @@ For the web, simply include these scripts in your application
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.2.min.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.18.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.19.min.js"></script>
 ```
 
 
@@ -176,7 +176,7 @@ In the browser:
 
 ```html
 <script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugpack-0.2.2.js"></script>
-<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.18.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/public-airbug/bugcore-0.3.19.js"></script>
 <script type="text/javascript">
 
     var map = new bugcore.Map();
