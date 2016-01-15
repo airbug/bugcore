@@ -88,11 +88,11 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {string} propertyName
+         * @param {string} propertyQuery
          * @return {boolean}
          */
-        deleteProperty: function(propertyName) {
-            return this.properties.deleteProperty(propertyName);
+        deleteProperty: function(propertyQuery) {
+            return this.properties.deleteProperty(propertyQuery);
         },
 
         /**
@@ -103,19 +103,27 @@ require('bugpack').context("*", function(bugpack) {
         },
 
         /**
-         * @param {string} propertyName
+         * @param {string} propertyQuery
          * @return {*}
          */
-        getProperty: function(propertyName) {
-            return this.properties.getProperty(propertyName);
+        getProperty: function(propertyQuery) {
+            return this.properties.getProperty(propertyQuery);
+        },
+
+         /**
+         * @param {string} propertyQuery
+         * @return {boolean}
+         */
+        hasProperty: function(propertyQuery) {
+            return this.properties.hasProperty(propertyQuery);
         },
 
         /**
-         * @param {string} propertyName
+         * @param {string} propertyQuery
          * @param {*} propertyValue
          */
-        setProperty: function(propertyName, propertyValue) {
-            this.properties.setProperty(propertyName, propertyValue);
+        setProperty: function(propertyQuery, propertyValue) {
+            this.properties.setProperty(propertyQuery, propertyValue);
         },
 
         /**
