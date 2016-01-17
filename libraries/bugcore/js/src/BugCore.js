@@ -53,6 +53,7 @@
 //@Require('Map')
 //@Require('MathUtil')
 //@Require('Obj')
+//@Require('ObjectBuilder')
 //@Require('ObjectUtil')
 //@Require('Pair')
 //@Require('Promise')
@@ -88,7 +89,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // BugPack
@@ -136,6 +137,7 @@ require('bugpack').context("*", function(bugpack) {
     var Map                 = bugpack.require('Map');
     var MathUtil            = bugpack.require('MathUtil');
     var Obj                 = bugpack.require('Obj');
+    var ObjectBuilder       = bugpack.require('ObjectBuilder');
     var ObjectUtil          = bugpack.require('ObjectUtil');
     var Pair                = bugpack.require('Pair');
     var Promise             = bugpack.require('Promise');
@@ -177,7 +179,7 @@ require('bugpack').context("*", function(bugpack) {
      */
     var BugCore = Class.extend(Obj, {
 
-        _name: "BugCore",
+        _name: 'BugCore',
 
 
         //-------------------------------------------------------------------------------
@@ -317,14 +319,14 @@ require('bugpack').context("*", function(bugpack) {
             this.IClone             = IClone;
 
             /**
-             * @type {function(new:IdGenerator)}
-             */
-            this.IdGenerator        = IdGenerator;
-
-            /**
              * @type {function(new:ICollection)}
              */
             this.ICollection        = ICollection;
+
+            /**
+             * @type {function(new:IdGenerator)}
+             */
+            this.IdGenerator        = IdGenerator;
 
             /**
              * @type {function(new:IEquals)}
@@ -405,6 +407,11 @@ require('bugpack').context("*", function(bugpack) {
              * @type {function(new:Obj)}
              */
             this.Obj                = Obj;
+
+            /**
+             * @type {function(new:ObjectBuilder)}
+             */
+            this.ObjectBuilder      = ObjectBuilder;
 
             /**
              * @type {function(new:ObjectUtil)}
@@ -646,12 +653,12 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
-        "collection",
-        "list",
-        "map",
-        "queue",
-        "set",
-        "stack"
+        'collection',
+        'list',
+        'map',
+        'queue',
+        'set',
+        'stack'
     ]);
 
 

@@ -16,7 +16,7 @@
 // Context
 //-------------------------------------------------------------------------------
 
-require('bugpack').context("*", function(bugpack) {
+require('bugpack').context('*', function(bugpack) {
 
     //-------------------------------------------------------------------------------
     // Constructor
@@ -25,7 +25,7 @@ require('bugpack').context("*", function(bugpack) {
     // NOTE BRN: We don't use the base level Class system here because our low level Object class depends on this class
     // and Class depends on Object. Thus, if this class depends on Class it creates s circular dependency.
 
-    // NOTE BRN: the TypeUtil.toString(value)  === "[object SOME_TYPE]" method is cross frame compatible. Need to
+    // NOTE BRN: the TypeUtil.toString(value)  === '[object SOME_TYPE]' method is cross frame compatible. Need to
     // figure out a way to write a test for this
 
     /**
@@ -44,7 +44,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isArguments = function(value) {
-        return TypeUtil.toString(value) === "[object Arguments]";
+        return TypeUtil.toString(value) === '[object Arguments]';
     };
 
     /**
@@ -53,7 +53,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isArray = function(value) {
-        return TypeUtil.toString(value)  === "[object Array]";
+        return TypeUtil.toString(value)  === '[object Array]';
     };
 
     /**
@@ -62,7 +62,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isBoolean = function(value) {
-        return (typeof value === 'boolean' || TypeUtil.toString(value)  === "[object Boolean]");
+        return (typeof value === 'boolean' || TypeUtil.toString(value)  === '[object Boolean]');
     };
 
     /**
@@ -71,7 +71,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isDate = function(value) {
-        return TypeUtil.toString(value)  === "[object Date]";
+        return TypeUtil.toString(value)  === '[object Date]';
     };
 
     /**
@@ -80,7 +80,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isFunction = function(value) {
-        return typeof value === "function";
+        return typeof value === 'function';
     };
 
     /**
@@ -107,7 +107,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isNumber = function(value) {
-        return (typeof value === 'number' || TypeUtil.toString(value)  === "[object Number]");
+        return (typeof value === 'number' || TypeUtil.toString(value)  === '[object Number]');
     };
 
     /**
@@ -116,7 +116,16 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isObject = function(value) {
-        return TypeUtil.toType(value) === "object";
+        return TypeUtil.toType(value) === 'object';
+    };
+
+    /**
+     * @static
+     * @param {*} value
+     * @return {boolean}
+     */
+    TypeUtil.isObjectLike = function(value) {
+        return typeof value === 'object' && !TypeUtil.isNull(value);
     };
 
     /**
@@ -125,7 +134,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isRegExp = function(value) {
-        return TypeUtil.toString(value)  === "[object RegExp]";
+        return TypeUtil.toString(value)  === '[object RegExp]';
     };
 
     /**
@@ -134,7 +143,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isString = function(value) {
-        return (typeof value === 'string' || TypeUtil.toString(value)  === "[object String]");
+        return (typeof value === 'string' || TypeUtil.toString(value)  === '[object String]');
     };
 
     /**
@@ -162,10 +171,10 @@ require('bugpack').context("*", function(bugpack) {
      */
     TypeUtil.toType = function(value) {
         var type = typeof value;
-        if (type === "object") {
+        if (type === 'object') {
             var objectType = Object.prototype.toString.call(value).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
             var coreType = TypeUtil.coreTypes[objectType];
-            return coreType || "object";
+            return coreType || 'object';
         }
         return type;
     };
@@ -181,16 +190,16 @@ require('bugpack').context("*", function(bugpack) {
      * @enum {string}
      */
     TypeUtil.coreTypes = {
-        arguments: "arguments",
-        array: "array",
-        boolean: "boolean",
-        date: "date",
-        function: "function",
-        null: "null",
-        number: "number",
-        regexp: "regexp",
-        string: "string",
-        undefined: "undefined"
+        arguments: 'arguments',
+        array: 'array',
+        boolean: 'boolean',
+        date: 'date',
+        function: 'function',
+        null: 'null',
+        number: 'number',
+        regexp: 'regexp',
+        string: 'string',
+        undefined: 'undefined'
     };
 
 

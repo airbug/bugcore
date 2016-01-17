@@ -530,21 +530,30 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
-    var objectUtilMergeTest = {
+    var objectUtilAssignTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function(test) {
             this.from = {
-                propertya: "a",
-                propertyb: "b",
-                propertyc: "c"
+                propertyA: "newA",
+                propertyB: "b",
+                propertyC: "c",
+                subObject: {
+                    subA: 'subA'
+                },
+                subArray: ['b']
             };
             this.into = {
-                propertyx: "x",
-                propertyy: "y",
-                propertyz: "z"
+                propertyA: 'a',
+                propertyX: "x",
+                propertyY: "y",
+                propertyZ: "z",
+                subObject: {
+                    subB: 'subB'
+                },
+                subArray: ['a']
             };
         },
 
@@ -552,12 +561,154 @@ require('bugpack').context("*", function(bugpack) {
         //-------------------------------------------------------------------------------
 
         test: function(test) {
-            var returnedObj = ObjectUtil.merge(this.from, this.into);
+            var returnedObj = ObjectUtil.assign(this.into, this.from);
             test.assertEqual(returnedObj, this.into,
-                "Assert the object returned by ObjectUtil.merge is the object given as the second parameter");
-            test.assertTrue( this.into.propertya === "a" && this.into.propertyb === "b" && this.into.propertyc === "c" &&
-                    this.into.propertyx === "x" && this.into.propertyy === "y" && this.into.propertyz === "z",
-                "Assert that the into object has all properties from itself and from the from object");
+                "Assert the object returned by ObjectUtil.assign is the object given as the first parameter");
+            test.assertEqual(this.from.propertyA, "newA",
+                "Assert that from.propertyA has not been modified");
+            test.assertEqual(this.from.propertyX, undefined,
+                "Assert that properties from into have not been moved to from object");
+            test.assertEqual(this.into.propertyA, this.from.propertyA,
+                "Assert that propertyA has been merged into object and has replaced original propertyA");
+            test.assertEqual(this.into.propertyB, this.from.propertyB,
+                "Assert that propertyB has been merged into object");
+            test.assertEqual(this.into.propertyC, this.from.propertyC,
+                "Assert that propertyC has been merged into object");
+            test.assertEqual(this.into.propertyX, "x",
+                "Assert that propertyX still exists on into object");
+            test.assertEqual(this.into.propertyY, "y",
+                "Assert that propertyY still exists on into object");
+            test.assertEqual(this.into.propertyZ, "z",
+                "Assert that propertyZ still exists on into object");
+            test.assertEqual(this.into.subObject, this.from.subObject,
+                "Assert that from.subObject has been assigned to into.subObject");
+            test.assertEqual(this.into.subObject.subB, undefined,
+                "Assert that into.subObject.subB no longer exists");
+            test.assertEqual(this.into.subObject.subA, "subA",
+                "Assert that into.subObject.subA now exists on into object");
+            test.assertEqual(this.into.subArray, this.from.subArray,
+                "Assert that from.subArray has been assigned to into.subArray");
+            test.assertEqual(this.into.subArray[0], "b",
+                "Assert that subArray[0] has been replaced with value on from object");
+        }
+    };
+
+    var objectUtilMergeTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.from = {
+                propertyA: "newA",
+                propertyB: "b",
+                propertyC: "c",
+                subObject: {
+                    subA: 'subA'
+                },
+                subArray: ['b']
+            };
+            this.into = {
+                propertyA: 'a',
+                propertyX: "x",
+                propertyY: "y",
+                propertyZ: "z",
+                subObject: {
+                    subB: 'subB'
+                },
+                subArray: ['a']
+            };
+        },
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var returnedObj = ObjectUtil.merge(this.into, this.from);
+            test.assertEqual(returnedObj, this.into,
+                "Assert the object returned by ObjectUtil.merge is the object given as the first parameter");
+            test.assertEqual(this.from.propertyA, "newA",
+                "Assert that from.propertyA has not been modified");
+            test.assertEqual(this.from.propertyX, undefined,
+                "Assert that properties from into have not been moved to from object");
+            test.assertEqual(this.into.propertyA, this.from.propertyA,
+                "Assert that propertyA has been merged into object and has replaced original propertyA");
+            test.assertEqual(this.into.propertyB, this.from.propertyB,
+                "Assert that propertyB has been merged into object");
+            test.assertEqual(this.into.propertyC, this.from.propertyC,
+                "Assert that propertyC has been merged into object");
+            test.assertEqual(this.into.propertyX, "x",
+                "Assert that propertyX still exists on into object");
+            test.assertEqual(this.into.propertyY, "y",
+                "Assert that propertyY still exists on into object");
+            test.assertEqual(this.into.propertyZ, "z",
+                "Assert that propertyZ still exists on into object");
+            test.assertEqual(this.into.subObject.subA, "subA",
+                "Assert that subObject.subA has been merged into object");
+            test.assertEqual(this.into.subObject.subB, "subB",
+                "Assert that subObject.subB still exists on into object");
+            test.assertEqual(this.into.subArray[0], "b",
+                "Assert that subArray[0] has been replaced with value on from object");
+        }
+    };
+
+    var objectUtilOmitTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.object = {
+                propertyA: "a",
+                propertyB: "b",
+                propertyC: "c"
+            };
+            this.properties = ['propertyA'];
+        },
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var returnedObj = ObjectUtil.omit(this.object, this.properties);
+            test.assertNotEqual(returnedObj, this.object,
+                "Assert the object returned by ObjectUtil.pick is not the object given as the first parameter");
+            test.assertEqual(returnedObj.propertyA, undefined,
+                "Assert propertyA was NOT passed to returnedObj");
+            test.assertEqual(returnedObj.propertyB, this.object.propertyB,
+                "Assert propertyB was passed to returnedObj");
+            test.assertEqual(returnedObj.propertyC, this.object.propertyC,
+                "Assert propertyC was passed to returnedObj");
+        }
+    };
+
+    var objectUtilPickTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function(test) {
+            this.object = {
+                propertyA: "a",
+                propertyB: "b",
+                propertyC: "c"
+            };
+            this.properties = ['propertyA'];
+        },
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var returnedObj = ObjectUtil.pick(this.object, this.properties);
+            test.assertNotEqual(returnedObj, this.object,
+                "Assert the object returned by ObjectUtil.pick is not the object given as the first parameter");
+            test.assertEqual(returnedObj.propertyA, this.object.propertyA,
+                "Assert propertyA was passed to returnedObj");
+            test.assertEqual(returnedObj.propertyB, undefined,
+                "Assert propertyB was NOT passed to returnedObj");
+            test.assertEqual(returnedObj.propertyC, undefined,
+                "Assert propertyC was NOT passed to returnedObj");
         }
     };
 
@@ -655,8 +806,17 @@ require('bugpack').context("*", function(bugpack) {
     bugmeta.tag(objectUtilIsEqualTest).with(
         test().name("ObjectUtil - .isEqual Test")
     );
+    bugmeta.tag(objectUtilAssignTest).with(
+        test().name("ObjectUtil - .assign Test")
+    );
     bugmeta.tag(objectUtilMergeTest).with(
         test().name("ObjectUtil - .merge Test")
+    );
+    bugmeta.tag(objectUtilOmitTest).with(
+        test().name("ObjectUtil - .omit Test")
+    );
+    bugmeta.tag(objectUtilPickTest).with(
+        test().name("ObjectUtil - .pick Test")
     );
     bugmeta.tag(objectUtilSetNestedPropertyTest).with(
         test().name("ObjectUtil - .setNestedProperty() Test")

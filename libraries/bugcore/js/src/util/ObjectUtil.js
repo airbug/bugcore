@@ -77,6 +77,29 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {Object} into
+     * @param {...Object} from
+     * @return {Object}
+     */
+    ObjectUtil.assign = function(into, from) {
+        var froms = Array.prototype.slice.call(arguments, 1);
+        if (TypeUtil.isObjectLike(into)) {
+            froms.forEach(function(from) {
+                if (TypeUtil.isObjectLike(from)) {
+                    ObjectUtil.forIn(from, function(prop, fromValue) {
+                        ObjectUtil.setProperty(into, prop, fromValue);
+                    });
+                } else {
+                    throw new Error("from parameter must be Object like");
+                }
+            });
+            return into;
+        }
+        throw new Error("into parameter must be Object like");
+    };
+
+    /**
+     * @static
      * @param {Object} object
      * @param {string} propertyName
      * @param {{
@@ -100,7 +123,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     ObjectUtil.deleteNestedProperty = function(object, propertyQuery, options) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new Error("'object' must be an Object");
         }
         if (!TypeUtil.isString(propertyQuery)) {
@@ -136,7 +159,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     ObjectUtil.deleteProperty = function(object, propertyName, options) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("parameter 'object' must be an object");
         }
         if (!TypeUtil.isString(propertyName)) {
@@ -163,7 +186,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {boolean}
      */
     ObjectUtil.hasNestedProperty = function(object, propertyQuery, options) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new Error("'object' must be an Object");
         }
         if (!TypeUtil.isString(propertyQuery)) {
@@ -241,8 +264,8 @@ require('bugpack').context("*", function(bugpack) {
      * }=} options
      */
     ObjectUtil.forIn = function(object, func, context, options) {
-        if (!TypeUtil.isObject(object)) {
-            throw new TypeError("'object' must be an Object");
+        if (!TypeUtil.isObjectLike(object)) {
+            throw new TypeError("'object' must be Object like");
         }
         if (!func || (func && !func.call)) {
             throw new Error('Iterator function is required');
@@ -305,7 +328,7 @@ require('bugpack').context("*", function(bugpack) {
      * }=} options
      */
     ObjectUtil.hasProperty = function(object, propertyName, options) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("'object' must be an Object");
         }
         if (TypeUtil.isObject(options) && options.own) {
@@ -361,36 +384,86 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
-     * @param {Object} from
      * @param {Object} into
+     * @param {...Object} from
      * @return {Object}
      */
-    ObjectUtil.merge = function(from, into) {
-        if (TypeUtil.isObject(from) && TypeUtil.isObject(into)) {
-            ObjectUtil.forIn(from, function(prop, value) {
-                ObjectUtil.setProperty(into, prop, from[prop]);
+    ObjectUtil.merge = function(into, from) {
+        var froms = Array.prototype.slice.call(arguments, 1);
+        if (TypeUtil.isObjectLike(into)) {
+            froms.forEach(function(from) {
+                if (TypeUtil.isObjectLike(from)) {
+                    ObjectUtil.forIn(from, function(prop, fromValue) {
+                        var intoValue = into[prop];
+                        if (TypeUtil.isObjectLike(fromValue) && TypeUtil.isObjectLike(intoValue)) {
+                            ObjectUtil.merge(intoValue, fromValue);
+                        } else {
+                            ObjectUtil.setProperty(into, prop, fromValue);
+                        }
+                    });
+                } else {
+                    throw new Error("from parameter must be Object like");
+                }
             });
             return into;
-        } else {
-            throw new Error("both from and into parameters must be Objects");
         }
+        throw new Error("into parameter must be Object like");
     };
 
     /**
      * @static
      * @param {Object} object
-     * @param {Array.<string>} properties
+     * @param {...(Array.<string> | string)} properties
+     * @return {Object}
+     */
+    ObjectUtil.omit = function(object, properties) {
+        if (!TypeUtil.isObjectLike(object)) {
+            throw new TypeError("parameter 'object' must be an Object");
+        }
+
+        var args = Array.prototype.slice.call(arguments, 1);
+        var omitProperties = [];
+        args.forEach(function(arg) {
+            if (TypeUtil.isArray(arg)) {
+                omitProperties = omitProperties.concat(arg);
+            } else if (TypeUtil.isString(arg)) {
+                omitProperties = omitProperties.concat([arg]);
+            } else {
+                throw new TypeError("parameter 'properties' must be an Array or a string");
+            }
+        });
+        var omitted = {};
+        ObjectUtil.forIn(object, function(property, value) {
+            if (omitProperties.indexOf(property) === -1) {
+                 omitted[property] = value;
+            }
+        });
+        return omitted;
+    };
+
+    /**
+     * @static
+     * @param {Object} object
+     * @param {...(Array.<string> | string)} properties
      * @return {Object}
      */
     ObjectUtil.pick = function(object, properties) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("parameter 'object' must be an Object");
         }
-        if (!TypeUtil.isArray(properties)) {
-            throw new TypeError("parameter 'properties' must be an Array");
-        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        var pickProperties = [];
+        args.forEach(function(arg) {
+            if (TypeUtil.isArray(arg)) {
+                pickProperties = pickProperties.concat(arg);
+            } else if (TypeUtil.isString(arg)) {
+                pickProperties = pickProperties.concat([arg]);
+            } else {
+                throw new TypeError("parameter 'properties' must be an Array or a string");
+            }
+        });
         var picked = {};
-        properties.forEach(function(property) {
+        pickProperties.forEach(function(property) {
             if (ObjectUtil.hasProperty(object, property)) {
                 picked[property] = object[property];
             }
@@ -405,7 +478,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {*} value
      */
     ObjectUtil.setNestedProperty = function(object, propertyQuery, value) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("parameter 'object' must be an object");
         }
         if (!TypeUtil.isString(propertyQuery)) {
@@ -433,7 +506,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {*} value
      */
     ObjectUtil.setProperty = function(object, propertyName, value) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("parameter 'object' must be an object");
         }
         if (!TypeUtil.isString(propertyName)) {
@@ -453,7 +526,7 @@ require('bugpack').context("*", function(bugpack) {
      * @return {string}
      */
     ObjectUtil.toConstructorName = function(object) {
-        if (!TypeUtil.isObject(object)) {
+        if (!TypeUtil.isObjectLike(object)) {
             throw new TypeError("parameter 'object' must be an object");
         }
         return FunctionUtil.toName(object.constructor);

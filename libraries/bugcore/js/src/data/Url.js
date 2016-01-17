@@ -335,7 +335,7 @@ require('bugpack').context("*", function(bugpack) {
                 loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
             }
         };
-        ObjectUtil.merge(options, finalOptions);
+        ObjectUtil.merge(finalOptions, options);
         var m = finalOptions.parser[finalOptions.strictMode ? "strict" : "loose"].exec(urlString);
         var uri = {};
         var i   = 14;

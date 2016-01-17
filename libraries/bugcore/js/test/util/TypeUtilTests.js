@@ -224,13 +224,57 @@ require('bugpack').context("*", function(bugpack) {
     /**
      *
      */
-    var typeUtilIsNaNTest = {
+    var typeUtilIsObjectLikeTest = {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
         setup: function() {
 
+            this.testNotObjectLike = [
+                null,
+                undefined,
+                "some string",
+                123,
+                0,
+                -123,
+                123.1,
+                -123.1
+            ];
+            this.testObjectLike    = [
+                new String('abc'),
+                new Number(123),
+                [],
+                {},
+                new Object()
+            ];
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            this.testNotObjectLike.forEach(function(notObjectLike) {
+                test.assertFalse(TypeUtil.isObjectLike(notObjectLike),
+                    "Assert non object like value '" + notObjectLike + "' is not object like");
+            });
+            this.testObjectLike.forEach(function(objectLike) {
+                test.assertTrue(TypeUtil.isObjectLike(objectLike),
+                    "Assert object like value '" + objectLike + "' is object like");
+            });
+        }
+    };
+
+    /**
+     *
+     */
+    var typeUtilIsNaNTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
             this.testNotNaN = [
                 null,
                 undefined,
@@ -273,5 +317,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(typeUtilIsNaNTest).with(
         test().name("TypeUtil - #isNaN test")
+    );
+    bugmeta.tag(typeUtilIsObjectLikeTest).with(
+        test().name("TypeUtil - #isObjectLike test")
     );
 });
