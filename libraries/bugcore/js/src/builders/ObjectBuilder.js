@@ -143,11 +143,12 @@ require('bugpack').context('*', function(bugpack) {
     // Static Proxy
     //-------------------------------------------------------------------------------
 
-    Proxy.proxy(ObjectBuilder, Proxy.method(ObjectBuilder.newInstance), [
+    Proxy.proxy(ObjectBuilder, Proxy.method(ObjectBuilder.newInstance, ObjectBuilder), [
         'assign',
         'build',
         'merge',
-        'omit'
+        'omit',
+        'pick'
     ]);
 
 
