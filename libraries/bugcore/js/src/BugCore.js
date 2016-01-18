@@ -40,6 +40,7 @@
 //@Require('IHashCode')
 //@Require('IIterable')
 //@Require('IIterator')
+//@Require('IJsonable')
 //@Require('IList')
 //@Require('IMap')
 //@Require('IObjectable')
@@ -124,6 +125,7 @@ require('bugpack').context('*', function(bugpack) {
     var IHashCode           = bugpack.require('IHashCode');
     var IIterable           = bugpack.require('IIterable');
     var IIterator           = bugpack.require('IIterator');
+    var IJsonable           = bugpack.require('IJsonable');
     var IList               = bugpack.require('IList');
     var IMap                = bugpack.require('IMap');
     var IObjectable         = bugpack.require('IObjectable');
@@ -347,6 +349,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:IIterator)}
              */
             this.IIterator          = IIterator;
+
+            /**
+             * @type {function(new:IJsonable)}
+             */
+            this.IJsonable          = IJsonable;
 
             /**
              * @type {function(new:IList)}
