@@ -98,13 +98,41 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} propertyQuery
+         * @param {number=} index
+         * @return {boolean}
+         */
+        deleteProperty: function(propertyQuery, index) {
+            if (TypeUtil.isNumber(index)) {
+                return this.propertiesList
+                    .getAt(index)
+                    .deleteProperty(propertyQuery);
+            } else {
+                for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
+                    var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
+                    if (properties.hasProperty(propertyQuery)) {
+                        return properties.deleteProperty(propertyQuery);
+                    }
+                }
+            }
+            return false;
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @param {number=} index
          * @return {*}
          */
-        getProperty: function(propertyQuery) {
-            for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
-                var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
-                if (properties.hasProperty(propertyQuery)) {
-                    return properties.getProperty(propertyQuery);
+        getProperty: function(propertyQuery, index) {
+            if (TypeUtil.isNumber(index)) {
+                return this.propertiesList
+                    .getAt(index)
+                    .getProperty(propertyQuery);
+            } else {
+                for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
+                    var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
+                    if (properties.hasProperty(propertyQuery)) {
+                        return properties.getProperty(propertyQuery);
+                    }
                 }
             }
             return undefined;
@@ -112,16 +140,38 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} propertyQuery
+         * @param {number=} index
          * @return {boolean}
          */
-        hasProperty: function(propertyQuery) {
-            for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
-                var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
-                if (properties.hasProperty(propertyQuery)) {
-                    return true;
-                }
-            }
+        hasProperty: function(propertyQuery, index) {
+             if (TypeUtil.isNumber(index)) {
+                return this.propertiesList
+                    .getAt(index)
+                    .hasProperty(propertyQuery);
+            } else {
+                 for (var i = 0, size = this.propertiesList.getCount(); i < size; i++) {
+                     var properties = /** @type {Properties} */(this.propertiesList.getAt(i));
+                     if (properties.hasProperty(propertyQuery)) {
+                         return true;
+                     }
+                 }
+             }
             return false;
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @param {*} value
+         * @param {number=} index
+         * @return {boolean}
+         */
+        setProperty: function(propertyQuery, value, index) {
+            if (!TypeUtil.isNumber(index)) {
+                index = 0;
+            }
+            return this.propertiesList
+                .getAt(index)
+                .setProperty(propertyQuery, value);
         }
     });
 

@@ -169,6 +169,7 @@ require('bugpack').context("*", function(bugpack) {
         /**
          * @param {string} propertyQuery
          * @param {*} propertyValue
+         * @return {boolean}
          */
         setProperty: function(propertyQuery, propertyValue) {
             return ObjectUtil.setNestedProperty(this.propertiesObject, propertyQuery, propertyValue);

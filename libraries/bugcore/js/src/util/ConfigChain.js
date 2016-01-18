@@ -96,18 +96,39 @@ require('bugpack').context("*", function(bugpack) {
 
         /**
          * @param {string} propertyQuery
-         * @return {*}
+         * @param {number=} index
+         * @return {boolean}
          */
-        getProperty: function(propertyQuery) {
-            return this.propertiesChain.getProperty(propertyQuery);
+        deleteProperty: function(propertyQuery, index) {
+            return this.propertiesChain.deleteProperty(propertyQuery, index);
         },
 
         /**
          * @param {string} propertyQuery
+         * @param {number=} index
+         * @return {*}
+         */
+        getProperty: function(propertyQuery, index) {
+            return this.propertiesChain.getProperty(propertyQuery, index);
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @param {number=} index
          * @return {boolean}
          */
-        hasProperty: function(propertyQuery) {
-            return this.propertiesChain.hasProperty(propertyQuery);
+        hasProperty: function(propertyQuery, index) {
+            return this.propertiesChain.hasProperty(propertyQuery, index);
+        },
+
+        /**
+         * @param {string} propertyQuery
+         * @param {*} value
+         * @param {number=} index
+         * @return {boolean}
+         */
+        setProperty: function(propertyQuery, value, index) {
+            return this.propertiesChain.setProperty(propertyQuery, value, index);
         }
     });
 

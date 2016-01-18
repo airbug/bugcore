@@ -476,6 +476,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {Object} object
      * @param {string} propertyQuery
      * @param {*} value
+     * @return {boolean}
      */
     ObjectUtil.setNestedProperty = function(object, propertyQuery, value) {
         if (!TypeUtil.isObjectLike(object)) {
@@ -489,7 +490,7 @@ require('bugpack').context("*", function(bugpack) {
         for (var i = 0, size = parts.length; i < size; i++) {
             var part = parts[i];
             if (i === size - 1) {
-                ObjectUtil.setProperty(propertyValue, part, value);
+                return ObjectUtil.setProperty(propertyValue, part, value);
             } else {
                 if (!TypeUtil.isObject(propertyValue[part])) {
                     ObjectUtil.setProperty(propertyValue, part, {});
@@ -504,6 +505,7 @@ require('bugpack').context("*", function(bugpack) {
      * @param {Object} object
      * @param {string} propertyName
      * @param {*} value
+     * @return {boolean}
      */
     ObjectUtil.setProperty = function(object, propertyName, value) {
         if (!TypeUtil.isObjectLike(object)) {
