@@ -203,6 +203,31 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * This tests
+     * 1) replace all with string
+     */
+    var stringReplaceAllTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testString = 'a.b.c';
+            this.expectedResult = 'a-b-c';
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var result = StringUtil.replaceAll(this.testString, '.', '-');
+            test.assertEqual(result, this.expectedResult,
+                "Assert replaceAll returned the correctly replaced string");
+        }
+    };
+
+    /**
+     * This tests
      * 1) Right trimming a string
      */
     var stringUtilRtrimTest = {
@@ -298,6 +323,9 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(stringUtilRtrimTest).with(
         test().name("StringUtil - #rtrim test")
+    );
+    bugmeta.tag(stringReplaceAllTest).with(
+        test().name("StringUtil - #replaceAll test")
     );
     bugmeta.tag(stringUtilTrimTest).with(
         test().name("StringUtil - #trim test")

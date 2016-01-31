@@ -83,6 +83,15 @@ require('bugpack').context("*", function(bugpack) {
      * @param {string} value
      * @return {string}
      */
+    StringUtil.escapeRegExp = function(value) {
+        return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @return {string}
+     */
     StringUtil.escapeString = function(value) {
         return (value + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
     };
@@ -157,6 +166,17 @@ require('bugpack').context("*", function(bugpack) {
         } else {
             return value + "s";
         }
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @param {string} search
+     * @param {string} replacement
+     * @return {string}
+     */
+    StringUtil.replaceAll = function(value, search, replacement) {
+        return value.replace(new RegExp(StringUtil.escapeRegExp(search), 'g'), replacement);
     };
 
     /**
