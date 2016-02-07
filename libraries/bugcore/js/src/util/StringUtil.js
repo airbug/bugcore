@@ -11,6 +11,8 @@
 
 //@Export('StringUtil')
 
+//@Require('Class')
+//@Require('Obj')
 //@Require('TypeUtil')
 
 
@@ -24,6 +26,8 @@ require('bugpack').context("*", function(bugpack) {
     // BugPack
     //-------------------------------------------------------------------------------
 
+    var Class       = bugpack.require('Class');
+    var Obj         = bugpack.require('Obj');
     var TypeUtil    = bugpack.require('TypeUtil');
 
 
@@ -32,14 +36,30 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     /**
-     * @constructor
+     * @class
+     * @extends {Obj}
      */
-    var StringUtil = function() {};
+    var StringUtil = Class.extend(Obj, {
+        _name: 'StringUtil'
+    });
 
 
     //-------------------------------------------------------------------------------
     // Static Methods
     //-------------------------------------------------------------------------------
+
+    /**
+     * @static
+     * @param {string} value
+     * @return {string}
+     */
+    StringUtil.camelCase = function(value) {
+        return StringUtil.lowerFirst(
+            StringUtil.words(value)
+            .map(StringUtil.capitalize)
+            .join('')
+        );
+    };
 
     /**
      * @static
@@ -122,6 +142,17 @@ require('bugpack').context("*", function(bugpack) {
             .replace(/([A-Z])([A-Z])/g, "$1" + separator + ("$2"))
             .replace(/([a-z\d])([A-Z])/g, "$1" + separator + ("$2"))
             .toLowerCase();
+    };
+
+    /**
+     * @static
+     * @param {string} value
+     * @return {string}
+     */
+    StringUtil.lowerFirst = function(value) {
+        value = StringUtil.toString(value);
+        var char = value.charAt(0);
+        return char.toLowerCase() + value.substr(1);
     };
 
     /**
@@ -222,6 +253,25 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {*} value
+     * @return {string}
+     */
+    StringUtil.toString = function(value) {
+        if (TypeUtil.isString(value)) {
+            return value;
+        }
+        if (value == null) {
+            return '';
+        }
+        if (TypeUtil.isSymbol(value)) {
+            return Symbol ? Symbol.prototype.toString.call(value) : '';
+        }
+        var result = (value + '');
+        return (result == '0' && (1 / value) == -Infinity) ? '-0' : result;
+    };
+
+    /**
+     * @static
      * @param {string} value
      * @param {string=} chars
      * @return {string}
@@ -251,6 +301,29 @@ require('bugpack').context("*", function(bugpack) {
         }
         return result.join(" ");
     };
+
+    /**
+     * @static
+     * @param {string} value
+     * @param {RegExp=} pattern
+     * @return {Array.<string>}
+     */
+    StringUtil.words = function(value, pattern) {
+        pattern = pattern || StringUtil.wordRegex;
+        return value.match(pattern);
+    };
+
+
+    //-------------------------------------------------------------------------------
+    // Private Static Properties
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @private
+     * @static
+     * @type {RegExp}
+     */
+    StringUtil.wordRegex = /([0-9]+)|([a-zA-Z]+)/g;
 
 
     //-------------------------------------------------------------------------------

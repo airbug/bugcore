@@ -47,15 +47,26 @@ require('bugpack').context("*", function(bugpack) {
                 date: [
                     {name: "Date object", value: new Date(Date.now())}
                 ],
+                error: [
+                    {name: "Error object", value: new Error("")},
+                    {name: "EvalError object", value: new EvalError("")},
+                    {name: "RangeError object", value: new RangeError("")},
+                    {name: "ReferenceError object", value: new ReferenceError("")},
+                    {name: "SyntaxError object", value: new SyntaxError("")},
+                    {name: "TypeError object", value: new TypeError("")},
+                    {name: "URIError object", value: new URIError("")}
+                ],
                 function: [
                     {name: "function literal", value: function() {}},
                     {name: "Function object", value: new Function()}
+                ],
+                nan: [
+                    {name: "NaN", value: NaN}
                 ],
                 null: [
                     {name: "null", value: null}
                 ],
                 number: [
-                    {name: "NaN", value: NaN},
                     {name: "number literal 0", value: 0},
                     {name: "number literal", value: 123},
                     {name: "negative number literal", value: -123},
@@ -86,6 +97,9 @@ require('bugpack').context("*", function(bugpack) {
                     {name: "empty String object", value: new String("")},
                     {name: "String object", value: new String("abc123")},
                     {name: "numeric String object", value: new String("123")}
+                ],
+                symbol: [
+                    {name: "Symbol object", value: Symbol("foo")}
                 ],
                 undefined: [
                     {name: "undefined", value: void 0}

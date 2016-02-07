@@ -73,6 +73,7 @@
 //@Require('Set')
 //@Require('Stack')
 //@Require('Stream')
+//@Require('StringBuilder')
 //@Require('StringUtil')
 //@Require('Striped')
 //@Require('Suppliers')
@@ -158,6 +159,7 @@ require('bugpack').context('*', function(bugpack) {
     var Set                 = bugpack.require('Set');
     var Stack               = bugpack.require('Stack');
     var Stream              = bugpack.require('Stream');
+    var StringBuilder       = bugpack.require('StringBuilder');
     var StringUtil          = bugpack.require('StringUtil');
     var Striped             = bugpack.require('Striped');
     var Suppliers           = bugpack.require('Suppliers');
@@ -509,6 +511,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:Stream)}
              */
             this.Stream             = Stream;
+
+            /**
+             * @type {function(new:StringBuilder)}
+             */
+            this.StringBuilder      = StringBuilder;
 
             /**
              * @type {function(new:StringUtil)}

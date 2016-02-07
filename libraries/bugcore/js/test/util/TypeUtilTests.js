@@ -59,12 +59,16 @@ require('bugpack').context("*", function(bugpack) {
             TypeUtilTests.runTypeTest("arguments", test);
             TypeUtilTests.runTypeTest("array", test);
             TypeUtilTests.runTypeTest("boolean", test);
+            TypeUtilTests.runTypeTest("date", test);
+            TypeUtilTests.runTypeTest("error", test);
             TypeUtilTests.runTypeTest("function", test);
+            TypeUtilTests.runTypeTest("nan", test);
             TypeUtilTests.runTypeTest("null", test);
             TypeUtilTests.runTypeTest("number", test);
             TypeUtilTests.runTypeTest("object", test);
             TypeUtilTests.runTypeTest("regexp", test);
             TypeUtilTests.runTypeTest("string", test);
+            TypeUtilTests.runTypeTest("symbol", test);
             TypeUtilTests.runTypeTest("undefined", test);
         }
 
@@ -92,8 +96,14 @@ require('bugpack').context("*", function(bugpack) {
                 return TypeUtil.isArray(value);
             } else if (type === "boolean") {
                 return TypeUtil.isBoolean(value);
+            } else if (type === "date") {
+                return TypeUtil.isDate(value);
+            } else if (type === "error") {
+                return TypeUtil.isError(value);
             } else if (type === "function") {
                 return TypeUtil.isFunction(value);
+            } else if (type === "nan") {
+                return TypeUtil.isNaN(value);
             } else if (type === "null") {
                 return TypeUtil.isNull(value);
             } else if (type === "number") {
@@ -104,6 +114,8 @@ require('bugpack').context("*", function(bugpack) {
                 return TypeUtil.isRegExp(value);
             } else if (type === "string") {
                 return TypeUtil.isString(value);
+            } else if (type === "symbol") {
+                return TypeUtil.isSymbol(value);
             } else if (type === "undefined") {
                 return TypeUtil.isUndefined(value);
             }
@@ -132,15 +144,27 @@ require('bugpack').context("*", function(bugpack) {
                 new Boolean(true),
                 new Boolean(false)
             ];
-            this.testDates = [
+            this.testDates      = [
                 new Date(Date.now()),
                 new Date(0)
+            ];
+            this.testErrors     = [
+                new Error(),
+                new EvalError(""),
+                new RangeError(""),
+                new ReferenceError(""),
+                new SyntaxError(""),
+                new TypeError(""),
+                new URIError("")
             ];
             this.testFunctions = [
                 new Function(),
                 function() {}
             ];
-            this.testNumbers     = [
+            this.testNans       = [
+                NaN
+            ];
+            this.testNumbers    = [
                 123,
                 0,
                 -123,
@@ -152,7 +176,6 @@ require('bugpack').context("*", function(bugpack) {
             this.testObjects    = [
                 {},
                 new Object(),
-                new Error(),
                 //NOTE BRN: All class instances should return as 'object' types
 
                 new Set()
@@ -166,6 +189,9 @@ require('bugpack').context("*", function(bugpack) {
                 new String("test2"),
                 new String(),
                 ""
+            ];
+            this.testSymbols    = [
+                Symbol("test")
             ];
 
             this.testNull = null;
@@ -193,9 +219,17 @@ require('bugpack').context("*", function(bugpack) {
                 test.assertEqual(TypeUtil.toType(value), "date",
                     "Assert toType returns 'date' for value - value:" + value);
             });
+            this.testErrors.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "error",
+                    "Assert toType returns 'error' for value - value:" + value);
+            });
             this.testFunctions.forEach(function(value) {
                 test.assertEqual(TypeUtil.toType(value), "function",
                     "Assert toType returns 'function' for value - value:" + value);
+            });
+            this.testNans.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "nan",
+                    "Assert toType returns 'nan' for value - value:" + value);
             });
             this.testNumbers.forEach(function(value) {
                 test.assertEqual(TypeUtil.toType(value), "number",
@@ -212,6 +246,10 @@ require('bugpack').context("*", function(bugpack) {
             this.testStrings.forEach(function(value) {
                 test.assertEqual(TypeUtil.toType(value), "string",
                     "Assert toType returns 'string' for value - value:" + value);
+            });
+            this.testSymbols.forEach(function(value) {
+                test.assertEqual(TypeUtil.toType(value), "symbol",
+                    "Assert toType returns 'symbol' for value - value:" + TypeUtil.toString(value));
             });
 
             test.assertEqual(TypeUtil.toType(this.testNull), "null",

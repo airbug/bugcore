@@ -12,6 +12,7 @@
 //@TestFile
 
 //@Require('HashUtil')
+//@Require('StringUtil')
 //@Require('bugmeta.BugMeta')
 //@Require('bugunit.TestTag')
 //@Require('tests.TypeValueSetsHelper')
@@ -28,6 +29,7 @@ require('bugpack').context("*", function(bugpack) {
     //-------------------------------------------------------------------------------
 
     var HashUtil                = bugpack.require('HashUtil');
+    var StringUtil              = bugpack.require('StringUtil');
     var BugMeta                 = bugpack.require('bugmeta.BugMeta');
     var TestTag                 = bugpack.require('bugunit.TestTag');
     var TypeValueSetsHelper     = bugpack.require('tests.TypeValueSetsHelper');
@@ -80,7 +82,7 @@ require('bugpack').context("*", function(bugpack) {
                 typeValueSet.forEach(function(typeValue) {
                     var repeatHash = HashUtil.hash(typeValue.value);
                     var expectedHash = _this.hashValues[typeValue.name];
-                    test.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + typeValue.value +
+                    test.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + StringUtil.toString(typeValue.value) +
                         " is the same when it is hashed repeatedly.");
                 });
             }

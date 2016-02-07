@@ -75,12 +75,19 @@ require('bugpack').context("*", function(bugpack) {
             case "date":
                 key += "d_" + value;
                 break;
+            case "error":
+                IdGenerator.ensureId(value);
+                key += "e_" + value._internalId;
+                break;
             case "function":
                 IdGenerator.ensureId(value);
                 key += "f_" + value._internalId;
                 break;
             case "number":
                 key += "n_" + value;
+                break;
+            case "nan":
+                key += "nan";
                 break;
             case "null":
                 key += "null";
@@ -92,6 +99,9 @@ require('bugpack').context("*", function(bugpack) {
             case "regexp":
                 IdGenerator.ensureId(value);
                 key += "r_" + value._internalId;
+                break;
+            case "symbol":
+                key += "sy_" + value.toString();
                 break;
             case "string":
                 key += "s_" + value;

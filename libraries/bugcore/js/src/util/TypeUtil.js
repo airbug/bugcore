@@ -53,7 +53,7 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isArray = function(value) {
-        return TypeUtil.toString(value)  === '[object Array]';
+        return TypeUtil.toString(value) === '[object Array]';
     };
 
     /**
@@ -62,7 +62,7 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isBoolean = function(value) {
-        return (typeof value === 'boolean' || TypeUtil.toString(value)  === '[object Boolean]');
+        return (typeof value === 'boolean' || TypeUtil.toString(value) === '[object Boolean]');
     };
 
     /**
@@ -71,7 +71,16 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isDate = function(value) {
-        return TypeUtil.toString(value)  === '[object Date]';
+        return TypeUtil.toString(value) === '[object Date]';
+    };
+
+    /**
+     * @static
+     * @param {*} value
+     * @return {boolean}
+     */
+    TypeUtil.isError = function(value) {
+        return TypeUtil.toString(value) === '[object Error]';
     };
 
     /**
@@ -89,7 +98,7 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isNaN = function(value) {
-        return (TypeUtil.isNumber(value) && +value !== +value);
+        return (typeof value === 'number' && +value !== +value);
     };
 
     /**
@@ -107,7 +116,7 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isNumber = function(value) {
-        return (typeof value === 'number' || TypeUtil.toString(value)  === '[object Number]');
+        return (typeof value === 'number' || TypeUtil.toString(value) === '[object Number]') && !TypeUtil.isNaN(value);
     };
 
     /**
@@ -134,7 +143,7 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isRegExp = function(value) {
-        return TypeUtil.toString(value)  === '[object RegExp]';
+        return TypeUtil.toString(value) === '[object RegExp]';
     };
 
     /**
@@ -143,7 +152,16 @@ require('bugpack').context('*', function(bugpack) {
      * @return {boolean}
      */
     TypeUtil.isString = function(value) {
-        return (typeof value === 'string' || TypeUtil.toString(value)  === '[object String]');
+        return (typeof value === 'string' || TypeUtil.toString(value) === '[object String]');
+    };
+
+    /**
+     * @static
+     * @param {*} value
+     * @returns {boolean}
+     */
+    TypeUtil.isSymbol = function(value) {
+        return (typeof value === 'symbol' || TypeUtil.toString(value) === '[object Symbol]');
     };
 
     /**
@@ -172,9 +190,13 @@ require('bugpack').context('*', function(bugpack) {
     TypeUtil.toType = function(value) {
         var type = typeof value;
         if (type === 'object') {
-            var objectType = Object.prototype.toString.call(value).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+            var objectType = TypeUtil.toString(value).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
             var coreType = TypeUtil.coreTypes[objectType];
             return coreType || 'object';
+        } else if (type === 'number') {
+            if (TypeUtil.isNaN(value)) {
+                return 'nan';
+            }
         }
         return type;
     };
@@ -194,11 +216,13 @@ require('bugpack').context('*', function(bugpack) {
         array: 'array',
         boolean: 'boolean',
         date: 'date',
+        error: 'error',
         function: 'function',
         null: 'null',
         number: 'number',
         regexp: 'regexp',
         string: 'string',
+        symbol: 'symbol',
         undefined: 'undefined'
     };
 
