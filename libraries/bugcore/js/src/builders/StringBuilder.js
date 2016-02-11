@@ -92,7 +92,7 @@ require('bugpack').context('*', function(bugpack) {
         //-------------------------------------------------------------------------------
 
         /**
-         * @return {Object}
+         * @return {string}
          */
         build: function() {
             return this.string;

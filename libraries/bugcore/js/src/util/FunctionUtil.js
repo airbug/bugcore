@@ -41,6 +41,31 @@ require('bugpack').context("*", function(bugpack) {
     // Static Methods
     //-------------------------------------------------------------------------------
 
+     /**
+     * @static
+     * @param {function(...):*} func
+     * @param {Object} context
+     * @param {Array.<*>} args
+     * @return {*}
+     */
+    FunctionUtil.apply = function(func, context, args) {
+        return Function.prototype.apply.call(func, context, args);
+    };
+
+    /**
+     * @static
+     * @param {function(...):*} func
+     * @param {Object} context
+     * @param {...} args
+     * @return {*}
+     */
+    FunctionUtil.call = function(func, context) {
+        var args = Array.prototype.slice.call(arguments, 0);
+        func = args.shift();
+        context = args.shift();
+        return Function.prototype.apply.call(func, context, args);
+    };
+
     /**
      * @static
      * @param {function(...):*} func

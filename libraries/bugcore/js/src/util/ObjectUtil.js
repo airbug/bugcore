@@ -77,6 +77,25 @@ require('bugpack').context("*", function(bugpack) {
 
     /**
      * @static
+     * @param {Object} object
+     * @param {function(string, *):boolean} predicate
+     * @param {Object=} context
+     * @param {{
+     *  own: boolean=
+     * }=} options
+     * @return {boolean}
+     */
+    ObjectUtil.anyIn = function(object, predicate, context, options) {
+        var found = false;
+        ObjectUtil.forIn(object, function(property, value) {
+            found = !!FunctionUtil.call(predicate, context, property, value);
+            return !found;
+        }, null, options);
+        return found;
+    };
+
+    /**
+     * @static
      * @param {Object} into
      * @param {...Object} from
      * @return {Object}
@@ -177,6 +196,57 @@ require('bugpack').context("*", function(bugpack) {
     };
 
     /**
+     * @license MIT License
+     * This work is based on the code found here
+     * https://github.com/kangax/protolicious/blob/master/experimental/object.for_in.js#L18
+     *
+     * NOTE BRN: If a property is modified in one iteration and then visited at a later time, its value in the loop is
+     * its value at that later time. A property that is deleted before it has been visited will not be visited later.
+     * Properties added to the object over which iteration is occurring may either be visited or omitted from iteration.
+     * In general it is best not to add, modify or remove properties from the object during iteration, other than the
+     * property currently being visited. There is no guarantee whether or not an added property will be visited, whether
+     * a modified property (other than the current one) will be visited before or after it is modified, or whether a
+     * deleted property will be visited before it is deleted.
+     *
+     * @static
+     * @param {Object} object
+     * @param {function(string, *):*} iteratee
+     * @param {Object=} context
+     * @param {{
+     *  own: boolean=
+     * }=} options
+     */
+    ObjectUtil.forIn = function(object, iteratee, context, options) {
+        if (!TypeUtil.isObjectLike(object)) {
+            throw new TypeError("'object' must be Object like");
+        }
+        if (!iteratee || (iteratee && !iteratee.call)) {
+            throw new Error('Iterator function is required');
+        }
+
+        for (var propertyName in object) {
+            if (ObjectUtil.hasProperty(object, propertyName, options)) {
+                var result = FunctionUtil.call(iteratee, context || iteratee, propertyName, object[propertyName]);
+                if (result === false) {
+                    break;
+                }
+            }
+        }
+
+        if (ObjectUtil.isDontEnumSkipped) {
+            for (var i = 0, size = ObjectUtil.dontEnumProperties.length; i < size; i++) {
+                var dontEnumPropertyName = ObjectUtil.dontEnumProperties[i];
+                if (ObjectUtil.hasProperty(object, dontEnumPropertyName, options)) {
+                    var result = FunctionUtil.call(iteratee, context || iteratee, dontEnumPropertyName, object[dontEnumPropertyName]);
+                    if (result === false) {
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+    /**
      * @static
      * @param {Object} object
      * @param {string} propertyQuery
@@ -240,51 +310,6 @@ require('bugpack').context("*", function(bugpack) {
             }
         }
         return propertyValue;
-    };
-
-    /**
-     * @license MIT License
-     * This work is based on the code found here
-     * https://github.com/kangax/protolicious/blob/master/experimental/object.for_in.js#L18
-     *
-     * NOTE BRN: If a property is modified in one iteration and then visited at a later time, its value in the loop is
-     * its value at that later time. A property that is deleted before it has been visited will not be visited later.
-     * Properties added to the object over which iteration is occurring may either be visited or omitted from iteration.
-     * In general it is best not to add, modify or remove properties from the object during iteration, other than the
-     * property currently being visited. There is no guarantee whether or not an added property will be visited, whether
-     * a modified property (other than the current one) will be visited before or after it is modified, or whether a
-     * deleted property will be visited before it is deleted.
-     *
-     * @static
-     * @param {Object} object
-     * @param {function(string, *)} func
-     * @param {Object=} context
-     * @param {{
-     *  own: boolean=
-     * }=} options
-     */
-    ObjectUtil.forIn = function(object, func, context, options) {
-        if (!TypeUtil.isObjectLike(object)) {
-            throw new TypeError("'object' must be Object like");
-        }
-        if (!func || (func && !func.call)) {
-            throw new Error('Iterator function is required');
-        }
-
-        for (var propertyName in object) {
-            if (ObjectUtil.hasProperty(object, propertyName, options)) {
-                Function.prototype.call.call(func, context || func, propertyName, object[propertyName]);
-            }
-        }
-
-        if (ObjectUtil.isDontEnumSkipped) {
-            for (var i = 0, size = ObjectUtil.dontEnumProperties.length; i < size; i++) {
-                var dontEnumPropertyName = ObjectUtil.dontEnumProperties[i];
-                if (ObjectUtil.hasProperty(object, dontEnumPropertyName, options)) {
-                    Function.prototype.call.call(func, context || func, dontEnumPropertyName, object[dontEnumPropertyName]);
-                }
-            }
-        }
     };
 
     /**
