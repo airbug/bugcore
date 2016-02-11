@@ -29,6 +29,7 @@
 //@Require('Exception')
 //@Require('Flows')
 //@Require('Func')
+//@Require('FunctionUtil')
 //@Require('Handler')
 //@Require('HashStore')
 //@Require('HashTable')
@@ -115,6 +116,7 @@ require('bugpack').context('*', function(bugpack) {
     var Exception           = bugpack.require('Exception');
     var Flows               = bugpack.require('Flows');
     var Func                = bugpack.require('Func');
+    var FunctionUtil        = bugpack.require('FunctionUtil');
     var Handler             = bugpack.require('Handler');
     var HashStore           = bugpack.require('HashStore');
     var HashTable           = bugpack.require('HashTable');
@@ -291,6 +293,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:Func)}
              */
             this.Func               = Func;
+
+            /**
+             * @type {function(new:FunctionUtil)}
+             */
+            this.FunctionUtil       = FunctionUtil;
 
             /**
              * @type {function(new:Handler)}
