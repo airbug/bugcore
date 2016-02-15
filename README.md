@@ -12,10 +12,7 @@ inheritance](http://ejohn.org/blog/simple-javascript-inheritance/). In addition
 the library provides many basic data models and utility classes for common
 object oriented patterns.
 
-The library is extremely robust and makes up the foundation of our architecture
-for [airbug](http://airbug.com) so check out the docs for an overview of the
-full power of what the code has to offer. If the library is missing something
-you need, please let us know!
+If the library is missing something you need, please let us know!
 
 NOTE: This documentation is still being written. If you click on a link and it
 doesn't go anywhere, it's likely because that portion of the docs hasn't been

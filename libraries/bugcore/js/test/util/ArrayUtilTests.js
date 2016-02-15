@@ -164,6 +164,64 @@ require('bugpack').context("*", function(bugpack) {
         }
     };
 
+    /**
+     * This tests..
+     * 1) That the ArrayUtil.forIn function correctly iterates over an array and sets the context correctly
+     */
+    var arrayUtilForInIterationTest = {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        setup: function() {
+            this.testArray = [
+                "value1",
+                "value2",
+                "value3"
+            ];
+            this.testOptions = {
+                context: {
+                    contextTrue: true
+                }
+            };
+        },
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        test: function(test) {
+            var iteratedIndexes = [];
+            var iteratedValues = [];
+            ArrayUtil.forIn(this.testArray, function(index, value) {
+                iteratedIndexes.push(index);
+                iteratedValues.push(value);
+                test.assertTrue(this.contextTrue,
+                    "Assert that we are executing within the correct context");
+            }, this.testOptions);
+
+            test.assertTrue((iteratedIndexes.length === 3),
+                "Assert we iterated over 3 indexes");
+            test.assertTrue((iteratedValues.length === 3),
+                "Assert we iterated over 3 values");
+
+            var expectedIndexes = [
+                0,
+                1,
+                2
+            ];
+            for (var i = 0, size = iteratedIndexes.length; i < size; i++) {
+                var iteratedIndex = iteratedIndexes[i];
+                var expectedIndexIndex = expectedIndexes.indexOf(iteratedIndex);
+                test.assertTrue((expectedIndexIndex > -1),
+                    "Assert index was in the expectedIndexes");
+                expectedIndexes.splice(expectedIndexIndex, 1);
+                test.assertEqual(iteratedValues[i], this.testArray[iteratedIndex],
+                    "Assert the value that was iterated is the one that corresponds to the index");
+            }
+        }
+    };
+
 
     //-------------------------------------------------------------------------------
     // BugMeta
@@ -180,5 +238,8 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(arrayUtilIndexOfStringTest).with(
         test().name("ArrayUtil - .indexOf() String test")
+    );
+    bugmeta.tag(arrayUtilForInIterationTest).with(
+        test().name("ArrayUtil - .forIn() iteration test")
     );
 });

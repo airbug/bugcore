@@ -20,6 +20,7 @@
 //@Require('Config')
 //@Require('ConfigChain')
 //@Require('Constructor')
+//@Require('DataUtil')
 //@Require('DateUtil')
 //@Require('Deferred')
 //@Require('Event')
@@ -107,6 +108,7 @@ require('bugpack').context('*', function(bugpack) {
     var Config              = bugpack.require('Config');
     var ConfigChain         = bugpack.require('ConfigChain');
     var Constructor         = bugpack.require('Constructor');
+    var DataUtil            = bugpack.require('DataUtil');
     var DateUtil            = bugpack.require('DateUtil');
     var Deferred            = bugpack.require('Deferred');
     var Event               = bugpack.require('Event');
@@ -248,6 +250,11 @@ require('bugpack').context('*', function(bugpack) {
              * @type {function(new:Constructor)}
              */
             this.Constructor        = Constructor;
+
+            /**
+             * @type {function(new:DataUtil)}
+             */
+            this.DataUtil           = DataUtil;
 
             /**
              * @type {function(new:DateUtil)}
@@ -585,6 +592,10 @@ require('bugpack').context('*', function(bugpack) {
         // Public Methods
         //-------------------------------------------------------------------------------
 
+        assign: function(into, froms) {
+            return ObjectUtil.assign.apply(ObjectUtil, arguments);
+        },
+
         /**
          * @param {(ICollection.<C> | Array.<C>)=} items
          * @return {Collection.<C>}
@@ -674,6 +685,7 @@ require('bugpack').context('*', function(bugpack) {
     //-------------------------------------------------------------------------------
 
     Proxy.proxy(BugCore, Proxy.method(BugCore.getInstance), [
+        'assign',
         'collection',
         'list',
         'map',

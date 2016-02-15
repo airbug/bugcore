@@ -43,7 +43,7 @@ require('bugpack').context("*", function(bugpack) {
 
      /**
      * @static
-     * @param {function(...):*} func
+     * @param {function(...*):*} func
      * @param {Object} context
      * @param {Array.<*>} args
      * @return {*}

@@ -333,8 +333,10 @@ require('bugpack').context("*", function(bugpack) {
                 prop2: "value2",
                 prop3: "value3"
             };
-            this.testContext = {
-                contextTrue: true
+            this.testOptions = {
+                context: {
+                    contextTrue: true
+                }
             };
         },
 
@@ -350,7 +352,7 @@ require('bugpack').context("*", function(bugpack) {
                 iteratedValues.push(value);
                 test.assertTrue(this.contextTrue,
                     "Assert that we are executing within the correct context");
-            }, this.testContext);
+            }, this.testOptions);
 
             test.assertTrue((iteratedProps.length === 3),
                 "Assert we iterated over 3 properties");
@@ -527,67 +529,6 @@ require('bugpack').context("*", function(bugpack) {
                 "Assert isEqual returns false for an object that has an extra key");
             test.assertEqual(ObjectUtil.isEqual(this.baseObject, this.notEqualObjectDifferentValue), false,
                 "Assert isEqual returns false for an object with a different value");
-        }
-    };
-
-    /**
-     * This tests..
-     * 1) That the ObjectUtil.anyIn function correctly iterates over an object and sets the context correctly
-     * 2) That anyIn ends when a truthy value is found
-     * 3) That true is returned when anyIn finds a true value
-     */
-    var objectUtilAnyInIterationTest = {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        setup: function() {
-            this.testObject = {
-                prop1: "value1",
-                prop2: "value2",
-                prop3: "value3"
-            };
-            this.testContext = {
-                contextTrue: true
-            };
-        },
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        test: function(test) {
-            var _this = this;
-            var iteratedProps = [];
-            var iteratedValues = [];
-            var result = ObjectUtil.anyIn(this.testObject, function(prop, value) {
-                iteratedProps.push(prop);
-                iteratedValues.push(value);
-                test.assertTrue(this.contextTrue,
-                    "Assert that we are executing within the correct context");
-                return value === _this.testObject.prop2;
-            }, this.testContext);
-
-            test.assertEqual(result, true,
-                "Assert anyIn returned true");
-            test.assertTrue((iteratedProps.length === 2),
-                "Assert we iterated over 2 properties");
-            test.assertTrue((iteratedValues.length === 2),
-                "Assert we iterated over 2 values");
-
-            var expectedProps = [
-                "prop1",
-                "prop2"
-            ];
-            for (var i = 0, size = iteratedProps.length; i < size; i++) {
-                var iteratedProp = iteratedProps[i];
-                var expectedPropIndex = expectedProps.indexOf(iteratedProp);
-                test.assertTrue((expectedPropIndex > -1),
-                    "Assert prop was in the expectedProps");
-                expectedProps.splice(expectedPropIndex, 1);
-                test.assertEqual(iteratedValues[i], this.testObject[iteratedProp],
-                    "Assert the value that was iterated is the one that corresponds to the property");
-            }
         }
     };
 
@@ -866,9 +807,6 @@ require('bugpack').context("*", function(bugpack) {
     );
     bugmeta.tag(objectUtilIsEqualTest).with(
         test().name("ObjectUtil - .isEqual Test")
-    );
-    bugmeta.tag(objectUtilAnyInIterationTest).with(
-        test().name("ObjectUtil - .anyIn() iteration test")
     );
     bugmeta.tag(objectUtilAssignTest).with(
         test().name("ObjectUtil - .assign Test")
